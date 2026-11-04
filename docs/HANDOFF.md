@@ -2,13 +2,13 @@
 
 > Заполнено 04.11.2026, Codex. Проверять текущий Git перед доверием этому снимку.
 
-## Изменение процесса / Owner 04.11.2026 (для следующей сессии)
+## CURRENT / Owner уточнение 04.11.2026 — Component-first
 
-- **Новый обязательный маршрут Screens:** CURRENT Figma/DS → интерактивный HTML-превью → HTML QA D1440/L1024/T768/M390/M320 → явный `OWNER_HTML_APPROVED` → отдельная задача агенту на перенос в существующий React/Vite проект → React QA и визуальная приёмка → PR. Это заменяет старый план «сразу React».
-- Figma — компоненты/размеры/иконки/типографика/сетка/состояния; Liquid Glass 2.1.5 / 2.2.5 C / 2.3.3c — только слой материала/света/анимации. В Manager Orders Primary из Figma — иконковый плюс с внешним label; лабораторную текстовую форму не копировать.
-- Первый шаг: проверить непринятый `Flexomir_Orders_Review.html` (из `Flexomir_Orders_HTML (1).zip`) относительно CURRENT Manager Figma node `2633:20095`; создать/исправить один HTML-превью и показать Owner. React Manager Orders заблокирован до HTML approval.
-- Google Drive Frontend Startup, Glass Visual Contract, Project Governance и UX/UI Index обновлены 04.11; читать latest сверху. Git-ветка `docs/html-first-owner-gate-2026-11-04` содержит предложения изменений инструкций/плана; наличие ветки или PR **не** означает merge в `main`.
-- В рамках правки только документы; UI, код, зависимости, Figma, API/1С и текущий Glass-полигон не изменены. Репозиторий PUBLIC — OPEN риск, публикацию клиентских данных не делать.
+- Старый обязательный HTML-first **для каждого** экрана SUPERSEDED. Теперь: CURRENT Figma (Client UX V2 + Manager UX V2) → shared component map → контракт → **HTML лаборатория только для сложной оптики/motion и Owner visual approval** → React component+QA → React screen+QA/Owner → PR.
+- Аудит: [95 уникальных Figma master-семейств, 57 общих](https://drive.google.com/file/d/1vK7eRlBXxDxTAdfKQhdFA8qRVJ6H_FOr/view). Архивы/SUPERSEDED исключены; CANDIDATE/SCOPE OPEN не считать автоматически готовым MVP.
+- Первый микрошаг FE-01: [HeaderAction contract](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view) — 68×68 desktop icon+caption, 48×48 compact T/M, один общий компонент Client/Manager; **не** объединять с текстовой ActionButton master835:259. Figma geometry vs Liquid Glass motion отдельно.
+- Agent A после согласования контракта и правил: реализовать базовый HeaderAction в React, disabled, a11y, QA, isolated dev-story, БЕЗ GL-01B, без API/1C/клиентских экранов. Agent B только после Owner visual approval GL-01B. Теперь OWNER GL-01B OPEN. Figma Client mobile Compact48 vs SRS permanent caption OPEN — не выбирать самостоятельно.
+- Drive Frontend/Governance/Visual/UX index обновлены новым решением; изменения Git-документации живут в draft PR `#1` в `docs/html-first-owner-gate-2026-11-04`, пока не в `main`. Не заявлять, что локальный Codex автоматически прочитает PR. Публичная видимость GitHub остаётся риском; код и Figma/1С не менялись.
 
 ## Контекст
 
