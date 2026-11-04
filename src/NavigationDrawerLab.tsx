@@ -8,6 +8,9 @@ import './NavigationDrawerLab.css'
 
 export function NavigationDrawerLab() {
   const [role, setRole] = useState<'client' | 'manager'>('client')
+  // Owner-approved comparison: in the isolated lab, leave the floating menu
+  // open after selecting a route; test actual navigation close policy separately.
+  const [closeOnSelection, setCloseOnSelection] = useState(false)
   const [selected, setSelected] = useState({ client: 'orders', manager: 'orders' })
   const [settled, setSettled] = useState({ client: null as string | null, manager: null as string | null })
   const items = role === 'client' ? clientItems : managerItems
@@ -27,6 +30,7 @@ export function NavigationDrawerLab() {
             footerText={role === 'client' ? 'ООО «Клиент»' : 'Менеджер · тестовый режим'}
             onSelect={id => setSelected(current => ({ ...current, [role]: id }))}
             onSelectionSettled={id => setSettled(current => ({ ...current, [role]: id }))}
+            closeOnSelection={closeOnSelection}
           />
         </div>
       </header>
@@ -47,13 +51,24 @@ export function NavigationDrawerLab() {
               aria-pressed={role === 'manager'} onClick={() => setRole('manager')}>Менеджер</button>
           </div>
         </div>
+        <div className="nav-drawer-lab__settings" aria-label="Поведение меню после выбора">
+          <span>Закрытие меню:</span>
+          <div role="group" aria-label="Режим закрытия меню">
+            <button type="button" data-testid="drawer-mode-stay-open"
+              aria-pressed={!closeOnSelection}
+              onClick={() => setCloseOnSelection(false)}>По клику вне меню</button>
+            <button type="button" data-testid="drawer-mode-close-after-lens"
+              aria-pressed={closeOnSelection}
+              onClick={() => setCloseOnSelection(true)}>После перехода линзы</button>
+          </div>
+        </div>
         <section className="nav-drawer-lab__card">
           <p className="nav-drawer-lab__card-title">Тестовая область</p>
           <p role="status" data-testid="drawer-selection">Выбрано: {label}</p>
           <p data-testid="drawer-settled">Линза завершила переход: {
             items.find(item => item.id === settled[role])?.label ?? '—'
           }</p>
-          <p>Проверьте нажатие вне меню, Escape, удержание фокуса клавиатурой и отсутствие прокрутки страницы за открытой панелью.</p>
+          <p>В основном режиме меню остаётся открытым после выбора. Линза завершает переход, затем можно выбрать другой пункт. Закрытие — кликом вне меню, Escape или кнопкой меню. Второй режим — закрытие после завершения движения линзы для реальных переходов.</p>
         </section>
         <div className="nav-drawer-lab__scroll-witness" data-testid="drawer-scroll-witness">
           <span>Контроль фонового скролла</span>
