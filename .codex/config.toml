@@ -1,0 +1,5 @@
+# Flexomir OS — проектная настройка Codex. Применяется только в доверенном проекте
+# и при поддержке соответствующих полей выбранной моделью/версией Codex.
+# Не задаём модель, провайдера, токены, режим sandbox или auto-approval.
+model_reasoning_effort = "high"
+model_reasoning_summary = "concise"
