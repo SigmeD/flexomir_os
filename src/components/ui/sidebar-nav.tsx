@@ -1,11 +1,14 @@
 import { useCallback, useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { FosGlassMaterial } from './fos-glass-material'
+import { SidebarNavIcon, type SidebarNavIconName } from './sidebar-nav-icons'
 import './sidebar-nav.css'
 
 export interface SidebarNavItem {
   /** Stable route key supplied by the consuming screen, never inferred from text. */
   id: string
   label: string
+  /** Optional reference-aligned icon. Omit to keep exact text-only Figma master. */
+  icon?: SidebarNavIconName
   disabled?: boolean
 }
 
@@ -35,6 +38,7 @@ export function SidebarNav({
   const initialIndexRef = useRef(Math.max(0, activeIndex))
   const anchor = initialIndexRef.current
   const labelRefs = useRef<Array<HTMLSpanElement | null>>([])
+  const iconRefs = useRef<Array<HTMLSpanElement | null>>([])
   const currentTravel = useRef(0)
   const selectedRef = useRef(activeIndex)
   selectedRef.current = activeIndex
@@ -52,6 +56,10 @@ export function SidebarNav({
         ? Math.max(0, Math.min(1, 1 - difference / 44))
         : 0
       label.style.setProperty('--fos-sidebar-label-scale', (1 + 0.043 * proximity).toFixed(5))
+      // Icon follows the same selected lens: reference 2.2.5 C max +2.2%.
+      iconRefs.current[index]?.style.setProperty(
+        '--fos-sidebar-icon-scale', (1 + 0.022 * proximity).toFixed(5),
+      )
     }
   }, [anchor])
 
@@ -98,6 +106,12 @@ export function SidebarNav({
               if (!item.disabled && item.id !== activeId) onSelect(item.id)
             }}
           >
+            {item.icon && (
+              <span
+                className="fos-sidebar-nav__icon"
+                ref={node => { iconRefs.current[index] = node }}
+              ><SidebarNavIcon name={item.icon} /></span>
+            )}
             <span
               className="fos-sidebar-nav__label"
               ref={node => { labelRefs.current[index] = node }}
