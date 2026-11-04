@@ -1,0 +1,38 @@
+{
+  "name": "flexomir-glass-filter-stage-234k",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test tests/glass-select-theme.spec.ts tests/glass-select-api.spec.ts tests/glass-select-matte.spec.ts",
+    "test:visual": "playwright test tests/glass-select-visual.spec.ts",
+    "test:material": "playwright test --config=playwright.material.config.ts",
+    "verify:material-optics": "node scripts/verify-fos-material-optics.cjs"
+  },
+  "dependencies": {
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.56.1",
+    "@tailwindcss/vite": "^4.1.14",
+    "@types/node": "^22.14.0",
+    "@types/pngjs": "^6.0.5",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^4.5.2",
+    "pngjs": "^7.0.0",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3",
+    "vite": "^6.3.5"
+  }
+}

@@ -1,0 +1,22 @@
+.fos-material-lab { width: min(100% - 40px, 1040px); margin: 38px auto 60px; color: #244356; }
+.fos-material-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+.fos-material-lab h1 { font-size: clamp(28px, 4vw, 46px); line-height: 1.15; margin: 16px 0; letter-spacing: -.035em; }
+.fos-material-lab header > p:last-child { color: #42627a; font-size: 14px; }
+.fos-proof-controls { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+.fos-proof-controls a,.fos-proof-controls button { border: 1px solid #86a2b3; color: #244356; background: white; border-radius: 10px; padding: 10px 14px; font-size: 13px; text-decoration: none; }
+.fos-proof-controls a[aria-current] { background: #e4eff5; }
+.fos-proof-controls a:focus-visible,.fos-proof-controls button:focus-visible { outline: 2px solid #286f93; outline-offset: 3px; }
+.fos-proof-scene { position: relative; max-width: 850px; background: white; border: 1px solid #b7cedb; border-radius: 20px; }
+.fos-proof-order { height: 76px; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; border-bottom: 1px solid #9ab2c0; }
+.fos-proof-order:last-child { border-bottom: none; }
+.fos-proof-order > div { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
+.fos-proof-order strong { font-size: 16px; line-height: 20px; }
+.fos-proof-order > div > span { font-size: 12px; line-height: 16px; }
+.fos-proof-status { font-size: 11px; border: 1px solid #bdd3df; border-radius: 16px; padding: 6px 9px; }
+.fos-proof-lens { position: absolute; top: 64px; left: 18px; width: min(300px, calc(100% - 36px)); height: 48px; pointer-events: none; }
+[data-material-phase="material"] .fos-proof-lens { width: min(261px, calc(100% - 36px)); }
+@media (max-width: 600px) {
+  .fos-material-lab { width: calc(100% - 24px); margin-top: 24px; }
+  .fos-proof-order { padding-left: 24px; padding-right: 12px; gap: 8px; }
+  .fos-proof-status { max-width: 112px; text-align: center; }
+}

@@ -1,0 +1,48 @@
+import { expect, test } from '@playwright/test'
+import { selectContrast } from './helpers/select-contrast'
+
+test('consumer item onClick runs and can cancel selection', async ({ page }) => {
+  await page.goto('/tests/fixtures/glass-select.html')
+  const trigger = page.getByTestId('filter-control').locator('button')
+  await expect(trigger).toHaveAccessibleName('Статус заказа')
+  await trigger.click()
+  await expect(page.getByRole('listbox')).toHaveAccessibleName('Варианты статуса')
+  await page.getByRole('option', { name: 'Второй', exact: true }).click()
+  await expect(page.getByTestId('fixture-clicks')).toHaveText('1')
+  await expect(page.getByTestId('fixture-value')).toHaveText('none')
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true')
+  await page.getByRole('checkbox', { name: 'Отменить выбор' }).uncheck()
+  await trigger.click()
+  await page.getByRole('option', { name: 'Второй', exact: true }).click()
+  await expect(page.getByTestId('fixture-clicks')).toHaveText('2')
+  await expect(page.getByTestId('fixture-value')).toHaveText('two')
+  await expect(trigger).toContainText('Второй')
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+})
+
+test('placeholder has 4.5:1 contrast without a selected value', async ({ page }, testInfo) => {
+  await page.goto('/tests/fixtures/glass-select.html')
+  const trigger = page.getByTestId('filter-control').locator('button')
+  await expect(trigger).toHaveText('Выберите статус')
+  await page.evaluate(() => Promise.all(document.getAnimations().map(a => a.finished)))
+  const measure = await selectContrast(page)
+  await testInfo.attach('placeholder-contrast', { body: JSON.stringify(measure), contentType: 'application/json' })
+  expect(measure.trigger).toBeGreaterThanOrEqual(4.5)
+})
+
+test('keyboard focus scrolls an overflowing option into view', async ({ page }) => {
+  await page.goto('/tests/fixtures/glass-select.html')
+  const trigger = page.getByTestId('long-select').locator('button')
+  await expect(trigger).toHaveText('Статус 1')
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  await page.keyboard.press('End')
+  const last = page.getByRole('option', { name: 'Статус 12', exact: true })
+  await expect(last).toBeFocused()
+  await expect(last).toBeInViewport()
+  expect(await page.getByRole('listbox').locator('.glass-select-viewport').evaluate(el => el.scrollTop)).toBeGreaterThan(0)
+  expect(await page.evaluate(() => scrollY)).toBe(0)
+  await page.keyboard.press('Enter')
+  await expect(trigger).toHaveText('Статус 12')
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+})

@@ -1,0 +1,22 @@
+# Dependencies, builds and local caches
+/node_modules/
+/dist/
+/.npm-cache/
+/.playwright-cli/
+*.tsbuildinfo
+
+# Generated browser reports; reviewed snapshots under tests/ stay trackable
+/output/
+/test-results/
+/playwright-report/
+
+# Local environment and editor files
+.env
+.env.*
+!.env.example
+!.env.*.example
+/.idea/
+/.vscode/
+*.log
+Thumbs.db
+.DS_Store

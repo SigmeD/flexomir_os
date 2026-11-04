@@ -1,0 +1,56 @@
+import { expect, test } from '@playwright/test'
+
+test('light Select closed, open and keyboard focus match reviewed screenshots', async ({ page }) => {
+  await page.goto('/')
+  const trigger = page.getByTestId('filter-control').locator('button')
+  await expect(trigger).toContainText('Все заказы')
+  await page.mouse.move(0, 0)
+  await expect(page).toHaveScreenshot('select-light-closed.png', { fullPage: true, animations: 'disabled', maxDiffPixels: 40, threshold: 0.15 })
+  await trigger.click()
+  await expect(page.getByRole('listbox')).toHaveCSS('opacity', '1')
+  await expect(page.locator('feDisplacementMap')).toHaveCount(1)
+  await page.mouse.move(0, 0)
+  await expect(page).toHaveScreenshot('select-light-open.png', { fullPage: true, animations: 'disabled', maxDiffPixels: 40, threshold: 0.15 })
+  await page.keyboard.press('Escape')
+  await expect(trigger).toBeFocused()
+  await expect(trigger).toHaveCSS('outline-style', 'solid')
+  await expect(page).toHaveScreenshot('select-light-focus.png', { fullPage: true, animations: 'disabled', maxDiffPixels: 40, threshold: 0.15 })
+})
+
+test('dark component palette matches reviewed closed and open screenshots', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => { document.documentElement.dataset.theme = 'dark' })
+  const trigger = page.getByTestId('filter-control').locator('button')
+  await expect(trigger).toHaveCSS('color-scheme', 'dark')
+  await expect(trigger).toContainText('Все заказы')
+  await page.mouse.move(0, 0)
+  await expect(page).toHaveScreenshot('select-dark-closed.png', { fullPage: true, animations: 'disabled', maxDiffPixels: 40, threshold: 0.15 })
+  await trigger.click()
+  await expect(page.getByRole('listbox')).toHaveCSS('opacity', '1')
+  await expect(page.locator('feDisplacementMap')).toHaveCount(1)
+  await page.mouse.move(0, 0)
+  await expect(page).toHaveScreenshot('select-dark-open.png', { fullPage: true, animations: 'disabled', maxDiffPixels: 40, threshold: 0.15 })
+})
+
+test('visual negative control rejects a return to unreadable white text', async ({ page }, testInfo) => {
+  await page.goto('/')
+  await expect(page.getByTestId('filter-control').locator('button')).toContainText('Все заказы')
+  // This mutation exists only in this isolated browser context, never in application CSS.
+  await page.addStyleTag({ content: ':root { --gs-foreground: #fff; }' })
+  await page.mouse.move(0, 0)
+  await expect(page).not.toHaveScreenshot('select-light-closed.png', { fullPage: true, animations: 'disabled', maxDiffPixels: 40, threshold: 0.15 })
+  await testInfo.attach('negative-control-white-text', { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' })
+})
+
+test('matte 97 preview matches reviewed closed and open screenshots', async ({ page }) => {
+  await page.goto('/?glass=matte')
+  const trigger = page.getByTestId('filter-control').locator('button')
+  await expect(trigger).toContainText('Все заказы')
+  await page.mouse.move(0, 0)
+  await expect(page).toHaveScreenshot('select-matte-97-closed.png', { fullPage: true, animations: 'disabled', maxDiffPixels: 40, threshold: 0.15 })
+  await trigger.click()
+  await expect(page.getByRole('listbox')).toHaveCSS('opacity', '1')
+  await expect(page.locator('feDisplacementMap')).toHaveCount(1)
+  await page.mouse.move(0, 0)
+  await expect(page).toHaveScreenshot('select-matte-97-open.png', { fullPage: true, animations: 'disabled', maxDiffPixels: 40, threshold: 0.15 })
+})

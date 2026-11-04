@@ -1,0 +1,140 @@
+/* Select-only tokens live at the root so the body portal inherits the same theme. */
+:root {
+  --gs-scheme: light;
+  --gs-foreground: #15384c;
+  --gs-muted: #42627a;
+  --gs-trigger: rgba(239, 247, 251, 0.94);
+  --gs-material-rgb: 249 251 252;
+  --gs-material-opacity: .68;
+  --gs-material-rim-width: 12px;
+  --gs-matte-surface: rgba(249, 251, 252, 0.97);
+  --gs-rim: rgba(85, 123, 145, 0.3);
+  --gs-border: #628599;
+  --gs-hover: rgba(36, 67, 86, 0.08);
+  --gs-focus: #286f93;
+  --gs-mark: #236786;
+}
+
+/* Match Website Glass's precedence: .dark, .light, data-theme, then OS. */
+:root.dark,
+:root:not(.light)[data-theme="dark"] {
+  --gs-scheme: dark;
+  --gs-foreground: #eef6fa;
+  --gs-muted: #c0d3de;
+  --gs-trigger: rgba(24, 42, 55, 0.94);
+  --gs-material-rgb: 18 34 45;
+  --gs-material-opacity: .94;
+  --gs-material-rim-width: 2px;
+  --gs-matte-surface: rgba(18, 34, 45, 0.97);
+  --gs-rim: rgba(255, 255, 255, 0.12);
+  --gs-border: #8cb0c6;
+  --gs-hover: rgba(193, 225, 244, 0.12);
+  --gs-focus: #95d8ff;
+  --gs-mark: #8dd6ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not(.dark):not([data-theme="light"]):not([data-theme="dark"]) {
+    --gs-scheme: dark;
+    --gs-foreground: #eef6fa;
+    --gs-muted: #c0d3de;
+    --gs-trigger: rgba(24, 42, 55, 0.94);
+    --gs-material-rgb: 18 34 45;
+    --gs-material-opacity: .94;
+    --gs-material-rim-width: 2px;
+    --gs-matte-surface: rgba(18, 34, 45, 0.97);
+    --gs-rim: rgba(255, 255, 255, 0.12);
+    --gs-border: #8cb0c6;
+    --gs-hover: rgba(193, 225, 244, 0.12);
+    --gs-focus: #95d8ff;
+    --gs-mark: #8dd6ff;
+  }
+}
+
+[data-glass-select-trigger],
+[data-glass-select-content] {
+  color-scheme: var(--gs-scheme);
+  color: var(--gs-foreground);
+}
+
+[data-glass-select-trigger] {
+  border-color: var(--gs-border);
+  background-color: var(--gs-trigger);
+}
+
+[data-glass-select-trigger][data-placeholder],
+[data-glass-select-trigger] > svg {
+  color: var(--gs-muted);
+}
+
+[data-glass-select-trigger]:hover {
+  border-color: var(--gs-focus);
+}
+
+.glass-select-material {
+  /* All optics, lighting, reading fill and shadows belong to FosGlassMaterial. */
+  overflow: visible;
+}
+
+.glass-select-viewport {
+  /* Foreground scrolls independently of the one optical layer. */
+  background: transparent;
+}
+
+[data-glass-select-trigger][data-appearance="matte"] {
+  background-color: var(--gs-matte-surface);
+}
+
+[data-glass-select-content][data-appearance="matte"] {
+  --gs-material-opacity: .97;
+  --gs-material-rim-width: 2px;
+}
+
+[data-glass-select-item] {
+  color: var(--gs-foreground);
+}
+
+[data-glass-select-item]:hover,
+[data-glass-select-item]:focus-visible {
+  background-color: var(--gs-hover);
+}
+
+[data-glass-select-item] > svg {
+  color: var(--gs-mark);
+}
+
+[data-glass-select-trigger]:focus-visible,
+[data-glass-select-item]:focus-visible {
+  outline: 2px solid var(--gs-focus);
+  outline-offset: 3px;
+}
+
+[data-glass-select-item]:focus-visible {
+  outline-offset: -3px;
+}
+
+@media (forced-colors: active) {
+  [data-glass-select-trigger],
+  [data-glass-select-content] {
+    color: CanvasText;
+  }
+  [data-glass-select-trigger],
+  .glass-select-material,
+  .glass-select-viewport {
+    background: Canvas;
+    border-color: ButtonText;
+  }
+  [data-glass-select-item],
+  [data-glass-select-trigger] > svg,
+  [data-glass-select-item] > svg {
+    color: CanvasText;
+  }
+  [data-glass-select-item][aria-selected="true"] {
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+  }
+  [data-glass-select-trigger]:focus-visible,
+  [data-glass-select-item]:focus-visible {
+    outline-color: Highlight;
+  }
+}
