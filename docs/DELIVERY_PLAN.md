@@ -9,17 +9,17 @@
 | FE-00/01 | Инвентаризация файлов, Git, React, источников Drive/Figma/Glass | Проверка состояния до изменений | Локальная FE-00 выполнена; Drive/Figma FE-01 TODO |
 | FE-02 | Один Git, первоначальный commit, решение о приватности | Owner согласовал remote, нет потери данных | Commit `cd0656a` опубликован; PUBLIC/PRIVATE OPEN; worktree не создавался |
 | FE-03 | Использовать существующий React baseline | TypeScript/build, затем запуск и браузерный QA | Build PASS 04.11; отдельного lint нет; dev/browser NOT RUN в этой задаче |
-| FE-04/05 | Source map Figma → HTML → React, токены, готовые компоненты Figma, разделение UI/данных | HTML по CURRENT Figma до React, с Owner gate | TODO / Manager Orders первым |
-| FE-06 | Manager «Заказы» — интерактивный HTML-превью на основе текущего ZIP и Figma | Форма/иконки/типографика/сетка/адаптивы как в Figma; Liquid Glass только эффект | HTML_CANDIDATE / OWNER_HTML_APPROVED OPEN |
-| FE-07 | HTML visual QA: 1440/1024/768/390/320 и Owner review | OWNER_HTML_APPROVED до React | TODO / React BLOCKED |
-| FE-08 | Отдельная задача React-агенту на принятый HTML, затем остальные экраны партиями | React build/visual/a11y/regression + Owner + PR | BLOCKED до OWNER_HTML_APPROVED |
+| FE-04/05 | Компонентная карта Client/Manager V2; FE-01 HeaderAction контракт | Один reusable primitive, разделение Figma masters и React API | Аудит 95/57 сделан; [HeaderAction контракт](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view) DRAFT / Owner review |
+| FE-06 | Пилот общий HeaderAction: React geometry и состояния **без** GL-01B motion | Figma D68/T48/M48, disabled/a11y, Client/Manager dev-story | Agent Package A READY после проверки правил; код НЕ НАЧАТ |
+| FE-07 | Liquid Glass press для HeaderAction после визуальной оценки GL-01B | Side-by-side HTML oracle vs React и browser QA | GL-01B OWNER_OPEN, Package B BLOCKED |
+| FE-08 | Manager Orders React из общих компонентов, затем Client reuse и другие экраны | React + Figma visual QA / product QA / Owner | TODO; не нужен отдельный HTML-дубль |
 | FE-09 | Glass React поток и интерфейс подключения | Дизайн/поведение не подменены | Код Glass/Select есть в repo, build PASS; свежий browser QA и Owner OPEN |
 | FE-10/11 | Контрактный пакет и согласование с Алексеем | Точные типы/ACL/1C mapping APPROVED или OPEN | TODO |
 | FE-12 | Сквозная регрессия и handoff | Отдельные CODE/QA/OWNER/INTEGRATION статусы | TODO |
 
-## Новое процессное решение OWNER / 04.11.2026
+## CURRENT решение Owner / 04.11.2026 — ПОСЛЕ компонентного аудита
 
-Предыдущий план «сразу Figma→React» заменён HTML-first визуальным gate. Источник формы/параметров — текущие компоненты Figma, а материал/свет/анимация — согласованные Liquid Glass эталоны. Копирование лабораторной текстовой Primary-кнопки вместо фигмовской иконковой недопустимо. Текущий `Flexomir_Orders_Review.html` — непринятый архивный кандидат, нужен gap-аудит по node `2633:20095` и новый HTML gate. Существующий React/Vite Glass полигон сохраняется, код/screens не изменяются.
+Отменена универсальная стадия «полный HTML каждого экрана». Контроль: **Figma → реестр компонентов → контракт → (HTML лаборатория только сложному motion/optics/menus с Owner visual gate) → React-компонент → independent component QA → React-экран → screen QA/Owner → PR**. Glass задаёт материал/движение, Figma — форму/размеры/иконки/контент. Исходный `Flexomir_Orders_Review.html` не считается эталоном; GL-01B motion пока не утверждён. Начинаем с [HeaderAction](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view), не с переноса целого экрана. Текстовая ActionButton `835:259` — отдельная будущая задача; не консолидировать с Icon+Label/Compact header.
 
 ## Liquid Glass — отдельные поставки
 
@@ -33,11 +33,11 @@
 
 ## Правило готовности
 
-Этапы экрана выдавать отдельно: `FIGMA_SOURCE` → `HTML_CANDIDATE` → `HTML_QA` → `OWNER_HTML_APPROVED` → `REACT_TASK` → `REACT_PORTED` → `REACT_QA` → `OWNER_REACT_APPROVED` → `APP_INTEGRATED`. До HTML gate задача на React экран запрещена; после React gate только PR/интеграция. Исследовательский React Glass полигон не заменяет приёмку HTML. Backend/APIs/1C контуры отдельно.
+Этапы: `FIGMA_MAPPED → CONTRACT_READY → (GLASS_HTML_OWNER_APPROVED для сложного эффекта) → REACT_COMPONENT → COMPONENT_QA → REACT_SCREEN → SCREEN_QA/OWNER → PR/INTEGRATED`. Обычный компонент не требует HTML. Glass motion нельзя считать принятой по одной сборке. Backend/API/1C контуры отдельно.
 
 ## Приоритет на старте
 
 1. FE-01 — CURRENT Drive/Figma перед продуктовой работой; локальную инвентаризацию повторить только при изменении состояния.
 2. FE-02/03 — закрыть вопрос приватности и браузерной проверки существующего приложения; не создавать Git/React заново.
-3. FE-06 + FE-07 — один HTML-пилот Manager «Заказы» по Figma: Liquid Glass как слой, без изменения формы кнопок/компонентов; D1440/1024/T768/M390/320, Owner visual acceptance. GL-01…GL-05 — отдельная лаборатория, не продуктовый React-экран. Параллельное выполнение и worktree только по согласованию.
-4. Только после `OWNER_HTML_APPROVED` — постановка отдельной задачи Codex на React, затем QA/review/PR и Owner React acceptance; после этого FE-08 по партиям.
+3. FE-06 — HeaderAction Package A: два презентационных варианта, native button, disabled, keyboard/touch, QA D1440/1024/T768/M390/M320, DEV story для двух ролей, без GL-01B и без прод-роутинга. Не изменять Client/Manager screens.
+4. После Owner visual approval GL-01B — FE-07 Package B: точечный press + material, повторная QA. Далее FE-08 Manager Orders из общего React, без экранной HTML-копии.
