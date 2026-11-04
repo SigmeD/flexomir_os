@@ -71,7 +71,7 @@ test('keyboard Enter/Space, focus, and label single-layer check', async ({ page 
   await support.focus()
   await page.keyboard.press('Space')
   await expect(support).toHaveAttribute('aria-current', 'page')
-  await expect(manager.getByText('Поддержка')).toHaveCount(1)
+  await expect(manager.getByRole('navigation').getByText('Поддержка')).toHaveCount(1)
 })
 
 test('reduced motion and forced colors do not affect semantic selection', async ({ page }) => {
