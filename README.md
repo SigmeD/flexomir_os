@@ -11,15 +11,15 @@
 - [Источники Drive/Figma](docs/SOURCES.md), [план поставки](docs/DELIVERY_PLAN.md) и [решения и блокеры](docs/DECISIONS.md).
 - [Настройка Codex](docs/CODEX_SETUP.md) и [критерии QA](docs/QA_CHECKLIST.md).
 
-Screens (OWNER 04.11): сначала отдельный HTML-превью из CURRENT Figma с сохранением всех оригинальных компонентов/вариантов и адаптивов, затем визуальная приёмка Owner (`OWNER_HTML_APPROVED`), и только после неё отдельная задача Codex на React-перенос принятого экрана. Первый пилот — Manager «Заказы»; текущий `Flexomir_Orders_Review.html` из ZIP пока не принят. Glass — слой материала/света/движения поверх фигмовских компонентов, а не готовая лабораторная форма кнопок. Backend/API/1С согласуются с Алексеем, Client UX не трогаем.
+Screens (OWNER уточнение 04.11): текущие Client UX V2 и Manager UX V2 → карта общих компонентов → узкий React-контракт → React-компоненты и QA → сборка экранов по Figma. HTML-проверка нужна только нестандартному Liquid Glass motion/menus, до переноса конкретного эффекта; **не** каждому экрану. Первый контракт: [HeaderAction](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view), без бизнес-логики/React экранов до отдельных задач.
 
 Внешние продуктовые статусы перенесены из пакета правил от 04.11.2026; Drive/Figma при этой настройке не перечитывались. Перед продуктовым изменением проверить CURRENT. Репозиторий сейчас PUBLIC, а пакет предполагает приватный: [открытый вопрос](docs/DECISIONS.md).
 
-## Обязательный порядок разработки экранов (OWNER 04.11.2026)
+## Актуальный порядок (Owner 04.11, после компонентного аудита)
 
-`Figma CURRENT / FOS DS → HTML visual preview → HTML QA D1440/L1024/T768/M390/M320 → OWNER_HTML_APPROVED → отдельная React-задача → React QA / visual acceptance → PR`.
+`CURRENT Figma / FOS Masters → component contract → (HTML + Owner visual gate, если сложный motion) → shared React component + QA → React screen из готовых компонентов → screen QA/Owner → PR`.
 
-При визуальной проработке **не заменяй** Figma-компоненты лабораторными Liquid Glass. Например, Primary action Manager Orders в Figma — иконковая кнопка «+», Glass Primary 2.1.5 даёт только материал и анимацию. До приёмки HTML экран не переносится в React. Подробные правила: [AGENTS.md](AGENTS.md), [план](docs/DELIVERY_PLAN.md), [QA](docs/QA_CHECKLIST.md).
+НЕ переводить обычные экраны целиком в HTML. История «каждый экран через HTML» заменена новым решением, см. [AGENTS](AGENTS.md) и [HeaderAction contract](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view). Manager Orders HTML GL-01B — изолированный тест motion, а не новая архитектура экранов. Различать icon+caption HeaderAction и прямоугольную текстовую ActionButton.
 
 ## Текущий Glass-полигон
 
