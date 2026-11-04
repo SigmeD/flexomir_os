@@ -11,9 +11,15 @@
 - [Источники Drive/Figma](docs/SOURCES.md), [план поставки](docs/DELIVERY_PLAN.md) и [решения и блокеры](docs/DECISIONS.md).
 - [Настройка Codex](docs/CODEX_SETUP.md) и [критерии QA](docs/QA_CHECKLIST.md).
 
-Screens: реальные React-экраны из CURRENT Figma, первый пилот — Manager «Заказы». Старый автономный HTML-пилот не принят. Glass: отдельный компонентный поток, перенос согласованных визуальных эталонов с собственной приёмкой Select/Dropdown. Backend, API и 1С согласуются с Алексеем; неизвестные контракты остаются `OPEN`. Ответственность разделяется, параллельные агенты и worktree автоматически не создаются.
+Screens (OWNER 04.11): сначала отдельный HTML-превью из CURRENT Figma с сохранением всех оригинальных компонентов/вариантов и адаптивов, затем визуальная приёмка Owner (`OWNER_HTML_APPROVED`), и только после неё отдельная задача Codex на React-перенос принятого экрана. Первый пилот — Manager «Заказы»; текущий `Flexomir_Orders_Review.html` из ZIP пока не принят. Glass — слой материала/света/движения поверх фигмовских компонентов, а не готовая лабораторная форма кнопок. Backend/API/1С согласуются с Алексеем, Client UX не трогаем.
 
 Внешние продуктовые статусы перенесены из пакета правил от 04.11.2026; Drive/Figma при этой настройке не перечитывались. Перед продуктовым изменением проверить CURRENT. Репозиторий сейчас PUBLIC, а пакет предполагает приватный: [открытый вопрос](docs/DECISIONS.md).
+
+## Обязательный порядок разработки экранов (OWNER 04.11.2026)
+
+`Figma CURRENT / FOS DS → HTML visual preview → HTML QA D1440/L1024/T768/M390/M320 → OWNER_HTML_APPROVED → отдельная React-задача → React QA / visual acceptance → PR`.
+
+При визуальной проработке **не заменяй** Figma-компоненты лабораторными Liquid Glass. Например, Primary action Manager Orders в Figma — иконковая кнопка «+», Glass Primary 2.1.5 даёт только материал и анимацию. До приёмки HTML экран не переносится в React. Подробные правила: [AGENTS.md](AGENTS.md), [план](docs/DELIVERY_PLAN.md), [QA](docs/QA_CHECKLIST.md).
 
 ## Текущий Glass-полигон
 
