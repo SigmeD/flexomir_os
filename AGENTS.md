@@ -42,6 +42,19 @@ Flexomir OS — система типографии для клиента и м�
 
 **Не выполнять механически:** если задача неверно поставлена, предложи улучшение и укажи последствия. Если решение утверждено — выполни в рамках согласованного; не используй «инициативу» для изменения бизнес-логики.
 
+## 3.1. КОМПОНЕНТЫ СНАЧАЛА / HTML ТОЛЬКО ДЛЯ СЛОЖНЫХ ВЗАИМОДЕЙСТВИЙ (OWNER 04.11, CURRENT)
+
+После аудита CURRENT Client UX V2 + CURRENT Manager UX V2 старое требование «создать HTML-копию **каждого** экрана перед React» **ЗАМЕНЕНО**. React-экраны собираются из переиспользуемых компонентов по действующей Figma; дополнительный HTML нужен только для нестандартной визуальной динамики (Primary press, Sidebar lens, Tabs lens, dropdown/overflow optics) **перед переносом именно этой динамики в React**.
+
+1. Актуальные Owner/PO/SRS → Primary DS → FOS Masters → **CURRENT Client UX V2 или Manager UX V2** → [аудит 95 мастеров](https://drive.google.com/file/d/1vK7eRlBXxDxTAdfKQhdFA8qRVJ6H_FOr/view). Не брать `ARCHIVE`, `SUPERSEDED`, `UX PROPOSED` как автоматически утверждённое MVP.
+2. На один компонент — один маленький контракт: Figma ID, props, variants, действия/disabled, D1440/L1024/T768/M390/M320, keyboard/touch/reduced-motion и потребители Client/Manager. Нормализуй Figma instances в общие React-компоненты, не копируй разметку на каждый экран.
+3. Для анимационной оптики сначала изолированный HTML proof и **Owner visual approval конкретного эффекта**; для обычных полей, карточек и статичных строк HTML не требуется. Отдельно зафиксируй `FIGMA_MAPPED → CONTRACT_READY → (GLASS_HTML_OWNER_APPROVED, где требуется) → REACT_COMPONENT → COMPONENT_QA → REACT_SCREEN → SCREEN_QA/OWNER → PR`.
+4. Базовый визуальный React-компонент может быть подготовлен **без неутверждённой motion**; не объявляй его финальным Glass-вариантом и не переносись сразу на экраны. Каждый shared change требует Client/Manager регрессии.
+5. **Первый микрошаг FE-01:** [HeaderAction контракт](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view). Не смешивай HeaderAction Figma `1953:4168/2173:1425` с текстовой ActionButton `835:259`. Десктоп 68×68 icon+caption, T/M 48×48 compact (по конкретным Figma instances); плюс 48px. Реализация только по отдельной узкой задаче.
+6. **Agent Package A:** общий HeaderAction с двумя презентациями, disabled/onAction, a11y, isolated dev-story и независимым QA — без GL-01B motion, маршрутов/API/1С. **Agent Package B:** GL-01B press и материал лишь после отдельной оценки Owner. GL-01B motion сейчас `OWNER_OPEN`.
+7. КОНФЛИКТ: Client My Orders T/M CURRENT Figma показывает Compact48, CURRENT SRS говорит «постоянная подпись на всех ширинах». Поддержи обе презентации, не меняй SRS и не выбирай экранную политику за Owner/PO. Manager Figma Add=enabled, HTML-pilot Add disabled: тестовый enabled только в лаборатории, не оживлять бизнес-действие без разрешения.
+8. Не переписывай Figma/Client UX, SRS, статусы, ACL, API/1С; не создавай второй scaffold; PR в отдельной ветке, не в `main`. GitHub PUBLIC — не размещать клиентские сведения.
+
 ## 4. Superpowers и режим углублённого анализа
 
 - Проверяй доступность Superpowers по `docs/CODEX_SETUP.md`. На 04.11.2026 навыки из `C:/Users/Max/.codex/skills/superpowers/` доступны в текущей сессии; переустановка не нужна. Это не доказывает marketplace-установку или загрузку новой сессией.
@@ -70,7 +83,7 @@ Flexomir OS — система типографии для клиента и м�
 
 ## 6. Специфика Screens и Liquid Glass
 
-**Screens:** собирать **настоящие React-экраны** непосредственно по CURRENT Figma, а не каждую страницу сначала в отдельном автономном HTML. HTML допускается только как временный наглядный эксперимент по запросу, не как продуктовая реализация. Единые layout/token/typography/props сразу; Glass подключается как заменяемый компонентный слой после проверки, без произвольных стилевых заплаток. Первый пилот: Manager «Заказы», затем только утверждённые связанные страницы. Client UX не переносить автоматически.
+**Screens — OWNER уточнение 04.11:** сначала карта общих компонентов и точный контракт, затем React-компонент/QA, затем сборка экранов по CURRENT Figma. HTML — только для сложных эффектов/меню, которые надо визуально принять до переноса **эффекта**, не каждого экрана. Первый пилот — HeaderAction (контракт https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view), далее Manager Orders. Client UX не менять массово; бизнес-семантика отдельно.
 
 **Glass:** отдельная ветка, одна оптическая основа `FosGlassMaterial` / Website Glass GlassLens **если подтверждены исходники, лицензия, совместимость и качество**. Визуально согласованные изолированные эталоны Primary Button 2.1.5, Sidebar Lens 2.2.5 C, Horizontal Tabs 2.3.3c переносить в React без самовольного редизайна. Для Select/Dropdown — отдельный visual gate; движущийся hover/focus indicator не должен выбирать значение до click/Enter. Не копировать Canvas/WebGL процедурную сцену, не создавать второй оптический движок. Заявленные тесты чужого полигона перепроверять в реальной ветке, а не ставить собственный `QA PASS`.
 
@@ -81,7 +94,7 @@ Flexomir OS — система типографии для клиента и м�
 ## 7. Проверки: «визуальная + функциональная + обратная регрессия»
 
 - Выполняй [QA checklist](docs/QA_CHECKLIST.md): фактические diff/typecheck/lint/build и unit/interaction tests, UX/ACL/tenant, loading/empty/error, запрещённые действия, фильтры, навигация, dirty forms. Отсутствующий инструмент — `NOT RUN`, не `PASS`.
-- Visual: реальный React на **1440 / 1024 / 768 / 390 / 320**, рядом с CURRENT Figma D/T/M. Проверить длинные строки/zoom, overflow, hover/focus/pressed/disabled, scroll/overlay; тексты и статусы сверить с источником.
+- Visual: для каждого React-компонента/экрана на **1440 / 1024 / 768 / 390 / 320** сравнить с CURRENT Figma. Для сложных эффектов отдельно проверить HTML oracle + React side-by-side после Owner motion approval. Проверить длинные строки/zoom, overflow, hover/focus/pressed/disabled, scroll/overlay, Client/Manager usages.
 - A11y: keyboard/focus-visible/Esc/ARIA/screen reader, touch, reduced-motion, контраст и отсутствие trap. Glass: Chromium и Firefox/WebKit fallback; memory/performance при доступности.
 - Регрессия: независимо проверить затронутые Screens/Glass, Client/Manager, mobile и routing, позитивные/негативные сценарии и контрпример к своему решению.
 - Evidence: команды, вывод, screenshots, версии и ограничения. `CODE_DONE` ≠ `QA_VERIFIED` ≠ `OWNER_ACCEPTED` ≠ `APP_INTEGRATED`. HTML или один Chromium viewport не дают full QA.

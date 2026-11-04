@@ -2,6 +2,17 @@
 
 Заполнять для каждого значимого изменения. Если пункт невозможно проверить, отмечать `NOT RUN + причина`, не засчитывать автоматом.
 
+## 0. Компонентный QA и необязательный HTML motion gate (OWNER уточнение 04.11)
+
+- [ ] Найдены CURRENT Client UX V2 / Manager UX V2, Figma master ID, props, состояния, реальные роли/контексты; ARCHIVE / SUPERSEDED исключены, CANDIDATE ≠ APPROVED.
+- [ ] Если компонент обычный (поле, строка, шапка) — реализован напрямую в React по Figma без дублирования целого HTML экрана.
+- [ ] Если эффект сложный (Glass/press/Sidebar/Tabs/overflow/Select) — есть **изолированная** HTML-лаборатория, отдельная визуальная приёмка Owner `GLASS_HTML_OWNER_APPROVED` **до React-порта эффекта**.
+- [ ] React-компонент поддерживает Figma variants, disabled, focus, keyboard/touch, а не заменяет мастера лабораторной кнопкой.
+- [ ] Зафиксирован props/usage contract; один shared component используется Client и Manager, а не две копии.
+- [ ] Проверены 1440/1024/768/390/320, overflow, disabled, keyboard/focus, touch, reduced motion/forced colors, cross-browser/fallback где актуально.
+- [ ] React визуально сверен с Figma; после motion approval дополнительно с HTML oracle. Owner COMPONENT gate и SCREEN gate отмечены отдельно.
+- [ ] Первый пилот: [HeaderAction FE-01](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view); package A без GL-01B и бизнес-логики, package B после Owner review. Client MyOrders mobile caption conflict OPEN.
+
 ## 1. Источники и продукт
 
 - [ ] Сверены даты/статусы CURRENT SRS, Scope, Governance, Figma nodeId и DS masters; исторические копии не выдаются за нормы.
@@ -20,7 +31,7 @@
 
 ## 3. Визуально/адаптивно
 
-- [ ] Снимки реального React в браузере: **1440, 1024, 768, 390, 320** (Desktop/Tablet/Mobile эталоны в Figma).
+- [ ] После HTML gate: снимки реального React в браузере **1440, 1024, 768, 390, 320** сопоставлены как с одобренным HTML, так и с Desktop/Tablet/Mobile CURRENT Figma.
 - [ ] Side-by-side сравнение с CURRENT Figma и принятыми material references; расхождения перечислены, самовольного redesign нет.
 - [ ] Сетка, типографика, токены, иконки, отступы, состояния, пустоты, длинные названия, overlay, sticky, scroll корректны.
 - [ ] Нет horizontal overflow, clipping, сломанных touch targets и перекрытий при 320 и 768.

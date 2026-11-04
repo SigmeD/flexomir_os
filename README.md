@@ -11,9 +11,15 @@
 - [Источники Drive/Figma](docs/SOURCES.md), [план поставки](docs/DELIVERY_PLAN.md) и [решения и блокеры](docs/DECISIONS.md).
 - [Настройка Codex](docs/CODEX_SETUP.md) и [критерии QA](docs/QA_CHECKLIST.md).
 
-Screens: реальные React-экраны из CURRENT Figma, первый пилот — Manager «Заказы». Старый автономный HTML-пилот не принят. Glass: отдельный компонентный поток, перенос согласованных визуальных эталонов с собственной приёмкой Select/Dropdown. Backend, API и 1С согласуются с Алексеем; неизвестные контракты остаются `OPEN`. Ответственность разделяется, параллельные агенты и worktree автоматически не создаются.
+Screens (OWNER уточнение 04.11): текущие Client UX V2 и Manager UX V2 → карта общих компонентов → узкий React-контракт → React-компоненты и QA → сборка экранов по Figma. HTML-проверка нужна только нестандартному Liquid Glass motion/menus, до переноса конкретного эффекта; **не** каждому экрану. Первый контракт: [HeaderAction](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view), без бизнес-логики/React экранов до отдельных задач.
 
 Внешние продуктовые статусы перенесены из пакета правил от 04.11.2026. При аудите перечитаны CURRENT Baseline, Frontend Startup, UX/UI Index и Glass Visual Contract; Figma и полная нормативная сверка FE-01 ещё впереди. Репозиторий по последней проверке PUBLIC, а пакет предполагает приватный: [открытый вопрос](docs/DECISIONS.md).
+
+## Актуальный порядок (Owner 04.11, после компонентного аудита)
+
+`CURRENT Figma / FOS Masters → component contract → (HTML + Owner visual gate, если сложный motion) → shared React component + QA → React screen из готовых компонентов → screen QA/Owner → PR`.
+
+НЕ переводить обычные экраны целиком в HTML. История «каждый экран через HTML» заменена новым решением, см. [AGENTS](AGENTS.md) и [HeaderAction contract](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view). Manager Orders HTML GL-01B — изолированный тест motion, а не новая архитектура экранов. Различать icon+caption HeaderAction и прямоугольную текстовую ActionButton.
 
 ## Текущий Glass-полигон
 
