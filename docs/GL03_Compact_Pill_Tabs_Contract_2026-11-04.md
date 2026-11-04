@@ -78,3 +78,10 @@ OrderFilterDefinition[] / selectedFilter / onFilterChange
 - Мобильные подписи могут оказаться длиннее в реальной локализации; проверка реального набора и читаемости требуется.
 - Браузерные тесты Chromium не доказывают одинаковую графику Safari/WebKit или производительность на телефонах.
 - PR #5 (NavigationDrawer) — отдельная работа. Не смешивать GL-03 с GL-02B, не менять общую линзу ради Tabs без регрессионного QA.
+
+## GL-03 / Soft shadow + scrollport clearance — Owner iteration 04.11.2026
+
+- **Visual defect (Owner screenshot):** a horizontal clipping edge cut off the active pill shadow. Root cause: `overflow-x:auto` on the horizontal swipe rail also clips overflow in the perpendicular axis, even with `overflow-y:hidden`. Shadow softness alone cannot fix this.
+- **Minimal GL-03-scoped fix:** preserve 38px optical capsule and 44px tap target, give the scrollport 7px top and 12px bottom internal optical clearance. Its outer vertical budget grows 19px; this must be included in future Client/Manager page layout and spacing QA. The spring X/width tracks and shared `FosGlassMaterial` are untouched.
+- **Reusable appearance token, opt-in:** `src/components/ui/fos-glass-shadow-tokens.css` defines `--fos-glass-shadow-soft` for future glass surfaces. It is consumed only by `glass-pill-tabs.css` until Owner visually approves and each other consumer passes isolated regression. Never apply the softer shadow to SidebarNav / Drawer / HeaderAction globally merely because it exists.
+- **Independent checks:** full Chromium build, 1440/768/390/320 scrollport clearances while moving among selected filters; no page horizontal overflow or duplicate GlassLens; the current accepted SidebarNav/HeaderAction regressions must remain green. Real browser screenshots + Owner React visual gate before merge or dissemination.
