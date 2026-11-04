@@ -1,4 +1,4 @@
-import type { SVGProps } from 'react'
+import type { ReactNode, SVGProps } from 'react'
 
 /**
  * SVG shapes reproduced from the owner-provided, accepted Sidebar 2.2.5 C lab.
@@ -12,7 +12,7 @@ export type SidebarNavIconName =
 export function SidebarNavIcon({
   name, ...props
 }: { name: SidebarNavIconName } & Omit<SVGProps<SVGSVGElement>, 'children'>) {
-  let shapes: React.ReactNode
+  let shapes: ReactNode = null
   switch (name) {
     case 'overview':
       shapes = <><rect x="3" y="3" width="8" height="8" rx="2" /><rect x="13" y="3" width="8" height="5" rx="2" /><rect x="13" y="10" width="8" height="11" rx="2" /><rect x="3" y="13" width="8" height="8" rx="2" /></>
