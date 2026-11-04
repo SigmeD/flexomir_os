@@ -2,6 +2,16 @@
 
 Заполнять для каждого значимого изменения. Если пункт невозможно проверить, отмечать `NOT RUN + причина`, не засчитывать автоматом.
 
+## 0. Обязательная визуальная приёмка HTML перед React (OWNER 04.11.2026)
+
+- [ ] Для экрана найдены CURRENT Figma nodeIds, Primary Design System V2, FOS Masters, утверждённые правила.
+- [ ] HTML-превью воспроизводит **структуру, размеры, иконки, типографику, смысл действий и адаптивы** Figma. Liquid Glass — только материал/свет/animation, а не замена компонентам.
+- [ ] Превью интерактивное и проверено на 1440/1024/768/390/320, включая hover/pressed/disabled, focus, keyboard/touch, reduced-motion, длинные названия и overflow.
+- [ ] Расхождения с Figma перечислены и устранены либо согласованы. Приложены воспроизводимая версия HTML и screenshots/diff без постороннего контента.
+- [ ] Есть явное решение Owner `OWNER_HTML_APPROVED` по **данной версии** HTML. Если REWORK — править HTML, React-задача BLOCKED.
+- [ ] После HTML APPROVED создана **отдельная** React-задача с Figma nodeIds, версией HTML, props/компонентами, states, DEMO/API mapping, responsive/motion и QA.
+- [ ] React-перенос отдельно прошёл технический/визуальный QA и Owner review; принятие HTML не считается принятием React.
+
 ## 1. Источники и продукт
 
 - [ ] Сверены даты/статусы CURRENT SRS, Scope, Governance, Figma nodeId и DS masters; исторические копии не выдаются за нормы.
@@ -20,7 +30,7 @@
 
 ## 3. Визуально/адаптивно
 
-- [ ] Снимки реального React в браузере: **1440, 1024, 768, 390, 320** (Desktop/Tablet/Mobile эталоны в Figma).
+- [ ] После HTML gate: снимки реального React в браузере **1440, 1024, 768, 390, 320** сопоставлены как с одобренным HTML, так и с Desktop/Tablet/Mobile CURRENT Figma.
 - [ ] Side-by-side сравнение с CURRENT Figma и принятыми material references; расхождения перечислены, самовольного redesign нет.
 - [ ] Сетка, типографика, токены, иконки, отступы, состояния, пустоты, длинные названия, overlay, sticky, scroll корректны.
 - [ ] Нет horizontal overflow, clipping, сломанных touch targets и перекрытий при 320 и 768.
