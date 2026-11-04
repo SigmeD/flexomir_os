@@ -169,3 +169,50 @@ test('real mobile touch swipe scrolls without selecting a filter', async ({ brow
     await context.close()
   }
 })
+
+
+test('HTML glass depth restored without changing shared GlassLens or spring physics', async ({ page }, testInfo) => {
+  for (const width of [1440, 390, 320]) {
+    await page.setViewportSize({ width, height: width >= 1000 ? 900 : 844 })
+    const group = page.getByTestId('glass-pill-tabs')
+    const rail = group.locator('.fos-glass-pill-tabs__track')
+    const lens = group.getByTestId('glass-pill-lens')
+    const coat = lens.locator(':scope > .fos-glass-optics > div[aria-hidden]')
+    const frame = group.getByTestId('glass-pill-lens-frame')
+
+    // Current GL-03 must contain exactly ONE original real GlassLens,
+    // not a duplicated blur/overlay or a new "PillGlass" renderer.
+    await expect(group.locator('[data-fos-glass-material]')).toHaveCount(1)
+    await expect(lens.locator('.fos-glass-optics')).toHaveCount(1)
+    await expect(lens).toHaveAttribute('data-tone', 'neutral')
+    await expect(lens).toHaveAttribute('data-optics-mode', /refraction|frosted|neutral/)
+
+    // HTML reference had no opaque track. A single flat grey background
+    // caused the visual depth regression on React.
+    await expect(rail).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+    const bg = await coat.evaluate(el => getComputedStyle(el).backgroundImage)
+    expect(bg).toContain('radial-gradient(')
+    expect(bg).toContain('linear-gradient(148deg')
+    const frameShadow = await frame.evaluate(el => getComputedStyle(el).boxShadow)
+    expect(frameShadow).not.toBe('none')
+    expect(frameShadow).toContain('rgba(50, 54, 59, 0.062)')
+    await expect(frame).toHaveCSS('outline-style', 'solid')
+    await expect(coat).toHaveCSS('border-top-width', '0px')
+
+    const review = group.getByTestId('glass-pill-review')
+    await review.click()
+    await expect(group.getByTestId('glass-pill-lens-frame'))
+      .toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+    const [frameBox, selectedBox] = await Promise.all([frame.boundingBox(), review.boundingBox()])
+    expect(Math.abs((frameBox?.x ?? 0) - (selectedBox?.x ?? 0))).toBeLessThan(1.5)
+    expect(Math.abs((frameBox?.width ?? 0) - (selectedBox?.width ?? 0))).toBeLessThan(1.5)
+    await page.screenshot({
+      path: testInfo.outputPath('gl03-react-depth-restored-' + width + '.png'),
+      fullPage: false,
+      animations: 'disabled',
+    })
+    await group.getByTestId('glass-pill-all').click()
+    await expect(group.getByTestId('glass-pill-lens-frame'))
+      .toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  }
+})
