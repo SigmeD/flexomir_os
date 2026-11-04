@@ -2,15 +2,16 @@
 
 Заполнять для каждого значимого изменения. Если пункт невозможно проверить, отмечать `NOT RUN + причина`, не засчитывать автоматом.
 
-## 0. Обязательная визуальная приёмка HTML перед React (OWNER 04.11.2026)
+## 0. Компонентный QA и необязательный HTML motion gate (OWNER уточнение 04.11)
 
-- [ ] Для экрана найдены CURRENT Figma nodeIds, Primary Design System V2, FOS Masters, утверждённые правила.
-- [ ] HTML-превью воспроизводит **структуру, размеры, иконки, типографику, смысл действий и адаптивы** Figma. Liquid Glass — только материал/свет/animation, а не замена компонентам.
-- [ ] Превью интерактивное и проверено на 1440/1024/768/390/320, включая hover/pressed/disabled, focus, keyboard/touch, reduced-motion, длинные названия и overflow.
-- [ ] Расхождения с Figma перечислены и устранены либо согласованы. Приложены воспроизводимая версия HTML и screenshots/diff без постороннего контента.
-- [ ] Есть явное решение Owner `OWNER_HTML_APPROVED` по **данной версии** HTML. Если REWORK — править HTML, React-задача BLOCKED.
-- [ ] После HTML APPROVED создана **отдельная** React-задача с Figma nodeIds, версией HTML, props/компонентами, states, DEMO/API mapping, responsive/motion и QA.
-- [ ] React-перенос отдельно прошёл технический/визуальный QA и Owner review; принятие HTML не считается принятием React.
+- [ ] Найдены CURRENT Client UX V2 / Manager UX V2, Figma master ID, props, состояния, реальные роли/контексты; ARCHIVE / SUPERSEDED исключены, CANDIDATE ≠ APPROVED.
+- [ ] Если компонент обычный (поле, строка, шапка) — реализован напрямую в React по Figma без дублирования целого HTML экрана.
+- [ ] Если эффект сложный (Glass/press/Sidebar/Tabs/overflow/Select) — есть **изолированная** HTML-лаборатория, отдельная визуальная приёмка Owner `GLASS_HTML_OWNER_APPROVED` **до React-порта эффекта**.
+- [ ] React-компонент поддерживает Figma variants, disabled, focus, keyboard/touch, а не заменяет мастера лабораторной кнопкой.
+- [ ] Зафиксирован props/usage contract; один shared component используется Client и Manager, а не две копии.
+- [ ] Проверены 1440/1024/768/390/320, overflow, disabled, keyboard/focus, touch, reduced motion/forced colors, cross-browser/fallback где актуально.
+- [ ] React визуально сверен с Figma; после motion approval дополнительно с HTML oracle. Owner COMPONENT gate и SCREEN gate отмечены отдельно.
+- [ ] Первый пилот: [HeaderAction FE-01](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view); package A без GL-01B и бизнес-логики, package B после Owner review. Client MyOrders mobile caption conflict OPEN.
 
 ## 1. Источники и продукт
 
