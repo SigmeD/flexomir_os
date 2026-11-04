@@ -228,3 +228,81 @@ test('pointer opening suppresses stale keyboard focus ring; Tab restores it for 
   await expect(next).toBeFocused()
   await expect(next).toHaveCSS('outline-style', 'solid')
 })
+
+
+test('selected lens visibly reaches its destination BEFORE drawer starts closing', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  const panel = await openDrawer(page)
+  const layer = page.getByTestId('navigation-drawer-layer')
+  const trigger = page.getByTestId('navigation-drawer-trigger')
+  const lens = panel.getByTestId('sidebar-selected-lens')
+
+  await panel.getByTestId('sidebar-nav-support').click()
+  // Parent selected state updates immediately, but opening stays true until
+  // the shared spring reports REST and its geometry matches the chosen row.
+  await expect(page.getByTestId('drawer-selection')).toHaveText('Выбрано: Поддержка')
+  await expect(layer).toHaveAttribute('data-selection-transition', 'moving')
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true')
+  await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: —')
+  await expect(lens).toHaveAttribute('data-travel-target', '96')
+
+  await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: Поддержка', {
+    timeout: 6000,
+  })
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+  await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 3500 })
+})
+
+test('two rapid taps on the same destination do not cut off the ongoing lens transition', async ({ page }) => {
+  await openDrawer(page)
+  const layer = page.getByTestId('navigation-drawer-layer')
+  const trigger = page.getByTestId('navigation-drawer-trigger')
+  const support = page.getByTestId('navigation-drawer-panel').getByTestId('sidebar-nav-support')
+  // Both events happen before a paint; route state is coalesced by React.
+  await support.evaluate(element => {
+    (element as HTMLButtonElement).click()
+    ;(element as HTMLButtonElement).click()
+  })
+  await expect(page.getByTestId('drawer-selection')).toHaveText('Выбрано: Поддержка')
+  await expect(layer).toHaveAttribute('data-selection-transition', 'moving')
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true')
+  await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: Поддержка', {
+    timeout: 6000,
+  })
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+})
+
+test('rapid re-targeting waits for the LAST selected lens destination', async ({ page }) => {
+  await openDrawer(page)
+  const panel = page.getByTestId('navigation-drawer-panel')
+  await panel.getByTestId('sidebar-nav-artworks').evaluate(el => (el as HTMLButtonElement).click())
+  await panel.getByTestId('sidebar-nav-support').evaluate(el => (el as HTMLButtonElement).click())
+  await expect(page.getByTestId('drawer-selection')).toHaveText('Выбрано: Поддержка')
+  await expect(page.getByTestId('navigation-drawer-trigger')).toHaveAttribute('aria-expanded', 'true')
+  await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: Поддержка', {
+    timeout: 6000,
+  })
+  await expect(page.getByTestId('navigation-drawer-trigger')).toHaveAttribute('aria-expanded', 'false')
+})
+
+test('Escape during moving lens closes immediately and never fires a route commit', async ({ page }) => {
+  await openDrawer(page)
+  await page.getByTestId('navigation-drawer-panel').getByTestId('sidebar-nav-support').click()
+  await expect(page.getByTestId('navigation-drawer-layer')).toHaveAttribute('data-selection-transition', 'moving')
+  await page.keyboard.press('Escape')
+  await expect(page.getByTestId('navigation-drawer-trigger')).toHaveAttribute('aria-expanded', 'false')
+  await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 3500 })
+  await page.waitForTimeout(1000)
+  await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: —')
+})
+
+test('reduced-motion selects and closes without waiting for spring movement', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await openDrawer(page)
+  await page.getByTestId('navigation-drawer-panel').getByTestId('sidebar-nav-support').click()
+  await expect(page.getByTestId('drawer-selection')).toHaveText('Выбрано: Поддержка')
+  await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: Поддержка', {
+    timeout: 1500,
+  })
+  await expect(page.getByTestId('navigation-drawer-trigger')).toHaveAttribute('aria-expanded', 'false')
+})
