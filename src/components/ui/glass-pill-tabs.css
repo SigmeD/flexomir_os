@@ -3,7 +3,9 @@
  *
  * Fixed 44px pointer/keyboard hit area and 38px moving optical pill.
  * Width comes exclusively from label content; no fixed five-column grid.
- * All chromatic/glass light comes from the accepted FosGlassMaterial below.
+ * Preserve HTML-approved GL-03 light depth by styling ONLY the already
+ * mounted FosGlassMaterial coat; never instantiate another GlassLens.
+ * Shared material, spring engine, SidebarNav and HeaderAction stay unchanged.
  */
 .fos-glass-pill-tabs {
   --fos-pill-text: var(--fos-v2-semantic-color-text-secondary, #697986);
@@ -35,7 +37,8 @@
   gap: 4px;
   padding: 3px 4px;
   border-radius: 999px;
-  background: #edf0f1;
+  /* HTML GL-03 approval: clear rail, not an opaque grey painted pill. */
+  background: transparent;
   isolation: isolate;
   white-space: nowrap;
 }
@@ -51,6 +54,16 @@
   transform-origin: center;
   border-radius: 999px;
   isolation: isolate;
+  /* Optical shadow belongs OUTSIDE the clipped GlassLens, so the existing
+   * native filter/refraction keeps working while the drop shadow survives.
+   * This is just paint on the same moving frame (no added lens/filter).
+   */
+  outline: 1px solid rgb(147 150 155 / .36);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgb(110 112 116 / .10),
+    1.6px 4px 3px rgba(50,54,59,.062),
+    1.6px 8px 13px rgba(55,57,61,.038);
 }
 .fos-glass-pill-tabs__lens-frame[hidden] { display: none; }
 .fos-glass-pill-tabs__lens.fos-glass-material {
@@ -59,6 +72,42 @@
   min-height: 0;
   border-radius: 19px;
   overflow: hidden;
+}
+/*
+ * HTML → React visual parity: use the EXISTING GlassLens decorative coat.
+ * In the first React port, the shared Sidebar coat overrode these softer
+ * specular reflections; its external shadow was also clipped by this pill's
+ * border-radius. This override is strictly GL-03 scoped: no global material
+ * tokens, no second backdrop-filter, no new glass component.
+ *
+ * Keep backdrop refraction on the original FosGlassMaterial/GlassLens.
+ * Apply the approved neutral translucent highlights over that refraction.
+ */
+.fos-glass-pill-tabs .fos-glass-pill-tabs__lens.fos-glass-material[data-lighting="sidebar"]
+  > .fos-glass-optics > div[aria-hidden] {
+  border: 0;
+  background:
+    radial-gradient(
+      ellipse 70% 88% at 24% 10%,
+      rgba(255,255,255,.464),
+      rgba(255,255,255,.02) 65%,
+      transparent 87%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.096) 0%,
+      transparent 48%,
+      rgba(112,115,120,.012) 100%
+    ),
+    linear-gradient(
+      148deg,
+      rgba(255,255,255,.64),
+      rgb(var(--fos-center-rgb) / .12) 49%,
+      rgba(244,246,246,.35)
+    ) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.84),
+    inset 0 -1px 0 rgba(100,108,112,.11);
 }
 .fos-glass-pill-tabs__button {
   position: relative;
