@@ -43,6 +43,7 @@
   width: 100%;
   flex: none;
   align-items: center;
+  gap: 12px;
   padding: 0 16px;
   margin: 0;
   border: 0;
@@ -60,6 +61,33 @@
 .fos-sidebar-nav__item[aria-current="page"]:hover { color: var(--fos-sidebar-selected-text); }
 .fos-sidebar-nav__item:focus-visible { outline: 2px solid #497e9b; outline-offset: -3px; }
 .fos-sidebar-nav__item:disabled { opacity: .45; cursor: not-allowed; }
+/*
+ * Lab 2.2.5 C: icons 19×19, stroke 1.85. Optional: no icon preserves
+ * current Figma text-only item. Exact glyphs are discrete reusable SVGs.
+ */
+.fos-sidebar-nav__icon {
+  --fos-sidebar-icon-scale: 1;
+  display: inline-flex;
+  width: 19px;
+  height: 19px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  transform: scale(var(--fos-sidebar-icon-scale));
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.fos-sidebar-nav__icon svg {
+  display: block;
+  width: 19px;
+  height: 19px;
+}
+.fos-sidebar-nav__item:not([aria-current="page"]) .fos-sidebar-nav__icon {
+  transition: transform 160ms cubic-bezier(.2,.85,.2,1);
+}
+.fos-sidebar-nav__item:not(:disabled):is(:hover, :focus-visible) .fos-sidebar-nav__icon {
+  transform: scale(max(var(--fos-sidebar-icon-scale), 1.022));
+}
 /*
  * Magnification is an optical transform, not a new font size or layout change.
  * 2.2.5 C: max 1.043x while selected lens approaches the label.
@@ -84,9 +112,11 @@
 @media (prefers-reduced-motion: reduce) {
   .fos-sidebar-nav__item { transition: none; }
   .fos-sidebar-nav__label { transition: none; transform: none !important; will-change: auto; }
+  .fos-sidebar-nav__icon { transition: none; transform: none !important; will-change: auto; }
 }
 @media (forced-colors: active) {
   .fos-sidebar-nav__label { transform: none !important; will-change: auto; }
+  .fos-sidebar-nav__icon { transform: none !important; will-change: auto; }
   .fos-sidebar-nav__lens { border: 1px solid Highlight; background: Canvas; }
   .fos-sidebar-nav__item[aria-current="page"] { color: Highlight; font-weight: 700; }
   .fos-sidebar-nav__item:focus-visible { outline: 3px solid Highlight; }
