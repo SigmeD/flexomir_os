@@ -86,6 +86,14 @@
   animation: fos-drawer-panel-in 220ms cubic-bezier(.2,.85,.2,1) both;
   isolation: isolate;
 }
+/*
+ * CSS :focus-visible can remain active after programmatic focusing when the
+ * last input was keyboard (e.g. Escape in the previous menu). The current
+ * opening modality controls the visual ring. Do not hide keyboard focus.
+ */
+.fos-nav-drawer__panel[data-focus-mode="pointer"] .fos-sidebar-nav__item:focus-visible {
+  outline: none;
+}
 .fos-nav-drawer__items {
   flex: 0 0 152px;
   min-height: 152px;
