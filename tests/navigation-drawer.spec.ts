@@ -339,9 +339,10 @@ test('mobile/tablet show the EXACT SAME optional SVG icon set as Desktop Sidebar
         await expect(svg).toHaveCount(1)
         await expect(svg).toHaveAttribute('aria-hidden', 'true')
         await expect(svg).toHaveAttribute('focusable', 'false')
-        const box = await svg.boundingBox()
-        expect(box?.width).toBe(19)
-        expect(box?.height).toBe(19)
+        // SVG layout is 19px. The selected lens can optically scale it
+        // to 1.022x without changing the underlying reusable icon dimensions.
+        await expect(svg).toHaveCSS('width', '19px')
+        await expect(svg).toHaveCSS('height', '19px')
         expect(await svg.evaluate(el => el.innerHTML)).toBe(desktopSVGs[role][id])
       }
       await page.keyboard.press('Escape')
@@ -387,7 +388,7 @@ test('keep-open mode does not hide selected lens or change item geometry when ic
   const rows = panel.getByRole('navigation').getByRole('button')
   for (const row of await rows.all()) {
     expect((await row.boundingBox())?.height).toBe(44)
-    expect((await row.locator('.fos-sidebar-nav__icon').boundingBox())?.width).toBe(19)
+    await expect(row.locator('.fos-sidebar-nav__icon')).toHaveCSS('width', '19px')
   }
   const selected = panel.getByTestId('sidebar-nav-orders')
   const lens = panel.getByTestId('sidebar-selected-lens')
