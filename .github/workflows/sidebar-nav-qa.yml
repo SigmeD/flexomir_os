@@ -1,0 +1,48 @@
+name: SidebarNav GL-02A QA
+
+on:
+  pull_request:
+    paths:
+      - 'src/components/ui/sidebar-nav.*'
+      - 'src/SidebarNavLab.*'
+      - 'src/App.tsx'
+      - 'tests/sidebar-nav.spec.ts'
+      - '.github/workflows/sidebar-nav-qa.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Dependencies
+        run: npm ci
+      - name: TypeScript and production build
+        run: npm run build
+      - name: Chromium for scoped QA
+        run: npx playwright install --with-deps chromium
+      - name: SidebarNav plus HeaderAction regression
+        run: npx playwright test tests/sidebar-nav.spec.ts tests/header-action.spec.ts --project chromium-1440 --project chromium-390
+      - name: Store visual captures
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sidebar-gl02a-visual-qa
+          path: test-results/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Store failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sidebar-gl02a-failure
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 3

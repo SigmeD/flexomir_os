@@ -21,6 +21,9 @@ export interface FosGlassMaterialProps extends Omit<ComponentProps<'div'>, 'chil
   rimWidth?: number | string
   motion?: 'none' | 'travel'
   travelY?: number
+  /** Optional observer for the existing spring's travel position. Consumers may use it for
+   * label/micro-interactions without starting another animation driver. */
+  onTravelFrame?: (y: number) => void
 }
 
 const reducedQuery = '(prefers-reduced-motion: reduce)'
@@ -36,7 +39,7 @@ const mediaSnapshot = () => `${matchMedia(reducedQuery).matches}:${matchMedia(fo
 export function FosGlassMaterial({
   children, className, contentClassName, strength = 0.1, radius = 18, blur = 1.5, dome = 0,
   lighting = 'sidebar', shadow = 'reference', centerOpacity = 0.16, centerColor = '220 240 247', rimWidth = 12,
-  motion = 'none', travelY = 0,
+  motion = 'none', travelY = 0, onTravelFrame,
   style, ...props
 }: FosGlassMaterialProps) {
   const root = useRef<HTMLDivElement>(null)
@@ -47,6 +50,11 @@ export function FosGlassMaterial({
   const forced = preference.endsWith(':true')
   const tracks = useMemo(() => ({ y: new Track(0), tilt: new Track(0) }), [])
   const targetRef = useRef(0)
+  const travelFrameRef = useRef(onTravelFrame)
+
+  useLayoutEffect(() => {
+    travelFrameRef.current = onTravelFrame
+  }, [onTravelFrame])
   const retargetRef = useRef<(() => void) | null>(null)
   const s = Number.isFinite(strength) ? Math.min(1, Math.max(0, strength)) : 0.1
   const canRefract = hydrated && refractionSupported()
@@ -78,6 +86,7 @@ export function FosGlassMaterial({
       const angle = reduced || forced ? 0 : tracks.tilt.get()
       const speed = reduced || forced ? 0 : tracks.y.velocity()
       el.style.setProperty('--fos-travel', `${tracks.y.get().toFixed(3)}px`)
+      travelFrameRef.current?.(tracks.y.get())
       el.style.setProperty('--fos-tilt', `${angle.toFixed(3)}deg`)
       el.style.setProperty('--fos-scale', (1 + Math.min(.009, Math.abs(speed) * .000031)).toFixed(5))
       el.style.setProperty('--fos-light-y', `${clamp(28 + angle * 5, 12, 58).toFixed(1)}%`)
@@ -115,6 +124,7 @@ export function FosGlassMaterial({
     }
     retargetRef.current = retarget
     retarget()
+    travelFrameRef.current?.(tracks.y.get())
     return () => { retargetRef.current = null; stopY(); stopTilt(); unwatchY(); unwatchTilt() }
   }, [tracks, motion, reduced, forced])
 
