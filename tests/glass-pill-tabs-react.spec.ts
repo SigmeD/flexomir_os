@@ -25,10 +25,17 @@ test('hover changes only color; click moves one lens horizontally and adapts wid
   const all = group.getByTestId('glass-pill-all')
   const review = group.getByTestId('glass-pill-review')
   const oldBox = await lens.boundingBox()
+  const before = await lens.evaluate(el => getComputedStyle(el).transform)
   await review.hover()
   await expect(all).toHaveAttribute('aria-pressed', 'true')
-  const hovered = await lens.boundingBox()
-  expect(Math.abs((oldBox?.x ?? 0) - (hovered?.x ?? 0))).toBeLessThan(1)
+  // Playwright may horizontally SCROLL the rail to reveal the hovered
+  // offscreen button on 390px. That shifts absolute screen coordinates but
+  // does NOT move the spring lens relative to its own track.
+  const after = await lens.evaluate(el => getComputedStyle(el).transform)
+  expect(after).toBe(before)
+  const afterBox = await lens.boundingBox()
+  expect(afterBox?.width).toBeCloseTo(oldBox?.width ?? 0, 0)
+  // The transform belongs to the lens, not to the horizontally scrolling track.
 
   await review.click()
   await expect(review).toHaveAttribute('aria-pressed', 'true')
