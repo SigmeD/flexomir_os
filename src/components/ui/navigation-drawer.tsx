@@ -107,8 +107,8 @@ export function NavigationDrawer({
       if (fallback !== undefined) window.clearTimeout(fallback)
       observer.disconnect()
       // Route commit, if supplied, happens only once the lens visibly arrives.
-      onSelectionSettled?.(pendingId)
       closeMenu()
+      onSelectionSettled?.(pendingId)
     }
 
     const check = () => {
@@ -253,16 +253,16 @@ export function NavigationDrawer({
             <div
               className="fos-nav-drawer__items"
               onClick={event => {
-                // A new selection keeps the panel visible until the ONE shared
-                // lens reaches the destination. An already-active row can close
-                // immediately only if no lens transition is running.
+                // SidebarNav calls requestSelection for a NEW route.
+                // It intentionally does not dispatch onSelect on its already
+                // selected row; dismiss that row here without interrupting
+                // a pending spring transition.
                 const target = event.target
-                if (target instanceof Element &&
-                  target.closest('button.fos-sidebar-nav__item:not([disabled])')) {
-                  const rowId = target.closest<HTMLButtonElement>('button.fos-sidebar-nav__item')?.dataset.testid
-                  if (rowId?.startsWith('sidebar-nav-')) {
-                    requestSelection(rowId.slice('sidebar-nav-'.length))
-                  }
+                if (!(target instanceof Element)) return
+                const button = target.closest<HTMLButtonElement>('button.fos-sidebar-nav__item:not([disabled])')
+                if (button?.getAttribute('aria-current') === 'page' &&
+                  pendingIdRef.current === null) {
+                  closeMenu()
                 }
               }}
             >
@@ -271,9 +271,7 @@ export function NavigationDrawer({
                 activeId={activeId}
                 ariaLabel={ariaLabel + ' — разделы'}
                 glassTone="neutral"
-                // Parent selection is handled once by the wrapper's click
-                // delegation. Avoid invoking it twice from nested listeners.
-                onSelect={() => {}}
+                onSelect={requestSelection}
                 style={{ width: '100%' }}
               />
             </div>
