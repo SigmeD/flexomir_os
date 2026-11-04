@@ -150,16 +150,24 @@ export function NavigationDrawer({
             className="fos-nav-drawer__panel"
             data-testid="navigation-drawer-panel"
           >
-            <div className="fos-nav-drawer__items">
+            <div
+              className="fos-nav-drawer__items"
+              onClick={event => {
+                // Even tapping the already-active route should dismiss the menu.
+                // Let SidebarNav own route changes; the wrapper owns dismissal.
+                const target = event.target
+                if (target instanceof Element &&
+                  target.closest('button.fos-sidebar-nav__item:not([disabled])')) {
+                  closeMenu()
+                }
+              }}
+            >
               <SidebarNav
                 items={items}
                 activeId={activeId}
                 ariaLabel={ariaLabel + ' — разделы'}
                 glassTone="neutral"
-                onSelect={id => {
-                  onSelect(id)
-                  closeMenu()
-                }}
+                onSelect={onSelect}
                 style={{ width: '100%' }}
               />
             </div>
