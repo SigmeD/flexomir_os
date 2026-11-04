@@ -7,6 +7,41 @@
 .sidebar-lab__eyebrow { font-size: 11px; letter-spacing: .1em; font-weight: 720; color: #667d8d; }
 .sidebar-lab__intro h1 { font-size: 32px; line-height: 1.17; margin: 10px 0; }
 .sidebar-lab__intro p:last-child { font-size: 14px; line-height: 1.6; color: #667985; max-width: 620px; }
+.sidebar-lab__tone-review {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 14px;
+  row-gap: 8px;
+  font-size: 12px;
+  color: #596b76;
+}
+.sidebar-lab__tone-review > span { font-weight: 650; }
+.sidebar-lab__tone-review [role="group"] {
+  display: inline-flex;
+  gap: 5px;
+  padding: 4px;
+  background: #e9ecef;
+  border: 1px solid #d8dfe3;
+  border-radius: 11px;
+}
+.sidebar-lab__tone-review button {
+  padding: 8px 11px;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
+  color: #52606a;
+  cursor: pointer;
+  font: 600 12px/1.4 Manrope, Onest, system-ui, sans-serif;
+}
+.sidebar-lab__tone-review button[aria-pressed="true"] {
+  color: #293843;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(35, 40, 45, .12);
+}
+.sidebar-lab__tone-review button:focus-visible { outline: 2px solid #596e80; outline-offset: 2px; }
+.sidebar-lab__tone-review small { flex-basis: 100%; color: #7d8992; font-size: 11px; }
 .sidebar-lab__panes { display: flex; flex-wrap: wrap; gap: 26px; margin-top: 34px; }
 .sidebar-lab__sample { border: 1px solid #dce5ea; border-radius: 18px; background: white; padding: 20px; min-width: 0; }
 .sidebar-lab__sample h2 { font-size: 16px; margin: 0 0 14px; font-weight: 650; }
