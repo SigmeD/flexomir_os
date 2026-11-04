@@ -202,3 +202,29 @@ test('actual wheel scrolling is blocked behind open drawer and resumes after clo
   await page.mouse.wheel(0, 600)
   await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
 })
+
+
+test('pointer opening suppresses stale keyboard focus ring; Tab restores it for accessibility', async ({ page }) => {
+  const trigger = page.getByTestId('navigation-drawer-trigger')
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  let panel = page.getByTestId('navigation-drawer-panel')
+  await expect(panel).toHaveAttribute('data-focus-mode', 'keyboard')
+  await page.keyboard.press('Escape')
+  await expect(trigger).toBeFocused()
+
+  // A pointer click after keyboard Escape must NOT show a permanent blue
+  // outline over the neutral selected glass. Keyboard Tab must restore it.
+  await trigger.click()
+  panel = page.getByTestId('navigation-drawer-panel')
+  const selected = panel.getByTestId('sidebar-nav-orders')
+  await expect(panel).toHaveAttribute('data-focus-mode', 'pointer')
+  await expect(selected).toBeFocused()
+  await expect(selected).toHaveCSS('outline-style', 'none')
+
+  await page.keyboard.press('Tab')
+  const next = panel.getByTestId('sidebar-nav-artworks')
+  await expect(panel).toHaveAttribute('data-focus-mode', 'keyboard')
+  await expect(next).toBeFocused()
+  await expect(next).toHaveCSS('outline-style', 'solid')
+})
