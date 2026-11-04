@@ -112,7 +112,7 @@ test('screenshot for owner visual review', async ({ page }, testInfo) => {
     await manager.getByTestId('sidebar-nav-clients').hover()
     await page.waitForTimeout(210)
     await page.screenshot({
-      path: testInfo.outputPath('sidebar-' + width + '-hover-magnification.png'),
+      path: testInfo.outputPath('sidebar-' + width + '-hover-color-only.png'),
       fullPage: true,
       animations: 'disabled',
     })
@@ -160,24 +160,37 @@ test('reference 2.2.5 C label magnification follows the selected lens', async ({
   expect(await getScale(support)).toBeLessThan(1.046)
 })
 
-test('hover and focus magnify label but never relocate selected lens', async ({ page }) => {
+test('hover only changes color; focus only adds outline; zoom follows click and lens arrival', async ({ page }) => {
   const manager = page.getByTestId('sidebar-lab-manager')
   const orders = manager.getByTestId('sidebar-nav-orders')
   const clients = manager.getByTestId('sidebar-nav-clients')
   const lens = manager.getByTestId('sidebar-selected-lens')
   const label = clients.locator('.fos-sidebar-nav__label')
+  const icon = clients.locator('.fos-sidebar-nav__icon')
+  const labelScale = async () => scaleFromTransform(await label.evaluate(el => getComputedStyle(el).transform))
+  const iconScale = async () => scaleFromTransform(await icon.evaluate(el => getComputedStyle(el).transform))
 
+  await page.mouse.move(1200, 600)
+  await expect(clients).toHaveCSS('color', 'rgb(115, 119, 129)')
   await clients.hover()
-  await expect.poll(async () => scaleFromTransform(await label.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.040)
+  await expect(clients).toHaveCSS('color', 'rgb(62, 101, 120)')
+  expect(await labelScale()).toBeCloseTo(1, 3)
+  expect(await iconScale()).toBeCloseTo(1, 3)
   await expect(orders).toHaveAttribute('aria-current', 'page')
   await expect(lens).toHaveAttribute('data-travel-target', '0')
-  await page.mouse.move(1200, 600)
-  await expect.poll(async () => scaleFromTransform(await label.evaluate(el => getComputedStyle(el).transform))).toBeCloseTo(1, 2)
 
   await clients.focus()
   await expect(clients).toBeFocused()
-  await expect.poll(async () => scaleFromTransform(await label.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.040)
+  expect(await labelScale()).toBeCloseTo(1, 3)
+  expect(await iconScale()).toBeCloseTo(1, 3)
   await expect(orders).toHaveAttribute('aria-current', 'page')
+
+  await clients.click()
+  await page.mouse.move(1200, 600)
+  await expect(lens).toHaveAttribute('data-travel-target', '48')
+  await expect(lens).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  await expect.poll(labelScale).toBeGreaterThan(1.040)
+  await expect.poll(iconScale).toBeGreaterThan(1.020)
 })
 
 test('font scale fallback in reduced motion and forced colors', async ({ page }) => {
@@ -218,24 +231,28 @@ test('optional reference SVG icons are correctly sized and decorative across bot
   }
 })
 
-test('selected icon +2.2% optical zoom and hover icon preview preserve selection', async ({ page }) => {
+test('selected icon +2.2% lens magnification; hovering only changes color', async ({ page }) => {
   const nav = page.getByTestId('sidebar-lab-client').getByRole('navigation')
   const orders = nav.getByTestId('sidebar-nav-orders')
   const artworks = nav.getByTestId('sidebar-nav-artworks')
   const selectedIcon = orders.locator('.fos-sidebar-nav__icon')
-  const hoverIcon = artworks.locator('.fos-sidebar-nav__icon')
+  const targetIcon = artworks.locator('.fos-sidebar-nav__icon')
+  const scale = async (locator: typeof selectedIcon) =>
+    scaleFromTransform(await locator.evaluate(el => getComputedStyle(el).transform))
 
   await page.mouse.move(1200, 600)
-  await expect.poll(async () => scaleFromTransform(await selectedIcon.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.020)
+  await expect.poll(() => scale(selectedIcon)).toBeGreaterThan(1.020)
   await artworks.hover()
-  await expect.poll(async () => scaleFromTransform(await hoverIcon.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.020)
+  await expect(artworks).toHaveCSS('color', 'rgb(62, 101, 120)')
+  expect(await scale(targetIcon)).toBeCloseTo(1, 3)
   await expect(orders).toHaveAttribute('aria-current', 'page')
   await expect(nav.getByTestId('sidebar-selected-lens')).toHaveAttribute('data-travel-target', '0')
+
   await artworks.click()
   await page.mouse.move(1200, 600)
   await expect(nav.getByTestId('sidebar-selected-lens')).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
-  await expect.poll(async () => scaleFromTransform(await hoverIcon.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.020)
-  await expect.poll(async () => scaleFromTransform(await selectedIcon.evaluate(el => getComputedStyle(el).transform))).toBeCloseTo(1, 2)
+  await expect.poll(() => scale(targetIcon)).toBeGreaterThan(1.020)
+  await expect.poll(() => scale(selectedIcon)).toBeCloseTo(1, 2)
 
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await orders.hover()
