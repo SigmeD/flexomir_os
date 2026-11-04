@@ -1,20 +1,10 @@
 import { useState } from 'react'
 import { NavigationDrawer } from '@/components/ui/navigation-drawer'
-import type { SidebarNavItem } from '@/components/ui/sidebar-nav'
+import { clientNavigationDemoItems as clientItems, managerNavigationDemoItems as managerItems } from './navigation-demo-items'
 import './NavigationDrawerLab.css'
 
-// CURRENT Client Navigation Drawer Figma is text-only, even though the accepted
-// desktop SidebarNav can optionally render icons. Do not invent mobile icons.
-const clientItems: readonly SidebarNavItem[] = [
-  { id: 'orders', label: 'Заказы' },
-  { id: 'artworks', label: 'Макеты' },
-  { id: 'support', label: 'Поддержка' },
-]
-const managerItems: readonly SidebarNavItem[] = [
-  { id: 'orders', label: 'Заказы' },
-  { id: 'clients', label: 'Клиенты' },
-  { id: 'support', label: 'Поддержка' },
-]
+// Owner GL-02B update: mobile and desktop labs share ONE icon+label configuration.
+// The current Figma mobile no-icon version is superseded by this explicit decision.
 
 export function NavigationDrawerLab() {
   const [role, setRole] = useState<'client' | 'manager'>('client')
