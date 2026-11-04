@@ -20,6 +20,9 @@ export interface SidebarNavProps {
   /** Routing is the caller's responsibility; this component doesn't invent destinations. */
   onSelect: (id: string) => void
   ariaLabel: string
+  /** Neutral is for FOS V2 grey surfaces. 'reference' is the historical
+   * cool-tinted lab coat, retained for A/B review and future palettes. */
+  glassTone?: 'neutral' | 'reference'
   className?: string
   style?: CSSProperties
 }
@@ -31,7 +34,7 @@ export interface SidebarNavProps {
  * The existing travel spring matches the approved Sidebar 2.2.5 C response.
  */
 export function SidebarNav({
-  items, activeId, onSelect, ariaLabel, className = '', style,
+  items, activeId, onSelect, ariaLabel, glassTone = 'neutral', className = '', style,
 }: SidebarNavProps) {
   const activeIndex = items.findIndex(item => item.id === activeId)
   // A deep-linked initial route should not animate from the top on first render.
@@ -71,6 +74,7 @@ export function SidebarNav({
     <nav
       aria-label={ariaLabel}
       data-testid="shared-sidebar-nav"
+      data-glass-tone={glassTone}
       className={['fos-sidebar-nav', className].filter(Boolean).join(' ')}
       style={style}
     >
@@ -86,8 +90,11 @@ export function SidebarNav({
             strength={0.1}
             shadow="reference"
             lighting="sidebar"
-            centerOpacity={0.16}
-            centerColor="220 240 247"
+            tone={glassTone}
+            centerOpacity={glassTone === 'neutral' ? 0.12 : 0.16}
+            centerColor={glassTone === 'neutral'
+              ? 'var(--fos-neutral-glass-rgb, 248 248 248)'
+              : '220 240 247'}
             rimWidth={12}
             motion="travel"
             travelY={(activeIndex - anchor) * 48}
