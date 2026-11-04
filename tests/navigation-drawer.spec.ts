@@ -385,9 +385,12 @@ test('keep-open mode does not hide selected lens or change item geometry when ic
   await page.setViewportSize({ width: 390, height: 844 })
   await page.getByTestId('drawer-mode-stay-open').click()
   const panel = await openDrawer(page)
+  // Panel scales 0.985→1 during its 220ms opening animation. Measure the
+  // actual settled Figma layout, not the temporary transformed box.
+  await page.waitForTimeout(260)
   const rows = panel.getByRole('navigation').getByRole('button')
   for (const row of await rows.all()) {
-    expect((await row.boundingBox())?.height).toBe(44)
+    await expect(row).toHaveCSS('height', '44px')
     await expect(row.locator('.fos-sidebar-nav__icon')).toHaveCSS('width', '19px')
   }
   const selected = panel.getByTestId('sidebar-nav-orders')
