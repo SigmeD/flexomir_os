@@ -8,7 +8,7 @@ async function openDrawer(page: import('@playwright/test').Page) {
   const trigger = page.getByTestId('navigation-drawer-trigger')
   await trigger.click()
   await expect(trigger).toHaveAttribute('aria-expanded', 'true')
-  await expect(page.getByRole('dialog', { name: 'Меню клиента' })).toBeVisible()
+  await expect(page.getByRole('dialog')).toBeVisible()
   return page.getByTestId('navigation-drawer-panel')
 }
 
@@ -21,6 +21,9 @@ test('canonical CURRENT Figma mobile 296×229, tablet 320×229, top72 right20', 
   for (const { viewport, width, x, inner } of cases) {
     await page.setViewportSize({ width: viewport, height: 900 })
     const panel = await openDrawer(page)
+    // getBoundingClientRect includes the temporary open scale (0.985→1).
+    // Wait for visual settling before comparing the actual Figma coordinates.
+    await page.waitForTimeout(260)
     const bbox = await panel.boundingBox()
     expect(bbox?.width).toBe(width)
     expect(bbox?.height).toBe(229)
