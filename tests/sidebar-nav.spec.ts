@@ -108,6 +108,15 @@ test('screenshot for owner visual review', async ({ page }, testInfo) => {
       fullPage: true,
       animations: 'disabled',
     })
+    const manager = page.getByTestId('sidebar-lab-manager')
+    await manager.getByTestId('sidebar-nav-clients').hover()
+    await page.waitForTimeout(210)
+    await page.screenshot({
+      path: testInfo.outputPath('sidebar-' + width + '-hover-magnification.png'),
+      fullPage: true,
+      animations: 'disabled',
+    })
+    await page.mouse.move(1200, 600)
     const client = page.getByTestId('sidebar-lab-client')
     await client.getByTestId('sidebar-nav-support').click()
     await expect(client.getByTestId('sidebar-selected-lens')).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
