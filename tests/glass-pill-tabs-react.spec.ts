@@ -195,8 +195,10 @@ test('HTML glass depth restored without changing shared GlassLens or spring phys
     expect(bg).toContain('linear-gradient(148deg')
     const frameShadow = await frame.evaluate(el => getComputedStyle(el).boxShadow)
     expect(frameShadow).not.toBe('none')
-    // Chromium rounds serialized 8-bit alpha: CSS .062 → .063.
-    expect(frameShadow).toMatch(/rgba\(50, 54, 59, 0\.0(?:62|63)\)/)
+    // Neutral shadow is now a softer, reusable opt-in elevation token.
+    // The scrollport padding keeps this shadow visible outside the 38px pill.
+    expect(frameShadow).toContain('10px')
+    expect(frameShadow).toContain('18px')
     await expect(frame).toHaveCSS('outline-style', 'solid')
     await expect(coat).toHaveCSS('border-top-width', '0px')
 
