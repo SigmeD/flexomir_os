@@ -245,9 +245,11 @@ test('selected lens visibly reaches its destination BEFORE drawer starts closing
   await expect(trigger).toHaveAttribute('aria-expanded', 'true')
   await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: —')
   await expect(lens).toHaveAttribute('data-travel-target', '96')
+  await expect(lens).toHaveAttribute('data-motion-state', 'moving')
 
+  // Must complete during the native spring, not via the 5s safety watchdog.
   await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: Поддержка', {
-    timeout: 6000,
+    timeout: 3000,
   })
   await expect(trigger).toHaveAttribute('aria-expanded', 'false')
   await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 3500 })
