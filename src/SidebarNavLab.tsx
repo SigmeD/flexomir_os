@@ -15,11 +15,12 @@ const clientItems: readonly SidebarNavItem[] = [
 ]
 
 function RoleNavSample({
-  role, caption, items,
+  role, caption, items, glassTone,
 }: {
   role: 'manager' | 'client'
   caption: string
   items: readonly SidebarNavItem[]
+  glassTone: 'neutral' | 'reference'
 }) {
   const [selected, setSelected] = useState('orders')
   const current = items.find(item => item.id === selected)
@@ -34,6 +35,7 @@ function RoleNavSample({
           activeId={selected}
           onSelect={setSelected}
           ariaLabel={'Навигация ' + (role === 'manager' ? 'менеджера' : 'клиента')}
+          glassTone={glassTone}
           className="sidebar-lab__nav"
         />
       </div>
@@ -46,6 +48,8 @@ function RoleNavSample({
 
 /** Navigation anatomy only: no real routes or responsive drawer behavior. */
 export function SidebarNavLab() {
+  // Visual comparison only. Real routes/screens never expose this lab switch.
+  const [glassTone, setGlassTone] = useState<'neutral' | 'reference'>('neutral')
   return (
     <main className="sidebar-lab">
       <header className="sidebar-lab__intro">
@@ -53,9 +57,21 @@ export function SidebarNavLab() {
         <h1>Sidebar / Glass Lens</h1>
         <p>Общий Figma-компонент для двух ролей. Нажатие меняет только тестовое выделение. Наведение не переносит линзу.</p>
       </header>
+      <section className="sidebar-lab__tone-review" aria-label="Проверка тона стекла">
+        <span>Материал стекла:</span>
+        <div role="group" aria-label="Выбор оттенка для сравнения">
+          <button type="button" data-testid="sidebar-tone-neutral"
+            aria-pressed={glassTone === 'neutral'}
+            onClick={() => setGlassTone('neutral')}>Нейтральный · для серого фона</button>
+          <button type="button" data-testid="sidebar-tone-reference"
+            aria-pressed={glassTone === 'reference'}
+            onClick={() => setGlassTone('reference')}>Исходный · голубоватый</button>
+        </div>
+        <small>Переключатель есть только в лаборатории; для экранов используем нейтральную тему.</small>
+      </section>
       <div className="sidebar-lab__panes">
-        <RoleNavSample role="manager" caption="Менеджер" items={managerItems} />
-        <RoleNavSample role="client" caption="Клиент" items={clientItems} />
+        <RoleNavSample role="manager" caption="Менеджер" items={managerItems} glassTone={glassTone} />
+        <RoleNavSample role="client" caption="Клиент" items={clientItems} glassTone={glassTone} />
       </div>
       <p className="sidebar-lab__footnote">
         Тестируем внутреннее содержимое навигации 208×44 и анимацию 2.2.5 C.

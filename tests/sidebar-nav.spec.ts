@@ -260,3 +260,54 @@ test('selected icon +2.2% lens magnification; hovering only changes color', asyn
   await page.emulateMedia({ reducedMotion: 'no-preference', forcedColors: 'active' })
   await expect(selectedIcon).toHaveCSS('transform', 'none')
 })
+
+
+test('neutral glass tint avoids blue coat on grey surface; cool reference remains selectable', async ({ page }) => {
+  const neutral = page.getByTestId('sidebar-tone-neutral')
+  const reference = page.getByTestId('sidebar-tone-reference')
+  const manager = page.getByTestId('sidebar-lab-manager')
+  const client = page.getByTestId('sidebar-lab-client')
+  const lens = manager.getByTestId('sidebar-selected-lens')
+
+  await expect(neutral).toHaveAttribute('aria-pressed', 'true')
+  await expect(reference).toHaveAttribute('aria-pressed', 'false')
+  for (const role of [manager, client]) {
+    await expect(role.getByRole('navigation')).toHaveAttribute('data-glass-tone', 'neutral')
+    await expect(role.getByTestId('sidebar-selected-lens')).toHaveAttribute('data-tone', 'neutral')
+  }
+  await expect.poll(async () => lens.evaluate(node => getComputedStyle(node).getPropertyValue('--fos-rim-rgb').trim())).toBe('147 150 155')
+  await expect.poll(async () => lens.evaluate(node => getComputedStyle(node).getPropertyValue('--fos-lowlight-rgb').trim())).toBe('110 112 116')
+  await expect(lens).toHaveAttribute('data-motion', 'travel')
+
+  await reference.click()
+  await expect(reference).toHaveAttribute('aria-pressed', 'true')
+  await expect(lens).toHaveAttribute('data-tone', 'reference')
+  await expect.poll(async () => lens.evaluate(node => getComputedStyle(node).getPropertyValue('--fos-rim-rgb').trim())).toBe('133 169 191')
+  await expect.poll(async () => lens.evaluate(node => getComputedStyle(node).getPropertyValue('--fos-lowlight-rgb').trim())).toBe('111 159 186')
+
+  await neutral.click()
+  await manager.getByTestId('sidebar-nav-support').click()
+  await expect(manager.getByTestId('sidebar-nav-support')).toHaveAttribute('aria-current', 'page')
+  await expect(lens).toHaveAttribute('data-tone', 'neutral')
+  await expect(lens).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  await expect(lens).toHaveAttribute('data-travel-target', '96')
+})
+
+test('Owner A/B screenshots: neutral grey versus original cool glass without moving navigation', async ({ page }, testInfo) => {
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: width === 1440 ? 900 : 844 })
+    await page.getByTestId('sidebar-tone-neutral').click()
+    await page.mouse.move(1200, 800)
+    await page.screenshot({
+      path: testInfo.outputPath('sidebar-tone-neutral-' + width + '.png'),
+      fullPage: true,
+      animations: 'disabled',
+    })
+    await page.getByTestId('sidebar-tone-reference').click()
+    await page.screenshot({
+      path: testInfo.outputPath('sidebar-tone-reference-' + width + '.png'),
+      fullPage: true,
+      animations: 'disabled',
+    })
+  }
+})

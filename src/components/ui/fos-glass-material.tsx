@@ -12,6 +12,11 @@ export interface FosGlassMaterialProps extends Omit<ComponentProps<'div'>, 'chil
   blur?: number
   dome?: number
   lighting?: 'native' | 'sidebar'
+  /** Color treatment only; same GlassLens, geometry, refraction and spring.
+   *  reference = original cool lab coat; neutral = transparent achromatic surface coat.
+   *  Other components keep the historic reference tone until explicitly opted in.
+   */
+  tone?: 'reference' | 'neutral'
   shadow?: 'native' | 'reference' | 'menu' | 'none'
   /** A numeric alpha or a theme expression, e.g. var(--menu-opacity). */
   centerOpacity?: number | string
@@ -38,7 +43,7 @@ const mediaSnapshot = () => `${matchMedia(reducedQuery).matches}:${matchMedia(fo
 /** One adapter of Website Glass; all displacement maps and SVG filters stay in the library. */
 export function FosGlassMaterial({
   children, className, contentClassName, strength = 0.1, radius = 18, blur = 1.5, dome = 0,
-  lighting = 'sidebar', shadow = 'reference', centerOpacity = 0.16, centerColor = '220 240 247', rimWidth = 12,
+  lighting = 'sidebar', tone = 'reference', shadow = 'reference', centerOpacity = 0.16, centerColor = '220 240 247', rimWidth = 12,
   motion = 'none', travelY = 0, onTravelFrame,
   style, ...props
 }: FosGlassMaterialProps) {
@@ -147,7 +152,7 @@ export function FosGlassMaterial({
     style={materialStyle} data-fos-glass-material="" data-optics-mode={mode} data-strength={s}
     data-material-ready={hydrated && box.width > 0 && box.height > 0}
     data-travel-target={motion === 'travel' && Number.isFinite(travelY) ? travelY : 0}
-    data-lighting={lighting} data-motion={motion} data-motion-state={reduced || forced ? 'off' : 'settled'}>
+    data-lighting={lighting} data-tone={tone} data-motion={motion} data-motion-state={reduced || forced ? 'off' : 'settled'}>
     {!forced && box.width > 0 && box.height > 0 && <GlassLens
       width={box.width} height={box.height} radius={radius} strength={s} blur={blur} dome={dome}
       className="fos-glass-optics" style={opticStyle} aria-hidden="true"
