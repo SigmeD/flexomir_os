@@ -23,16 +23,19 @@ export function HeaderActionLab() {
               data-testid="header-action-add"
               onAction={() => setManagerClicks(x => x + 1)}
             />
-            <HeaderAction
-              action="add" accessibleName="Недоступное действие"
-              data-testid="header-action-disabled"
-              disabled
-              onAction={() => { throw new Error('Disabled HeaderAction was activated') }}
-            />
           </div>
         </header>
         <p role="status" data-testid="header-action-count">Нажатий: {managerClicks}</p>
         <p className="ha-lab__help">Нажимайте по краям круга, удерживайте и отпускайте. Свет не оставляет следа.</p>
+        <div className="ha-lab__disabled-state">
+          <span>Отдельная проверка состояния disabled</span>
+          <HeaderAction
+            action="add" accessibleName="Добавить (недоступно)"
+            data-testid="header-action-disabled"
+            disabled
+            onAction={() => { throw new Error('Disabled HeaderAction was activated') }}
+          />
+        </div>
       </section>
       <section className="ha-lab__card" aria-label="Клиент — Мои заказы">
         <header className="ha-lab__header">
