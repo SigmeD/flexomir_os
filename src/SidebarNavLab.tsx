@@ -3,15 +3,15 @@ import { SidebarNav, type SidebarNavItem } from '@/components/ui/sidebar-nav'
 import './SidebarNavLab.css'
 
 const managerItems: readonly SidebarNavItem[] = [
-  { id: 'orders', label: 'Заказы' },
-  { id: 'clients', label: 'Клиенты' },
-  { id: 'support', label: 'Поддержка' },
+  { id: 'orders', label: 'Заказы', icon: 'orders' },
+  { id: 'clients', label: 'Клиенты', icon: 'clients' },
+  { id: 'support', label: 'Поддержка', icon: 'support' },
 ]
 
 const clientItems: readonly SidebarNavItem[] = [
-  { id: 'orders', label: 'Заказы' },
-  { id: 'artworks', label: 'Макеты' },
-  { id: 'support', label: 'Поддержка' },
+  { id: 'orders', label: 'Заказы', icon: 'orders' },
+  { id: 'artworks', label: 'Макеты', icon: 'artworks' },
+  { id: 'support', label: 'Поддержка', icon: 'support' },
 ]
 
 function RoleNavSample({
