@@ -82,16 +82,10 @@
   width: 19px;
   height: 19px;
 }
-.fos-sidebar-nav__item:not([aria-current="page"]) .fos-sidebar-nav__icon {
-  transition: transform 160ms cubic-bezier(.2,.85,.2,1);
-}
-.fos-sidebar-nav__item:not(:disabled):is(:hover, :focus-visible) .fos-sidebar-nav__icon {
-  transform: scale(max(var(--fos-sidebar-icon-scale), 1.022));
-}
 /*
  * Magnification is an optical transform, not a new font size or layout change.
  * 2.2.5 C: max 1.043x while selected lens approaches the label.
- * Owner refinement: same restrained reaction on hover/focus, WITHOUT moving the lens.
+ * Hover/focus only change color/outline. The lens arrival alone controls scale.
  */
 .fos-sidebar-nav__label {
   --fos-sidebar-label-scale: 1;
@@ -102,12 +96,6 @@
   transform-origin: 0 50%;
   transform: scale(var(--fos-sidebar-label-scale));
   will-change: transform;
-}
-.fos-sidebar-nav__item:not([aria-current="page"]) .fos-sidebar-nav__label {
-  transition: transform 160ms cubic-bezier(.2,.85,.2,1);
-}
-.fos-sidebar-nav__item:not(:disabled):is(:hover, :focus-visible) .fos-sidebar-nav__label {
-  transform: scale(max(var(--fos-sidebar-label-scale), 1.043));
 }
 @media (prefers-reduced-motion: reduce) {
   .fos-sidebar-nav__item { transition: none; }
