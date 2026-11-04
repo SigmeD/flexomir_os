@@ -6,9 +6,28 @@
   --fos-light-y: 28%;
   --fos-sweep-y: 22%;
   --fos-shadow-y: 4px;
+  /* Color-only layer. Default values preserve the original cool 2.2.5 C reference. */
+  --fos-rim-rgb: 133 169 191;
+  --fos-lowlight-rgb: 111 159 186;
   --fos-reference-shadow: inset 0 1px 0 rgba(255,255,255,.92), inset 0 -1px 0 rgba(98,151,181,.16),
     1.6px var(--fos-shadow-y) 3px rgba(45,75,99,.075), 1.6px 8px 13px rgba(57,97,121,.045);
   --fos-menu-shadow: 0 10px 24px -12px rgba(45,75,99,.20);
+}
+
+/*
+ * Neutral for a grey/off-white surface. These values intentionally have no
+ * chromatic blue pigment. The visible surface still comes from backdrop glass
+ * and the underlying DOM — NOT from painting a second opaque grey rectangle.
+ * CSS variables can later be mapped to the approved DS color tokens.
+ */
+.fos-glass-material[data-tone="neutral"] {
+  --fos-rim-rgb: 147 150 155;
+  --fos-lowlight-rgb: 110 112 116;
+  --fos-reference-shadow:
+    inset 0 1px 0 rgba(255,255,255,.93),
+    inset 0 -1px 0 rgba(104,107,111,.09),
+    1.6px var(--fos-shadow-y) 3px rgba(50,54,59,.062),
+    1.6px 8px 13px rgba(55,57,61,.038);
 }
 
 .fos-glass-material[data-motion="travel"] {
@@ -19,13 +38,13 @@
 
 /* Restyle the library's existing non-optical coat, without a second glass/filter layer. */
 .fos-glass-material[data-lighting="sidebar"] > .fos-glass-optics > div[aria-hidden] {
-  border: 1px solid rgba(133,169,191,.38);
+  border: 1px solid rgb(var(--fos-rim-rgb) / .38);
   background:
     linear-gradient(to right,transparent 0 calc(var(--fos-rim-width)*.6),rgb(var(--fos-center-rgb)/var(--fos-center-opacity)) var(--fos-rim-width) calc(100% - var(--fos-rim-width)),transparent calc(100% - var(--fos-rim-width)*.6)),
     radial-gradient(ellipse 54% 130% at var(--fos-key-x) var(--fos-light-y),rgba(255,255,255,.29),rgba(255,255,255,.08) 49%,transparent 78%),
     linear-gradient(90deg,rgba(255,255,255,.61) 0%,rgba(255,255,255,.08) 5%,transparent 18%,transparent 82%,rgba(255,255,255,.07) 95%,rgba(255,255,255,.18) 100%),
     radial-gradient(ellipse 37% 38% at var(--fos-key-x) var(--fos-sweep-y),rgba(255,255,255,.2465),transparent 92%),
-    linear-gradient(180deg,rgba(255,255,255,.055),transparent 47%,rgba(111,159,186,.042)) !important;
+    linear-gradient(180deg,rgba(255,255,255,.055),transparent 47%,rgb(var(--fos-lowlight-rgb) / .042)) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
