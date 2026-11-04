@@ -15,6 +15,12 @@ export interface NavigationDrawerProps {
    * Pass actual navigation here; omit for visual-only/demo selection.
    */
   onSelectionSettled?: (id: string) => void
+  /** Selection lifecycle:
+   * true (default): close after the approved lens spring reaches the new item.
+   * false: keep menu open to compare sections; only scrim/Escape/trigger dismiss.
+   * The route commit callback must not unmount the menu in keep-open mode.
+   */
+  closeOnSelection?: boolean
   /** Accessible name of modal navigation surface, e.g. "Меню клиента". */
   ariaLabel: string
   /** Supplied by parent/role, never hardcoded in the primitive. */
@@ -34,7 +40,7 @@ export interface NavigationDrawerProps {
  * Selection is controlled by the screen; this component never mutates routes.
  */
 export function NavigationDrawer({
-  items, activeId, onSelect, onSelectionSettled, ariaLabel, footerText,
+  items, activeId, onSelect, onSelectionSettled, closeOnSelection = true, ariaLabel, footerText,
   triggerLabel = 'Открыть меню',
 }: NavigationDrawerProps) {
   const dialogId = useId()
@@ -79,7 +85,7 @@ export function NavigationDrawer({
     // Never interrupt an in-flight lens transition by closing on a duplicate tap.
     if (pendingIdRef.current === id) return
     if (id === activeId && pendingIdRef.current === null) {
-      closeMenu()
+      if (closeOnSelection) closeMenu()
       return
     }
     pendingRequestRef.current += 1
@@ -106,8 +112,15 @@ export function NavigationDrawer({
       resolved = true
       if (fallback !== undefined) window.clearTimeout(fallback)
       observer.disconnect()
-      // Route commit, if supplied, happens only once the lens visibly arrives.
-      closeMenu()
+      // Both modes wait for the SAME accepted spring. The alternative
+      // inspection mode only clears pending state and leaves the menu open.
+      if (closeOnSelection) {
+        closeMenu()
+      } else {
+        pendingRequestRef.current += 1
+        pendingIdRef.current = null
+        setPendingId(null)
+      }
       onSelectionSettled?.(pendingId)
     }
 
@@ -144,7 +157,7 @@ export function NavigationDrawer({
       observer.disconnect()
       if (fallback !== undefined) window.clearTimeout(fallback)
     }
-  }, [open, pendingId, activeId, onSelectionSettled])
+  }, [open, pendingId, activeId, onSelectionSettled, closeOnSelection])
 
   // Modal isolation and scroll lock are active only while the menu is OPEN,
   // including on resize, Escape, outside click, and unmount.
@@ -260,7 +273,8 @@ export function NavigationDrawer({
                 const target = event.target
                 if (!(target instanceof Element)) return
                 const button = target.closest<HTMLButtonElement>('button.fos-sidebar-nav__item:not([disabled])')
-                if (button?.getAttribute('aria-current') === 'page' &&
+                if (closeOnSelection &&
+                  button?.getAttribute('aria-current') === 'page' &&
                   pendingIdRef.current === null) {
                   closeMenu()
                 }
