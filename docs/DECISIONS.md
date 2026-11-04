@@ -6,10 +6,11 @@
 
 | ID | Решение/вопрос | Статус на 04.11 | Источник / замечание |
 | --- | --- | --- | --- |
-| FE-DEC-01 | React frontend создаётся по действующей Figma непосредственно, не через массовую генерацию независимых HTML | OWNER DIRECTION | [Frontend Startup](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit) |
-| FE-DEC-02 | Первый frontend-пилот: Manager «Заказы»; сначала один экран и общий каркас, затем перенос партиями | OWNER DIRECTION | [Frontend Startup](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit) |
+| FE-DEC-01 | ИСТОРИЯ: прямой Figma→React заменён новым HTML-first visual gate OWNER от 04.11.2026 | SUPERSEDED 04.11 | [Frontend Startup](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit) |
+| FE-DEC-02 | Первый экран — Manager «Заказы»: HTML-превью по текущей Figma, затем визуальная приёмка, отдельная React-задача и PR | OWNER DIRECTION 04.11 | [Frontend Startup](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit) |
 | FE-DEC-03 | Прежний самостоятельный HTML-пилот «Заказы» не подходит; оставить как есть | REJECTED AS BASELINE | [UX/UI CURRENT Index](https://docs.google.com/document/d/1RWrqveia84o487bcXwXh00rXoiSMZBKAJJ9FdpZRVkA/edit) |
 | FE-DEC-04 | Screens и Liquid Glass разрабатываются параллельно с отдельными зонами ответственности | OWNER DIRECTION | [Frontend Startup](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit) |
+| FE-DEC-05 | Строгий HTML visual gate перед React для каждого нового/существенно изменённого экрана; после HTML approved отдельная задача агенту. Фигмовские компоненты/семантика сохраняются, Glass = материал/свет/анимация | OWNER APPROVED 04.11 | [Governance](https://docs.google.com/document/d/1m0TmticLfJYsnNG2aXt4tH6dNrjozMvRIahlCOhlicM/edit), [Visual Contract](https://docs.google.com/document/d/1VgaR8sfpRWeYVhDlN9jGkehLnXbCTiNQSBSEZCVWmGI/edit) |
 | GL-DEC-01 | Visual эталоны Primary 2.1.5, Sidebar 2.2.5 C, Tabs 2.3.3c визуально согласованы как HTML reference | VISUAL REFERENCE APPROVED, NOT REACT | [Glass Contract](https://docs.google.com/document/d/1VgaR8sfpRWeYVhDlN9jGkehLnXbCTiNQSBSEZCVWmGI/edit) |
 | GL-DEC-02 | FosGlassMaterial/Website Glass React есть локально; build PASS 04.11, старые QA-результаты не перепроверены | LOCAL CODE + BUILD VERIFIED / OWNER OPEN | `src/components/ui/fos-glass-material.tsx`, `npm run build`; [Glass Contract](https://docs.google.com/document/d/1VgaR8sfpRWeYVhDlN9jGkehLnXbCTiNQSBSEZCVWmGI/edit) |
 | FE-OPEN-01 | Реальный Git/React каталог, remote/branches/worktrees | RESOLVED LOCALLY 04.11 | `D:/Projects/flexomir_os`, `main`, `origin` GitHub, `cd0656a`, одна рабочая папка; build PASS |
