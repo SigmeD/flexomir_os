@@ -6,7 +6,15 @@ import './navigation-drawer.css'
 export interface NavigationDrawerProps {
   items: readonly SidebarNavItem[]
   activeId: string
+  /** Updates the selected navigation item so the existing SidebarNav lens can travel.
+   * Do NOT unmount/navigate the screen inside this callback: the lens must remain
+   * mounted until it reaches the target. Use onSelectionSettled for route changes.
+   */
   onSelect: (id: string) => void
+  /** Optional route commit, called only AFTER the selection lens has settled.
+   * Pass actual navigation here; omit for visual-only/demo selection.
+   */
+  onSelectionSettled?: (id: string) => void
   /** Accessible name of modal navigation surface, e.g. "Меню клиента". */
   ariaLabel: string
   /** Supplied by parent/role, never hardcoded in the primitive. */
@@ -26,7 +34,7 @@ export interface NavigationDrawerProps {
  * Selection is controlled by the screen; this component never mutates routes.
  */
 export function NavigationDrawer({
-  items, activeId, onSelect, ariaLabel, footerText,
+  items, activeId, onSelect, onSelectionSettled, ariaLabel, footerText,
   triggerLabel = 'Открыть меню',
 }: NavigationDrawerProps) {
   const dialogId = useId()
@@ -35,6 +43,9 @@ export function NavigationDrawer({
   const exitTimer = useRef<number | undefined>(undefined)
   const [open, setOpen] = useState(false)
   const [rendered, setRendered] = useState(false)
+  const [pendingId, setPendingId] = useState<string | null>(null)
+  const pendingIdRef = useRef<string | null>(null)
+  const pendingRequestRef = useRef(0)
   // Programmatic focus after pointer activation must not look like a keyboard
   // focus ring. Preserve a visible ring when the user switches to keyboard.
   const activationRef = useRef<'pointer' | 'keyboard'>('pointer')
@@ -49,6 +60,9 @@ export function NavigationDrawer({
   }
 
   function closeMenu() {
+    pendingRequestRef.current += 1
+    pendingIdRef.current = null
+    setPendingId(null)
     setOpen(false)
     if (exitTimer.current !== undefined) window.clearTimeout(exitTimer.current)
     exitTimer.current = window.setTimeout(() => {
@@ -60,6 +74,77 @@ export function NavigationDrawer({
   useEffect(() => () => {
     if (exitTimer.current !== undefined) window.clearTimeout(exitTimer.current)
   }, [])
+
+  function requestSelection(id: string) {
+    // Never interrupt an in-flight lens transition by closing on a duplicate tap.
+    if (pendingIdRef.current === id) return
+    if (id === activeId && pendingIdRef.current === null) {
+      closeMenu()
+      return
+    }
+    pendingRequestRef.current += 1
+    pendingIdRef.current = id
+    setPendingId(id)
+    // The host updates selected UI state; real routing belongs to onSelectionSettled.
+    onSelect(id)
+  }
+
+  // Wait for the ACTUAL spring to report rest instead of using an arbitrary
+  // 300/500ms delay. FosGlassMaterial already exposes data-motion-state and
+  // the lens geometry, so no duplicate animation driver or changes to the
+  // owner-approved SidebarNav are needed.
+  useEffect(() => {
+    if (!open || pendingId === null) return
+    const dialog = dialogRef.current
+    if (!dialog) return
+    const requestId = pendingRequestRef.current
+    let resolved = false
+    let fallback: number | undefined
+
+    const finish = () => {
+      if (resolved || requestId !== pendingRequestRef.current) return
+      resolved = true
+      if (fallback !== undefined) window.clearTimeout(fallback)
+      observer.disconnect()
+      // Route commit, if supplied, happens only once the lens visibly arrives.
+      onSelectionSettled?.(pendingId)
+      closeMenu()
+    }
+
+    const check = () => {
+      if (resolved || requestId !== pendingRequestRef.current) return
+      const selected = Array.from(dialog.querySelectorAll<HTMLButtonElement>(
+        '.fos-sidebar-nav__item[aria-current="page"]',
+      )).find(row => row.dataset.testid === 'sidebar-nav-' + pendingId)
+      const lens = dialog.querySelector<HTMLElement>('[data-testid="sidebar-selected-lens"]')
+      if (!selected || !lens) return
+      const state = lens.dataset.motionState
+      if (state !== 'settled' && state !== 'off') return
+      // Also compare actual rendered positions: React may have just switched
+      // aria-current while the spring still carries momentum from the old row.
+      const selectedBox = selected.getBoundingClientRect()
+      const lensBox = lens.getBoundingClientRect()
+      if (Math.abs(selectedBox.top - lensBox.top) > 0.75) return
+      finish()
+    }
+
+    const observer = new MutationObserver(check)
+    observer.observe(dialog, {
+      attributes: true,
+      subtree: true,
+      attributeFilter: ['aria-current', 'data-motion-state', 'data-travel-target', 'style'],
+    })
+    // Guard against a dead animation driver or a parent failing to update the
+    // controlled activeId. Normal operation NEVER uses this timeout; the
+    // spring's rest event wins. No infinite modal on unexpected errors.
+    fallback = window.setTimeout(finish, 5000)
+    check()
+
+    return () => {
+      observer.disconnect()
+      if (fallback !== undefined) window.clearTimeout(fallback)
+    }
+  }, [open, pendingId, activeId, onSelectionSettled])
 
   // Modal isolation and scroll lock are active only while the menu is OPEN,
   // including on resize, Escape, outside click, and unmount.
@@ -142,6 +227,7 @@ export function NavigationDrawer({
           className="fos-nav-drawer__layer"
           data-testid="navigation-drawer-layer"
           data-state={open ? 'open' : 'closing'}
+          data-selection-transition={pendingId !== null ? 'moving' : 'idle'}
           aria-hidden={open ? undefined : true}
           inert={open ? undefined : true}
         >
@@ -167,12 +253,16 @@ export function NavigationDrawer({
             <div
               className="fos-nav-drawer__items"
               onClick={event => {
-                // Even tapping the already-active route should dismiss the menu.
-                // Let SidebarNav own route changes; the wrapper owns dismissal.
+                // A new selection keeps the panel visible until the ONE shared
+                // lens reaches the destination. An already-active row can close
+                // immediately only if no lens transition is running.
                 const target = event.target
                 if (target instanceof Element &&
                   target.closest('button.fos-sidebar-nav__item:not([disabled])')) {
-                  closeMenu()
+                  const rowId = target.closest<HTMLButtonElement>('button.fos-sidebar-nav__item')?.dataset.testid
+                  if (rowId?.startsWith('sidebar-nav-')) {
+                    requestSelection(rowId.slice('sidebar-nav-'.length))
+                  }
                 }
               }}
             >
@@ -181,7 +271,9 @@ export function NavigationDrawer({
                 activeId={activeId}
                 ariaLabel={ariaLabel + ' — разделы'}
                 glassTone="neutral"
-                onSelect={onSelect}
+                // Parent selection is handled once by the wrapper's click
+                // delegation. Avoid invoking it twice from nested listeners.
+                onSelect={() => {}}
                 style={{ width: '100%' }}
               />
             </div>
