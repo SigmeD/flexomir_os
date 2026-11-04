@@ -1,0 +1,11 @@
+/*
+ * GL-03 candidate / reusable neutral glass elevation tokens.
+ * Token only: no second GlassLens, overlay, refraction engine, or motion.
+ * Opt-in per component AFTER its own visual gate; do not modify the approved
+ * SidebarNav, HeaderAction, or shared FosGlassMaterial shadows by default.
+ */
+:root {
+  --fos-glass-shadow-soft:
+    0 4px 10px -5px rgba(50,54,59,.065),
+    0 10px 18px -10px rgba(55,57,61,.035);
+}
