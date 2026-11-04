@@ -193,3 +193,53 @@ test('font scale fallback in reduced motion and forced colors', async ({ page })
   await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'no-preference' })
   await expect(label).toHaveCSS('transform', 'none')
 })
+
+
+test('optional reference SVG icons are correctly sized and decorative across both roles', async ({ page }) => {
+  for (const width of [1440, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 })
+    for (const role of ['manager', 'client']) {
+      const nav = page.getByTestId('sidebar-lab-' + role).getByRole('navigation')
+      for (const item of ['orders', role === 'client' ? 'artworks' : 'clients', 'support']) {
+        const button = nav.getByTestId('sidebar-nav-' + item)
+        const icon = button.locator('.fos-sidebar-nav__icon svg')
+        await expect(icon).toHaveCount(1)
+        await expect(icon).toHaveAttribute('aria-hidden', 'true')
+        await expect(icon).toHaveAttribute('focusable', 'false')
+        const rect = await icon.boundingBox()
+        expect(rect?.width).toBeGreaterThanOrEqual(18.9)
+        expect(rect?.height).toBeGreaterThanOrEqual(18.9)
+        await expect(button).toHaveAccessibleName(
+          item === 'orders' ? 'Заказы' : item === 'artworks' ? 'Макеты' : item === 'clients' ? 'Клиенты' : 'Поддержка',
+        )
+      }
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  }
+})
+
+test('selected icon +2.2% optical zoom and hover icon preview preserve selection', async ({ page }) => {
+  const nav = page.getByTestId('sidebar-lab-client').getByRole('navigation')
+  const orders = nav.getByTestId('sidebar-nav-orders')
+  const artworks = nav.getByTestId('sidebar-nav-artworks')
+  const selectedIcon = orders.locator('.fos-sidebar-nav__icon')
+  const hoverIcon = artworks.locator('.fos-sidebar-nav__icon')
+
+  await page.mouse.move(1200, 600)
+  await expect.poll(async () => scaleFromTransform(await selectedIcon.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.020)
+  await artworks.hover()
+  await expect.poll(async () => scaleFromTransform(await hoverIcon.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.020)
+  await expect(orders).toHaveAttribute('aria-current', 'page')
+  await expect(nav.getByTestId('sidebar-selected-lens')).toHaveAttribute('data-travel-target', '0')
+  await artworks.click()
+  await page.mouse.move(1200, 600)
+  await expect(nav.getByTestId('sidebar-selected-lens')).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  await expect.poll(async () => scaleFromTransform(await hoverIcon.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.020)
+  await expect.poll(async () => scaleFromTransform(await selectedIcon.evaluate(el => getComputedStyle(el).transform))).toBeCloseTo(1, 2)
+
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await orders.hover()
+  await expect(selectedIcon).toHaveCSS('transform', 'none')
+  await page.emulateMedia({ reducedMotion: 'no-preference', forcedColors: 'active' })
+  await expect(selectedIcon).toHaveCSS('transform', 'none')
+})
