@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { GlassMaterialLab } from './GlassMaterialLab'
 import { HeaderActionLab } from './HeaderActionLab'
 import { SidebarNavLab } from './SidebarNavLab'
+import { NavigationDrawerLab } from './NavigationDrawerLab'
 import {
   GlassSelect,
   GlassSelectTrigger,
@@ -82,6 +83,7 @@ export function App() {
   const view = new URLSearchParams(window.location.search).get('view')
   if (view === 'header-action') return <HeaderActionLab />
   if (view === 'sidebar-nav') return <SidebarNavLab />
+  if (view === 'navigation-drawer') return <NavigationDrawerLab />
   return view === 'material'
     ? <GlassMaterialLab orders={orders} statuses={statuses} />
     : <GlassFilterDemo />
