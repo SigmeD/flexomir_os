@@ -171,57 +171,78 @@ test('real mobile touch swipe scrolls without selecting a filter', async ({ brow
 })
 
 
-test('HTML glass depth restored without changing shared GlassLens or spring physics', async ({ page }, testInfo) => {
+test('Pill uses accepted material optics and spring with no extra shadow or coat', async ({ page }, testInfo) => {
   for (const width of [1440, 390, 320]) {
     await page.setViewportSize({ width, height: width >= 1000 ? 900 : 844 })
     const group = page.getByTestId('glass-pill-tabs')
     const rail = group.locator('.fos-glass-pill-tabs__track')
-    const lens = group.getByTestId('glass-pill-lens')
-    const coat = lens.locator(':scope > .fos-glass-optics > div[aria-hidden]')
+    const material = group.getByTestId('glass-pill-lens')
+    const nativeLens = material.locator(':scope > .fos-glass-optics')
+    const coat = nativeLens.locator(':scope > div[aria-hidden]')
     const frame = group.getByTestId('glass-pill-lens-frame')
 
-    // Current GL-03 must contain exactly ONE original real GlassLens,
-    // not a duplicated blur/overlay or a new "PillGlass" renderer.
+    // Same original optics; not a separate shadow token or painted copy.
     await expect(group.locator('[data-fos-glass-material]')).toHaveCount(1)
-    await expect(lens.locator('.fos-glass-optics')).toHaveCount(1)
-    await expect(lens).toHaveAttribute('data-tone', 'neutral')
-    await expect(lens).toHaveAttribute('data-optics-mode', /refraction|frosted|neutral/)
-
-    // HTML reference had no opaque track. A single flat grey background
-    // caused the visual depth regression on React.
+    await expect(nativeLens).toHaveCount(1)
+    await expect(material).toHaveAttribute('data-tone', 'neutral')
+    await expect(material).toHaveAttribute('data-optics-mode', /refraction|frosted|neutral/)
+    await expect(material).toHaveCSS('overflow', 'visible')
+    await expect(frame).toHaveCSS('box-shadow', 'none')
+    await expect(frame).toHaveCSS('outline-style', 'none')
+    const nativeShadow = await nativeLens.evaluate(el => getComputedStyle(el).boxShadow)
+    expect(nativeShadow).not.toBe('none')
+    const coatBackground = await coat.evaluate(el => getComputedStyle(el).backgroundImage)
+    expect(coatBackground).toContain('radial-gradient(')
+    expect(coatBackground).toContain('linear-gradient(')
+    await expect(coat).toHaveCSS('border-top-width', '1px')
     await expect(rail).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
-    const bg = await coat.evaluate(el => getComputedStyle(el).backgroundImage)
-    expect(bg).toContain('radial-gradient(')
-    expect(bg).toContain('linear-gradient(148deg')
-    const frameShadow = await frame.evaluate(el => getComputedStyle(el).boxShadow)
-    expect(frameShadow).not.toBe('none')
-    // Neutral shadow is now a softer, reusable opt-in elevation token.
-    // The scrollport padding keeps this shadow visible outside the 38px pill.
-    expect(frameShadow).toContain('10px')
-    expect(frameShadow).toContain('18px')
-    await expect(frame).toHaveCSS('outline-style', 'solid')
-    await expect(coat).toHaveCSS('border-top-width', '0px')
 
-    const review = group.getByTestId('glass-pill-review')
-    await review.click()
-    await expect(group.getByTestId('glass-pill-lens-frame'))
-      .toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
-    const [frameBox, selectedBox] = await Promise.all([frame.boundingBox(), review.boundingBox()])
+    await group.getByTestId('glass-pill-review').click()
+    await expect(frame).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+    const [frameBox, selectedBox] = await Promise.all([
+      frame.boundingBox(), group.getByTestId('glass-pill-review').boundingBox(),
+    ])
     expect(Math.abs((frameBox?.x ?? 0) - (selectedBox?.x ?? 0))).toBeLessThan(1.5)
     expect(Math.abs((frameBox?.width ?? 0) - (selectedBox?.width ?? 0))).toBeLessThan(1.5)
     await page.screenshot({
-      path: testInfo.outputPath('gl03-react-depth-restored-' + width + '.png'),
+      path: testInfo.outputPath('gl03-shared-material-' + width + '.png'),
       fullPage: false,
       animations: 'disabled',
     })
     await group.getByTestId('glass-pill-all').click()
-    await expect(group.getByTestId('glass-pill-lens-frame'))
-      .toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+    await expect(frame).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
   }
 })
 
+test('Pill neutral coat and native material shadow match accepted SidebarNav exactly', async ({ page }) => {
+  await page.goto('/?view=sidebar-nav')
+  const sidebar = page.getByTestId('sidebar-lab-client').getByTestId('sidebar-selected-lens')
+  await expect(sidebar).toHaveAttribute('data-tone', 'neutral')
+  const original = await sidebar.evaluate(el => {
+    const optics = el.querySelector<HTMLElement>('.fos-glass-optics')!
+    const coat = optics.querySelector<HTMLElement>('div[aria-hidden]')!
+    return {
+      shadow: getComputedStyle(optics).boxShadow,
+      coat: getComputedStyle(coat).backgroundImage,
+      rim: getComputedStyle(coat).borderTopColor,
+    }
+  })
+  await page.goto('/?view=glass-pill-tabs')
+  const pill = page.getByTestId('glass-pill-lens')
+  await expect(pill).toHaveAttribute('data-tone', 'neutral')
+  const current = await pill.evaluate(el => {
+    const optics = el.querySelector<HTMLElement>('.fos-glass-optics')!
+    const coat = optics.querySelector<HTMLElement>('div[aria-hidden]')!
+    return {
+      shadow: getComputedStyle(optics).boxShadow,
+      coat: getComputedStyle(coat).backgroundImage,
+      rim: getComputedStyle(coat).borderTopColor,
+    }
+  })
+  expect(current).toEqual(original)
+})
 
-test('scrollport optical clearance keeps the softer pill shadow visible at all responsive widths', async ({ page }, testInfo) => {
+test('scrollport clearance protects the accepted shared glass shadow at responsive widths', async ({ page }, testInfo) => {
   for (const width of [1440, 768, 390, 320]) {
     await page.setViewportSize({ width, height: width < 600 ? 844 : 900 })
     const group = page.getByTestId('glass-pill-tabs')
@@ -244,21 +265,19 @@ test('scrollport optical clearance keeps the softer pill shadow visible at all r
       const frame = root.querySelector<HTMLElement>('[data-testid="glass-pill-lens-frame"]')!
       const sc = scroll.getBoundingClientRect()
       const lc = frame.getBoundingClientRect()
-      const token = getComputedStyle(document.documentElement).getPropertyValue('--fos-glass-shadow-soft').trim()
-      const outerShadow = getComputedStyle(frame).boxShadow
+      const native = root.querySelector<HTMLElement>('.fos-glass-optics')!
       return {
         top: lc.top - sc.top,
         bottom: sc.bottom - lc.bottom,
-        token,
-        outerShadow,
+        shadow: getComputedStyle(native).boxShadow,
+        frameShadow: getComputedStyle(frame).boxShadow,
         horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth,
       }
     })
     expect(clearances.top).toBeGreaterThanOrEqual(12)
     expect(clearances.bottom).toBeGreaterThanOrEqual(16)
-    expect(clearances.token).toContain('10px')
-    expect(clearances.outerShadow).toContain('10px')
-    expect(clearances.outerShadow).toContain('18px')
+    expect(clearances.shadow).not.toBe('none')
+    expect(clearances.frameShadow).toBe('none')
     expect(clearances.horizontalOverflow).toBe(false)
 
     await group.getByTestId('glass-pill-done').click()
@@ -268,7 +287,7 @@ test('scrollport optical clearance keeps the softer pill shadow visible at all r
     expect(((after[0]?.y ?? 0) + (after[0]?.height ?? 0)) -
       ((after[1]?.y ?? 0) + (after[1]?.height ?? 0))).toBeGreaterThanOrEqual(16)
     await page.screenshot({
-      path: testInfo.outputPath('gl03-soft-shadow-safe-' + width + '.png'),
+      path: testInfo.outputPath('gl03-shared-shadow-safe-' + width + '.png'),
       fullPage: false,
       animations: 'disabled',
     })
