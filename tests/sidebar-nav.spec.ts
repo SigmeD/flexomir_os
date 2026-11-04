@@ -120,3 +120,67 @@ test('screenshot for owner visual review', async ({ page }, testInfo) => {
     await expect(client.getByTestId('sidebar-selected-lens')).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
   }
 })
+
+
+function scaleFromTransform(transform: string) {
+  if (transform === 'none') return 1
+  const matrix = /matrix\(([^)]+)\)/.exec(transform)
+  return matrix ? Number(matrix[1].split(',')[0].trim()) : NaN
+}
+
+test('reference 2.2.5 C label magnification follows the selected lens', async ({ page }) => {
+  const manager = page.getByTestId('sidebar-lab-manager')
+  const orders = manager.getByTestId('sidebar-nav-orders')
+  const clients = manager.getByTestId('sidebar-nav-clients')
+  const support = manager.getByTestId('sidebar-nav-support')
+  const getScale = async (button: typeof orders) => {
+    const value = await button.locator('.fos-sidebar-nav__label').evaluate(node => getComputedStyle(node).transform)
+    return scaleFromTransform(value)
+  }
+
+  await page.mouse.move(1200, 600)
+  await expect.poll(() => getScale(orders)).toBeGreaterThan(1.040)
+  expect(await getScale(clients)).toBeCloseTo(1, 2)
+
+  await support.click()
+  await page.mouse.move(1200, 600)
+  await expect(manager.getByTestId('sidebar-selected-lens')).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  await expect.poll(() => getScale(support)).toBeGreaterThan(1.040)
+  expect(await getScale(orders)).toBeCloseTo(1, 2)
+  expect(await getScale(clients)).toBeCloseTo(1, 2)
+  expect(await getScale(support)).toBeLessThan(1.046)
+})
+
+test('hover and focus magnify label but never relocate selected lens', async ({ page }) => {
+  const manager = page.getByTestId('sidebar-lab-manager')
+  const orders = manager.getByTestId('sidebar-nav-orders')
+  const clients = manager.getByTestId('sidebar-nav-clients')
+  const lens = manager.getByTestId('sidebar-selected-lens')
+  const label = clients.locator('.fos-sidebar-nav__label')
+
+  await clients.hover()
+  await expect.poll(async () => scaleFromTransform(await label.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.040)
+  await expect(orders).toHaveAttribute('aria-current', 'page')
+  await expect(lens).toHaveAttribute('data-travel-target', '0')
+  await page.mouse.move(1200, 600)
+  await expect.poll(async () => scaleFromTransform(await label.evaluate(el => getComputedStyle(el).transform))).toBeCloseTo(1, 2)
+
+  await clients.focus()
+  await expect(clients).toBeFocused()
+  await expect.poll(async () => scaleFromTransform(await label.evaluate(el => getComputedStyle(el).transform))).toBeGreaterThan(1.040)
+  await expect(orders).toHaveAttribute('aria-current', 'page')
+})
+
+test('font scale fallback in reduced motion and forced colors', async ({ page }) => {
+  const client = page.getByTestId('sidebar-lab-client')
+  const artworks = client.getByTestId('sidebar-nav-artworks')
+  const label = artworks.locator('.fos-sidebar-nav__label')
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await artworks.hover()
+  await expect(label).toHaveCSS('transform', 'none')
+  await artworks.click()
+  await expect(artworks).toHaveAttribute('aria-current', 'page')
+  await expect(label).toHaveCSS('transform', 'none')
+  await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'no-preference' })
+  await expect(label).toHaveCSS('transform', 'none')
+})
