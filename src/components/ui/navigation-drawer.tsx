@@ -35,10 +35,15 @@ export function NavigationDrawer({
   const exitTimer = useRef<number | undefined>(undefined)
   const [open, setOpen] = useState(false)
   const [rendered, setRendered] = useState(false)
+  // Programmatic focus after pointer activation must not look like a keyboard
+  // focus ring. Preserve a visible ring when the user switches to keyboard.
+  const activationRef = useRef<'pointer' | 'keyboard'>('pointer')
+  const [focusMode, setFocusMode] = useState<'pointer' | 'keyboard'>('pointer')
 
   function openMenu() {
     if (exitTimer.current !== undefined) window.clearTimeout(exitTimer.current)
     exitTimer.current = undefined
+    setFocusMode(activationRef.current)
     setRendered(true)
     setOpen(true)
   }
@@ -82,6 +87,9 @@ export function NavigationDrawer({
   }, [open])
 
   function onDialogKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === 'Tab' || event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+      setFocusMode('keyboard')
+    }
     if (event.key === 'Escape') {
       event.preventDefault()
       event.stopPropagation()
@@ -119,6 +127,10 @@ export function NavigationDrawer({
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={dialogId}
+        onPointerDown={() => { activationRef.current = 'pointer' }}
+        onKeyDown={event => {
+          if (event.key === 'Enter' || event.key === ' ') activationRef.current = 'keyboard'
+        }}
         onClick={() => open ? closeMenu() : openMenu()}
       >
         <span aria-hidden="true" className="fos-nav-drawer__hamburger">
@@ -146,6 +158,8 @@ export function NavigationDrawer({
             aria-modal="true"
             aria-label={ariaLabel}
             tabIndex={-1}
+            data-focus-mode={focusMode}
+            onPointerDown={() => setFocusMode('pointer')}
             onKeyDown={onDialogKeyDown}
             className="fos-nav-drawer__panel"
             data-testid="navigation-drawer-panel"
