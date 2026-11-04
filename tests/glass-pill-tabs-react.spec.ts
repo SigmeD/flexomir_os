@@ -195,7 +195,8 @@ test('HTML glass depth restored without changing shared GlassLens or spring phys
     expect(bg).toContain('linear-gradient(148deg')
     const frameShadow = await frame.evaluate(el => getComputedStyle(el).boxShadow)
     expect(frameShadow).not.toBe('none')
-    expect(frameShadow).toContain('rgba(50, 54, 59, 0.062)')
+    // Chromium rounds serialized 8-bit alpha: CSS .062 → .063.
+    expect(frameShadow).toMatch(/rgba\(50, 54, 59, 0\.0(?:62|63)\)/)
     await expect(frame).toHaveCSS('outline-style', 'solid')
     await expect(coat).toHaveCSS('border-top-width', '0px')
 
