@@ -217,3 +217,60 @@ test('HTML glass depth restored without changing shared GlassLens or spring phys
       .toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
   }
 })
+
+
+test('scrollport optical clearance keeps the softer pill shadow visible at all responsive widths', async ({ page }, testInfo) => {
+  for (const width of [1440, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: width < 600 ? 844 : 900 })
+    const group = page.getByTestId('glass-pill-tabs')
+    const scroller = group.getByTestId('glass-pill-scroll')
+    const frame = group.getByTestId('glass-pill-lens-frame')
+    const material = group.getByTestId('glass-pill-lens')
+
+    await expect(scroller).toHaveCSS('overflow-x', 'auto')
+    await expect(scroller).toHaveCSS('padding-top', '7px')
+    await expect(scroller).toHaveCSS('padding-bottom', '12px')
+    await expect(frame).toHaveCSS('height', '38px')
+    await expect(group.getByTestId('glass-pill-all')).toHaveCSS('height', '44px')
+    await expect(group.locator('[data-fos-glass-material]')).toHaveCount(1)
+    await expect(material.locator('.fos-glass-optics')).toHaveCount(1)
+
+    // The scrollport is the clipping boundary (overflow-x:auto). The lens
+    // must be inset from it so BOTH diffuse shadow lobes survive.
+    const clearances = await group.evaluate(root => {
+      const scroll = root.querySelector<HTMLElement>('[data-testid="glass-pill-scroll"]')!
+      const frame = root.querySelector<HTMLElement>('[data-testid="glass-pill-lens-frame"]')!
+      const sc = scroll.getBoundingClientRect()
+      const lc = frame.getBoundingClientRect()
+      const token = getComputedStyle(document.documentElement).getPropertyValue('--fos-glass-shadow-soft').trim()
+      const outerShadow = getComputedStyle(frame).boxShadow
+      return {
+        top: lc.top - sc.top,
+        bottom: sc.bottom - lc.bottom,
+        token,
+        outerShadow,
+        horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth,
+      }
+    })
+    expect(clearances.top).toBeGreaterThanOrEqual(12)
+    expect(clearances.bottom).toBeGreaterThanOrEqual(16)
+    expect(clearances.token).toContain('10px')
+    expect(clearances.outerShadow).toContain('10px')
+    expect(clearances.outerShadow).toContain('18px')
+    expect(clearances.horizontalOverflow).toBe(false)
+
+    await group.getByTestId('glass-pill-done').click()
+    await expect(frame).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+    const after = await Promise.all([scroller.boundingBox(), frame.boundingBox()])
+    expect((after[1]?.y ?? 0) - (after[0]?.y ?? 0)).toBeGreaterThanOrEqual(12)
+    expect(((after[0]?.y ?? 0) + (after[0]?.height ?? 0)) -
+      ((after[1]?.y ?? 0) + (after[1]?.height ?? 0))).toBeGreaterThanOrEqual(16)
+    await page.screenshot({
+      path: testInfo.outputPath('gl03-soft-shadow-safe-' + width + '.png'),
+      fullPage: false,
+      animations: 'disabled',
+    })
+    await group.getByTestId('glass-pill-all').click()
+    await expect(frame).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  }
+})
