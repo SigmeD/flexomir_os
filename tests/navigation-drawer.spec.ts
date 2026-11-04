@@ -2,6 +2,9 @@ import { expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/?view=navigation-drawer')
+  // Keep previous navigation close-after-lens acceptance tests explicit.
+  // The isolated preview defaults to the Owner's stay-open mode.
+  await page.getByTestId('drawer-mode-close-after-lens').click()
 })
 
 async function openDrawer(page: import('@playwright/test').Page) {
@@ -307,4 +310,104 @@ test('reduced-motion selects and closes without waiting for spring movement', as
     timeout: 1500,
   })
   await expect(page.getByTestId('navigation-drawer-trigger')).toHaveAttribute('aria-expanded', 'false')
+})
+
+
+test('mobile/tablet show the EXACT SAME optional SVG icon set as Desktop SidebarNav', async ({ page }) => {
+  // Read both role icon definitions from their rendered Desktop SidebarNav.
+  const desktopSVGs: Record<string, Record<string, string>> = {}
+  await page.goto('/?view=sidebar-nav')
+  for (const role of ['client', 'manager']) {
+    desktopSVGs[role] = {}
+    const nav = page.getByTestId('sidebar-lab-' + role).getByRole('navigation')
+    for (const id of ['orders', role === 'client' ? 'artworks' : 'clients', 'support']) {
+      desktopSVGs[role][id] = await nav.getByTestId('sidebar-nav-' + id)
+        .locator('.fos-sidebar-nav__icon svg')
+        .evaluate(el => el.innerHTML)
+    }
+  }
+  await page.goto('/?view=navigation-drawer')
+  for (const width of [390, 768, 320]) {
+    await page.setViewportSize({ width, height: width === 768 ? 1024 : 844 })
+    for (const role of ['client', 'manager']) {
+      await page.getByTestId('drawer-role-' + role).click()
+      const panel = await openDrawer(page)
+      const nav = panel.getByRole('navigation')
+      for (const id of ['orders', role === 'client' ? 'artworks' : 'clients', 'support']) {
+        const button = nav.getByTestId('sidebar-nav-' + id)
+        const svg = button.locator('.fos-sidebar-nav__icon svg')
+        await expect(svg).toHaveCount(1)
+        await expect(svg).toHaveAttribute('aria-hidden', 'true')
+        await expect(svg).toHaveAttribute('focusable', 'false')
+        const box = await svg.boundingBox()
+        expect(box?.width).toBe(19)
+        expect(box?.height).toBe(19)
+        expect(await svg.evaluate(el => el.innerHTML)).toBe(desktopSVGs[role][id])
+      }
+      await page.keyboard.press('Escape')
+      await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 3500 })
+    }
+  }
+})
+
+test('Owner keep-open mode: choose, watch same lens settle, choose again; dismiss only outside/Escape', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.getByTestId('drawer-mode-stay-open').click()
+  await expect(page.getByTestId('drawer-mode-stay-open')).toHaveAttribute('aria-pressed', 'true')
+  const panel = await openDrawer(page)
+  const nav = panel.getByRole('navigation')
+  const lens = panel.getByTestId('sidebar-selected-lens')
+  for (const [id, label, target] of [
+    ['support', 'Поддержка', '96'],
+    ['artworks', 'Макеты', '48'],
+  ] as const) {
+    await nav.getByTestId('sidebar-nav-' + id).click()
+    await expect(page.getByTestId('navigation-drawer-layer')).toHaveAttribute('data-selection-transition', 'moving')
+    await expect(lens).toHaveAttribute('data-travel-target', target)
+    await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: ' + label, {
+      timeout: 6000,
+    })
+    await expect(lens).toHaveAttribute('data-motion-state', 'settled')
+    await expect(page.getByTestId('navigation-drawer-layer')).toHaveAttribute('data-selection-transition', 'idle')
+    await expect(page.getByTestId('navigation-drawer-trigger')).toHaveAttribute('aria-expanded', 'true')
+  }
+  // Clicking active item also must not dismiss keep-open mode.
+  await nav.getByTestId('sidebar-nav-artworks').click()
+  await expect(page.getByTestId('navigation-drawer-trigger')).toHaveAttribute('aria-expanded', 'true')
+  const scrim = page.getByTestId('navigation-drawer-scrim')
+  await scrim.click({ position: { x: 12, y: 440 } })
+  await expect(page.getByTestId('navigation-drawer-trigger')).toHaveAttribute('aria-expanded', 'false')
+  await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 3500 })
+})
+
+test('keep-open mode does not hide selected lens or change item geometry when icons are present', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.getByTestId('drawer-mode-stay-open').click()
+  const panel = await openDrawer(page)
+  const rows = panel.getByRole('navigation').getByRole('button')
+  for (const row of await rows.all()) {
+    expect((await row.boundingBox())?.height).toBe(44)
+    expect((await row.locator('.fos-sidebar-nav__icon').boundingBox())?.width).toBe(19)
+  }
+  const selected = panel.getByTestId('sidebar-nav-orders')
+  const lens = panel.getByTestId('sidebar-selected-lens')
+  await expect(lens).toHaveAttribute('data-tone', 'neutral')
+  await expect(selected).toHaveAttribute('aria-current', 'page')
+  await expect(lens).toHaveAttribute('data-motion', 'travel')
+  expect((await lens.boundingBox())?.height).toBe(44)
+  const scrim = page.getByTestId('navigation-drawer-scrim')
+  await scrim.click({ position: { x: 12, y: 440 } })
+  await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 3500 })
+})
+
+test('keep-open mode supports keyboard Escape even after the lens completes', async ({ page }) => {
+  await page.getByTestId('drawer-mode-stay-open').click()
+  const panel = await openDrawer(page)
+  await panel.getByTestId('sidebar-nav-support').click()
+  await expect(page.getByTestId('drawer-settled')).toHaveText('Линза завершила переход: Поддержка', {
+    timeout: 6000,
+  })
+  await page.keyboard.press('Escape')
+  await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 3500 })
+  await expect(page.getByTestId('navigation-drawer-trigger')).toBeFocused()
 })
