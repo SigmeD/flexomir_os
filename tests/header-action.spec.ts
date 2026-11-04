@@ -94,3 +94,27 @@ test('touch activation and no page overflow at 390px', async ({ browser }) => {
     await context.close()
   }
 })
+
+test('visual review captures for Desktop and Mobile', async ({ page }, testInfo) => {
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: width === 1440 ? 900 : 844 })
+    await page.screenshot({
+      path: testInfo.outputPath('header-action-' + width + '-idle.png'),
+      fullPage: true,
+      animations: 'disabled',
+    })
+    const circle = page.getByTestId('header-action-add').locator('.fos-ha__circle')
+    const rect = await circle.boundingBox()
+    expect(rect).toBeTruthy()
+    await page.mouse.move(rect!.x + 8, rect!.y + 8)
+    await page.mouse.down()
+    await page.waitForTimeout(180)
+    await page.screenshot({
+      path: testInfo.outputPath('header-action-' + width + '-pressed.png'),
+      fullPage: true,
+      animations: 'disabled',
+    })
+    await page.mouse.up()
+    await page.waitForTimeout(800)
+  }
+})
