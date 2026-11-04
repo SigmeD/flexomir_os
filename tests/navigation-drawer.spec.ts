@@ -179,3 +179,26 @@ test('visual review captures Tablet/Mobile with open menu', async ({ page }, tes
     await expect(page.getByRole('dialog')).toHaveCount(0, { timeout: 3500 })
   }
 })
+
+
+test('tapping the already-selected menu item dismisses without fake navigation', async ({ page }) => {
+  const trigger = page.getByTestId('navigation-drawer-trigger')
+  const panel = await openDrawer(page)
+  await panel.getByTestId('sidebar-nav-orders').click()
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+  await expect(page.getByTestId('drawer-selection')).toHaveText('Выбрано: Заказы')
+  await expect(trigger).toBeFocused()
+})
+
+test('actual wheel scrolling is blocked behind open drawer and resumes after close', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 680 })
+  await openDrawer(page)
+  await page.mouse.move(10, 550)
+  await page.mouse.wheel(0, 600)
+  await page.waitForTimeout(150)
+  expect(await page.evaluate(() => window.scrollY)).toBe(0)
+  await page.keyboard.press('Escape')
+  await expect(page.getByTestId('navigation-drawer-trigger')).toHaveAttribute('aria-expanded', 'false')
+  await page.mouse.wheel(0, 600)
+  await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+})
