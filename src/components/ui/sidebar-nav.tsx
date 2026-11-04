@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties } from 'react'
+import { useCallback, useLayoutEffect, useRef, type CSSProperties } from 'react'
 import { FosGlassMaterial } from './fos-glass-material'
 import './sidebar-nav.css'
 
@@ -34,6 +34,30 @@ export function SidebarNav({
   // A deep-linked initial route should not animate from the top on first render.
   const initialIndexRef = useRef(Math.max(0, activeIndex))
   const anchor = initialIndexRef.current
+  const labelRefs = useRef<Array<HTMLSpanElement | null>>([])
+  const currentTravel = useRef(0)
+  const selectedRef = useRef(activeIndex)
+  selectedRef.current = activeIndex
+
+  // Approved 2.2.5 C: only the selected label receives the +4.3% lens
+  // magnification as the existing spring reaches it. One source of truth:
+  // FosGlassMaterial reports its current travel instead of a second RAF.
+  const syncLabelMagnification = useCallback((travelY: number) => {
+    currentTravel.current = travelY
+    for (let index = 0; index < labelRefs.current.length; index++) {
+      const label = labelRefs.current[index]
+      if (!label) continue
+      const difference = Math.abs((index - anchor) * 48 - travelY)
+      const proximity = index === selectedRef.current
+        ? Math.max(0, Math.min(1, 1 - difference / 44))
+        : 0
+      label.style.setProperty('--fos-sidebar-label-scale', (1 + 0.043 * proximity).toFixed(5))
+    }
+  }, [anchor])
+
+  useLayoutEffect(() => {
+    syncLabelMagnification(currentTravel.current)
+  }, [activeIndex, items, syncLabelMagnification])
 
   return (
     <nav
@@ -59,9 +83,10 @@ export function SidebarNav({
             rimWidth={12}
             motion="travel"
             travelY={(activeIndex - anchor) * 48}
+            onTravelFrame={syncLabelMagnification}
           />
         )}
-        {items.map(item => (
+        {items.map((item, index) => (
           <button
             type="button"
             key={item.id}
@@ -73,7 +98,10 @@ export function SidebarNav({
               if (!item.disabled && item.id !== activeId) onSelect(item.id)
             }}
           >
-            <span className="fos-sidebar-nav__label">{item.label}</span>
+            <span
+              className="fos-sidebar-nav__label"
+              ref={node => { labelRefs.current[index] = node }}
+            >{item.label}</span>
           </button>
         ))}
       </div>
