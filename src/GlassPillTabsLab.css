@@ -1,0 +1,97 @@
+.pill-lab {
+  min-height: 100vh;
+  padding: 44px max(20px, calc((100vw - 1040px) / 2)) 64px;
+  background: #f6f7f8;
+  color: #27333e;
+  font-family: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+}
+.pill-lab__eyebrow { font-size: 11px; font-weight: 760; color: #7b8b97; letter-spacing: .11em; }
+.pill-lab > h1 { font-size: clamp(28px, 5vw, 42px); letter-spacing: -.04em; margin: 14px 0 10px; }
+.pill-lab > p { color: #72818c; font-size: 13px; line-height: 1.7; max-width: 650px; }
+.pill-lab__card {
+  min-width: 0;
+  background: rgba(255,255,255,.76);
+  border: 1px solid #e2e6e8;
+  border-radius: 22px;
+  margin-top: 30px;
+  padding: 24px;
+  box-shadow: 0 10px 35px rgba(55,64,71,.045);
+}
+.pill-lab__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.pill-lab__header h2 { font-size: 22px; letter-spacing: -.03em; margin: 0; }
+.pill-lab__header small, .pill-lab__hint { color: #8b99a3; font-size: 12px; }
+.pill-lab__filter-label { color: #6b7782; font-size: 12px; font-weight: 650; margin-bottom: 12px; }
+.pill-lab__hint { margin: 10px 0 20px; line-height: 1.5; }
+.pill-lab__results-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 16px;
+  margin-bottom: 10px;
+  border-top: 1px solid #e9ecee;
+  font-size: 13px;
+}
+.pill-lab__results-head span { color: #81919d; }
+.pill-lab__orders { min-height: 124px; }
+.pill-lab__order {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 2px;
+  border-bottom: 1px solid #edf0f1;
+  gap: 14px;
+  font-size: 12px;
+}
+.pill-lab__order div { display: grid; gap: 5px; }
+.pill-lab__order small { color: #8c9aa5; }
+.pill-lab__order > span {
+  color: #667b89;
+  border-radius: 999px;
+  background: #f0f3f4;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+.pill-lab__empty { color: #7f8f99; font-size: 13px; }
+.pill-lab__tools {
+  margin-top: 28px;
+  padding: 16px;
+  border: 1px solid #e6ebed;
+  border-radius: 16px;
+  background: #f8f9fa;
+}
+.pill-lab__tools > strong { font-size: 12px; }
+.pill-lab__tools p, .pill-lab__tools small { font-size: 11px; color: #8697a1; }
+.pill-lab__tools div { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 9px; }
+.pill-lab__tools button {
+  padding: 9px 11px;
+  border-radius: 10px;
+  border: 1px solid #d7dfe3;
+  background: #fff;
+  color: #435968;
+  cursor: pointer;
+  font: 600 12px Manrope,Onest,sans-serif;
+}
+.pill-lab__tools button:disabled { opacity: .4; cursor: not-allowed; }
+.pill-lab__tools button:focus-visible { outline: 2px solid #497e9b; outline-offset: 2px; }
+.pill-lab__footnote { margin: 17px 0 0; font-size: 11px; }
+@media(max-width:700px) {
+  .pill-lab { padding: 24px 0 48px; }
+  .pill-lab > h1, .pill-lab > p, .pill-lab__eyebrow { margin-left: 20px; margin-right: 20px; }
+  .pill-lab__card { border-left: 0; border-right: 0; border-radius: 0; padding: 22px 0; }
+  .pill-lab__header, .pill-lab__filter-label, .pill-lab__hint,
+  .pill-lab__results-head, .pill-lab__orders, .pill-lab__tools, .pill-lab__footnote {
+    margin-left: 20px; margin-right: 20px;
+  }
+  .pill-lab__header { align-items: flex-start; }
+  .pill-lab__header h2 { font-size: 20px; }
+  .pill-lab__header small { text-align: right; }
+}
