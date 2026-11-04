@@ -1,0 +1,186 @@
+/*
+ * FOS V2 HeaderAction: 48x48 circle in BOTH presentations.
+ * Desktop wrapper 68x68 adds a separate, non-moving caption.
+ * Visual Figma: 1953:4168 / 2173:1425; approved motion: GL-01D.
+ * This is a local material coat, not a second optical/Canvas engine.
+ * Colors are intentionally exposed as component-scoped theme tokens.
+ */
+.fos-ha {
+  --ha-bg-from: #3e647e;
+  --ha-bg-mid: #2b4960;
+  --ha-bg-to: #26374b;
+  --ha-rim: rgba(224, 241, 251, .37);
+  --ha-icon: #fff;
+  --ha-caption: var(--fos-v2-semantic-color-text-primary, #1f2228);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  width: 68px;
+  height: 68px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ha-caption);
+  font-family: Manrope, Onest, system-ui, sans-serif;
+  cursor: pointer;
+  touch-action: manipulation;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.fos-ha__circle {
+  --ha-shift-x: 0px;
+  --ha-shift-y: 0px;
+  --ha-scale: 1;
+  --ha-light-x: 25%;
+  --ha-light-y: 10%;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: none;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--ha-rim);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse 60% 47% at 26% 9%, rgba(185,219,239,.37), transparent 98%),
+    linear-gradient(153deg, var(--ha-bg-from) 0%, var(--ha-bg-mid) 49%, var(--ha-bg-to) 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.30),
+    inset 0 -2px 3px rgba(16,32,47,.16),
+    0 5px 10px rgba(27,48,64,.13),
+    0 1px 2px rgba(26,45,59,.10);
+}
+.fos-ha__circle::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 36px 31px at 25% 10%, rgba(255,255,255,.27), transparent 88%),
+    linear-gradient(146deg, rgba(255,255,255,.17), rgba(255,255,255,.012) 41%, rgba(183,224,246,.055) 94%);
+  transform: translate3d(var(--ha-shift-x), var(--ha-shift-y), 0);
+}
+.fos-ha__circle::after {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 2px;
+  width: 22px;
+  height: 5px;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,.47), transparent 78%);
+  opacity: .57;
+  transform: translate3d(var(--ha-shift-x), var(--ha-shift-y), 0) rotate(-9deg);
+}
+.fos-ha__contact {
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(ellipse 29px 26px at var(--ha-light-x) var(--ha-light-y), rgba(246,253,255,.26), transparent 88%);
+  opacity: 0;
+  transition: opacity .20s ease-out;
+}
+.fos-ha[data-pressed="true"] .fos-ha__contact {
+  opacity: 1;
+  transition-duration: .06s;
+}
+.fos-ha__plus {
+  position: relative;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  color: var(--ha-icon);
+  transform: translate3d(var(--ha-shift-x), var(--ha-shift-y), 0) scale(var(--ha-scale));
+  backface-visibility: hidden;
+}
+.fos-ha__plus::before, .fos-ha__plus::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  border-radius: 1px;
+}
+.fos-ha__plus::before { width: 14px; height: 2px; left: 5px; top: 11px; }
+.fos-ha__plus::after { width: 2px; height: 14px; left: 11px; top: 5px; }
+.fos-ha__caption {
+  flex: none;
+  width: 68px;
+  height: 16px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.fos-ha__tooltip {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #273141;
+  color: white;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 18px;
+  box-shadow: 0 5px 14px rgba(23, 40, 55, .17);
+  pointer-events: none;
+}
+.fos-ha:focus-visible { outline: 3px solid #345f8f; outline-offset: 3px; border-radius: 8px; }
+.fos-ha[data-pressed="true"] .fos-ha__circle {
+  border-color: rgba(245,252,255,.60);
+  box-shadow:
+    inset 1px 2px 6px rgba(12,31,51,.24),
+    inset -1px -2px 4px rgba(221,242,255,.20),
+    0 3px 7px rgba(22,39,55,.15);
+}
+.fos-ha:disabled { cursor: not-allowed; }
+.fos-ha:disabled .fos-ha__circle { opacity: .32; }
+.fos-ha:disabled .fos-ha__caption { opacity: .42; }
+
+.fos-ha--compact { width: 48px; height: 48px; }
+.fos-ha--compact .fos-ha__caption { display: none; }
+@media (max-width:1023px) {
+  .fos-ha--auto { width: 48px; height: 48px; }
+  .fos-ha--auto .fos-ha__caption { display: none; }
+}
+@media (hover:hover) and (pointer:fine) {
+  .fos-ha--compact:not(:disabled):is(:hover,:focus-visible) .fos-ha__tooltip { display: block; }
+  @media (max-width:1023px) {
+    .fos-ha--auto:not(:disabled):is(:hover,:focus-visible) .fos-ha__tooltip { display: block; }
+  }
+}
+.fos-ha--compact:not(:disabled):focus-visible .fos-ha__tooltip { display: block; }
+@media (max-width:1023px) {
+  .fos-ha--auto:not(:disabled):focus-visible .fos-ha__tooltip { display: block; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .fos-ha__contact { transition: none; }
+  .fos-ha__plus,.fos-ha__circle::before,.fos-ha__circle::after { transform: none !important; }
+}
+@media (forced-colors:active) {
+  .fos-ha__circle {
+    background: ButtonFace;
+    border: 2px solid ButtonText;
+    color: ButtonText;
+    box-shadow: none;
+  }
+  .fos-ha__plus { color: ButtonText; }
+  .fos-ha__circle::before,.fos-ha__circle::after,.fos-ha__contact { display: none; }
+  .fos-ha:focus-visible { outline: 3px solid Highlight; }
+  .fos-ha[data-pressed="true"] .fos-ha__circle { outline: 2px solid Highlight; }
+  .fos-ha__tooltip { background: Canvas; color: CanvasText; border: 1px solid ButtonText; box-shadow: none; }
+}

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { GlassMaterialLab } from './GlassMaterialLab'
+import { HeaderActionLab } from './HeaderActionLab'
 import {
   GlassSelect,
   GlassSelectTrigger,
@@ -77,7 +78,9 @@ function GlassFilterDemo() {
 }
 
 export function App() {
-  return new URLSearchParams(window.location.search).get('view') === 'material'
+  const view = new URLSearchParams(window.location.search).get('view')
+  if (view === 'header-action') return <HeaderActionLab />
+  return view === 'material'
     ? <GlassMaterialLab orders={orders} statuses={statuses} />
     : <GlassFilterDemo />
 }
