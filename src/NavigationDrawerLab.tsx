@@ -19,6 +19,7 @@ const managerItems: readonly SidebarNavItem[] = [
 export function NavigationDrawerLab() {
   const [role, setRole] = useState<'client' | 'manager'>('client')
   const [selected, setSelected] = useState({ client: 'orders', manager: 'orders' })
+  const [settled, setSettled] = useState({ client: null as string | null, manager: null as string | null })
   const items = role === 'client' ? clientItems : managerItems
   const activeId = selected[role]
   const label = items.find(item => item.id === activeId)?.label ?? '—'
@@ -35,6 +36,7 @@ export function NavigationDrawerLab() {
             ariaLabel={role === 'client' ? 'Меню клиента' : 'Меню менеджера'}
             footerText={role === 'client' ? 'ООО «Клиент»' : 'Менеджер · тестовый режим'}
             onSelect={id => setSelected(current => ({ ...current, [role]: id }))}
+            onSelectionSettled={id => setSettled(current => ({ ...current, [role]: id }))}
           />
         </div>
       </header>
@@ -58,6 +60,9 @@ export function NavigationDrawerLab() {
         <section className="nav-drawer-lab__card">
           <p className="nav-drawer-lab__card-title">Тестовая область</p>
           <p role="status" data-testid="drawer-selection">Выбрано: {label}</p>
+          <p data-testid="drawer-settled">Линза завершила переход: {
+            items.find(item => item.id === settled[role])?.label ?? '—'
+          }</p>
           <p>Проверьте нажатие вне меню, Escape, удержание фокуса клавиатурой и отсутствие прокрутки страницы за открытой панелью.</p>
         </section>
         <div className="nav-drawer-lab__scroll-witness" data-testid="drawer-scroll-witness">
