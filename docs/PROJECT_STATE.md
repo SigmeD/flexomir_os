@@ -2,6 +2,13 @@
 
 **Локальный снимок:** 04.11.2026. **Источник свежих изменений:** [Frontend Startup CURRENT](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit). На новой сессии проверить изменения в Drive и фактический Git.
 
+## Решение OWNER 04.11.2026 — обязательный HTML visual gate
+
+- Новый процесс: Figma CURRENT + FOS/Primary DS → HTML-превью → HTML QA D1440/L1024/T768/M390/M320 → `OWNER_HTML_APPROVED` → **отдельная** задача Codex на React → React QA/Owner gate → PR. Старое требование «сразу Figma→React» заменено.
+- Принцип: Figma определяет компоненты, форму, размер, иконки, типографику и адаптивы; Glass эталоны определяют материал/свет/анимацию. Manager Primary остаётся фигурой иконковой кнопки Figma, а не текстовой демонстрацией 2.1.5.
+- Первый экран Manager «Заказы»: архив `Flexomir_Orders_HTML (1).zip` / `Flexomir_Orders_Review.html` доступен как **непринятый** HTML-кандидат. Следующая стадия — gap-анализ Figma node `2633:20095`, HTML доработка, Owner HTML review. `React Manager Orders BLOCKED` до неё.
+- Git React/Vite/Glass-полигон существует отдельно. Это обновление документации; исходный UI и backend не модифицированы. Правило также внесено в [AGENTS](../AGENTS.md), [план](DELIVERY_PLAN.md) и [QA](QA_CHECKLIST.md).
+
 ## Проверено локально 04.11.2026
 
 - Рабочая папка `D:\Projects\flexomir_os`, одна рабочая папка Git, ветка `main`; при начале задачи незакоммиченных изменений не было. `origin`: `https://github.com/SigmeD/flexomir_os.git`. Начальный коммит `cd0656a` отправлен, локальный и удалённый SHA сверены в предыдущей задаче этой сессии.
@@ -14,7 +21,7 @@
 
 ## Сведения из пакета владельца, CURRENT ещё не перечитан
 
-- Направление: Figma → React, первый пилот — Manager «Заказы», затем поэтапная передача Алексею.
+- Историческая схема от 03.11 «Figma → React» заменена 04.11 на Figma → HTML visual preview → Owner HTML approval → отдельная React-задача.
 - Прежний автономный HTML-пилот НЕ ПРИНЯТ; не использовать как baseline.
 - Primary Button 2.1.5, Sidebar Lens 2.2.5 C, Horizontal Tabs 2.3.3c указаны как визуально согласованные изолированные HTML-эталоны. React-порт и продуктовая интеграция — отдельные гейты.
 - Select/Dropdown и `FosGlassMaterial`: Owner gate OPEN; код в этом репозитории есть, его существование не означает продуктовую приёмку.
@@ -24,10 +31,10 @@
 
 1. **FE-01:** проверить CURRENT Drive/Figma по первой продуктовой задаче; локальная часть FE-00 выполнена.
 2. **FE-02/03:** решить вопрос PUBLIC/PRIVATE; использовать существующий React и build, не повторять bootstrap. Запуск и браузерный QA проверять отдельно.
-3. **FE-04/05/06:** общие структурные компоненты; source-to-screen matrix; реальный Manager «Заказы» в React.
-4. **FE-07:** браузерная/визуальная приёмка одного пилота 1440,1024,768,390,320.
+3. **FE-04/05/06:** source-to-screen matrix, Figma gap-audit прежнего HTML, исправленный HTML Manager Orders, сохранение фигмовских компонентов и Glass motion слоя.
+4. **FE-07:** HTML QA + Owner visual gate 1440/1024/768/390/320; React task только после `OWNER_HTML_APPROVED`.
 5. **GL-01…GL-05 (параллельно):** React-порт визуальных эталонов, затем Select/Dropdown по контракту.
-6. После QA и Owner: интеграционный PR + согласованные UI/API contracts, затем следующие экраны.
+6. После HTML Owner approval — React-задача, React QA, повторное Owner approval, интеграционный PR + согласованные UI/API contracts, затем следующие экраны.
 
 ## Блокеры и открытые решения
 
