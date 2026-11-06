@@ -6,6 +6,25 @@
 
 ## Source of truth and constraints
 
+## PR #16 — blocking Figma parity audit (Owner 06.11, before screen refactor)
+
+Head `99303fe`: A/B/C TEST_PASS, **VISUAL_PASS/OWNER_ACCEPTED не присвоены**. Источники адресно перечитаны: DS `634:60`, Technical `1688:532`, Client `1782:6000`, Manager `2495:8870`, masters ниже. Задача #15 обновлена Owner: сначала общий UI и отдельный rendering, затем эталон New Item, затем остальные композиции; один PR #16, без merge.
+
+| Figma master / states | Existing React / consumers | Audit action | Gate |
+| --- | --- | --- | --- |
+| Header family `1953:4168`, compact `2173:1425`: Add/Create/Save/Send/Edit + disabled | `HeaderAction` есть для Add/Create; local Send в Composer/Completed | EXTEND существующий HeaderAction новыми glyphs, сохранить motion; удалить local Primary | primitive QA → screens |
+| More `1914:650`, menus `1914:655/658/663/668/673/676`: default/disabled/focus/open | только `CompletedOrderMenu`, отдельный движок | CREATE общий MoreAction/OverflowMenu; Completed thin composition, один keyboard/outside/focus lifecycle | Radix already installed, без нового Glass |
+| Input `634:402`, Select `1148:311`, Textarea `634:418`, Note `681:203`, Date `1169:437`, Quantity `680:177`: default/focus/error/readonly | локальная `.fos-order-field` разметка повторяется в Item/Composer/Manager | CREATE controlled shared fields + FOSAction, единые токены, labels/error semantics | 44px field, 8px label gap/radius, isolated variants |
+| Segmented `943:263`, Printing `2315:9747`: wide/compact × empty/flex/digit | видимые radio в Item | CREATE shared segmented/PrintingMethodControl; не рисовать отдельные экраны | 6 variants + keyboard |
+| Artwork `634:445`: empty/selected/HELP + disabled library/error | native file UI в Item | CREATE ArtworkSource; chooser скрыт внутри FOS upload, exact UI; filename selected, не uploaded | local file/HELP, no fake success |
+| Upload Panel `1438:474` | не используется в актуальном `634:445` / Order Item Form | DEFER отдельную library upload family; не создавать ложные network states | server upload/library OPEN |
+| Header V3 `2302:2138`, Breadcrumb `2330:2346` | отдельные локальные headers, footer/back rows | CREATE PageHeader + Breadcrumbs; Desktop 30/40, T26/36, M22/30; action row48/68, no extra compact back row | long title/focus/viewport |
+| Item Summary `2025:6608`, full row + chevron; Order Row `685:195` | summary + отдельная Edit кнопка; OrderCard собственные размеры | EXTEND summary/OrderItemRow и OrderCard; whole-row button, exact geometry | click/Enter/touch + readonly |
+| Item Form `2025:6779/6822/6865`, New `1791:6130/1837:6385/1791:6185` | один ItemForm, неверная grid/footer/no note | RECOMPOSE из shared controls; Header Add/Save+More; убрать footer controls | reference D/T/M before spread |
+| Composer `1782:6074/1837:6469/1782:6160`, Repeat `1846:3046` | один Composer New/Repeat, неверные header/row/actions | RECOMPOSE из тех же primitives; compact Secondary Add; сохранить IDs/flow | A/B/C + full scenario matrix |
+
+OPEN exceptions до подтверждения: Delete Draft/Item и duplicate-item backend permissions, real library/upload, required date/1С mapping, unsaved-leave policy. `1914:668` разрешает локальный revert; `1914:673` явно содержит Cancel Input. Layout/SRS не дополняются догадкой. Устаревшее описание Draft Compose говорит Primary Add, но более поздний `1953:4168`/CORE — Send; используем более поздний Send. GL03 на всех ширинах и принятые Sidebar/Drawer/Glass сохраняются по Owner override. Остальные Companies/Support/library masters NEXT/OUT OF CURRENT SCOPE.
+
 **FE-S02 / #15:** New и Duplicate используют один `OrderComposer`; Add/Edit одной позиции — один `OrderItemForm`. Существующие Glass, AppShell/NavigationDrawer и общий readonly OrderDetail сохранены. Роли здесь переключаются только в явной ephemeral demo workspace, без auth/storage/API. FE-S01 PR #14 уже merged (`884e78f`); описание ниже — исторический component checkpoint до merge.
 
 | FE-S02 компонент | Контракт / данные | Потребитель |

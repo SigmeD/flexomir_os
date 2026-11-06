@@ -1,5 +1,9 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## PR #16 / Figma parity correction — continuation 06.11
+
+Owner replaced issue #15 with blocking masters/components/screens/transition parity task. `99303fe` A/B/C has TEST_PASS only, not VISUAL_PASS/OWNER_ACCEPTED. Same branch/PR; screenshot and stash untouched. Audit/matrix entered in COMPONENT_REGISTRY before screen changes. Step 1: shared FOS fields/Action, HeaderAction extended Save/Send/Edit without changing original plus/material/motion, MoreAction/OverflowMenu (installed Radix), PageHeader/Breadcrumbs V3, PrintingMethodControl, ArtworkSource, full OrderItemRow. Isolated `?view=orders-components`; 14 original HeaderAction checks PASS, new master lab 2/2 PASS; screenshots+final rerun follow. Manrope variable font/OFL bundled locally, Figma glyph SVGs local. Next: reference New Item D/T/M from these primitives; remove footer substitutes, then apply shared compositions to remaining Orders/Repeat/Manager and fill SCREEN_MAP transition matrix. No merge before Owner visual acceptance.
+
 ## FE-S02 / #15 — A/B/C локально QA_VERIFIED, Owner/merge OPEN
 
 База main `884e78f` после PR #14; обычная ветка `feat/fe-s02-order-compose-flow`, без worktree. Скриншот владельца и существующие stash не трогать. Источники сверены 06.11: issue #15, Drive CURRENT/SRS/Scope/E2E, Client CORE `1782:6000`, Item Form `2029:7310`, Composer `1782:6074/6160`; используется текущая DS, без нового Glass motion.

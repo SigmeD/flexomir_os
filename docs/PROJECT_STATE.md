@@ -2,6 +2,8 @@
 
 ## FE-S02 / #15 — A/B/C CODE_DONE / локально QA_VERIFIED
 
+**Owner blocking update 06.11:** TEST_PASS `99303fe` не означает Figma parity. В том же PR #16 выполняется masters audit → общий UI → reference New Item → остальные Orders screens → transition matrix/visual QA. Компонентная архитектура/визуальная приёмка НЕ ПРИНЯТЫ. Merge BLOCKED до Owner. Текущая матрица — COMPONENT_REGISTRY; подробные действия/результаты — SCREEN_MAP/HANDOFF, без нового CURRENT-плана.
+
 База main `884e78f` (FE-S01 PR #14 merged). Ветка `feat/fe-s02-order-compose-flow`, основная папка без worktree, один Draft PR/Owner gate. A (`c60abe2`): Client Add → единый Composer → 0/1/N позиции → edit/revert/save. B (`08f827d`): completed DEMO-007 Company01 → More/Duplicate → тот же Composer, новые IDs, даты сброшены, недоступный файл требует повторного выбора/HELP, оригинал неизменен. C: общий in-memory store → явная передача → тот же ID/позиции/срок/комментарий в Manager; переключение ролей/reset, сохранение фильтров. Никакой persistence/auth/API.
 
 Build PASS (89 modules), расширенный tsc PASS; **192/192 Chromium + 70/70 Firefox/WebKit**, пять размеров, negative validation/0/1/N/dirty/immutability/reset/keyboard/Esc/forced-colors/reduced-motion; axe новой формы 0 violations. Core Glass/AppShell/Drawer и lockfile сохранены. CI финального SHA/PR — GitHub, материалы `orders-core-screen-captures`; команды/ограничения в HANDOFF. Продуктовая/визуальная приёмка и merge OPEN, автоматически не сливать.
