@@ -1,5 +1,7 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+FE-S03 C checkpoint / PR #18: LAY01…09 UI preview реализован одним LayoutBrowser (library/select/replace), LayoutRow/Detail/UploadForm/UploadPanel; HeaderAction расширен Choose из Figma, shared material/motion сохранён. ArtworkSource использует общий LocalFileControl и один LayoutPicker в New/Edit Item. Выбор/замена возвращает тот же Item с полями/фокусом/scroll; local names и synthetic IDs живут только до reload. Build PASS; Chromium C 11/11 (5 размеров + empty/error/cancel), FE-S02 targeted regression 7/7. Axe 0 list/detail/upload; captures local output/fe-s03. История/More ведут в UX PROPOSED 2101:7959, disabled; download/server storage/ACL OPEN. Illustrated 20MB/formats не внедрены как policy. B mobile thumbnail уточнён по master2409:11521:60px, без локального 48px. A/B/C checkpoints выполнены, D integration/full QA next. Owner visual acceptance OPEN, merge запрещён без разрешения.
+
 FE-S03 B checkpoint / PR #18: общий Support Client/Manager реализован по FR-SUP-001..006. Build PASS; Chromium 11/11 functional + 2/2 D/T/M visual-state suites, axe 0 на list/form/detail/submitted. Общие SupportTicketRow/Form/Detail + ArtworkThumbnail; субъект H1 сохраняется, отправка только в демосессии, owner data отдельно, fixture error сохраняет ввод. Category/attachments/author reply/delete/triage исключены; Client candidate form визуально сокращена до подтверждённых полей (Owner OPEN). Реальные server loading/ack/API не имитируются. A 614742f, B checkpoint next, C/D pending; merge не разрешён.
 
 ## CURRENT 06.11.2026 — FE-S03 / M7, issue #17
@@ -8,7 +10,7 @@ FE-S03 B checkpoint / PR #18: общий Support Client/Manager реализов
 
 - [x] A: CURRENT Manager 02.1 → CompanyRow + CompanyOrders + shared OrdersList/OrderDetail; list → company-linked orders → order → back. QA 1440/1024/768/390/320, keyboard/history/focus/scroll/empty и synthetic company isolation. Коммит и первый Draft PR.
 - [x] B: CURRENT Support + FR-SUP-001..006 → shared list/form/detail обеих ролей. Тема/описание, собственные тикеты и ответ команды; без author replies/delete/category/attachments/triage. QA ролей/отправки demo/адаптивов + коммит.
-- [ ] C: CURRENT LAY-01…09 + prototype preconditions → LayoutRow/Detail/Picker/upload, ephemeral preview. Без PROPOSED edit/history 2101:7959. QA переходов и ArtworkSource regression + коммит.
+- [x] C: CURRENT LAY-01…09 + prototype preconditions → LayoutRow/Detail/Picker/upload, ephemeral preview. Без PROPOSED edit/history 2101:7959. QA переходов и ArtworkSource regression + коммит.
 - [ ] D: общая навигация готовых разделов; Chromium/Firefox/WebKit, build/CI/axe, Orders/Glass regression, side-by-side D/T/M + 1024/320; LIVE docs + CURRENT Drive. Один итоговый PR без merge.
 
 Гейты отдельно FUNCTIONAL / VISUAL / TECHNICAL / OWNER. Контекст возврата, длинные названия, empty, роли и повторная отправка проверяются сценарными тестами. Backend/API/1С — Алексей. Исходные staged-правки и stash сохранены вне task commits.

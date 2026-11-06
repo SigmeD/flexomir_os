@@ -3,12 +3,13 @@ import './header-action.css'
 import saveIcon from '@/assets/orders/save.svg'
 import sendIcon from '@/assets/orders/send.svg'
 import editIcon from '@/assets/orders/edit.svg'
+import chooseIcon from '@/assets/layouts/choose.svg'
 
 export type HeaderActionPresentation = 'auto' | 'icon-label' | 'compact'
 
 export interface HeaderActionProps extends Omit<ComponentProps<'button'>, 'children' | 'onClick' | 'type'> {
   /** FOS V2 1953:4168 / 2173:1425: one accepted material/motion across action glyphs. */
-  action: 'add' | 'create' | 'save' | 'send' | 'edit'
+  action: 'add' | 'create' | 'save' | 'send' | 'edit' | 'choose'
   accessibleName: string
   presentation?: HeaderActionPresentation
   onAction?: () => void
@@ -173,8 +174,8 @@ export function HeaderAction({
     buttonProps.onKeyUp?.(event)
   }
 
-  const caption = { add: 'Добавить', create: 'Создать', save: 'Сохранить', send: 'Отправить', edit: 'Изменить' }[action]
-  const glyph = { save: saveIcon, send: sendIcon, edit: editIcon }[action as 'save' | 'send' | 'edit']
+  const caption = { add: 'Добавить', create: 'Создать', save: 'Сохранить', send: 'Отправить', edit: 'Изменить', choose: 'Выбрать' }[action]
+  const glyph = { save: saveIcon, send: sendIcon, edit: editIcon, choose: chooseIcon }[action as 'save' | 'send' | 'edit' | 'choose']
 
   return (
     <button

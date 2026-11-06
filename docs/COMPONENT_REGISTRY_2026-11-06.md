@@ -2,6 +2,12 @@
 
 ## FE-S03 / M7 — component-first map, 06.11
 
+**C / source map before JSX:** LAY01 `634:8050/8193/8277` → LayoutRow(layout,onOpen), master `1313:2182` Wide/Compact default/hover/pressed/focus, thumbnail `674:114` 60 (row instances including compact use 60). LAY02 `1316:1966/2120/2268` → LayoutDetail(layout), source/history action rows `2167:1357`, `2158:1347`; preview + readonly description, disabled Save/More/history/download where sources/permissions absent. CURRENT LAY02 has links to PROPOSED `2101:7959`; these actions remain OPEN, not implemented.
+
+LAY03/05 `1316:2015/2165/2315`, `1318:2371/2386/2401` → ONE LayoutPicker(mode=select|replace) list. LAY04/06 `1316:2074/2223/2372`, `1318:2379/2394/2409` → same LayoutDetail presentation=picker, HeaderAction EXTEND choose from Figma `2047:7665`, retain shared motion. Reactions confirm Choose → New Item `1791:6130` or Edit `1782:6025`; bind to existing OrderItemForm/ArtworkSource with synthetic layout ID/title only.
+
+LAY07/08/09 `1440:4989/5209/5419`, `1440:5059/5275/5486`, `1440:5128/5341/5552` → ONE LayoutUploadForm + LayoutUploadPanel master `1438:474` Empty/Selected/Error (static fixture), metadata `2109:8114` desktop + T/M variants. CREATE shared native LocalFileControl for existing ArtworkSource and library uploader; no upload/progress/server-success simulation. Save creates ephemeral demo metadata only. Type/size/requiredness/real files/storage/version/ACL OPEN, do not enforce illustrated 20MB policy. All domains reuse PageHeader/FOS controls/More; no per-frame components.
+
 **B / source mapping before JSX:** Support list `634:8098/8228/8314`, Manager `2605:32928/33010/33079` → CREATE shared SupportTicketRow(ticket,onOpen), FOS thumbnail `674:102` → shared ArtworkThumbnail(label,size). Ticket row masters `2409:11511/11521`: 92px wide/104px mobile, 60px thumbnail, 12px gap. REUSE PageHeader/Add/MoreDisabled.
 
 Form master `2272:2015` Empty, `2272:2047` Invalid, `2272:2163` ServerError; Manager `2606:20379/20390/20399`, ready/error frames → shared SupportTicketForm(value,onChange,touched,onBlur,error). FOSInput/FOSTextarea + Header Send. Client `2412:10665/10680/10693` includes candidate category/attachment; omit these per explicit #17 + FR-SUP-002 and record VISUAL exception. Client label «Описание», Manager «Сообщение» via props. Subject/description are the only fields, no production status enum.

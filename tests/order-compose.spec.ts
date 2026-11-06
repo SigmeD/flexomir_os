@@ -46,14 +46,14 @@ test('A: Figma new→0/1/N→whole-row edit/save/cancel; stable IDs and retained
   await expect(page.getByLabel('Комментарии', { exact: true })).toHaveValue('Общий комментарий DEMO')
 })
 
-test('A: exclusive artwork HELP/local file; More deletion/library unavailable', async ({ page }) => {
+test('A: exclusive artwork HELP/local file; More deletion unavailable and demo library available', async ({ page }) => {
   await page.goto('/?view=client-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
   await fillItem(page)
   await expect(page.getByLabel('Выбрать файл макета')).toHaveCount(0)
   await page.getByLabel('Нужна помощь с макетом').uncheck()
-  await expect(page.getByRole('button', { name: 'Мои макеты', exact: true })).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Мои макеты', exact: true })).toBeEnabled()
   await page.getByLabel('Выбрать файл макета').setInputFiles({ name: 'demo.txt', mimeType: 'text/plain', buffer: Buffer.from('synthetic') })
   await expect(page.getByText('Выбран локально: demo.txt', { exact: true })).toBeVisible()
   await page.evaluate(() => {

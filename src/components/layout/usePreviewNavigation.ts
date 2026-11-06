@@ -1,18 +1,25 @@
 import { useId, useLayoutEffect, useRef, useState } from 'react'
 
 /** Same-document demo navigation only. Each host owns its own history namespace. */
-export function usePreviewNavigation(root = 'list') {
+export function usePreviewNavigation(root = 'list', onExit?: () => void) {
   const session = useId()
   const [path, setPath] = useState(root)
   const current = useRef(root)
   const points = useRef(new Map<string, { scroll: number; attribute?: string; value?: string }>())
   const depth = useRef(0)
+  const exitCallback = useRef(onExit)
+  exitCallback.current = onExit
   useLayoutEffect(() => {
     const pop = (event: PopStateEvent) => {
       const state = event.state?.preview
       if (state?.session === session) { depth.current = state.depth; setPath(state.path) }
+      else exitCallback.current?.()
     }
-    history.replaceState({ ...history.state, preview: { session, path: root, depth: 0 } }, '')
+    // StrictMode replays effects. A nested picker must add exactly one entry.
+    if (history.state?.preview?.session !== session) {
+      if (exitCallback.current) history.pushState({ ...history.state, preview: { session, path: root, depth: 0 } }, '')
+      else history.replaceState({ ...history.state, preview: { session, path: root, depth: 0 } }, '')
+    }
     window.addEventListener('popstate', pop)
     return () => window.removeEventListener('popstate', pop)
   }, [root, session])
@@ -40,5 +47,5 @@ export function usePreviewNavigation(root = 'list') {
   }, replace(next: string) {
     history.replaceState({ ...history.state, preview: { session, path: next, depth: depth.current } }, '')
     setPath(next)
-  }, back() { if (depth.current > 0) history.back() } }
+  }, back() { if (depth.current > 0) history.back() }, exit() { if (exitCallback.current) history.go(-depth.current - 1) } }
 }
