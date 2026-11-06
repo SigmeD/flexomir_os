@@ -10,8 +10,8 @@
 | --- | --- | --- |
 | M0 React baseline / Git / QA | main React/Vite/TypeScript и CI | DONE |
 | M1 Shared Glass & UI | GL-03 Owner accepted + merged; SidebarNav, HeaderAction, GlassSelect в main | GL-03 DONE; прочие визуальные гейты по контрактам |
-| M2 Manager Orders пилот | [PR #9](https://github.com/SigmeD/flexomir_os/pull/9): OrderCard, OrdersList, ManagerOrdersScreen; 76/76 Chromium Playwright + build PASS | CODE_DONE / CI_PASS; OWNER_SCREEN_OPEN / DRAFT / NOT MERGED |
-| M3 AppShell / Mobile+Tablet Drawer | [PR #5](https://github.com/SigmeD/flexomir_os/pull/5) | DRAFT / Owner gate OPEN; без него мобильная навигация FE-08 неполная |
+| M2 Manager Orders пилот | [PR #9](https://github.com/SigmeD/flexomir_os/pull/9): OrderCard, OrdersList, ManagerOrdersScreen; 80/80 Chromium Playwright + build PASS | CODE_DONE / CI_PASS; OWNER_SCREEN_OPEN / DRAFT / NOT MERGED; после PR #5 конфликт с main в src/App.tsx |
+| M3 AppShell / Mobile+Tablet Drawer | [PR #5](https://github.com/SigmeD/flexomir_os/pull/5) MERGED 7372685, компонент в main | Навигационный компонент DONE; подключение в FE-08 и экранный QA OPEN |
 | M4 Manager Orders module | общие фильтры, поиск, Company, список/состояния, детали/позиции/макеты на fixtures | PLANNED после M2/M3; real new/all API semantics отдельно |
 | M5 Client Orders | переиспользуемые карточки/фильтры, клиентские действия и роли | PLANNED после стабилизации общих компонентов |
 | M6 Companies | список, карточка, выбор/детали, связанные заказы | PLANNED; создание новой компании не входит автоматически в MVP |
@@ -19,7 +19,7 @@
 | M8 API consumption | только frontend adapters/hooks/types/UI request states по контрактам Алексея | BLOCKED_EXTERNAL для реальных данных; UI на моках не блокируется |
 | M9 Финальная регрессия | D1440/L1024/T768/M390/M320, a11y, cross-browser, Owner & release gates | PLANNED |
 
-**СЕЙЧАС:** M2 Owner screen QA → M3 Drawer decision/merge → M4 составной Manager Orders; параллельно можно готовить контрактные компоненты M4 без API и без дублирования Glass. Календарные сроки/бюджет не утверждены, не придумывать даты.
+**СЕЙЧАС:** синхронизация PR #9 с main 7372685 (конфликт App.tsx) → интеграция принятого NavigationDrawer в Manager Orders → M2 визуальный/экранный QA → M4 составной Manager Orders; параллельно можно готовить контрактные компоненты M4 без API и без дублирования Glass. Календарные сроки/бюджет не утверждены, не придумывать даты.
 
 ---
 
