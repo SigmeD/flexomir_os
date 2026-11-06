@@ -4,12 +4,14 @@ import { ManagerOrdersScreen } from '@/screens/manager-orders/ManagerOrdersScree
 import { CLIENT_DEMO_COMPANY, CLIENT_ORDERS_DEMO } from '@/screens/client-orders/fixtures'
 import { MANAGER_ORDERS_DEMO } from '@/screens/manager-orders/fixtures'
 import { canSendDemo, draftView, type DemoDraft } from './order-compose-model'
+import { COMPLETED_DEMO_ITEMS, COMPLETED_DEMO_ORDER } from './order-compose-fixtures'
 
 export interface OrderDemoController {
   drafts: readonly DemoDraft[]
   createDraft: () => string
   saveDraft: (draft: DemoDraft) => void
   sendDraft: (draft: DemoDraft) => void
+  duplicateOrder: (sourceId: string) => string | undefined
 }
 
 /** All state dies on reload. No browser persistence, auth, upload or network requests. */
@@ -32,8 +34,15 @@ export function OrderDemoWorkspace({ role, empty = false }: { role: 'client' | '
       setDrafts(current => current.map(saved => saved.id === draft.id && saved.stage === 'draft'
         ? { ...draft, stage: 'sent', items: draft.items.map(item => ({ ...item })) } : saved))
     },
+    duplicateOrder(sourceId) {
+      if (sourceId !== COMPLETED_DEMO_ORDER.id || COMPLETED_DEMO_ORDER.filterId !== 'done') return
+      const id = 'DEMO-NEW-' + nextOrder.current++
+      const items = COMPLETED_DEMO_ITEMS.map((item, index) => ({ ...item, id: id + '-ITEM-' + (index + 1), fileName: '' }))
+      setDrafts(current => [...current, { id, company: CLIENT_DEMO_COMPANY, items, requestedDate: '', comment: COMPLETED_DEMO_ORDER.detail?.comment || '', stage: 'draft', sourceOrderId: sourceId }])
+      return id
+    },
   }
   return role === 'client'
-    ? <ClientOrdersScreen orders={[...(empty ? [] : CLIENT_ORDERS_DEMO), ...drafts.map(draftView)]} companyName={CLIENT_DEMO_COMPANY} demo={controller} />
+    ? <ClientOrdersScreen orders={[...(empty ? [] : [...CLIENT_ORDERS_DEMO, COMPLETED_DEMO_ORDER]), ...drafts.map(draftView)]} companyName={CLIENT_DEMO_COMPANY} demo={controller} />
     : <ManagerOrdersScreen orders={empty ? [] : MANAGER_ORDERS_DEMO} />
 }

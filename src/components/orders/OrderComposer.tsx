@@ -2,6 +2,8 @@ import { useId, useLayoutEffect, useRef, useState } from 'react'
 import { canSendDemo, itemSummary, validDemoDate, type DemoDraft, type DemoItem } from '@/demo/order-compose-model'
 import { OrderItemForm } from './OrderItemForm'
 import { OrderItemSummary } from './OrderItemSummary'
+import sendIcon from '@/assets/orders/send.svg'
+import chevronIcon from '@/assets/orders/chevron.svg'
 import './order-compose.css'
 
 /** Single draft composition for New and Repeat; no server commands or deletes. */
@@ -41,7 +43,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack }: {
       {editing === null ? <>
         <button className="fos-order-detail__back" type="button" disabled={dirty} onClick={onBack}>К списку заказов</button>
         <header className="fos-orders-page__header"><div><h1 ref={headingRef} tabIndex={-1}>Новый заказ</h1><p>Черновик · {value.id}</p></div>
-          <button className="fos-order-action fos-order-action--primary" type="button" disabled={!canSendDemo(value) || dirty} onClick={() => onSend(value)}>Передать менеджеру (демо)</button>
+          <button className="fos-order-icon-action fos-order-icon-action--send" type="button" aria-label="Передать менеджеру (демо)" title="Передать менеджеру (демо)" disabled={!canSendDemo(value) || dirty} onClick={() => onSend(value)}><span><img src={sendIcon} alt="" /></span><small>Отправить</small></button>
         </header>
         <p className="fos-order-editor__hint">Демо: данные живут до перезагрузки страницы. Документ 1С не создаётся.</p>
         {value.sourceOrderId && <p>Дубликат заказа {value.sourceOrderId}. Исходный заказ не изменяется.</p>}
@@ -49,7 +51,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack }: {
           <div className="fos-order-composer__section-heading"><h2>Продукция</h2><button data-add-item className="fos-order-action" type="button" onClick={() => { returnFocus.current = '[data-add-item]'; setEditing('new') }}>Добавить позицию</button></div>
           {value.items.length ? <ul className="fos-order-detail__items">{value.items.map((item, index) => <li key={item.id} data-item-id={item.id}>
             <OrderItemSummary item={itemSummary(item)} position={index + 1} />
-            <button className="fos-order-action" type="button" data-edit-index={index} aria-label={'Изменить позицию ' + (index + 1)} onClick={() => { returnFocus.current = '[data-edit-index="' + index + '"]'; setEditing(item.id) }}>Изменить</button>
+            <button className="fos-order-action" type="button" data-edit-index={index} aria-label={'Изменить позицию ' + (index + 1)} onClick={() => { returnFocus.current = '[data-edit-index="' + index + '"]'; setEditing(item.id) }}>Изменить <img src={chevronIcon} alt="" width="20" height="20" /></button>
           </li>)}</ul> : <p>Позиции не указаны. Добавьте хотя бы одну для передачи.</p>}
         </section>
         <section className="fos-order-composer__section" aria-label="Общие данные заказа"><h2>Общие данные заказа</h2>

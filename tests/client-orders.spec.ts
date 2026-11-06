@@ -7,8 +7,8 @@ test.beforeEach(async ({ page }) => {
 test('Client My Orders composes the existing shell, cards and GL03', async ({ page }) => {
   await expect(page.getByTestId('client-orders-screen')).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Мои заказы', exact: true })).toBeVisible()
-  await expect(page.getByTestId('client-order-count')).toHaveText('2 из 2')
-  await expect(page.getByTestId('client-orders-list').locator('.fos-order-card')).toHaveCount(2)
+  await expect(page.getByTestId('client-order-count')).toHaveText('3 из 3')
+  await expect(page.getByTestId('client-orders-list').locator('.fos-order-card')).toHaveCount(3)
   await expect(page.getByTestId('client-order-DEMO-001')).toContainText('Компания 01')
   await expect(page.getByTestId('client-order-DEMO-003')).toContainText('В работе')
   await expect(page.getByTestId('client-order-DEMO-002')).toHaveCount(0)
@@ -19,16 +19,19 @@ test('Client My Orders composes the existing shell, cards and GL03', async ({ pa
 
 test('Client filters show actual fixture membership and an honest empty result', async ({ page }) => {
   await page.getByTestId('glass-pill-work').click()
-  await expect(page.getByTestId('client-order-count')).toHaveText('1 из 2')
+  await expect(page.getByTestId('client-order-count')).toHaveText('1 из 3')
   await expect(page.getByTestId('client-order-DEMO-003')).toBeVisible()
   await expect(page.getByTestId('client-order-DEMO-001')).toHaveCount(0)
   await page.getByTestId('glass-pill-done').focus()
   await page.keyboard.press('Enter')
   await expect(page.getByTestId('glass-pill-done')).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.getByTestId('client-order-DEMO-007')).toBeVisible()
+  await expect(page.getByTestId('client-order-count')).toHaveText('1 из 3')
+  await page.getByTestId('glass-pill-review').click()
   await expect(page.getByTestId('client-orders-empty')).toBeVisible()
-  await expect(page.getByTestId('client-order-count')).toHaveText('0 из 2')
+  await expect(page.getByTestId('client-order-count')).toHaveText('0 из 3')
   await page.getByTestId('glass-pill-all').click()
-  await expect(page.getByTestId('client-order-count')).toHaveText('2 из 2')
+  await expect(page.getByTestId('client-order-count')).toHaveText('3 из 3')
 })
 
 test('Client empty input remains empty when a filter is changed', async ({ page }) => {
@@ -78,7 +81,7 @@ test('Client touch drawer closes on its current page and preserves the selected 
     await page.getByRole('button', { name: 'Открыть меню клиента' }).tap()
     await page.getByRole('dialog', { name: 'Меню клиента', exact: true }).getByTestId('sidebar-nav-orders').tap()
     await expect(page.getByTestId('navigation-drawer-layer')).toHaveCount(0)
-    await expect(page.getByTestId('client-order-count')).toHaveText('1 из 2')
+    await expect(page.getByTestId('client-order-count')).toHaveText('1 из 3')
     expect(await page.evaluate(() => document.body.style.overflow)).toBe('')
   } finally {
     await context.close()
@@ -92,7 +95,7 @@ test('Client screenshots for the five review sizes', async ({ page }, testInfo) 
   ] as const) {
     await page.setViewportSize({ width, height })
     await page.goto('/?view=client-orders')
-    await expect(page.getByTestId('client-order-count')).toHaveText('2 из 2')
+    await expect(page.getByTestId('client-order-count')).toHaveText('3 из 3')
     await page.screenshot({ path: testInfo.outputPath('fes01-client-' + label + '.png'), fullPage: true, animations: 'disabled' })
     if (width < 1024) {
       await page.getByRole('button', { name: 'Открыть меню клиента' }).click()
@@ -103,3 +106,4 @@ test('Client screenshots for the five review sizes', async ({ page }, testInfo) 
     }
   }
 })
+

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef, type ReactNode } from 'react'
 import { OrderItemSummary } from './OrderItemSummary'
 import type { OrderDetailContent, OrderListItem } from './order-model'
 import './order-detail.css'
@@ -7,10 +7,11 @@ interface OrderDetailProps {
   order: OrderListItem
   detail: OrderDetailContent
   onBack: () => void
+  actions?: ReactNode
 }
 
 /** One read-only composition for both roles. No commands, editable fields or API/1C semantics. */
-export function OrderDetail({ order, detail, onBack }: OrderDetailProps) {
+export function OrderDetail({ order, detail, onBack, actions }: OrderDetailProps) {
   const headingRef = useRef<HTMLHeadingElement>(null)
   useLayoutEffect(() => { headingRef.current?.focus({ preventScroll: true }) }, [order.id])
 
@@ -23,6 +24,7 @@ export function OrderDetail({ order, detail, onBack }: OrderDetailProps) {
           <p className="fos-order-detail__status" data-testid="order-detail-status">{order.statusLabel}</p>
           <p className="fos-order-detail__name">{order.title}</p>
         </div>
+        {actions}
       </header>
       <p className="fos-orders-page__disclaimer">Только просмотр.</p>
       <dl className="fos-order-detail__fields" aria-label="Компания заказа">

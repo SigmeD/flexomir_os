@@ -30,7 +30,7 @@ for (const role of roles) {
       await detail.getByRole('button', { name: 'К списку заказов', exact: true }).click()
       await expect(page.getByTestId('order-detail')).toHaveCount(0)
       await expect(page.getByTestId('glass-pill-work')).toHaveAttribute('aria-pressed', 'true')
-      await expect(page.getByTestId(role + '-order-count')).toHaveText(role === 'client' ? '1 из 2' : '2 из 6')
+      await expect(page.getByTestId(role + '-order-count')).toHaveText(role === 'client' ? '1 из 3' : '2 из 6')
       await expect(opener).toBeFocused()
     }
   })
@@ -38,7 +38,7 @@ for (const role of roles) {
   test(role + ' detail keeps every visible order status and renders zero/one/many positions honestly', async ({ page }) => {
     await page.goto('/?view=' + role + '-orders')
     const cases = role === 'client'
-      ? [['DEMO-001', 0], ['DEMO-003', 2]] as const
+      ? [['DEMO-001', 0], ['DEMO-003', 2], ['DEMO-007', 2]] as const
       : [['DEMO-001', 0], ['DEMO-002', 1], ['DEMO-003', 2], ['DEMO-004', 1], ['DEMO-005', 0], ['DEMO-006', 1]] as const
     for (const [id, count] of cases) {
       const row = page.getByTestId(role + '-order-' + id)
@@ -108,3 +108,4 @@ test('touch detail/back restores the originating order and scroll position', asy
     await context.close()
   }
 })
+

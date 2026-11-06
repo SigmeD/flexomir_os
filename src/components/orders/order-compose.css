@@ -28,6 +28,17 @@
 .fos-order-action:disabled { opacity: .5; cursor: default; }
 .fos-order-action:focus-visible, .fos-order-field :focus-visible, .fos-order-editor input:focus-visible { outline: 2px solid #547b92; outline-offset: 3px; }
 .fos-order-composer__date { max-width: 506px; }
+.fos-completed-actions { display: flex; gap: 12px; position: relative; flex-shrink: 0; }
+.fos-order-icon-action { width: 68px; min-height: 68px; border: 0; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; background: transparent; color: #263542; cursor: pointer; }
+.fos-order-icon-action > span { width: 48px; height: 48px; display: grid; place-items: center; }
+.fos-order-icon-action img { width: 24px; height: 24px; }
+.fos-order-icon-action small { font-size: 12px; }
+.fos-order-icon-action--send > span { border-radius: 50%; background: #273141; }
+.fos-order-icon-action:disabled { opacity: .4; cursor: default; }
+.fos-order-icon-action:focus-visible { outline: 2px solid #547b92; outline-offset: 2px; }
+.fos-completed-actions__menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 10; width: 232px; max-width: calc(100vw - 32px); padding: 6px; background: #fff; border: 1px solid #d6d9e0; border-radius: 8px; }
+.fos-completed-actions__menu button { width: 100%; min-height: 44px; border: 0; background: transparent; color: #263542; text-align: left; padding: 10px 12px; border-radius: 4px; font-size: 14px; }
+.fos-completed-actions__menu button:focus { outline: 2px solid #547b92; background: #ebf0f7; }
 .fos-order-composer .fos-order-detail__items > li { position: relative; }
 .fos-order-composer .fos-order-detail__items > li > .fos-order-action { margin-top: 8px; }
 @media(max-width:600px) {
@@ -35,4 +46,6 @@
   .fos-order-composer .fos-orders-page__header { flex-wrap: wrap; }
   .fos-order-composer h2, .fos-order-editor h2, .fos-order-editor h3 { font-size: 18px; }
 }
+@media(max-width:1023px) { .fos-order-icon-action { width: 48px; min-height: 48px; } .fos-order-icon-action small { display: none; } .fos-completed-actions { gap: 8px; } }
+.fos-order-detail:has(.fos-completed-actions) .fos-orders-page__header { flex-wrap: wrap; }
 @media(forced-colors:active) { .fos-order-action, .fos-order-field input, .fos-order-field select, .fos-order-field textarea { background: Canvas; color: CanvasText; border-color: ButtonText; } }

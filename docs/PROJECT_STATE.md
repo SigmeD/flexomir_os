@@ -1,8 +1,8 @@
 # Flexomir OS — текущее состояние проекта
 
-## FE-S02 / #15 — A CODE_DONE / QA_VERIFIED, B/C IN_PROGRESS
+## FE-S02 / #15 — A+B CODE_DONE / QA_VERIFIED, C IN_PROGRESS
 
-Текущая база main `884e78f` (FE-S01 PR #14 merged). Рабочая ветка `feat/fe-s02-order-compose-flow`, основная папка, без worktree. A: Client Add → единый Composer → 0/1/N позиции → edit/revert/save; типизированные локальные draft/items и frontend-only validation. Build PASS (82 modules), Chromium new/edit/artwork + Client/detail regression 36/36 PASS. Далее в той же ветке/PR — B Duplicate completed и C связанный Manager demo/reset. `CR-REP-2026-11-06` (подписной, новые реквизиты/файлы/audio/video) исключён; backend/API/1С/ACL и destructive delete OPEN. Исходные локальные файлы/stash сохранены. Ниже — исторический checkpoint FE-S01 до merge.
+Текущая база main `884e78f` (FE-S01 PR #14 merged). Рабочая ветка `feat/fe-s02-order-compose-flow`, основная папка, без worktree. A (`c60abe2`): Client Add → единый Composer → 0/1/N позиции → edit/revert/save; типизированные локальные draft/items и frontend-only validation. B: Company01 completed DEMO-007 → More/Duplicate → тот же Composer, новые Order/Item IDs, даты сброшены, недоступный макет требует повторного выбора/HELP, оригинал неизменен. Build PASS (88 modules), A+B + Client/detail Chromium 38/38 PASS. Далее в той же ветке/PR — C связанный Manager demo/reset. `CR-REP-2026-11-06` (подписной, новые реквизиты/файлы/audio/video) исключён; backend/API/1С/ACL и destructive delete OPEN. Исходные локальные файлы/stash сохранены. Ниже — исторический checkpoint FE-S01 до merge.
 
 ## FE-S01 / A + B — локально QA_VERIFIED, PR #14 Draft
 

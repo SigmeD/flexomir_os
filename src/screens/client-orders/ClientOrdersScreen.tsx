@@ -3,6 +3,7 @@ import { AppShell } from '@/components/layout/AppShell'
 import { OrdersList } from '@/components/orders/OrdersList'
 import { OrderDetail } from '@/components/orders/OrderDetail'
 import { OrderComposer } from '@/components/orders/OrderComposer'
+import { CompletedOrderMenu } from '@/components/orders/CompletedOrderMenu'
 import type { OrderDemoController } from '@/demo/OrderDemoWorkspace'
 import { useOrderPreview } from '@/components/orders/useOrderPreview'
 import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from '@/components/orders/order-model'
@@ -41,7 +42,11 @@ export function ClientOrdersScreen({ orders, companyName, demo }: ClientOrdersSc
           {selectedDraft && demo ? (
             <OrderComposer key={selectedDraft.id} draft={selectedDraft} onSave={demo.saveDraft} onSend={demo.sendDraft} onBack={preview.backToList} />
           ) : preview.selectedOrder?.detail ? (
-            <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} />
+            <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList}
+              actions={demo && preview.selectedOrder.filterId === 'done' ? <CompletedOrderMenu onDuplicate={() => {
+                const id = demo.duplicateOrder(preview.selectedOrder!.id)
+                if (id) { setFilterId('all'); preview.openCreatedOrder(id) }
+              }} /> : undefined} />
           ) : (
             <>
               <header className="fos-orders-page__header">

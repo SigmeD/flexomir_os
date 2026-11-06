@@ -1,5 +1,6 @@
 import { useId, useLayoutEffect, useRef, useState } from 'react'
 import { emptyDemoItem, validDemoItem, type DemoItem } from '@/demo/order-compose-model'
+import uploadIcon from '@/assets/orders/upload.svg'
 
 /** FOS Item Form 2029:7310, demo-only field choices, shared by Add/Edit. */
 export function OrderItemForm({ item, onSave, onClose }: {
@@ -51,6 +52,7 @@ export function OrderItemForm({ item, onSave, onClose }: {
         <h3>Макет этой позиции</h3>
         {value.artworkMode !== 'HELP' && <>
           <label className="fos-order-field fos-order-editor__file">Выбрать файл макета
+            <img src={uploadIcon} alt="" width="20" height="20" />
             <input key={value.fileName || 'empty'} type="file" onChange={event => update({ artworkMode: 'UPLOAD', fileName: event.target.files?.[0]?.name || '', unavailableArtwork: undefined })} />
           </label>
           {value.fileName && <p>Выбран локально: {value.fileName}</p>}
