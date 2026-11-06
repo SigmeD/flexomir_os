@@ -1,0 +1,74 @@
+# Flexomir OS — React Component Registry
+
+**Date:** 2026-11-06  
+**Scope:** frontend React, Client/Manager.  
+**Decision (Owner):** Figma maintains visual design-system references, **not a requirement to implement every Figma frame as an individual React screen**. Compose screens from shared React primitives and reusable domain components. Existing UX frames may inform scenarios and state coverage but do not override accepted shared React Glass.
+
+## Source of truth and constraints
+
+- CURRENT Drive UX/UI index, Frontend Startup and Requirements SRS v0.5 (modified 04.11).
+- Repository `SigmeD/flexomir_os`, `main` reference SHA `aa1741bcd029e1d1dd1edea6544563da8f5a1730`.
+- Approved shared GlassPillTabs uses exactly one existing `FosGlassMaterial`, 38px lens / 44px target; 7px top + 12px bottom scrollport shadow clearance. DO NOT fork its material, spring, or tokens.
+- Manager/Client views share visual components but have distinct permissions, data scopes and workflows. Backend integration is Alexey's domain. Do not invent status mapping, 1C contract, ACL, or route targets.
+- This registry is an implementation planning index, NOT new product Scope approval.
+
+## Verified reusable React primitives (main)
+
+| Component | Path | State | Consumers |
+|---|---|---|---|
+| FosGlassMaterial / GlassLens | `src/components/ui/fos-glass-material.tsx` | Existing accepted shared material | SidebarNav, GlassPillTabs |
+| GlassPillTabs (GL-03) | `src/components/ui/glass-pill-tabs.tsx` | Accepted, merged / component QA | Client/Manager Orders status UI |
+| SidebarNav | `src/components/ui/sidebar-nav.tsx` | Existing shared component / screen QA open | Desktop Client/Manager navigation |
+| HeaderAction | `src/components/ui/header-action.tsx` | Existing shared component / screen QA open | Client/Manager page-header actions |
+| GlassSelect | `src/components/ui/glass-select.tsx` | Exists; used in legacy demo and future form/select needs | Form and select controls (not Orders status-pill replacement) |
+| NavigationDrawer (GL-02B) | PR #5 DRAFT | NOT in main; owner visual QA/open | Tablet/Mobile Client/Manager shell |
+
+## Manager Orders first vertical slice (FE-08)
+
+| Component / layer | Path | Status |
+|---|---|---|
+| OrderCard | `src/components/orders/OrderCard.tsx` | Branch implementation; reusable, display-only |
+| OrdersList / OrderRow | `src/screens/manager-orders/OrdersList.tsx` | Branch implementation; list/empty, adapts display labels |
+| ManagerOrdersScreen | `src/screens/manager-orders/ManagerOrdersScreen.tsx` | Branch implementation, isolated `?view=manager-orders` |
+| Filter UI (GL-03) | Existing shared `GlassPillTabs` | Reuse unchanged |
+| UI filter fixture | `src/screens/manager-orders/fixtures.ts` | DEMO only, no 1C mapping |
+| Real manager New/All queue | — | OPEN: definition and API contract |
+| Order search / company filter / sort | — | To compose from reusable Form components; semantics and data source need validation |
+| Order detail routing / creation command | — | OPEN: route, ACL, backend, no fake navigation |
+| ArtworkPreview/Attachment | — | Component contract/design-system mapping pending |
+| StatusBadge | — | Avoid premature duplicate: OrderCard accepts display label, common badge needs design variants contract |
+
+## Companies — planned reuse (not built yet)
+
+| Functional block | Intended reusable unit | Status |
+|---|---|---|
+| Companies list | CompanyCard / CompanyList | PLANNED: no duplicated Manager/Client cards |
+| Company selection | CompanyPicker shared control | PLANNED: permissions and filtering contract required |
+| Company detail | CompanySummary, CompanyOrders | PLANNED: OrdersList/OrderCard can be reused |
+| Actions | HeaderAction | Existing; real enablement depends on route/ACL |
+
+## Support — planned reuse (not built yet)
+
+| Functional block | Intended reusable unit | Status |
+|---|---|---|
+| My tickets | SupportTicketCard / SupportTicketList | PLANNED |
+| Ticket creation | SupportTicketForm (subject + description) | MVP; form component and API contract pending |
+| Ticket detail | SupportTicketDetail, ReplyView | PLANNED; status/source/ACL check |
+| Additional reply / deletion | — | UX CANDIDATE / NOT APPROVED MVP; DO NOT implement |
+| Navigation/header | SidebarNav / HeaderAction | Shared, reuse after screen QA |
+
+## Implementation sequencing
+
+1. FE-08: compose Manager Orders using accepted GL-03 and reusable OrderCard; QA in isolated branch, PR for Owner review.
+2. Derive next shared components only from actual screen use and cross-role demand, not from the count of Figma frames.
+3. Component QA: keyboard/touch, accessible names, disabled, empty/error/loading, responsive D1440/L1024/T768/M390/M320, reduced motion, consistency with shared tokens and no regression.
+4. Integrate backend separately after matching data shape, role permissions, status filter membership and 1C mapping; exclude source-system enums from shared visual primitives.
+5. Roll out accepted card/filter composition to Client/Companies/Support where real semantics fit; do not reuse order semantics for tickets.
+
+## Explicitly OPEN
+
+- Browser screenshot parity and independent product UX approval for the FE-08 screen.
+- Real API/1C status mapping, especially user-facing `В работе`; the label is Owner-approved and needs NO additional UX approval.
+- NavigationDrawer PR #5 integration; it is outside this isolated slice.
+- Real on-page query/search/Company filter, sorting, navigation, security ACL, error/loading; not faked in the demo.
+- Public GitHub repository means all committed fixtures and examples must be synthetic.
