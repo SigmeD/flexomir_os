@@ -3,32 +3,35 @@ import { GlassPillTabs } from '@/components/ui/glass-pill-tabs'
 import { HeaderAction } from '@/components/ui/header-action'
 import { SidebarNav, type SidebarNavItem } from '@/components/ui/sidebar-nav'
 import { OrdersList } from './OrdersList'
-import { MANAGER_ORDERS_DEMO, MANAGER_ORDER_FILTERS, type DemoFilterId } from './fixtures'
+import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from './model'
 import './manager-orders.css'
 
 const managerNav: readonly SidebarNavItem[] = [
   { id: 'orders', label: 'Заказы', icon: 'orders' },
+  // Pending PO/Owner decision: "Клиенты" vs "Компании" in Manager UX.
   { id: 'clients', label: 'Клиенты', icon: 'clients', disabled: true },
   { id: 'support', label: 'Поддержка', icon: 'support', disabled: true },
 ]
 
-const EMPTY_ORDERS: typeof MANAGER_ORDERS_DEMO = []
+interface ManagerOrdersScreenProps {
+  /** Supplied by App in the isolated preview; real API binding remains a separate frontend task. */
+  orders: readonly OrderListItem[]
+}
 
 /**
- * FE-08: a composed React screen, not another component laboratory.
- * Filter state is UI-local. Neither the 1C mapping nor real routes/ACL exist.
- * Shared Glass primitives remain unchanged.
+ * FE-08: composed React screen with explicit data inputs.
+ * No 1C mapping, backend statuses, real navigation or server-side ACL here.
+ * Accepted Glass primitives remain unchanged.
  */
-export function ManagerOrdersScreen({ previewEmpty = false }: { previewEmpty?: boolean }) {
-  const [filterId, setFilterId] = useState<DemoFilterId>('all')
-  const orders = previewEmpty ? EMPTY_ORDERS : MANAGER_ORDERS_DEMO
+export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
+  const [filterId, setFilterId] = useState<OrderStatusFilterId>('all')
   const visibleOrders = filterId === 'all'
     ? orders
     : orders.filter(order => order.filterId === filterId)
 
   const onSelectFilter = (id: string) => {
-    if (MANAGER_ORDER_FILTERS.some(filter => filter.id === id && !filter.disabled)) {
-      setFilterId(id as DemoFilterId)
+    if (ORDER_STATUS_FILTERS.some(filter => filter.id === id && !filter.disabled)) {
+      setFilterId(id as OrderStatusFilterId)
     }
   }
 
@@ -60,7 +63,7 @@ export function ManagerOrdersScreen({ previewEmpty = false }: { previewEmpty?: b
 
         <section className="manager-orders-screen__filters" aria-label="Фильтры заказов">
           <GlassPillTabs
-            items={MANAGER_ORDER_FILTERS}
+            items={ORDER_STATUS_FILTERS}
             value={filterId}
             onValueChange={onSelectFilter}
             ariaLabel="Фильтр заказов по статусу"
