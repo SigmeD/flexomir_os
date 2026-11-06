@@ -13,6 +13,7 @@ export interface DemoItem {
   artworkMode: 'UPLOAD' | 'LIBRARY' | 'HELP'
   fileName: string
   unavailableArtwork?: string
+  comment?: string
 }
 
 export interface DemoDraft {

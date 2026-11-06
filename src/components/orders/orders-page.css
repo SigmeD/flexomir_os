@@ -6,7 +6,7 @@
   display: flex;
   min-width: 0;
   min-height: 100vh;
-  background: #f6f7f8;
+  background: #fff;
   color: #263542;
   font-family: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
 }
@@ -14,7 +14,7 @@
   min-width: 0;
   width: 100%;
   max-width: 1440px;
-  padding: 38px clamp(20px, 4vw, 60px) 64px;
+  padding: 52px 72px 64px 55px;
 }
 .fos-orders-page__header {
   display: flex;
@@ -79,10 +79,10 @@
   color: #81909d;
 }
 @media(max-width:1023px) {
-  .fos-orders-page__main { padding: 24px 24px 48px; }
+  .fos-orders-page__main { padding: 26px 20px 48px; }
 }
 @media(max-width:600px) {
-  .fos-orders-page__main { padding: 20px 14px 36px; }
+  .fos-orders-page__main { padding: 26px 20px 36px; }
   .fos-orders-page__eyebrow { display: none; }
   .fos-orders-page__header { align-items: center; }
   .fos-orders-page__header h1 { font-size: 30px; }

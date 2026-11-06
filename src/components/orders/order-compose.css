@@ -7,7 +7,7 @@
 .fos-demo-workspace__controls [aria-pressed=true] { background: #fff; border-color: #547b92; }
 .fos-order-composer, .fos-order-editor { min-width: 0; overflow-wrap: anywhere; }
 .fos-order-composer h1:focus { outline: none; }
-.fos-order-composer h2, .fos-order-editor h2 { margin: 0 0 16px; font-size: 20px; }
+.fos-order-composer__section > h2, .fos-order-composer__section-heading > h2 { margin: 0 0 16px; font-size: 20px; }
 .fos-order-editor h3 { margin: 0 0 16px; font-size: 20px; }
 .fos-order-composer__section { margin-top: 28px; }
 .fos-order-composer__section-heading { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
@@ -50,7 +50,7 @@
 @media(max-width:600px) {
   .fos-order-editor__grid { grid-template-columns: minmax(0,1fr); }
   .fos-order-composer .fos-orders-page__header { flex-wrap: wrap; }
-  .fos-order-composer h2, .fos-order-editor h2, .fos-order-editor h3 { font-size: 18px; }
+  .fos-order-composer__section > h2, .fos-order-composer__section-heading > h2 { font-size: 18px; }
 }
 @media(max-width:1023px) { .fos-order-icon-action { width: 48px; min-height: 48px; } .fos-order-icon-action small { display: none; } .fos-completed-actions { gap: 8px; } }
 .fos-order-detail:has(.fos-completed-actions) .fos-orders-page__header { flex-wrap: wrap; }

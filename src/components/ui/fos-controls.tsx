@@ -31,7 +31,7 @@ export function FOSTextarea({ label, error, helper, wrapperClassName, id: suppli
 export function FOSSelect({ label, error, helper, wrapperClassName, id: suppliedId, className = '', children, ...props }: ComponentProps<'select'> & FieldOptions) {
   const generatedId = useId(), id = suppliedId || generatedId
   return <Field {...{ label, error, helper, id }} className={wrapperClassName}>
-    <div className="fos-field__select"><select {...props} id={id} className={'fos-field__control ' + className} aria-invalid={error ? true : undefined} aria-describedby={(error || helper) ? id + '-message' : props['aria-describedby']}>{children}</select><span className="fos-field__select-arrow" aria-hidden="true"><img src={chevron} alt="" /></span></div>
+    <div className="fos-field__select"><select {...props} id={id} data-empty={props.value === '' || undefined} className={'fos-field__control ' + className} aria-invalid={error ? true : undefined} aria-describedby={(error || helper) ? id + '-message' : props['aria-describedby']}>{children}</select><span className="fos-field__select-arrow" aria-hidden="true"><img src={chevron} alt="" /></span></div>
   </Field>
 }
 /** Action 835:259; secondary is outline, not a Glass primary. */

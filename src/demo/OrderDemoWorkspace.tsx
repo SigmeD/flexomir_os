@@ -52,13 +52,13 @@ export function OrderDemoWorkspace({ role, empty = false }: { role: 'client' | '
   }
   const sent = drafts.filter(draft => draft.stage === 'sent')
   return <div className="fos-demo-workspace">
-    <aside className="fos-demo-workspace__controls" aria-label="Управление демонстрацией">
+    {new URLSearchParams(window.location.search).get('demoTools') === '1' && <aside className="fos-demo-workspace__controls" aria-label="Управление демонстрацией">
       <p>Демо двух ролей · данные до перезагрузки</p>
       <div><button className="fos-order-action" type="button" disabled={editorOpen} aria-pressed={currentRole === 'client'} onClick={() => setCurrentRole('client')}>Демо: клиент</button>
         <button className="fos-order-action" type="button" disabled={editorOpen} aria-pressed={currentRole === 'manager'} onClick={() => setCurrentRole('manager')}>Демо: менеджер</button>
         <button className="fos-order-action" type="button" disabled={editorOpen} onClick={() => { setDrafts([]); nextOrder.current = 100; setClientFilter('all'); setManagerFilter('all'); setVersion(current => current + 1) }}>Сбросить демо</button></div>
       {editorOpen && <p>Для смены роли или сброса сохраните изменения и вернитесь к списку.</p>}
-    </aside>
+    </aside>}
     {currentRole === 'client'
       ? <ClientOrdersScreen key={'client-' + version} orders={[...(empty ? [] : [...CLIENT_ORDERS_DEMO, COMPLETED_DEMO_ORDER]), ...drafts.map(draftView)]} companyName={CLIENT_DEMO_COMPANY} demo={controller} initialFilterId={clientFilter} onFilterChange={setClientFilter} />
       : <ManagerOrdersScreen key={'manager-' + version} orders={[...(empty ? [] : MANAGER_ORDERS_DEMO), ...sent.map(draftView)]} demoOrderIds={sent.map(draft => draft.id)} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />}

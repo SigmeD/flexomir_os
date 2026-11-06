@@ -64,7 +64,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack }: {
           <button className="fos-order-action" type="button" disabled aria-describedby="demo-delete-note">Удалить черновик / позицию</button>
         </div>
         <p id="demo-delete-note" className="fos-order-editor__hint">Удаление не согласовано. При несохранённых изменениях сначала сохраните или восстановите значения; переход не стирает их.</p>
-      </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} />}
+      </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} />}
     </div>
   )
 }
