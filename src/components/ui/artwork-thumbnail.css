@@ -1,0 +1,2 @@
+.fos-artwork-thumbnail { display:flex; align-items:center; justify-content:center; flex-shrink:0; width:60px; height:60px; border-radius:8px; background:var(--fos-v2-semantic-color-bg-subtle,#f6f7f9); color:var(--fos-v2-semantic-color-text-secondary,#586d7c); font:600 10px/14px Manrope,system-ui,sans-serif; }
+.fos-artwork-thumbnail[data-size='72'] { width:72px; height:72px; }

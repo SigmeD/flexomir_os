@@ -1,11 +1,13 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+FE-S03 B checkpoint / PR #18: общий Support Client/Manager реализован по FR-SUP-001..006. Build PASS; Chromium 11/11 functional + 2/2 D/T/M visual-state suites, axe 0 на list/form/detail/submitted. Общие SupportTicketRow/Form/Detail + ArtworkThumbnail; субъект H1 сохраняется, отправка только в демосессии, owner data отдельно, fixture error сохраняет ввод. Category/attachments/author reply/delete/triage исключены; Client candidate form визуально сокращена до подтверждённых полей (Owner OPEN). Реальные server loading/ack/API не имитируются. A 614742f, B checkpoint next, C/D pending; merge не разрешён.
+
 ## CURRENT 06.11.2026 — FE-S03 / M7, issue #17
 
 База после fetch: origin/main 351157c1891e9e23db677b02cfd32a5b1ea9ad1e; FE-S02 PR #16 merged. Одна ветка feat/fe-s03-m7-client-manager-ui, один PR, без merge до разрешения Owner. Это действующий план; прежние CURRENT-блоки ниже — исторические checkpoints. Последняя ревизия документов 06.11, следующая 20.11.
 
-- [ ] A: CURRENT Manager 02.1 → CompanyRow + CompanyOrders + shared OrdersList/OrderDetail; list → company-linked orders → order → back. QA 1440/1024/768/390/320, keyboard/history/focus/scroll/empty и synthetic company isolation. Коммит и первый Draft PR.
-- [ ] B: CURRENT Support + FR-SUP-001..006 → shared list/form/detail обеих ролей. Тема/описание, собственные тикеты и ответ команды; без author replies/delete/category/attachments/triage. QA ролей/отправки demo/адаптивов + коммит.
+- [x] A: CURRENT Manager 02.1 → CompanyRow + CompanyOrders + shared OrdersList/OrderDetail; list → company-linked orders → order → back. QA 1440/1024/768/390/320, keyboard/history/focus/scroll/empty и synthetic company isolation. Коммит и первый Draft PR.
+- [x] B: CURRENT Support + FR-SUP-001..006 → shared list/form/detail обеих ролей. Тема/описание, собственные тикеты и ответ команды; без author replies/delete/category/attachments/triage. QA ролей/отправки demo/адаптивов + коммит.
 - [ ] C: CURRENT LAY-01…09 + prototype preconditions → LayoutRow/Detail/Picker/upload, ephemeral preview. Без PROPOSED edit/history 2101:7959. QA переходов и ArtworkSource regression + коммит.
 - [ ] D: общая навигация готовых разделов; Chromium/Firefox/WebKit, build/CI/axe, Orders/Glass regression, side-by-side D/T/M + 1024/320; LIVE docs + CURRENT Drive. Один итоговый PR без merge.
 

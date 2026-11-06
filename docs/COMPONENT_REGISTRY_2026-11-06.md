@@ -2,6 +2,12 @@
 
 ## FE-S03 / M7 — component-first map, 06.11
 
+**B / source mapping before JSX:** Support list `634:8098/8228/8314`, Manager `2605:32928/33010/33079` → CREATE shared SupportTicketRow(ticket,onOpen), FOS thumbnail `674:102` → shared ArtworkThumbnail(label,size). Ticket row masters `2409:11511/11521`: 92px wide/104px mobile, 60px thumbnail, 12px gap. REUSE PageHeader/Add/MoreDisabled.
+
+Form master `2272:2015` Empty, `2272:2047` Invalid, `2272:2163` ServerError; Manager `2606:20379/20390/20399`, ready/error frames → shared SupportTicketForm(value,onChange,touched,onBlur,error). FOSInput/FOSTextarea + Header Send. Client `2412:10665/10680/10693` includes candidate category/attachment; omit these per explicit #17 + FR-SUP-002 and record VISUAL exception. Client label «Описание», Manager «Сообщение» via props. Subject/description are the only fields, no production status enum.
+
+Detail `634:8137/8263/8347`, Manager `2606:22577/22823/23030`, submitted `634:13565/13594/13608`, `2606:23411/23481/23538` → shared SupportTicketDetail(ticket,submitted): same subject H1, readonly requester message + support-team reply, separate outcome feedback. No SupportStatus component: no distinct repeated approved status master; display supplied status text. Archive `2413:10812/10825/10837` is CANDIDATE: readonly fixture presentation only, no archive command or enum. Author reply/delete/triage remain OUT.
+
 | Figma node / variant | React contract | Consumers / action |
 | --- | --- | --- |
 | DS 634:60, FOS 1688:532, shell 637:180, header 2302:2138, controls 634:402/418 + 1148:311 | AppShell/SidebarNav/Drawer/PageHeader/HeaderAction/MoreAction/FOS controls | REUSE; CabinetPage composes new domains; Glass untouched |

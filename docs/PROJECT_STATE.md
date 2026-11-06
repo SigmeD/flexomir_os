@@ -1,5 +1,7 @@
 # Flexomir OS — текущее состояние проекта
 
+FE-S03 B checkpoint / PR #18: общий Support Client/Manager реализован по FR-SUP-001..006. Build PASS; Chromium 11/11 functional + 2/2 D/T/M visual-state suites, axe 0 на list/form/detail/submitted. Общие SupportTicketRow/Form/Detail + ArtworkThumbnail; субъект H1 сохраняется, отправка только в демосессии, owner data отдельно, fixture error сохраняет ввод. Category/attachments/author reply/delete/triage исключены; Client candidate form визуально сокращена до подтверждённых полей (Owner OPEN). Реальные server loading/ack/API не имитируются. A 614742f, B checkpoint next, C/D pending; merge не разрешён.
+
 ## CURRENT 06.11.2026 — FE-S03 / M7 in progress
 
 Owner requested issue #17, sequential A/B/C/D, one PR and no merge without permission. Fresh origin/main = 351157c, PR #16 merged, active PR inventory empty at start. Working branch feat/fe-s03-m7-client-manager-ui; main unchanged. Drive CURRENT plan/SRS/Scope and CURRENT DS/FOS/Manager Companies read. A FUNCTIONAL/TECHNICAL QA: build PASS; Chromium 5/5 at 1440/1024/768/390/320, whole-page axe 0 violations. Figma/React list images inspected D/M; geometry matches 80px rows, 16px gaps and search spacing. Synthetic copy differs; accepted runtime Glass remains. Owner visual acceptance OPEN. B/C/D pending. Existing staged OrderDetail/test/docs edits and deleted screenshots preserved outside task commits; stash unchanged. Current plan and component/transition map in DELIVERY_PLAN / COMPONENT_REGISTRY / SCREEN_MAP.

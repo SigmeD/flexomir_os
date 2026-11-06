@@ -37,5 +37,8 @@ export function usePreviewNavigation(root = 'list') {
     depth.current += 1
     history.pushState({ ...history.state, preview: { session, path: next, depth: depth.current } }, '')
     setPath(next)
+  }, replace(next: string) {
+    history.replaceState({ ...history.state, preview: { session, path: next, depth: depth.current } }, '')
+    setPath(next)
   }, back() { if (depth.current > 0) history.back() } }
 }

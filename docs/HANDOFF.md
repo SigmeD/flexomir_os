@@ -1,5 +1,7 @@
 # Flexomir OS — handoff между сессиями Codex
 
+FE-S03 B checkpoint / PR #18: общий Support Client/Manager реализован по FR-SUP-001..006. Build PASS; Chromium 11/11 functional + 2/2 D/T/M visual-state suites, axe 0 на list/form/detail/submitted. Общие SupportTicketRow/Form/Detail + ArtworkThumbnail; субъект H1 сохраняется, отправка только в демосессии, owner data отдельно, fixture error сохраняет ввод. Category/attachments/author reply/delete/triage исключены; Client candidate form визуально сокращена до подтверждённых полей (Owner OPEN). Реальные server loading/ack/API не имитируются. A 614742f, B checkpoint next, C/D pending; merge не разрешён.
+
 ## CURRENT 06.11.2026 — FE-S03 / issue #17
 
 Branch feat/fe-s03-m7-client-manager-ui from fetched main 351157c. A Companies first; B shared Support then C Layouts preview then D integration/QA. One PR, no merge without Owner. CURRENT Drive plan/SRS/Scope and Figma Companies masters/variants/prototype links checked. A test first correctly failed for missing screen; implementation uses shared CabinetPage, CompanyRow/CompanyOrders and existing OrdersList/OrderDetail. QA: build PASS, Chromium 5/5, axe 0; D/M images inspected, Owner visual OPEN. No backend/API/1С changes.
