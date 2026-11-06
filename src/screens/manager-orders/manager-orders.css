@@ -1,0 +1,120 @@
+/* Screen-level composition only. Glass styling lives in approved shared components. */
+.manager-orders-screen {
+  --fos-v2-semantic-color-text-primary: #222a33;
+  --fos-v2-semantic-color-text-secondary: #697986;
+  --fos-v2-semantic-color-text-brand: #293c49;
+  display: flex;
+  min-width: 0;
+  min-height: 100vh;
+  background: #f6f7f8;
+  color: #263542;
+  font-family: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
+}
+.manager-orders-screen__aside {
+  flex: 0 0 240px;
+  width: 240px;
+  padding: 36px 16px;
+  background: #f0f2f3;
+  border-right: 1px solid #e1e6eb;
+}
+.manager-orders-screen__brand {
+  margin: 0 16px;
+  color: #2c3a45;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .025em;
+}
+.manager-orders-screen__role {
+  margin: 10px 16px 32px;
+  color: #82909a;
+  font-size: 12px;
+}
+.manager-orders-screen__main {
+  min-width: 0;
+  width: 100%;
+  max-width: 1440px;
+  padding: 38px clamp(20px, 4vw, 60px) 64px;
+}
+.manager-orders-screen__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+.manager-orders-screen__eyebrow {
+  margin: 0 0 11px;
+  color: #82909a;
+  font-size: 12px;
+}
+.manager-orders-screen__header h1 {
+  margin: 0;
+  font: 750 clamp(30px, 3vw, 42px)/1.2 Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -.04em;
+}
+.manager-orders-screen__mobile-brand { display: none; }
+.manager-orders-screen__disclaimer {
+  margin: 22px 0 20px;
+  color: #7b8995;
+  font-size: 12px;
+}
+.manager-orders-screen__filters {
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 17px;
+  overflow: visible;
+}
+.manager-orders-screen__list {
+  padding: 22px;
+  border-radius: 20px;
+  border: 1px solid #e0e6eb;
+  background: rgba(255,255,255,.7);
+}
+.manager-orders-screen__list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.manager-orders-screen__list-header h2 {
+  margin: 0;
+  color: #2e3a45;
+  font-size: 16px;
+  font-weight: 700;
+}
+.manager-orders-screen__count {
+  color: #81909d;
+  font-size: 12px;
+}
+.manager-orders-screen__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.manager-orders-screen__empty {
+  padding: 24px 2px;
+  font-size: 13px;
+  color: #81909d;
+}
+@media(max-width:900px) {
+  .manager-orders-screen__aside { display: none; }
+  .manager-orders-screen__main { padding: 24px 24px 48px; }
+  .manager-orders-screen__mobile-brand {
+    display: block;
+    font-size: 12px;
+    font-weight: 720;
+    color: #506577;
+    margin-bottom: 28px;
+  }
+}
+@media(max-width:600px) {
+  .manager-orders-screen__main { padding: 20px 14px 36px; }
+  .manager-orders-screen__mobile-brand { margin-bottom: 24px; }
+  .manager-orders-screen__eyebrow { display: none; }
+  .manager-orders-screen__header { align-items: center; }
+  .manager-orders-screen__header h1 { font-size: 30px; }
+  .manager-orders-screen__disclaimer { margin: 18px 0 16px; }
+  .manager-orders-screen__list { padding: 14px 11px; border-radius: 16px; }
+}
