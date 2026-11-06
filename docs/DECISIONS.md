@@ -1,5 +1,13 @@
 # Flexomir OS — реестр решений и вопросов
 
+## CURRENT / Owner decision 06.11.2026 — frontend execution + responsibilities
+
+- **FE-DEC-06 APPROVED:** deliver React frontend by reusable components and screen compositions. Figma Primary Design System V2/FOS Masters are the visual foundation; a set of ~230 Figma frames is NOT a requirement to create ~230 independently coded screens. Existing scenario frames are references for user states; archival and UX PROPOSED are not approved product scope.
+- **FE-DEC-07 APPROVED:** OUR workstream owns only React/TypeScript frontend (visual components, interactive UI, responsive, frontend routing, mock data, QA, frontend API consumer for an approved API). **Алексей** owns backend, API creation, 1C integration/exchange, server business rules and ACL, integration QA. Responsibility is not re-opened per task. Frontend may request contracts but may not implement or change API/1C.
+- **FE-DEC-08 APPROVED:** `В работе` user-facing UI label is decided by Owner without further UI consent. Production 1C status mapping belongs to external backend/PO data contract; no speculative enums in React.
+- **FE-STATE-06.11:** GL-03 merged in main; Manager Orders first screen PR #9 CODE_DONE/CI_PASS (76/76) but Owner/merge OPEN. Mobile Drawer PR #5 DRAFT. Canonical plan is [Drive 09_FRONTEND_CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Old FE-08=TODO, every-screen HTML-first and Figma-frame-by-frame notes are historical.
+
+
 Утверждать решения может только уполномоченный Owner/PO по действующему процессу. Запись агента ≠ approval. Каждый новый пункт: дата, источник, статус, затронутые файлы/экраны, зависимости, кто подтверждает.
 
 Реестр перенесён из пакета владельца от 04.11.2026. Продуктовые статусы `OWNER DIRECTION` и `VISUAL REFERENCE APPROVED` — сведения пакета, а не новая проверка или утверждение агентом: CURRENT Drive/Figma в этой задаче не перечитывались. Локальные Git/build факты проверены отдельно.
