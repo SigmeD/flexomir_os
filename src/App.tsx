@@ -4,6 +4,7 @@ import { HeaderActionLab } from './HeaderActionLab'
 import { SidebarNavLab } from './SidebarNavLab'
 import { GlassPillTabsLab } from './GlassPillTabsLab'
 import { ManagerOrdersScreen } from './screens/manager-orders/ManagerOrdersScreen'
+import { MANAGER_ORDERS_DEMO } from './screens/manager-orders/fixtures'
 import {
   GlassSelect,
   GlassSelectTrigger,
@@ -87,7 +88,7 @@ export function App() {
   if (view === 'glass-pill-tabs') return <GlassPillTabsLab />
   if (view === 'manager-orders') {
     const previewEmpty = new URLSearchParams(window.location.search).get('fixture') === 'empty'
-    return <ManagerOrdersScreen previewEmpty={previewEmpty} />
+    return <ManagerOrdersScreen orders={previewEmpty ? [] : MANAGER_ORDERS_DEMO} />
   }
   return view === 'material'
     ? <GlassMaterialLab orders={orders} statuses={statuses} />
