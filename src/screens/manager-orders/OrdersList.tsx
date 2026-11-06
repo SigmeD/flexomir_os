@@ -1,21 +1,20 @@
 import { OrderCard } from '@/components/orders/OrderCard'
-import type { ManagerOrderPreview } from './fixtures'
-import { MANAGER_ORDER_STATUS_LABELS } from './fixtures'
+import type { OrderListItem } from './model'
 
 interface OrdersListProps {
-  orders: readonly ManagerOrderPreview[]
+  orders: readonly OrderListItem[]
   total: number
 }
 
-/** Screen adapter: demo status code never enters generic OrderCard. */
-export function OrderRow({ order }: { order: ManagerOrderPreview }) {
+/** Reuses the domain-neutral card; no backend enum or routing assumptions. */
+export function OrderRow({ order }: { order: OrderListItem }) {
   return (
     <li data-testid={'manager-order-' + order.id}>
       <OrderCard
         number={order.id}
         title={order.title}
         company={order.company}
-        statusLabel={MANAGER_ORDER_STATUS_LABELS[order.status]}
+        statusLabel={order.statusLabel}
       />
     </li>
   )
