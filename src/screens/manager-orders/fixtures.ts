@@ -15,7 +15,7 @@ export interface ManagerOrderPreview {
   company: string
   status: DemoOrderStatus
   /** Demo-only UI filter membership, not the 1C lifecycle. */
-  filterId: Exclude<DemoFilterId, 'all'>
+  filterId: Exclude<DemoFilterId, 'all'> | null
 }
 
 export const MANAGER_ORDER_FILTERS: readonly GlassPillFilter[] = [
@@ -40,6 +40,6 @@ export const MANAGER_ORDERS_DEMO: readonly ManagerOrderPreview[] = [
   { id: 'DEMO-002', title: 'Демонстрационный заказ 02', company: 'Компания 02', status: 'review', filterId: 'review' },
   { id: 'DEMO-003', title: 'Демонстрационный заказ 03', company: 'Компания 01', status: 'production', filterId: 'work' },
   { id: 'DEMO-004', title: 'Демонстрационный заказ 04', company: 'Компания 03', status: 'done', filterId: 'done' },
-  { id: 'DEMO-005', title: 'Демонстрационный заказ 05', company: 'Компания 02', status: 'cancelled', filterId: 'done' },
+  { id: 'DEMO-005', title: 'Демонстрационный заказ 05', company: 'Компания 02', status: 'cancelled', filterId: null },
   { id: 'DEMO-006', title: 'Демонстрационный заказ 06', company: 'Компания 03', status: 'production', filterId: 'work' },
 ]
