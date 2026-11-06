@@ -17,7 +17,9 @@ export function useOrderPreview(orders: readonly OrderListItem[]) {
     const previous = returnPoint.current
     if (!previous) return
     const buttons = surfaceRef.current?.querySelectorAll<HTMLButtonElement>('button[data-order-open]') ?? []
-    Array.from(buttons).find(button => button.dataset.orderOpen === previous.id)?.focus({ preventScroll: true })
+    const opener = Array.from(buttons).find(button => button.dataset.orderOpen === previous.id)
+      ?? surfaceRef.current?.querySelector<HTMLButtonElement>('button[data-create-order]')
+    opener?.focus({ preventScroll: true })
     window.scrollTo(0, previous.scrollY)
     returnPoint.current = null
   }, [visibleId])
@@ -25,6 +27,11 @@ export function useOrderPreview(orders: readonly OrderListItem[]) {
   return {
     surfaceRef,
     selectedOrder,
+    // Only called with an ID returned by the local demo controller in this same event.
+    openCreatedOrder(id: string) {
+      returnPoint.current = { id, scrollY: window.scrollY }
+      setSelectedId(id)
+    },
     openOrder(id: string) {
       if (!orders.some(order => order.id === id && order.detail)) return
       returnPoint.current = { id, scrollY: window.scrollY }

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { AppShell } from '@/components/layout/AppShell'
 import { OrdersList } from '@/components/orders/OrdersList'
 import { OrderDetail } from '@/components/orders/OrderDetail'
+import { OrderComposer } from '@/components/orders/OrderComposer'
+import type { OrderDemoController } from '@/demo/OrderDemoWorkspace'
 import { useOrderPreview } from '@/components/orders/useOrderPreview'
 import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from '@/components/orders/order-model'
 import { GlassPillTabs } from '@/components/ui/glass-pill-tabs'
@@ -18,13 +20,15 @@ const clientNav: readonly SidebarNavItem[] = [
 interface ClientOrdersScreenProps {
   orders: readonly OrderListItem[]
   companyName: string
+  demo?: OrderDemoController
 }
 
 /** Client composition: supplied data scope is never a substitute for server authorization. */
-export function ClientOrdersScreen({ orders, companyName }: ClientOrdersScreenProps) {
+export function ClientOrdersScreen({ orders, companyName, demo }: ClientOrdersScreenProps) {
   const [filterId, setFilterId] = useState<OrderStatusFilterId>('all')
   const preview = useOrderPreview(orders)
   const visibleOrders = filterId === 'all' ? orders : orders.filter(order => order.filterId === filterId)
+  const selectedDraft = demo?.drafts.find(draft => draft.id === preview.selectedOrder?.id && draft.stage === 'draft')
 
   return (
     <div className="fos-orders-page" data-testid="client-orders-screen" ref={preview.surfaceRef}>
@@ -34,7 +38,9 @@ export function ClientOrdersScreen({ orders, companyName }: ClientOrdersScreenPr
         triggerLabel="Открыть меню клиента" footerText={companyName}
       >
         <main className="fos-orders-page__main">
-          {preview.selectedOrder?.detail ? (
+          {selectedDraft && demo ? (
+            <OrderComposer key={selectedDraft.id} draft={selectedDraft} onSave={demo.saveDraft} onSend={demo.sendDraft} onBack={preview.backToList} />
+          ) : preview.selectedOrder?.detail ? (
             <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} />
           ) : (
             <>
@@ -43,7 +49,12 @@ export function ClientOrdersScreen({ orders, companyName }: ClientOrdersScreenPr
                   <p className="fos-orders-page__eyebrow">{companyName}</p>
                   <h1>Мои заказы</h1>
                 </div>
-                <HeaderAction action="add" accessibleName="Добавить заказ" disabled />
+                <HeaderAction action="add" accessibleName="Добавить заказ" data-create-order disabled={!demo} onAction={() => {
+                  if (!demo) return
+                  const id = demo.createDraft()
+                  setFilterId('all')
+                  preview.openCreatedOrder(id)
+                }} />
               </header>
               <p className="fos-orders-page__disclaimer">Демонстрационные данные. Интеграция с 1С не подключена.</p>
               <section className="fos-orders-page__filters" aria-label="Фильтры заказов">

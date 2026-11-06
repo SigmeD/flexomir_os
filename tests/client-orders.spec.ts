@@ -14,7 +14,7 @@ test('Client My Orders composes the existing shell, cards and GL03', async ({ pa
   await expect(page.getByTestId('client-order-DEMO-002')).toHaveCount(0)
   await expect(page.getByTestId('glass-pill-tabs').getByRole('button')).toHaveCount(5)
   await expect(page.getByTestId('glass-pill-lens')).toHaveCount(1)
-  await expect(page.getByRole('button', { name: 'Добавить заказ' })).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Добавить заказ' })).toBeEnabled()
 })
 
 test('Client filters show actual fixture membership and an honest empty result', async ({ page }) => {

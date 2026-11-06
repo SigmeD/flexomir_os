@@ -1,5 +1,9 @@
 # Flexomir OS — текущее состояние проекта
 
+## FE-S02 / #15 — A CODE_DONE / QA_VERIFIED, B/C IN_PROGRESS
+
+Текущая база main `884e78f` (FE-S01 PR #14 merged). Рабочая ветка `feat/fe-s02-order-compose-flow`, основная папка, без worktree. A: Client Add → единый Composer → 0/1/N позиции → edit/revert/save; типизированные локальные draft/items и frontend-only validation. Build PASS (82 modules), Chromium new/edit/artwork + Client/detail regression 36/36 PASS. Далее в той же ветке/PR — B Duplicate completed и C связанный Manager demo/reset. `CR-REP-2026-11-06` (подписной, новые реквизиты/файлы/audio/video) исключён; backend/API/1С/ACL и destructive delete OPEN. Исходные локальные файлы/stash сохранены. Ниже — исторический checkpoint FE-S01 до merge.
+
 ## FE-S01 / A + B — локально QA_VERIFIED, PR #14 Draft
 
 База `15eb6d9`; ветка `feat/fe-s01-orders-core`, [единый PR #14](https://github.com/SigmeD/flexomir_os/pull/14), без merge в main. A (`3a15eb6`): Client `?view=client-orders` на готовом shell/GL-03/карточках, общие список/empty и оформление. B: один read-only OrderDetail/OrderItemSummary и переход список → деталь → назад для Client и Manager; сохраняются ID/статус, фильтр, фокус и прокрутка. Два клиентских заказа из общего DEMO-набора компании 01 — не серверная ACL.
