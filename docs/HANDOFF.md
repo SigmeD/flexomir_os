@@ -2,7 +2,7 @@
 
 **Рабочий источник frontend:** [09_Frontend Development Plan CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Наш scope: React/frontend, shared components, screens, UX/QA, consuming approved API. Алексей владеет backend/API creation, server ACL, 1C exchange/integration. Figma = visual DS only, not 230 independent React screen requirements. UI label «В работе» Owner accepted; real 1C mapping not FE.
 
-**Реальный код:** GL-03 в main; FE-08 Manager Orders PR #9 draft: OrderCard/OrdersList/screen built, CI 76/76 PASS, Owner screen acceptance OPEN. GL-02B NavigationDrawer PR #5 draft not merged. Next: FE-08 visual/product review, GL-02B independent owner review, then Manager Orders interactive flows on reusable React components. No API/backend/1C edits. Below is preserved 04.11 handoff history.
+**Реальный код:** GL-03 в main; FE-08 Manager Orders PR #9 draft: OrderCard/OrdersList/screen built, CI 80/80 PASS, Owner screen acceptance OPEN. GL-02B NavigationDrawer PR #5 MERGED main 7372685e9391f60279aad90d707aa9cc00d55138; component-level four checks reported PASS. PR #9 now DIRTY against main (src/App.tsx conflict), draft not merged; next resolve conflict and connect shared Drawer to FE-08 screen in scoped React branch. Next: FE-08 visual/product review, GL-02B independent owner review, then Manager Orders interactive flows on reusable React components. No API/backend/1C edits. Below is preserved 04.11 handoff history.
 
 ---
 
