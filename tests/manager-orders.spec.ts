@@ -72,3 +72,34 @@ test('non-implemented navigation and order routes cannot be clicked', async ({ p
   await expect(nav.locator('[data-testid="sidebar-nav-support"]')).toBeDisabled()
   await expect(page.getByTestId('manager-orders-list').getByRole('link')).toHaveCount(0)
 })
+
+
+test('viewport screenshots for independent Owner review', async ({ page }, testInfo) => {
+  const sizes = [
+    { label: 'D1440', width: 1440, height: 900 },
+    { label: 'L1024', width: 1024, height: 768 },
+    { label: 'T768', width: 768, height: 1024 },
+    { label: 'M390', width: 390, height: 844 },
+    { label: 'M320', width: 320, height: 740 },
+  ] as const
+  for (const { label, width, height } of sizes) {
+    await page.setViewportSize({ width, height })
+    await expect(page.getByTestId('manager-orders-screen')).toBeVisible()
+    await expect(page.getByTestId('manager-order-count')).toHaveText('6 из 6')
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.screenshot({
+      path: testInfo.outputPath('fe08-manager-orders-' + label + '.png'),
+      fullPage: true,
+      animations: 'disabled',
+    })
+  }
+})
+
+test('presentation is isolated from demo record fields and supports a clean empty data source', async ({ page }) => {
+  await page.goto('/?view=manager-orders&fixture=empty')
+  const tabs = page.getByTestId('glass-pill-tabs')
+  await expect(page.getByTestId('manager-order-count')).toHaveText('0 из 0')
+  await tabs.getByTestId('glass-pill-work').click()
+  await expect(page.getByTestId('manager-orders-empty')).toBeVisible()
+  await expect(page.getByTestId('manager-order-count')).toHaveText('0 из 0')
+})
