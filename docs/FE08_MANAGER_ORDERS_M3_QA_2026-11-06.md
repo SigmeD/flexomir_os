@@ -1,0 +1,44 @@
+# FE-08 / M3 — Orders + NavigationDrawer
+
+**06.11.2026 · PR #9 · CODE_DONE / local QA_VERIFIED / OWNER_SCREEN_OPEN.**
+
+## Result and scope
+
+PR #5 is merged into main at `7372685`. Merge commit `8f5eeb7` brings that baseline into the existing PR #9 branch and resolves the single `src/App.tsx` import conflict. Both Orders and Drawer lab routes remain available, along with all existing previews.
+
+`AppShell` now composes desktop SidebarNav (>=1024px) and the existing NavigationDrawer (<1024px) around Manager Orders. A sticky 72px compact header keeps the fixed menu anchored below the header after scrolling. Both presentations receive one Manager item configuration. Selecting the current Orders item dismisses the menu; `Клиенты` and `Поддержка` remain disabled until real frontend destinations exist. Naming `Клиенты` vs `Компании` remains Owner/PO OPEN.
+
+Drawer, SidebarNav, GlassPillTabs, HeaderAction, material, motion and global styles are byte-identical to `origin/main`; no optical implementation was added. The responsive host unmounts Drawer on desktop, releasing the existing component's inert/scroll lock. Filters and order data survive opening, dismissal and breakpoint changes.
+
+## Sources and design checks
+
+- [CURRENT frontend M0–M9](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), read 06.11.2026; Owner's explicit four-step integration instruction in this session.
+- [Existing Drawer contract](GL02B_NAVIGATION_DRAWER.md), PR #5 code/CI and recorded Owner merge instruction. Old pre-merge statuses in that contract describe its original component delivery.
+- Live Figma metadata read: Primary DS `634:60`, FOS masters `1688:532`, CURRENT Manager mobile `2495:9097`. Mobile shell header is 72px. This verifies the source/structure; no pixel-perfect recreation or visual approval is claimed.
+- React effect cleanup and Playwright focus/screenshot APIs checked against official documentation through Context7.
+
+## Fresh local verification
+
+Windows, Node **24.11.1**, installed React **19.3.1**, Vite **6.4.5**, Playwright **1.64.1**. CI uses lockfile + Node22; local installed versions are reported separately, without changing dependencies.
+
+- `npm run build` — PASS, TypeScript + Vite, 68 modules.
+- Extended temporary TypeScript check covering src, the changed Orders spec and Playwright config — PASS (`npx tsc --project output/fe08-drawer-integration/tsconfig.qa.json`). No permanent tooling/config change.
+- Combined Chromium regression — **148/148 PASS** in 1.5m: Orders, Drawer, both GL03 suites, SidebarNav, HeaderAction. Command matches the expanded FE08 workflow: `npx playwright test tests/manager-orders.spec.ts tests/navigation-drawer.spec.ts tests/glass-pill-tabs-react.spec.ts tests/gl03-compact-pill-tabs.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts --workers=2`.
+- Final Orders run after screenshot framing/import formatting changes — **26/26 PASS**, both Chromium projects, 9.5s.
+- Orders suite in **Firefox and WebKit — 26/26 PASS**, 24.1s, using a temporary local config. These are Playwright engines on Windows, not physical Safari/iOS/Android devices.
+- Test-first evidence: the new mobile integration test initially failed because `Открыть меню менеджера` was absent; it passed after shell integration.
+- Checked all five widths **1440 / 1024 / 768 / 390 / 320**, plus open-menu resize across **1023/1024**, touch **768×390** landscape and empty-data **320×480**.
+- Verified keyboard Enter, Tab/Shift+Tab trap, Escape, scrim/current-item dismissal, focus return, repeated open/close, actual wheel scroll after dismissal, background isolation, reduced-motion/forced-colors, disabled destinations, filter persistence, and no horizontal document overflow.
+- `git diff --check` and shared primitive comparison against `origin/main` — PASS. Existing local audit edits and screenshot deletions are retained outside task commits.
+
+## Visual evidence and Owner review
+
+Fresh closed-screen PNGs: **D1440 / L1024 / T768 / M390 / M320**. Fresh open-menu viewport PNGs: **T768 / M390 / M320**. Menu shots use the visible viewport; full-page background content outside a fixed overlay is not presented as an uncovered viewport.
+
+Local final captures: `output/fe08-drawer-integration/final-screen-results/manager-orders-viewport-sc-9c8e9-or-independent-Owner-review-chromium-1440/`. Cross-engine results: `output/fe08-drawer-integration/browser-results.json`; combined Chromium results: `output/playwright/glass-select-theme/results.json`. Heavy artifacts remain ignored. The FE08 workflow uploads `fe08-manager-orders-screen-captures` with all eight PNGs per project for independent Owner review.
+
+The author inspected representative desktop/tablet/mobile captures for clipping and composition. This is not independent visual acceptance. Owner should inspect the five closed states and three open menus, then review the running `/?view=manager-orders` screen for menu placement, role/content, material/motion and desired labels.
+
+## Limits and next gate
+
+**PR #9 stays Draft and is not merged.** New/All queue semantics, search/company/sort, Orders detail/create and real cross-section routing remain separate work. No API, backend, 1C, tenant or server ACL changes; only synthetic data. Physical devices, a full screen-reader audit and an independent human visual review were not run. Screen acceptance remains Owner's decision, separate from component merge and successful CI.

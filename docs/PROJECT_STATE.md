@@ -1,5 +1,13 @@
 # Flexomir OS — текущее состояние проекта
 
+## Последнее — 06.11.2026: M3 интеграция NavigationDrawer в PR #9
+
+- PR #5 уже в `origin/main` (`7372685`); конфликт `src/App.tsx` в ветке PR #9 устранён merge-коммитом `8f5eeb7`, оба preview-маршрута сохранены.
+- Общий `AppShell` подключает существующий Drawer к Manager Orders ниже 1024px, SidebarNav — от 1024px. Glass primitives, API/1С и бизнес-контракты не изменены; отсутствующие разделы остаются disabled.
+- Свежая локальная проверка: build PASS, combined Chromium **148/148**, финальный экранный Chromium **26/26**, Firefox/WebKit **26/26**, пять размеров и открытое меню T/M. [Протокол, команды, снимки и ограничения](FE08_MANAGER_ORDERS_M3_QA_2026-11-06.md).
+- Статус: `CODE_DONE / local QA_VERIFIED / OWNER_SCREEN_OPEN`; PR #9 остаётся Draft, не слит. Название «Клиенты / Компании» и итоговая визуальная приёмка — Owner/PO.
+- Существующие локальные аудитные правки и удаления скриншотов сохранены отдельно от коммитов задачи. Ниже — прежние снимки; актуальный этап задаёт этот блок и [Drive CURRENT M0–M9](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
+
 **Локальный снимок:** 04.11.2026. **Источник свежих изменений:** [Frontend Startup CURRENT](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit). На новой сессии проверить изменения в Drive и фактический Git.
 
 ## Объединение веток — 04.11.2026
