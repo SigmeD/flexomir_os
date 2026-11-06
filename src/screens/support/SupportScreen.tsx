@@ -38,7 +38,7 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
       actions={<><HeaderAction action={nav.path === 'list' ? 'add' : 'send'} accessibleName={nav.path === 'list' ? 'Добавить обращение' : 'Отправить обращение'} data-focus-key="support-add"
         disabled={nav.path === 'list' ? false : !creating || !valid || Boolean(error)} onAction={nav.path === 'list' ? () => nav.open('new') : send} /><MoreAction disabled /></>} />
     {ticket ? <SupportTicketDetail ticket={ticket} submitted={submitted.current.has(ticket.id)} /> : creating ? <SupportTicketForm value={input} onChange={setInput} descriptionLabel={role === 'client' ? 'Описание' : 'Сообщение'} touched={touched} onBlur={field => setTouched(current => ({ ...current, [field]: true }))} error={error} onSubmit={send} /> : <>
-      <ul className="fos-cabinet__rows fos-support-list" aria-label="Мои обращения">{own.map(item => <li key={item.id}><SupportTicketRow ticket={item} onOpen={() => nav.open('ticket/' + item.id)} /></li>)}</ul>
+      <ul className="fos-cabinet__rows fos-support-list" aria-label="Мои обращения">{own.map(item => <li key={item.id}><SupportTicketRow ticket={item} onOpen={() => nav.open('ticket/' + item.id, { attribute: 'data-focus-key', value: 'ticket-' + item.id })} /></li>)}</ul>
       {!own.length && <p className="fos-cabinet__empty" data-testid="support-empty" role="status">Обращений пока нет.</p>}
     </>}
     <p className="fos-cabinet__notice">Демонстрационные обращения и ответы команды. Данные существуют только в этой демосессии.</p>

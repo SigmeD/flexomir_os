@@ -1,8 +1,8 @@
-import { useId, useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
 /** Same-document demo navigation only. Each host owns its own history namespace. */
 export function usePreviewNavigation(root = 'list', onExit?: () => void) {
-  const session = useId()
+  const [session] = useState(() => crypto.randomUUID())
   const [path, setPath] = useState(root)
   const current = useRef(root)
   const points = useRef(new Map<string, { scroll: number; attribute?: string; value?: string }>())
@@ -17,8 +17,8 @@ export function usePreviewNavigation(root = 'list', onExit?: () => void) {
     }
     // StrictMode replays effects. A nested picker must add exactly one entry.
     if (history.state?.preview?.session !== session) {
-      if (exitCallback.current) history.pushState({ ...history.state, preview: { session, path: root, depth: 0 } }, '')
-      else history.replaceState({ ...history.state, preview: { session, path: root, depth: 0 } }, '')
+      if (exitCallback.current) history.pushState({ ...history.state, preview: { session, path: current.current, depth: depth.current } }, '')
+      else history.replaceState({ ...history.state, preview: { session, path: current.current, depth: depth.current } }, '')
     }
     window.addEventListener('popstate', pop)
     return () => window.removeEventListener('popstate', pop)
@@ -37,10 +37,10 @@ export function usePreviewNavigation(root = 'list', onExit?: () => void) {
     })
     return () => cancelAnimationFrame(frame)
   }, [path])
-  return { path, open(next: string) {
+  return { path, open(next: string, opener?: { attribute: string; value: string }) {
     const active = document.activeElement
     const attribute = ['data-focus-key', 'data-order-open'].find(name => active?.hasAttribute(name))
-    points.current.set(current.current, { scroll: window.scrollY, attribute, value: attribute ? active?.getAttribute(attribute) ?? undefined : undefined })
+    points.current.set(current.current, { scroll: window.scrollY, attribute: opener?.attribute ?? attribute, value: opener?.value ?? (attribute ? active?.getAttribute(attribute) ?? undefined : undefined) })
     depth.current += 1
     history.pushState({ ...history.state, preview: { session, path: next, depth: depth.current } }, '')
     setPath(next)

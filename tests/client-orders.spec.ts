@@ -51,8 +51,8 @@ test('Client shell and drawer remain usable at all five widths', async ({ page }
     const desktop = page.getByRole('navigation', { name: 'Навигация клиента', exact: true })
     if (width >= 1024) {
       await expect(desktop).toBeVisible()
-      await expect(desktop.getByTestId('sidebar-nav-artworks')).toBeDisabled()
-      await expect(desktop.getByTestId('sidebar-nav-support')).toBeDisabled()
+      await expect(desktop.getByTestId('sidebar-nav-artworks')).toBeEnabled()
+      await expect(desktop.getByTestId('sidebar-nav-support')).toBeEnabled()
       await expect(page.getByTestId('navigation-drawer-trigger')).toHaveCount(0)
     } else {
       await expect(desktop).toBeHidden()
@@ -61,8 +61,8 @@ test('Client shell and drawer remain usable at all five widths', async ({ page }
       const dialog = page.getByRole('dialog', { name: 'Меню клиента', exact: true })
       await expect(dialog).toBeVisible()
       await expect(dialog.getByTestId('sidebar-nav-orders')).toBeFocused()
-      await expect(dialog.getByTestId('sidebar-nav-artworks')).toBeDisabled()
-      await expect(dialog.getByTestId('sidebar-nav-support')).toBeDisabled()
+      await expect(dialog.getByTestId('sidebar-nav-artworks')).toBeEnabled()
+      await expect(dialog.getByTestId('sidebar-nav-support')).toBeEnabled()
       await expect(page.locator('#root')).toHaveAttribute('inert', '')
       await page.keyboard.press('Escape')
       await expect(page.getByTestId('navigation-drawer-layer')).toHaveCount(0)

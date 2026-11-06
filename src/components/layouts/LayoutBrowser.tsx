@@ -23,7 +23,7 @@ export function LayoutBrowser({ mode = 'library', onChoose, onExit, empty = fals
     if (!upload.title.trim() || !upload.sourceName || errorFixture) return
     const added = demo.add(upload); setUpload({ title: '', description: '', sourceName: '', previewName: '' }); nav.replace('detail/' + added.id)
   }
-  return <div className="fos-cabinet fos-layout-browser" data-testid={mode === 'library' ? 'layout-browser' : 'layout-picker'} data-mode={mode} onKeyDown={event => {
+  return <div className="fos-cabinet fos-layout-browser" data-testid={mode === 'library' ? 'layout-browser' : 'layout-picker'} data-mode={mode} data-state={layout ? 'detail' : uploading ? 'upload' : 'list'} onKeyDown={event => {
     if (event.key === 'Escape' && !event.defaultPrevented) { event.stopPropagation(); if (nav.path === 'list') nav.exit(); else nav.back() }
   }}>
     <PageHeader title={title} autoFocus={mode !== 'library' || nav.path !== 'list'} subtitle={layout && mode === 'library' ? layout.meta : !layout && !uploading && mode !== 'library' ? mode === 'select' ? 'Выберите макет для нового заказа.' : 'Выберите другой макет для заказа.' : undefined}
@@ -33,7 +33,7 @@ export function LayoutBrowser({ mode = 'library', onChoose, onExit, empty = fals
         disabled={layout ? mode === 'library' : uploading ? !upload.title.trim() || !upload.sourceName || errorFixture : false}
         onAction={layout ? () => { if (mode !== 'library') { onChoose?.(layout); nav.exit() } } : uploading ? save : () => nav.open('upload')} /><MoreAction disabled /></>} />
     {layout ? <LayoutDetail layout={layout} picker={mode !== 'library'} /> : uploading ? <LayoutUploadForm value={upload} onChange={setUpload} error={errorFixture ? 'Демо: файл не отправлен. Серверное хранилище не подключено.' : undefined} /> : <>
-      <ul className="fos-cabinet__rows fos-layout-list" aria-label="Мои макеты">{layouts.map(item => <li key={item.id}><LayoutRow layout={item} onOpen={() => nav.open('detail/' + item.id)} /></li>)}</ul>
+      <ul className="fos-cabinet__rows fos-layout-list" aria-label="Мои макеты">{layouts.map(item => <li key={item.id}><LayoutRow layout={item} onOpen={() => nav.open('detail/' + item.id, { attribute: 'data-focus-key', value: 'layout-' + item.id })} /></li>)}</ul>
       {!layouts.length && <p className="fos-cabinet__empty" role="status" data-testid="layouts-empty">Макетов пока нет.</p>}
     </>}
     <p className="fos-cabinet__notice" data-testid="layout-preview-notice">UI preview · только демосессия. Файлы не загружены на сервер; изменения исчезнут при перезагрузке.</p>

@@ -13,4 +13,4 @@
 .fos-support-message p { margin:0 0 16px; white-space:pre-wrap; font-size:12px; line-height:18px; }
 .fos-support-message small { font-size:12px; line-height:18px; color:var(--fos-v2-semantic-color-text-secondary); }
 .fos-support-message--team > div { background:var(--fos-v2-support-reply-bg,#eaf0f7); }
-@media(max-width:600px) { .fos-support-row { height:104px; } .fos-support-list,.fos-support-detail { margin-top:26px; } }
+@media(max-width:600px) { .fos-support-row { height:104px; } .fos-cabinet[data-testid=client-support-screen] .fos-cabinet__main:has(.fos-support-list) { padding:40px 16px 36px; } .fos-cabinet__rows.fos-support-list { margin-top:32px; gap:12px; } .fos-support-detail { margin-top:26px; } }

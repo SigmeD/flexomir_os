@@ -1,5 +1,14 @@
 # Flexomir OS — React Component Registry
 
+## FE-S03 / D — integration contract
+
+CabinetNavigation supplies only available demo destinations. OrderDemoWorkspace composes existing Orders and new Companies/Support/Layouts; React Activity keeps visited same-role sections, form input and selection, while effects/Drawer locks clean up when hidden. Existing Orders role switch still remounts role presentation; draft/filter store is shared at workspace level. No new routing package.
+
+AppShell separates Drawer selected UI from actual section change: local selection → accepted lens settles → existing onSelectionSettled → destination. Sidebar/GL03/HeaderAction material and spring unchanged. usePreviewNavigation uses a unique in-memory history namespace, supports StrictMode, browser Back, nested picker and explicit opener IDs (Safari pointer clicks need not focus buttons). Scope remains demo routes.
+
+Same CompanyOrders uses controlled per-company search/status. SupportTicketRow/Form/Detail use role-owned synthetic records; same subject is H1 before and after submission. LayoutBrowser(mode=library/select/replace) consumes one LayoutRow/Detail/UploadForm/Panel; ArtworkSource and uploader share LocalFileControl. Shared HeaderAction adds only Choose glyph24 from2047:7665; assets are local, root dimensions preserved.
+
+
 ## FE-S03 / M7 — component-first map, 06.11
 
 **C / source map before JSX:** LAY01 `634:8050/8193/8277` → LayoutRow(layout,onOpen), master `1313:2182` Wide/Compact default/hover/pressed/focus, thumbnail `674:114` 60 (row instances including compact use 60). LAY02 `1316:1966/2120/2268` → LayoutDetail(layout), source/history action rows `2167:1357`, `2158:1347`; preview + readonly description, disabled Save/More/history/download where sources/permissions absent. CURRENT LAY02 has links to PROPOSED `2101:7959`; these actions remain OPEN, not implemented.

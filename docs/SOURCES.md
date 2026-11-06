@@ -1,5 +1,16 @@
 # Flexomir OS — CURRENT источники
 
+## FE-S03 — адресная CURRENT сверка 06.11.2026
+
+Перед реализацией прочитаны issue #17 (updated 19:45:50Z), CURRENT frontend plan (modified 19:46:49Z), SRS v0.5 (modified 12:54:47Z), Scope v0.3 (modified 30.10 18:27:41Z). Git fetch подтвердил main351157c и отсутствие открытых PR перед созданием единственного PR #18. Более новые исторические/candidate вставки не повышались до approved требований.
+
+Figma read-only: DS634:60 → FOS1688:532 → Manager02.1 2634:20095, Manager03.1 2634:20172, Client Support1340:4351, Layout CORE1340:4350 и selection2044:7200. Проверены masters/component sets/variants и prototype reactions; конкретные IDs и переходы — Component Registry/Screen Map. Файл дизайна не изменён. Доступная Figma session: 8ccea704-78f9-4e4c-bc02-d793b8e18024.
+
+27 свежих CURRENT PNG (D/T/M: companies, support-list/detail, layouts-list/detail/upload и select-list/detail/upload) хранятся локально output/fe-s03/figma; без временных asset URLs в runtime. scripts/m7-figma-comparison.cjs строит native-pixel пары в output/fe-s03/comparison, убирая только экспортные поля тени 24px слева/16px сверху. Размер узла проверяется до сравнения; PNG не масштабируются. В Git входят только SVG рабочего UI из high-fidelity design context; тяжёлые evidence остаются ignored.
+
+Технические docs получены через Context7: official React controlled forms/state/Activity и Playwright v1.64.1 screenshot/assertions. React Activity сохраняет состояние посещённых разделов и отключает effects скрытых экранов; это не security boundary. Server ACL не проверен и не реализован.
+
+
 **Правило:** сначала проверяй доступность и даты документов, затем адресно читай релевантные разделы. Ссылки ниже — точки входа, не слепо утверждённые снимки. Не переносить решения из других проектов.
 
 **Происхождение:** пакет `Flexomir_OS_Codex_Agent_Rules_2026-11-04.zip` и предоставленные владельцем `AGENTS.md`, `CODEX_SETUP.md`, `README (1).md` в `D:/downloads/`. Содержимое трёх отдельных файлов совпадает с соответствующими файлами архива. Импорт и сверка локального состояния — 04.11.2026. Содержимое Drive/Figma в этой задаче не перечитывалось; статусы из пакета требуют CURRENT-проверки перед продуктовой работой. Сам импорт не подтверждает доступность ссылок или новые approvals.

@@ -4,9 +4,6 @@ import { HeaderActionLab } from './HeaderActionLab'
 import { SidebarNavLab } from './SidebarNavLab'
 import { GlassPillTabsLab } from './GlassPillTabsLab'
 import { OrderDemoWorkspace } from './demo/OrderDemoWorkspace'
-import { ManagerCompaniesScreen } from './screens/companies/ManagerCompaniesScreen'
-import { SupportScreen } from './screens/support/SupportScreen'
-import { ClientLayoutsScreen } from './screens/layouts/ClientLayoutsScreen'
 import { LayoutDemoProvider } from './demo/LayoutDemoProvider'
 import { OrdersComponentsLab } from './OrdersComponentsLab'
 import { NavigationDrawerLab } from './NavigationDrawerLab'
@@ -89,9 +86,8 @@ function GlassFilterDemo() {
 export function App() { return <LayoutDemoProvider><AppViews /></LayoutDemoProvider> }
 function AppViews() {
   const view = new URLSearchParams(window.location.search).get('view')
-  if (view === 'client-layouts') return <ClientLayoutsScreen empty={new URLSearchParams(window.location.search).get('fixture') === 'empty'} errorFixture={new URLSearchParams(window.location.search).get('fixture') === 'layout-error'} />
-  if (view === 'manager-companies') return <ManagerCompaniesScreen empty={new URLSearchParams(window.location.search).get('fixture') === 'empty'} />
-  if (view === 'client-support' || view === 'manager-support') return <SupportScreen role={view === 'client-support' ? 'client' : 'manager'} empty={new URLSearchParams(window.location.search).get('fixture') === 'empty'} errorFixture={new URLSearchParams(window.location.search).get('fixture') === 'support-error'} />
+  const fixture = new URLSearchParams(window.location.search).get('fixture') ?? ''
+  if (view === 'client-layouts' || view === 'manager-companies' || view === 'client-support' || view === 'manager-support') return <OrderDemoWorkspace role={view.startsWith('client') ? 'client' : 'manager'} initialSection={view === 'client-layouts' ? 'artworks' : view === 'manager-companies' ? 'clients' : 'support'} empty={fixture === 'empty'} errorFixture={fixture} />
   if (view === 'orders-components') return <OrdersComponentsLab />
   if (view === 'header-action') return <HeaderActionLab />
   if (view === 'sidebar-nav') return <SidebarNavLab />

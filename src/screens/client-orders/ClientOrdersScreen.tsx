@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AppShell } from '@/components/layout/AppShell'
+import { cabinetItems, type CabinetSection } from '@/components/layout/CabinetPage'
+import { useCabinetNavigation } from '@/components/layout/CabinetNavigation'
 import { OrdersList } from '@/components/orders/OrdersList'
 import { OrderDetail } from '@/components/orders/OrderDetail'
 import { OrderComposer } from '@/components/orders/OrderComposer'
@@ -30,6 +32,7 @@ interface ClientOrdersScreenProps {
 
 /** Client composition: supplied data scope is never a substitute for server authorization. */
 export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId = 'all', onFilterChange }: ClientOrdersScreenProps) {
+  const navigation = useCabinetNavigation()
   const [filterId, setLocalFilterId] = useState<OrderStatusFilterId>(initialFilterId)
   const [itemEditorOpen, setItemEditorOpen] = useState(false)
   const setFilterId = (id: OrderStatusFilterId) => { setLocalFilterId(id); onFilterChange?.(id) }
@@ -43,7 +46,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   return (
     <div className="fos-orders-page" data-testid="client-orders-screen" ref={preview.surfaceRef}>
       <AppShell
-        items={clientNav.map(item => item.id === 'orders' ? { ...item, disabled: itemEditorOpen } : item)} activeId="orders" onSelect={() => { if (!itemEditorOpen) preview.backToList() }}
+        items={(navigation ? cabinetItems('client', navigation.ready) : clientNav).map(item => itemEditorOpen ? { ...item, disabled: true } : item)} activeId="orders" onSelect={id => { if (!itemEditorOpen) { if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) } }}
         roleLabel="Клиент" identityLabel={companyName} variant="client" navigationLabel="Навигация клиента" menuLabel="Меню клиента"
         triggerLabel="Открыть меню клиента" footerText={companyName}
       >

@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ComponentProps, type KeyboardEvent, type PointerEvent } from 'react'
+import { useEffect, useLayoutEffect, useRef, type ComponentProps, type KeyboardEvent, type PointerEvent } from 'react'
 import './header-action.css'
 import saveIcon from '@/assets/orders/save.svg'
 import sendIcon from '@/assets/orders/send.svg'
@@ -51,6 +51,17 @@ export function HeaderAction({
   const buttonRef = useRef<HTMLButtonElement>(null)
   const circleRef = useRef<HTMLSpanElement>(null)
   const motion = useRef<PressState>(freshState())
+  function positionTooltip() {
+    const button = buttonRef.current
+    const tooltip = button?.querySelector<HTMLElement>('.fos-ha__tooltip')
+    if (!button || !tooltip) return
+    const bounds = button.getBoundingClientRect(), width = tooltip.getBoundingClientRect().width
+    if (!width) return
+    const ideal = bounds.left + bounds.width / 2 - width / 2
+    const left = Math.max(20, Math.min(ideal, window.innerWidth - width - 20))
+    button.style.setProperty('--ha-tooltip-shift', (left - ideal) + 'px')
+  }
+  useLayoutEffect(() => { if (!disabled) positionTooltip() }, [disabled, accessibleName])
 
   function reset() {
     const s = motion.current
@@ -189,6 +200,8 @@ export function HeaderAction({
       data-action={action}
       className={['fos-ha', 'fos-ha--' + presentation, className].filter(Boolean).join(' ')}
       onClick={() => onAction?.()}
+      onPointerEnter={event => { positionTooltip(); buttonProps.onPointerEnter?.(event) }}
+      onFocus={event => { positionTooltip(); buttonProps.onFocus?.(event) }}
       onPointerDown={pointerDown}
       onPointerUp={pointerUp}
       onPointerCancel={(event) => { if (motion.current.pointerId === event.pointerId) end(); buttonProps.onPointerCancel?.(event) }}

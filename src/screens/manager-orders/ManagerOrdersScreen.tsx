@@ -5,6 +5,8 @@ import { PageHeader } from '@/components/ui/page-header'
 import { MoreAction } from '@/components/ui/overflow-menu'
 import type { SidebarNavItem } from '@/components/ui/sidebar-nav'
 import { AppShell } from '@/components/layout/AppShell'
+import { cabinetItems, type CabinetSection } from '@/components/layout/CabinetPage'
+import { useCabinetNavigation } from '@/components/layout/CabinetNavigation'
 import { OrdersList } from './OrdersList'
 import { OrderDetail } from '@/components/orders/OrderDetail'
 import { useOrderPreview } from '@/components/orders/useOrderPreview'
@@ -32,6 +34,7 @@ interface ManagerOrdersScreenProps {
  * Accepted Glass primitives remain unchanged.
  */
 export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId = 'all', onFilterChange }: ManagerOrdersScreenProps) {
+  const navigation = useCabinetNavigation()
   const [filterId, setFilterId] = useState<OrderStatusFilterId>(initialFilterId)
   const preview = useOrderPreview(orders)
   const visibleOrders = filterId === 'all'
@@ -48,9 +51,9 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
   return (
     <div className="fos-orders-page" data-testid="manager-orders-screen" ref={preview.surfaceRef}>
       <AppShell
-        items={managerNav}
+        items={navigation ? cabinetItems('manager', navigation.ready) : managerNav}
         activeId="orders"
-        onSelect={() => preview.backToList()}
+        onSelect={id => { if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) }}
         roleLabel="Менеджер"
         variant="manager"
         navigationLabel="Навигация менеджера"
