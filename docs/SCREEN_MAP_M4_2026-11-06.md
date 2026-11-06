@@ -61,7 +61,7 @@
 
 ## Готовый backlog для React-агента (после M4 карты, строго по зависимостям)
 
-**FE-C01 / FIRST. Client AppShell + «Мои заказы»**
+**FE-C01 / FIRST. Client AppShell + «Мои заказы» — [GitHub issue #12](https://github.com/SigmeD/flexomir_os/issues/12)**
 
 - Из `main` создать отдельную ветку. Только React / `src/screens/client-orders/*`, разрешённое подключение одной preview-точки в `src/App.tsx`, переиспользовать `AppShell`, `GlassPillTabs`, `OrderCard`. Не редактировать core Glass/Sidebar/Drawer material/motion/CSS.
 - Реализовать список из synthetic fixtures + status filtering, empty/loading/error *UI demonstrations* (никакого фальшивого реального network request), адаптивы D1440/L1024/T768/M390/M320. Не вводить API/1C enums, ACL, не объявлять dashboard.
