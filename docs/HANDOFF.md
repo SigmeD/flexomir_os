@@ -1,11 +1,13 @@
 # Flexomir OS — handoff между сессиями Codex
 
-## Передача — 06.11.2026: PR #9 после интеграции Drawer
+**Рабочий источник frontend:** [09_Frontend Development Plan CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Наш scope: React/frontend, shared components, screens, UX/QA, consuming approved API. Алексей владеет backend/API creation, server ACL, 1C exchange/integration. Figma = approved DS/masters plus scenario/state references, not 230 independent React screen requirements. UI label «В работе» Owner accepted; real 1C mapping not FE.
 
-- Рабочая папка прежняя, `feat/fe08-manager-orders-screen-gl03`. PR #5 уже слит в main (`7372685`); эта база влита в PR #9 коммитом `8f5eeb7`, конфликт App разрешён с сохранением всех лабораторий и Manager Orders.
+## Передача — 06.11.2026: PR #9 объединён с main
+
+- PR #9 слит в `origin/main` (`0fc653667ac4acba675fe702920b476a2fda5ac8`) по прямому поручению владельца, пять CI-проверок `aaaa4304` PASS. PR #5 уже в main (`7372685`); конфликт App разрешён с сохранением всех лабораторий и Manager Orders. Локальная рабочая ветка и незакоммиченные файлы при удалённом слиянии не менялись.
 - `src/components/layout/AppShell.tsx` объединяет desktop SidebarNav и готовый Drawer для T/M. При resize на desktop Drawer размонтируется и освобождает modal isolation. Фильтр/данные экрана сохраняются. Другие разделы disabled; маршруты не выдуманы.
 - Build и дополнительный TypeScript check PASS; общий Chromium **148/148**, повторный экранный Chromium **26/26**, Firefox/WebKit **26/26**. [Свежий M3 QA](FE08_MANAGER_ORDERS_M3_QA_2026-11-06.md) — команды, восемь снимков для Owner и ограничения.
-- Дальше: Owner visual review PR #9, затем отдельное решение о merge. PR остаётся Draft; название «Клиенты / Компании», M4 frontend-модуль и API/1С остаются отдельными вопросами. Drive M0–M9 перечитан; старые статусы документов ниже исторические.
+- Сейчас: завершить только слияние актуальных PR #9/#10; другие ветки не объединять. Затем новая база — актуальный `origin/main`; первый следующий результат — единая карта Client + Manager «готово / частично / не реализовано» в существующем Drive-плане. Повторное проектирование и разработка экранов в задачу слияния не входят. Визуальная приёмка, «Клиенты / Компании», M4 и API/1С остаются отдельными статусами.
 - Исходные незакоммиченные аудиты `docs/audits/`, их изменения PROJECT_STATE/HANDOFF и удаления `Screenshot_1.png`/`Screenshot_2.png` сохранены вне task commits. Не применять и не удалять существующие stash. Worktree и параллельных агентов не создавали.
 
 > Обновлено 04.11.2026. Перед работой сверить Git и CURRENT-источники.

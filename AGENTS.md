@@ -1,5 +1,15 @@
 # Flexomir OS — правила работы Codex
 
+## CURRENT / 06.11.2026 — Frontend-only ownership and execution plan (Owner instruction)
+
+**Canonical frontend execution plan:** [Drive / 09_FRONTEND_CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Before selecting the next frontend task, read its stage, status, owner, gate and blockers; use GitHub for actual code/CI/PR state. This replaces older 04.11 FE-08=TODO and Figma-frame-first descriptions as the ACTIVE work sequence without erasing historical notes.
+
+- **OUR SCOPE = React frontend only:** reusable visual/domain components, UI composition, routing, filters and interactive states, responsive design, accessibility, browser/visual QA, fixtures, and connecting the frontend client to an already-designed, agreed, available API. No new API/server implementation from the frontend workstream.
+- **ALEXEY OWNS:** backend, data/business logic, server-side authorization and ACL, API design/implementation, integrations and exchange with 1C, server validation and integration testing. Any 1C-side specialist configuration is in that technical stream, NOT ours. Frontend can ask for API contract/fixtures/error shapes but must not silently take over those tasks.
+- **FIGMA IS THE DESIGN SYSTEM:** use approved DS V2/FOS technical masters and established React components as visual source. Do NOT copy ~230 Figma responsive/UX frames into ~230 separate React screens; use the frames only to understand scenarios and state coverage. UX PROPOSED/ARCHIVE is not auto-approved scope. For accepted Glass primitives, keep their existing shared material/motion; do not fork.
+- **OWNER UI decision:** filter label `В работе` is accepted by Owner without additional UX approval. Actual mapping between API/1C statuses is the responsibility of the backend/PO contract, not a frontend label decision.
+- **STATUS DISCIPLINE:** distinguish component accepted, code written, CI passed, Owner screen accepted, merged, backend-ready and production-ready. PR #9 is merged into main at 0fc653667ac4acba675fe702920b476a2fda5ac8 after five successful CI workflows on aaaa4304. NavigationDrawer is integrated into Manager Orders through AppShell. Technical merge does not imply product or release acceptance. The canonical Drive plan and current Owner instructions determine the next task.
+
 > **Область действия:** только репозиторий Flexomir OS (`D:\Projects\flexomir_os`) и его подтверждённые worktree. Не переносить решения из других проектов.
 > **Назначение:** это обязательный процесс работы, а не самостоятельный источник новых продуктовых требований. Перед каждым значимым изменением проверяй актуальные источники.
 
