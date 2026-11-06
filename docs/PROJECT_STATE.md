@@ -1,3 +1,11 @@
+# CURRENT STATUS / 06.11.2026 — Frontend only
+
+**Рабочий план:** [09_Frontend Development Plan CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Владелец 06.11 ограничил нашу работу React/frontend: компоненты, экраны, интерактивность, адаптивность, тесты и UI-интеграция с готовым API. Backend, создание API, server ACL и обмен с 1С — за Алексеем; не ставить эти работы в наш frontend-бэклог. Figma — DS + источник свойств компонентов, НЕ команда реализовать ~230 отдельных кадров.
+
+**Факты GitHub:** `main` = `aa1741bcd029e1d1dd1edea6544563da8f5a1730`, GL-03 accepted/merged; SidebarNav/HeaderAction/GlassSelect уже существуют. [FE-08 PR #9](https://github.com/SigmeD/flexomir_os/pull/9) — код первого Manager Orders и переиспользуемого OrderCard реализован, CI build + 76/76 Chromium PASS [доказательство](https://github.com/SigmeD/flexomir_os/actions/runs/42186230876), НО Draft/Owner review OPEN, НЕ в main и НЕ релиз. [Drawer PR #5](https://github.com/SigmeD/flexomir_os/pull/5) — DRAFT/NOT MERGED. Реальный frontend router, Manager New/All behavior, API/1C data, Company/Support/Client pages ещё не готовы. Прежние заметки ниже — срез 04.11 и не переопределяют этот статус.
+
+---
+
 # Flexomir OS — текущее состояние проекта
 
 **Локальный снимок:** 04.11.2026. **Источник свежих изменений:** [Frontend Startup CURRENT](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit). На новой сессии проверить изменения в Drive и фактический Git.
