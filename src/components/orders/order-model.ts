@@ -10,6 +10,23 @@ export interface OrderListItem {
   statusLabel: string
   /** null is visible only in "Все заказы"; supplied by the caller. */
   filterId: Exclude<OrderStatusFilterId, 'all'> | null
+  /** Optional read-only presentation. No opener is rendered when this is absent. */
+  detail?: OrderDetailContent
+}
+
+export interface OrderItemSummaryView {
+  id: string
+  name: string
+  specifications: string
+  artworkLabel: string
+}
+
+/** Display fields from Figma; not a required-field, status or backend data contract. */
+export interface OrderDetailContent {
+  items: readonly OrderItemSummaryView[]
+  requestedDate?: string
+  agreedDate?: string
+  comment?: string
 }
 
 export const ORDER_STATUS_FILTERS: readonly GlassPillFilter[] = [

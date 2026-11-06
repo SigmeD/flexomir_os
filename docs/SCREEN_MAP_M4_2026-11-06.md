@@ -4,7 +4,7 @@
 **Статус:** M4 inventory DONE / Owner product gate OPEN; это карта для реализации, **не изменение** SRS/Scope, Figma, маршрутов, backend/API/1С.
 **Канонический план:** [Google Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
 
-**FE-S01 / branch progress:** блок A — C-01/C-02 подключены в `feat/fe-s01-orders-core`, build и 38/38 Client+Manager checks PASS. Блок B C-03/M-04 — следующий. Колонка «React в main» ниже сохраняет исходный M4-снимок до merge; частичный список не означает готовность всего кабинета.
+**FE-S01 / branch progress, PR #14:** A — C-01/C-02 подключены; B — read-only C-03/M-04 на общих OrderDetail/OrderItemSummary и одном DEMO-наборе. Build + 180 Chromium + 58 Firefox/WebKit PASS локально; Draft / OWNER_OPEN / NOT_MERGED. Полные C-03/M-04 с редактированием/командами не объявляются готовыми. Колонка «React в main» ниже — исходный M4-снимок до merge; новые состояния карты синхронизировать после фактического слияния.
 
 ## Источники
 
