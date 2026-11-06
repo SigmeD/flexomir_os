@@ -1,3 +1,30 @@
+# CURRENT / 06.11.2026 — единый frontend-план и рабочие статусы
+
+**Единственный исполняемый план фронтенда:** [09_Frontend Development Plan CURRENT в Google Drive](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Подробные этапы, критерии приёмки, ответственность и ссылки на доказательства находятся там. Исторический план от 04.11 ниже сохранён только для отслеживания решений; его `FE-08 TODO` больше не актуален.
+
+**Разделение:** наша задача — React/TypeScript/frontend, компоненты, страницы, UX-состояния, адаптивность, QA и подключение фронтенда к предоставленному API. Алексей — backend, разработка API, серверные права/логика, интеграция с 1С. UI-фильтр «В работе» принят Owner; backend mapping не выполняем.
+
+**Figma:** актуальная дизайн-система и технические мастера; не переносим весь каталог адаптивных/сценарных Figma-макетов как отдельные React-проекты или страницы. Делаем общие React-компоненты и из них собираем роли и сценарии.
+
+| Этап | Проверенный результат на 06.11 | Статус / следующий gate |
+| --- | --- | --- |
+| M0 React baseline / Git / QA | main React/Vite/TypeScript и CI | DONE |
+| M1 Shared Glass & UI | GL-03 Owner accepted + merged; SidebarNav, HeaderAction, GlassSelect в main | GL-03 DONE; прочие визуальные гейты по контрактам |
+| M2 Manager Orders пилот | [PR #9](https://github.com/SigmeD/flexomir_os/pull/9): OrderCard, OrdersList, ManagerOrdersScreen; 76/76 Chromium Playwright + build PASS | CODE_DONE / CI_PASS; OWNER_SCREEN_OPEN / DRAFT / NOT MERGED |
+| M3 AppShell / Mobile+Tablet Drawer | [PR #5](https://github.com/SigmeD/flexomir_os/pull/5) | DRAFT / Owner gate OPEN; без него мобильная навигация FE-08 неполная |
+| M4 Manager Orders module | общие фильтры, поиск, Company, список/состояния, детали/позиции/макеты на fixtures | PLANNED после M2/M3; real new/all API semantics отдельно |
+| M5 Client Orders | переиспользуемые карточки/фильтры, клиентские действия и роли | PLANNED после стабилизации общих компонентов |
+| M6 Companies | список, карточка, выбор/детали, связанные заказы | PLANNED; создание новой компании не входит автоматически в MVP |
+| M7 Support | личные обращения Client/Manager: тема, описание, история, ответ команды | PLANNED; чаты, удаление и дополнительные ответы — UX PROPOSED/SCOPE OPEN |
+| M8 API consumption | только frontend adapters/hooks/types/UI request states по контрактам Алексея | BLOCKED_EXTERNAL для реальных данных; UI на моках не блокируется |
+| M9 Финальная регрессия | D1440/L1024/T768/M390/M320, a11y, cross-browser, Owner & release gates | PLANNED |
+
+**СЕЙЧАС:** M2 Owner screen QA → M3 Drawer decision/merge → M4 составной Manager Orders; параллельно можно готовить контрактные компоненты M4 без API и без дублирования Glass. Календарные сроки/бюджет не утверждены, не придумывать даты.
+
+---
+
+## Архивный план 04.11 (исторический срез, не исполнять без сверки с CURRENT выше)
+
 # Flexomir OS — план frontend и Liquid Glass
 
 План основан на [Frontend Startup CURRENT](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit) и [Glass Visual Contract](https://docs.google.com/document/d/1VgaR8sfpRWeYVhDlN9jGkehLnXbCTiNQSBSEZCVWmGI/edit). Этот локальный список — рабочий срез, не отдельное продуктовое утверждение.
