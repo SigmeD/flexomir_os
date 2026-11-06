@@ -1,5 +1,17 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 06.11.2026 — FE-S03 / M7, issue #17
+
+База после fetch: origin/main 351157c1891e9e23db677b02cfd32a5b1ea9ad1e; FE-S02 PR #16 merged. Одна ветка feat/fe-s03-m7-client-manager-ui, один PR, без merge до разрешения Owner. Это действующий план; прежние CURRENT-блоки ниже — исторические checkpoints. Последняя ревизия документов 06.11, следующая 20.11.
+
+- [ ] A: CURRENT Manager 02.1 → CompanyRow + CompanyOrders + shared OrdersList/OrderDetail; list → company-linked orders → order → back. QA 1440/1024/768/390/320, keyboard/history/focus/scroll/empty и synthetic company isolation. Коммит и первый Draft PR.
+- [ ] B: CURRENT Support + FR-SUP-001..006 → shared list/form/detail обеих ролей. Тема/описание, собственные тикеты и ответ команды; без author replies/delete/category/attachments/triage. QA ролей/отправки demo/адаптивов + коммит.
+- [ ] C: CURRENT LAY-01…09 + prototype preconditions → LayoutRow/Detail/Picker/upload, ephemeral preview. Без PROPOSED edit/history 2101:7959. QA переходов и ArtworkSource regression + коммит.
+- [ ] D: общая навигация готовых разделов; Chromium/Firefox/WebKit, build/CI/axe, Orders/Glass regression, side-by-side D/T/M + 1024/320; LIVE docs + CURRENT Drive. Один итоговый PR без merge.
+
+Гейты отдельно FUNCTIONAL / VISUAL / TECHNICAL / OWNER. Контекст возврата, длинные названия, empty, роли и повторная отправка проверяются сценарными тестами. Backend/API/1С — Алексей. Исходные staged-правки и stash сохранены вне task commits.
+
+
 ## CURRENT / 06.11.2026 — SDLC, единый frontend roadmap
 
 **База:** `origin/main` = `884e78f`, PR #5/#9/#10/#11/#14 merged. FE-S01 list/shared detail в main; FE-S02 в Draft PR #16. Принято Owner: **сначала целостная структура двух кабинетов, затем основные экраны и сценарии; глобальная визуальная полировка после охвата**. Уточнение Owner к #15: текущий Orders-flow должен соответствовать Figma целиком до merge.

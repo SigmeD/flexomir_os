@@ -1,5 +1,20 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
+## FE-S03 / M7 — CURRENT execution and transition matrix, 06.11
+
+Issue #17, approved Owner instruction: sequential A → B → C → D, one branch/PR. Base main 351157c, PR #16 merged. Historical baseline below is not current implementation status.
+
+| Figma frame → component | Screen / action → next state | Gate |
+| --- | --- | --- |
+| Manager 2498:10826/10963/11087 → CompanyRow/FOSInput | clients list → whole row → company linked orders | A Chromium PASS / Owner OPEN |
+| 2499:9435/9464/9490, 2548:10426…10571 → CompanyOrders/OrdersList | company summary + scoped orders → order → shared Manager OrderDetail | A QA pending |
+| Prototype Company Row reactions, breadcrumb + shell | Back → scoped orders → filtered company list, same identity/focus/scroll | A QA pending |
+| Client/Manager Support | B source mapping pending | OPEN |
+| Client LAY-01…09 | C source mapping pending; full product scope OPEN | OPEN |
+
+Figma company detail and linked orders are the same composition. Add company disabled; sort fixture-supplied/disabled pending contract. Server ACL, onboarding, 1C outside FE-S03.
+
+
 **Проверено:** 06.11.2026 · React baseline `origin/main` `884e78f` (FE-S01 merged); FE-S02 в `feat/fe-s02-order-compose-flow` · Figma/Drive — read-only источники.
 **Статус:** M4 inventory DONE / Owner product gate OPEN; это карта для реализации, **не изменение** SRS/Scope, Figma, маршрутов, backend/API/1С.
 **Канонический план:** [Google Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).

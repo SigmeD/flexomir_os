@@ -1,5 +1,10 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 06.11.2026 — FE-S03 / M7 in progress
+
+Owner requested issue #17, sequential A/B/C/D, one PR and no merge without permission. Fresh origin/main = 351157c, PR #16 merged, active PR inventory empty at start. Working branch feat/fe-s03-m7-client-manager-ui; main unchanged. Drive CURRENT plan/SRS/Scope and CURRENT DS/FOS/Manager Companies read. A FUNCTIONAL/TECHNICAL QA: build PASS; Chromium 5/5 at 1440/1024/768/390/320, whole-page axe 0 violations. Figma/React list images inspected D/M; geometry matches 80px rows, 16px gaps and search spacing. Synthetic copy differs; accepted runtime Glass remains. Owner visual acceptance OPEN. B/C/D pending. Existing staged OrderDetail/test/docs edits and deleted screenshots preserved outside task commits; stash unchanged. Current plan and component/transition map in DELIVERY_PLAN / COMPONENT_REGISTRY / SCREEN_MAP.
+
+
 ## FE-S02 / #15 — Figma parity CODE_DONE / Owner gate OPEN
 
 База `origin/main 884e78f` (FE-S01 PR #14 merged); обычная ветка `feat/fe-s02-order-compose-flow`, тот же [Draft PR #16](https://github.com/SigmeD/flexomir_os/pull/16). `5a26e4a` — shared masters; `03f55ac` — reference New Item; следующий коммит — остальные композиции + LIVE docs. Main/worktree/stash/Screenshot_3.png не изменены; новые ветки/PR/зависимости не создавались.

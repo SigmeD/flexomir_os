@@ -1,5 +1,18 @@
 # Flexomir OS — React Component Registry
 
+## FE-S03 / M7 — component-first map, 06.11
+
+| Figma node / variant | React contract | Consumers / action |
+| --- | --- | --- |
+| DS 634:60, FOS 1688:532, shell 637:180, header 2302:2138, controls 634:402/418 + 1148:311 | AppShell/SidebarNav/Drawer/PageHeader/HeaderAction/MoreAction/FOS controls | REUSE; CabinetPage composes new domains; Glass untouched |
+| Client Row set 1189:984, Default 634:316; Manager 2498:10826/10963/11087 | CompanyRow(company,onOpen), whole-row button / 80px / ellipsis | CREATE minimal domain row; no duplicate CompanyCard |
+| Linked orders 2499:9435/9464/9490; long company 2548:10426/10456/10484; third 2548:10513/10543/10571 | CompanyOrders(company,onOpen) + readonly FOS controls + OrdersList/OrderDetail(role=manager) | REUSE order components, CREATE composition; company detail IS linked orders, no invented intermediate page |
+| Shared in-session navigation | usePreviewNavigation(root), browser Back + focus/scroll return points | CREATE for all M7 list/detail flows; no production route or ACL contract |
+| Support / Layout masters | Source/variant map before B/C JSX | DEFER until preceding block QA |
+
+Naming OPEN: issue #17 calls domain «Компании», CURRENT Figma says «Клиенты». Preserve Figma visible label, no global rename. Fixture scoping does not prove server ACL.
+
+
 **Date:** 2026-11-06  
 **Scope:** frontend React, Client/Manager.  
 **Decision (Owner):** Figma maintains visual design-system references, **not a requirement to implement every Figma frame as an individual React screen**. Compose screens from shared React primitives and reusable domain components. Existing UX frames may inform scenarios and state coverage but do not override accepted shared React Glass.

@@ -1,0 +1,7 @@
+.fos-company-row { height:80px; }
+.fos-companies__search { max-width:525px; margin-top:28px; margin-bottom:52px; }
+.fos-company-orders { display:grid; gap:28px; margin-top:28px; }
+.fos-company-orders__filters { display:grid; grid-template-columns:minmax(0,2.1fr) minmax(0,1fr) minmax(0,1fr); gap:16px; }
+.fos-company-orders .fos-orders-page__items { gap:12px; }
+@media(max-width:1023px) { .fos-companies__search { max-width:none; margin-top:26px; margin-bottom:60px; } }
+@media(max-width:600px) { .fos-companies__search { margin-top:36px; margin-bottom:64px; } .fos-company-orders__filters { grid-template-columns:minmax(0,1fr); } }

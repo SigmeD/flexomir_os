@@ -1,5 +1,12 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT 06.11.2026 — FE-S03 / issue #17
+
+Branch feat/fe-s03-m7-client-manager-ui from fetched main 351157c. A Companies first; B shared Support then C Layouts preview then D integration/QA. One PR, no merge without Owner. CURRENT Drive plan/SRS/Scope and Figma Companies masters/variants/prototype links checked. A test first correctly failed for missing screen; implementation uses shared CabinetPage, CompanyRow/CompanyOrders and existing OrdersList/OrderDetail. QA: build PASS, Chromium 5/5, axe 0; D/M images inspected, Owner visual OPEN. No backend/API/1С changes.
+
+Preexisting staged changes: Screenshot_1/2 deletions, four docs, OrderDetail.tsx and order-detail.spec.ts. Binary patch backup local output/fe-s03/preexisting-staged.patch. Do not commit/revert these as FE-S03. No stash/worktree mutations. Naming «Компании» vs visible Figma «Клиенты» remains OPEN.
+
+
 ## PR #16 / Figma parity correction — continuation 06.11
 
 **Результаты:** build175 + expanded tsc PASS; полный Chromium 200/200 и Firefox/WebKit 78/78 PASS. После добавления screen-wide axe и контрастной secondary text — дополнительные 2 Chromium + 2 Firefox/WebKit PASS (Client/Manager list/detail + Composer); targeted shared/rendering captures перепроверены. В текущем CI ожидается 202 Chromium, в cross config 80 cases. Последний head/CI — PR #16. Это не OWNER_ACCEPTED; visual/merge BLOCKED.

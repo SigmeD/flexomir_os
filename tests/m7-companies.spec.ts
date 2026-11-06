@@ -1,0 +1,36 @@
+import { test, expect } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
+
+for (const width of [1440, 1024, 768, 390, 320]) {
+  test(`A companies flow, scope, focus and responsive ${width}`, async ({ page }, info) => {
+    await page.setViewportSize({ width, height: 960 })
+    await page.goto('/?view=manager-companies')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Клиенты')
+    const search = page.getByLabel('Поиск компании', { exact: true })
+    await search.fill('Компания 01')
+    const row = page.getByTestId('company-row-company-01')
+    await expect(page.getByTestId(/company-row-/)).toHaveCount(1)
+    await row.focus()
+    await page.keyboard.press('Enter')
+    await expect(page.getByLabel('Компания', { exact: true })).toHaveValue('Компания 01')
+    await expect(page.getByTestId('company-order-DEMO-003')).toBeVisible()
+    await expect(page.getByTestId('company-order-DEMO-002')).toHaveCount(0)
+    await page.getByLabel('Поиск заказа', { exact: true }).fill('003')
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-003', exact: true }).click()
+    await expect(page.getByTestId('order-detail')).toHaveAttribute('data-order-id', 'DEMO-003')
+    await page.goBack()
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Заказы клиента')
+    await expect(page.getByLabel('Поиск заказа', { exact: true })).toHaveValue('003')
+    await expect(page.getByRole('button', { name: 'Открыть заказ DEMO-003', exact: true })).toBeFocused()
+    await page.goBack()
+    await expect(search).toHaveValue('Компания 01')
+    await expect(row).toBeFocused()
+    await search.fill('нет такой компании')
+    await expect(page.getByTestId('companies-empty')).toBeVisible()
+    await search.fill('')
+    await expect(page.getByRole('button', { name: 'Добавить компанию', exact: true })).toBeDisabled()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+    await page.screenshot({ path: info.outputPath(`fes03-companies-${width}.png`), fullPage: true })
+  })
+}

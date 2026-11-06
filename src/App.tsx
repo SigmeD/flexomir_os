@@ -4,6 +4,7 @@ import { HeaderActionLab } from './HeaderActionLab'
 import { SidebarNavLab } from './SidebarNavLab'
 import { GlassPillTabsLab } from './GlassPillTabsLab'
 import { OrderDemoWorkspace } from './demo/OrderDemoWorkspace'
+import { ManagerCompaniesScreen } from './screens/companies/ManagerCompaniesScreen'
 import { OrdersComponentsLab } from './OrdersComponentsLab'
 import { NavigationDrawerLab } from './NavigationDrawerLab'
 import {
@@ -84,6 +85,7 @@ function GlassFilterDemo() {
 
 export function App() {
   const view = new URLSearchParams(window.location.search).get('view')
+  if (view === 'manager-companies') return <ManagerCompaniesScreen empty={new URLSearchParams(window.location.search).get('fixture') === 'empty'} />
   if (view === 'orders-components') return <OrdersComponentsLab />
   if (view === 'header-action') return <HeaderActionLab />
   if (view === 'sidebar-nav') return <SidebarNavLab />
