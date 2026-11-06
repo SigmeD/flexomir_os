@@ -1,5 +1,12 @@
 # Flexomir OS — реестр решений и вопросов
 
+## FE-DEC-09 / OWNER APPROVED 06.11.2026 — SDLC breadth-first, LIVE DOCS
+
+- **Принято:** сначала аудируем существующую Figma-архитектуру и собираем карту обоих кабинетов Client + Manager; затем общие React-каркасы и все основные экраны, потом сквозной путь заказа, системная UX/UI-полировка и общий QA. Не тратим сопоставимое время на каждую иконку или Glass-анимацию при неполном охвате экранов. Базовый QA и критические дефекты исправляем сразу.
+- **Принято:** документация должна оставаться LIVE; синхронизация реальных изменений/гейтов с [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) и текущими GitHub-документами — часть Definition of Done каждой задачи. Никаких независимых конкурирующих CURRENT-планов.
+- **Факт GitHub, не UX-approval:** PR #5/#9/#10 merged; `origin/main` = `89b043f`. Реализация продукта не равна его визуальному/продуктовому принятию.
+- SRS/Scope/Governance/Figma Masters сохраняют приоритет и меняются только по отдельной процедуре; API/backend/1С — зона Алексея.
+
 ## CURRENT / Owner decision 06.11.2026 — frontend execution + responsibilities
 
 - **FE-DEC-06 APPROVED:** deliver React frontend by reusable components and screen compositions. Figma Primary Design System V2/FOS Masters are the visual foundation; a set of ~230 Figma frames is NOT a requirement to create ~230 independently coded screens. Existing scenario frames are references for user states; archival and UX PROPOSED are not approved product scope.
