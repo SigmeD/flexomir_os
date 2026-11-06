@@ -12,7 +12,13 @@ test('composed Manager Orders uses approved shared UI primitives', async ({ page
   await expect(tabs.getByTestId('glass-pill-work')).toHaveText('В работе')
   await expect(tabs.locator('[data-fos-glass-material]')).toHaveCount(1)
   await expect(tabs.locator('select')).toHaveCount(0)
-  await expect(page.getByTestId('shared-sidebar-nav')).toBeVisible()
+  const sidebar = page.getByTestId('shared-sidebar-nav')
+  if ((page.viewportSize()?.width ?? 1440) <= 900) {
+    // Desktop SidebarNav is intentionally hidden until GL-02B Drawer is approved.
+    await expect(sidebar).toBeHidden()
+  } else {
+    await expect(sidebar).toBeVisible()
+  }
   await expect(page.getByRole('button', { name: 'Добавить заказ' })).toBeDisabled()
   await expect(page.getByTestId('manager-orders-list').locator('li')).toHaveCount(6)
   await expect(page.getByTestId('manager-order-count')).toHaveText('6 из 6')
@@ -61,7 +67,8 @@ test('empty fixture renders honest list state', async ({ page }) => {
 
 test('non-implemented navigation and order routes cannot be clicked', async ({ page }) => {
   const nav = page.getByTestId('shared-sidebar-nav')
-  await expect(nav.getByRole('button', { name: 'Клиенты' })).toBeDisabled()
-  await expect(nav.getByRole('button', { name: 'Поддержка' })).toBeDisabled()
+  // Query actual DOM nodes: the SidebarNav itself is hidden at mobile width.
+  await expect(nav.locator('[data-testid="sidebar-nav-clients"]')).toBeDisabled()
+  await expect(nav.locator('[data-testid="sidebar-nav-support"]')).toBeDisabled()
   await expect(page.getByTestId('manager-orders-list').getByRole('link')).toHaveCount(0)
 })
