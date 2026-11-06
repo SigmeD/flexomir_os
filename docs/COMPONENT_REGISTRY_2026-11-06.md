@@ -6,8 +6,10 @@
 
 ## Source of truth and constraints
 
+**CURRENT / 06.11.2026:** Реестр — LIVE: при новом/изменённом React-компоненте укажи тип, потребителей Client/Manager, файл, props/state, QA, Owner gate и использующий экран. Обнови в том же PR, потом синхронизируй с Drive. Не создавай компоненты ради количества Figma-фреймов.
+
 - CURRENT Drive UX/UI index, Frontend Startup and Requirements SRS v0.5 (modified 04.11).
-- Repository `SigmeD/flexomir_os`, merged Drawer baseline `origin/main` SHA `7372685e9391f60279aad90d707aa9cc00d55138`.
+- Repository `SigmeD/flexomir_os`, CURRENT merged `origin/main` SHA `89b043f9ae7e70a36a1eea8f5c98cd621e037aa9`.
 - Approved shared GlassPillTabs uses exactly one existing `FosGlassMaterial`, 38px lens / 44px target; 7px top + 12px bottom scrollport shadow clearance. DO NOT fork its material, spring, or tokens.
 - Manager/Client views share visual components but have distinct permissions, data scopes and workflows. Backend integration is Alexey's domain. Do not invent status mapping, 1C contract, ACL, or route targets.
 - This registry is an implementation planning index, NOT new product Scope approval.
@@ -28,9 +30,9 @@
 
 | Component / layer | Path | Status |
 |---|---|---|
-| OrderCard | `src/components/orders/OrderCard.tsx` | Branch implementation; reusable, display-only |
-| OrdersList / OrderRow | `src/screens/manager-orders/OrdersList.tsx` | Branch implementation; list/empty, adapts display labels |
-| ManagerOrdersScreen | `src/screens/manager-orders/ManagerOrdersScreen.tsx` | Branch implementation, isolated `?view=manager-orders` |
+| OrderCard | `src/components/orders/OrderCard.tsx` | Merged into main PR #9; reusable, display-only |
+| OrdersList / OrderRow | `src/screens/manager-orders/OrdersList.tsx` | Merged into main PR #9; list/empty states |
+| ManagerOrdersScreen | `src/screens/manager-orders/ManagerOrdersScreen.tsx` | Merged into main PR #9, preview `?view=manager-orders`; Owner screen gate OPEN |
 | Filter UI (GL-03) | Existing shared `GlassPillTabs` | Reuse unchanged |
 | UI data model | `src/screens/manager-orders/model.ts` | FE presentation-only `OrderListItem`, `OrderStatusFilterId`; **not** API or 1C schema |
 | UI filter fixture | `src/screens/manager-orders/fixtures.ts` | DEMO only; passed into screen via `orders` prop, no 1C mapping |
@@ -61,7 +63,7 @@
 
 ## Implementation sequencing
 
-1. FE-08: compose Manager Orders using accepted GL-03 and reusable OrderCard; QA in isolated branch, PR for Owner review.
+1. FE-08 Manager Orders + AppShell merged in main at PR #9, CI successful; full Manager module and Owner screen acceptance still OPEN. CURRENT next is M4: map Client+Manager screens and React coverage per [Drive plan](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
 2. Derive next shared components only from actual screen use and cross-role demand, not from the count of Figma frames.
 3. Component QA: keyboard/touch, accessible names, disabled, empty/error/loading, responsive D1440/L1024/T768/M390/M320, reduced motion, consistency with shared tokens and no regression.
 4. Integrate backend separately after matching data shape, role permissions, status filter membership and 1C mapping; exclude source-system enums from shared visual primitives.
