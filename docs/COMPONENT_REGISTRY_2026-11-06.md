@@ -6,6 +6,8 @@
 
 ## Source of truth and constraints
 
+**M4 audit / 06.11.2026:** unique React screen inventory and first reusable-component consumers confirmed in [M4 screen map](SCREEN_MAP_M4_2026-11-06.md). No new React components were added by this audit. `Client AppShell` composition, Client Orders and OrderDetail are still NOT implemented. Agent queue FE-C01 → FE-SH02 → FE-C03 → FE-M04, then Support/Companies. Source-of-truth Figma/Scope gate remains mandatory.
+
 **CURRENT / 06.11.2026:** Реестр — LIVE: при новом/изменённом React-компоненте укажи тип, потребителей Client/Manager, файл, props/state, QA, Owner gate и использующий экран. Обнови в том же PR, потом синхронизируй с Drive. Не создавай компоненты ради количества Figma-фреймов.
 
 - CURRENT Drive UX/UI index, Frontend Startup and Requirements SRS v0.5 (modified 04.11).
