@@ -24,6 +24,10 @@ test('hover changes only color; click moves one lens horizontally and adapts wid
   const lens = group.getByTestId('glass-pill-lens-frame')
   const all = group.getByTestId('glass-pill-all')
   const review = group.getByTestId('glass-pill-review')
+  // Measure hover only after the real bundled font and its resize-driven spring settle.
+  await page.evaluate(() => document.fonts.ready)
+  await expect.poll(async () => Math.abs((await lens.boundingBox())!.width - await all.evaluate(element => (element as HTMLElement).offsetWidth))).toBeLessThan(.1)
+  await expect(lens).toHaveAttribute('data-motion-state', 'settled')
   const oldBox = await lens.boundingBox()
   const before = await lens.evaluate(el => getComputedStyle(el).transform)
   await review.hover()

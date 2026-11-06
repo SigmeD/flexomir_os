@@ -10,6 +10,8 @@ interface AppShellProps {
   /** Selected UI only. Real route commits require a separate navigation contract. */
   onSelect: (id: string) => void
   roleLabel: string
+  variant?: 'client' | 'manager'
+  identityLabel?: string
   navigationLabel: string
   menuLabel: string
   triggerLabel: string
@@ -19,7 +21,7 @@ interface AppShellProps {
 /** Responsive composition only. Material, motion and modal lifecycle belong to shared primitives. */
 export function AppShell({
   children, items, activeId, onSelect,
-  roleLabel, navigationLabel, menuLabel, triggerLabel, footerText,
+  roleLabel, variant = 'client', identityLabel = roleLabel, navigationLabel, menuLabel, triggerLabel, footerText,
 }: AppShellProps) {
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 1023px)').matches)
 
@@ -32,10 +34,17 @@ export function AppShell({
   }, [])
 
   return (
-    <div className="fos-app-shell">
+    <div className="fos-app-shell" data-variant={variant} onClick={event => {
+      // Sidebar/Drawer intentionally skip selecting an already active section.
+      // The shell host still owns its root route (e.g. detail → Orders list).
+      const target = event.target
+      if (!(target instanceof Element)) return
+      const current = target.closest<HTMLButtonElement>('button.fos-sidebar-nav__item[aria-current="page"]:not([disabled])')
+      if (current) onSelect(activeId)
+    }}>
       <aside className="fos-app-shell__aside" aria-label="Навигация">
         <div className="fos-app-shell__brand">FLEXOMIR OS</div>
-        <p className="fos-app-shell__role">{roleLabel}</p>
+        <p className="fos-app-shell__role">{identityLabel}</p>
         <SidebarNav items={items} activeId={activeId} onSelect={onSelect} ariaLabel={navigationLabel} />
       </aside>
       <div className="fos-app-shell__content">

@@ -1,0 +1,7 @@
+.fos-order-item-row { position: relative; display: block; width: 100%; padding: 0; border: 0; border-radius: 13px; background: transparent; text-align: left; cursor: pointer; }
+.fos-order-item-row .fos-order-item-summary { padding-right: 52px; }
+.fos-order-item-row__hit { position: absolute; inset: 0; width: 100%; border: 0; padding: 0; border-radius: inherit; background: transparent; cursor: pointer; }
+.fos-order-item-row__chevron { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.fos-order-item-row__hit:focus-visible { outline: 2px solid #1f3861; outline-offset: 3px; }
+.fos-order-item-row:has(button:not(:disabled)):hover .fos-order-item-summary { border-color: #aebfd2; }
+.fos-order-item-row:has(button:disabled) { opacity: .42; cursor: default; }

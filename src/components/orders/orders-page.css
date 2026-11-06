@@ -1,91 +1,13 @@
-/* Screen-level composition only. Glass styling lives in approved shared components. */
-.fos-orders-page {
-  --fos-v2-semantic-color-text-primary: #222a33;
-  --fos-v2-semantic-color-text-secondary: #697986;
-  --fos-v2-semantic-color-text-brand: #293c49;
-  display: flex;
-  min-width: 0;
-  min-height: 100vh;
-  background: #f6f7f8;
-  color: #263542;
-  font-family: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
-}
-.fos-orders-page__main {
-  min-width: 0;
-  width: 100%;
-  max-width: 1440px;
-  padding: 38px clamp(20px, 4vw, 60px) 64px;
-}
-.fos-orders-page__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-}
-.fos-orders-page__eyebrow {
-  margin: 0 0 11px;
-  color: #82909a;
-  font-size: 12px;
-}
-.fos-orders-page__header h1 {
-  margin: 0;
-  font: 750 clamp(30px, 3vw, 42px)/1.2 Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: -.04em;
-}
-.fos-orders-page__disclaimer {
-  margin: 22px 0 20px;
-  color: #7b8995;
-  font-size: 12px;
-}
-.fos-orders-page__filters {
-  width: 100%;
-  min-width: 0;
-  margin-bottom: 17px;
-  overflow: visible;
-}
-.fos-orders-page__list {
-  padding: 22px;
-  border-radius: 20px;
-  border: 1px solid #e0e6eb;
-  background: rgba(255,255,255,.7);
-}
-.fos-orders-page__list-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-.fos-orders-page__list-header h2 {
-  margin: 0;
-  color: #2e3a45;
-  font-size: 16px;
-  font-weight: 700;
-}
-.fos-orders-page__count {
-  color: #81909d;
-  font-size: 12px;
-}
-.fos-orders-page__items {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 10px;
-}
-.fos-orders-page__empty {
-  padding: 24px 2px;
-  font-size: 13px;
-  color: #81909d;
-}
-@media(max-width:1023px) {
-  .fos-orders-page__main { padding: 24px 24px 48px; }
-}
-@media(max-width:600px) {
-  .fos-orders-page__main { padding: 20px 14px 36px; }
-  .fos-orders-page__eyebrow { display: none; }
-  .fos-orders-page__header { align-items: center; }
-  .fos-orders-page__header h1 { font-size: 30px; }
-  .fos-orders-page__disclaimer { margin: 18px 0 16px; }
-  .fos-orders-page__list { padding: 14px 11px; border-radius: 16px; }
-}
+/* Shared screen composition; accepted Glass controls keep their own surface/motion. */
+.fos-orders-page { --fos-v2-semantic-color-text-secondary: #586d7c; display: flex; min-width: 0; min-height: 100vh; background: #fff; color: #253144; font-family: Manrope, system-ui, sans-serif; }
+.fos-orders-page:has(main[data-view=list]),.fos-orders-page:has(main[data-role=manager]) { background: #fafbfc; }
+.fos-orders-page__main { min-width: 0; width: 100%; max-width: 1440px; padding: 52px 72px 64px 55px; }
+@media(min-width:1024px) { .fos-orders-page__main[data-view=list],.fos-orders-page__main[data-role=manager] { padding-left: 72px; } }
+.fos-orders-page__filters { width: 100%; min-width: 0; margin-top: 12px; margin-bottom: 12px; overflow: visible; }
+.fos-orders-page__list { min-width: 0; }
+.fos-orders-page__list-header { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.fos-orders-page__items { display: grid; grid-template-columns: minmax(0,1fr); list-style: none; margin: 0; padding: 0; gap: 24px; }
+.fos-orders-page__items > li { min-width: 0; }
+.fos-orders-page__empty { padding: 24px 2px; font-size: 14px; line-height: 20px; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); }
+@media(max-width:1023px) { .fos-orders-page__main { padding: 26px 20px 48px; } .fos-orders-page__filters { margin-top: 20px; } }
+@media(max-width:600px) { .fos-orders-page__main { padding: 26px 20px 36px; } }

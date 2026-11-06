@@ -1,11 +1,14 @@
 import { useEffect, useRef, type ComponentProps, type KeyboardEvent, type PointerEvent } from 'react'
 import './header-action.css'
+import saveIcon from '@/assets/orders/save.svg'
+import sendIcon from '@/assets/orders/send.svg'
+import editIcon from '@/assets/orders/edit.svg'
 
 export type HeaderActionPresentation = 'auto' | 'icon-label' | 'compact'
 
 export interface HeaderActionProps extends Omit<ComponentProps<'button'>, 'children' | 'onClick' | 'type'> {
-  /** FOS V2 1953:4168 / 2173:1425. Only approved plus-glyph variants in this increment. */
-  action: 'add' | 'create'
+  /** FOS V2 1953:4168 / 2173:1425: one accepted material/motion across action glyphs. */
+  action: 'add' | 'create' | 'save' | 'send' | 'edit'
   accessibleName: string
   presentation?: HeaderActionPresentation
   onAction?: () => void
@@ -170,7 +173,8 @@ export function HeaderAction({
     buttonProps.onKeyUp?.(event)
   }
 
-  const caption = action === 'create' ? 'Создать' : 'Добавить'
+  const caption = { add: 'Добавить', create: 'Создать', save: 'Сохранить', send: 'Отправить', edit: 'Изменить' }[action]
+  const glyph = { save: saveIcon, send: sendIcon, edit: editIcon }[action as 'save' | 'send' | 'edit']
 
   return (
     <button
@@ -194,7 +198,7 @@ export function HeaderAction({
     >
       <span className="fos-ha__circle" ref={circleRef} aria-hidden="true">
         <span className="fos-ha__contact" />
-        <span className="fos-ha__plus" />
+        {glyph ? <span className="fos-ha__glyph"><img src={glyph} alt="" /></span> : <span className="fos-ha__plus" />}
       </span>
       <span className="fos-ha__caption" aria-hidden="true">{caption}</span>
       <span className="fos-ha__tooltip" aria-hidden="true">{accessibleName}</span>

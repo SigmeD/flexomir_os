@@ -1,0 +1,32 @@
+/* CURRENT composition only. All control geometry belongs to shared masters. */
+.fos-demo-workspace { min-width: 0; }
+.fos-demo-workspace__controls { padding: 12px 20px; background: #eef2f6; border-bottom: 1px solid #d6d9e0; color: #263542; font-family: Manrope, system-ui, sans-serif; }
+.fos-demo-workspace__controls > div { display: flex; gap: 8px; flex-wrap: wrap; }
+.fos-demo-workspace__controls p { margin: 0 0 8px; font-size: 12px; }
+.fos-demo-workspace__controls p:last-child { margin: 8px 0 0; }
+.fos-demo-workspace__controls [aria-pressed=true] { background: #fff; border-color: #547b92; }
+.fos-order-composer { min-width: 0; overflow-wrap: anywhere; }
+.fos-order-composer__body { max-width: 1050px; margin-top: 5px; }
+.fos-order-composer__section-heading { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 23px; }
+.fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { margin: 0; color: #273343; font-size: 20px; font-weight: 600; line-height: 28px; }
+.fos-order-composer__general { margin-top: 38px; }
+.fos-order-composer__general > h2 { margin-bottom: 10px; }
+.fos-order-composer__general > .fos-field + .fos-field { margin-top: 20px; }
+.fos-order-composer__date { max-width: 506px; }
+.fos-order-composer__products[data-empty] .fos-order-composer__section-heading { margin-bottom: 12px; }
+.fos-order-composer__products[data-empty] .fos-order-detail__empty { min-height: 44px; font-size: 15px; }
+.fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: 63px; }
+@media(max-width:1023px) {
+  .fos-order-composer__body { margin-top: 21px; }
+  .fos-order-composer__section-heading { margin-bottom: 36px; }
+  .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { font-size: 18px; line-height: 26px; }
+  .fos-order-composer__general { margin-top: 36px; }
+  .fos-order-composer__general > h2 { margin-bottom: 12px; }
+  .fos-order-composer__date { max-width: none; }
+  .fos-order-composer__products[data-empty] .fos-order-composer__section-heading { margin-bottom: 8px; }
+  .fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: 68px; }
+}
+@media(max-width:600px) {
+  .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { font-size: 16px; line-height: 24px; }
+  .fos-order-composer__general > h2 { margin-bottom: 14px; }
+}

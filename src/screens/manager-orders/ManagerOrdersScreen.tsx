@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { GlassPillTabs } from '@/components/ui/glass-pill-tabs'
 import { HeaderAction } from '@/components/ui/header-action'
+import { PageHeader } from '@/components/ui/page-header'
+import { MoreAction } from '@/components/ui/overflow-menu'
 import type { SidebarNavItem } from '@/components/ui/sidebar-nav'
 import { AppShell } from '@/components/layout/AppShell'
 import { OrdersList } from './OrdersList'
@@ -19,6 +21,9 @@ const managerNav: readonly SidebarNavItem[] = [
 interface ManagerOrdersScreenProps {
   /** Supplied by App in the isolated preview; real API binding remains a separate frontend task. */
   orders: readonly OrderListItem[]
+  demoOrderIds?: readonly string[]
+  initialFilterId?: OrderStatusFilterId
+  onFilterChange?: (id: OrderStatusFilterId) => void
 }
 
 /**
@@ -26,8 +31,8 @@ interface ManagerOrdersScreenProps {
  * No 1C mapping, backend statuses, real navigation or server-side ACL here.
  * Accepted Glass primitives remain unchanged.
  */
-export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
-  const [filterId, setFilterId] = useState<OrderStatusFilterId>('all')
+export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId = 'all', onFilterChange }: ManagerOrdersScreenProps) {
+  const [filterId, setFilterId] = useState<OrderStatusFilterId>(initialFilterId)
   const preview = useOrderPreview(orders)
   const visibleOrders = filterId === 'all'
     ? orders
@@ -36,6 +41,7 @@ export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
   const onSelectFilter = (id: string) => {
     if (ORDER_STATUS_FILTERS.some(filter => filter.id === id && !filter.disabled)) {
       setFilterId(id as OrderStatusFilterId)
+      onFilterChange?.(id as OrderStatusFilterId)
     }
   }
 
@@ -44,27 +50,23 @@ export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
       <AppShell
         items={managerNav}
         activeId="orders"
-        onSelect={() => {}}
+        onSelect={() => preview.backToList()}
         roleLabel="Менеджер"
+        variant="manager"
         navigationLabel="Навигация менеджера"
         menuLabel="Меню менеджера"
         triggerLabel="Открыть меню менеджера"
         footerText="Менеджер"
       >
-        <main className="fos-orders-page__main">
+        <main className="fos-orders-page__main" data-role="manager" data-view={preview.selectedOrder ? 'detail' : 'list'}>
           {preview.selectedOrder?.detail ? (
-            <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} />
+            <>
+              <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} role="manager" managerIntake={demoOrderIds.includes(preview.selectedOrder.id)} />
+            </>
           ) : (
             <>
-              <header className="fos-orders-page__header">
-                <div>
-                  <p className="fos-orders-page__eyebrow">Заказы</p>
-                  <h1>Заказы</h1>
-                </div>
-                <HeaderAction action="add" accessibleName="Добавить заказ" disabled />
-              </header>
-
-              <p className="fos-orders-page__disclaimer">
+              <PageHeader title="Заказы" breadcrumbs={[{ label: 'Заказы' }]} actions={<><HeaderAction action="add" accessibleName="Добавить заказ" disabled /><MoreAction disabled /></>} />
+              <p className="fos-sr-only">
                 Демонстрационные данные. Интеграция с 1С не подключена.
               </p>
 

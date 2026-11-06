@@ -1,10 +1,10 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
-**Проверено:** 06.11.2026 · React `origin/main` `89b043f9ae7e70a36a1eea8f5c98cd621e037aa9` · **READ-ONLY** Figma/Drive/GitHub.
+**Проверено:** 06.11.2026 · React baseline `origin/main` `884e78f` (FE-S01 merged); FE-S02 в `feat/fe-s02-order-compose-flow` · Figma/Drive — read-only источники.
 **Статус:** M4 inventory DONE / Owner product gate OPEN; это карта для реализации, **не изменение** SRS/Scope, Figma, маршрутов, backend/API/1С.
 **Канонический план:** [Google Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
 
-**FE-S01 / branch progress, PR #14:** A — C-01/C-02 подключены; B — read-only C-03/M-04 на общих OrderDetail/OrderItemSummary и одном DEMO-наборе. Build + 180 Chromium + 58 Firefox/WebKit PASS локально; Draft / OWNER_OPEN / NOT_MERGED. Полные C-03/M-04 с редактированием/командами не объявляются готовыми. Колонка «React в main» ниже — исходный M4-снимок до merge; новые состояния карты синхронизировать после фактического слияния.
+**FE-S01 / PR #14 MERGED:** C-01/C-02 и read-only C-03/M-04 на общих OrderDetail/OrderItemSummary в main `884e78f`. **FE-S02 / #15 в ветке:** A — C-04/C-06 New/Edit, B — C-05 completed Duplicate через тот же Composer, C — общий Client→Manager demo/read-only intake; текущий QA/PR см. PROJECT_STATE/HANDOFF. Никаких новых production routes, прав/1С или полного MVP этим не утверждено.
 
 ## Источники
 
@@ -13,9 +13,42 @@
 - [Figma / Client UX V2](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=634-6815) — CORE, states, Support; `UX PROPOSED`/архив отдельно.
 - [Figma / Manager UX V2 CURRENT](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2495-8870) — актуальная секция `01 Заказы · 02 Компании · 03 Поддержка`; старые ARCHIVE не источник реализации.
 - [SRS v0.5](https://docs.google.com/document/d/1EwjqQ3z_lO2lyDCQHhm-NIiDxgZzPrKOXAWR3tC-C4M/edit), [Scope MVP v0.3](https://docs.google.com/document/d/1-xAngGqyIBJg-Whyv7fMYKvwBa3mRonWtSp-O9mq5Mg/edit), [E2E CURRENT](https://docs.google.com/document/d/1aOeKYmlmh5hiNltnwIpsLnk7LtlhJ93ldlHVCTVG7Us/edit).
-- Реальный React: `src/App.tsx` содержит preview `?view=manager-orders` и component labs; `src/components/layout/AppShell.tsx`, `src/screens/manager-orders/*`, `src/components/orders/OrderCard.tsx`. **Client routes/screens отсутствуют**. Демолаборатория `GlassFilterDemo` НЕ клиентский кабинет.
+- Реальный React: `?view=client-orders` и `?view=manager-orders`, shared AppShell/Drawer, list/readonly detail в main. В FE-S02 оба preview используют `OrderDemoWorkspace`: New/Edit/Duplicate → демопередача → Manager без reload. Лаборатория `GlassFilterDemo` не заменяет клиентский кабинет.
 
 ## Статусы карты
+
+## FE-S02 — проверка переходов Figma → React
+
+Источник: Owner issue #15, тот же Draft PR #16. PASS ниже означает проверенный frontend переход на fixtures; не утверждение backend прав и не Owner visual acceptance. Фреймы: [Client CORE](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1782-6000), [supporting scenarios](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2026-6868), [Manager current](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2495-8870). Visual exceptions перечислены в Component Registry; unmatched state нельзя объявлять VISUAL_PASS.
+
+| Figma frame/state | Действие | Ожидаемый следующий frame/state | React consumer/handler | Результат |
+| --- | --- | --- | --- | --- |
+| List `634:6825/7368/7714` | Header Add | Empty Order `1810:12510/1837:6359/1810:12545` | Client `createDraft/openCreatedOrder` → Composer | PASS: свежий ID, 0 items, Send disabled |
+| Empty/1/N Composer, `1988:3939` | Secondary Add Item, Enter/touch | New Item `1791:6130/1837:6385/1791:6185` | `SectionAddItem` → Composer `addItem` | PASS: один ItemForm, фокус H1, единые поля |
+| New Item `1791:6130`, `1953:4168` | Пусто/invalid, Header Add | Disabled до валидного ввода | `validDemoItem` + HeaderAction disabled | PASS: 0/дробное количество/отрицательная ширина/no artwork; локальные правила, API OPEN |
+| Input `634:402`, Quantity `680:177` | Невалидное значение + blur | Error state + сообщение | FOSInput `aria-invalid/describedby` | PASS: ошибка связана с полем, action disabled |
+| Print `2315:9747/943:263` | Flex/Digit/arrow keys | Выбран ровно один вариант | PrintingMethodControl → `update` | PASS: native radio/segmented, wide/compact |
+| Artwork `634:445` | Upload/replace/drop | Local selected filename | ArtworkSource `selectFile` | PASS chooser/filename/replace UI; upload/storage OPEN, не success |
+| Artwork `634:445` | HELP on/off | Exclusive HELP / empty Upload | ArtworkSource `onChange` | PASS: upload/library скрыты при HELP, прежний local file не переносится незаметно |
+| New Item valid | Header Add | 1-item `1782:6001/1837:6436/1782:6103`, далее N | ItemForm `onSave` → Composer `saveItem` | PASS: item/order IDs стабильны, поля сохранены в памяти |
+| Composer `1782:6074/1837:6469/1782:6160` | Вся строка позиции, Enter/touch | Edit `1782:6025/1837:6509/1782:6119` | OrderItemRow → `setEditing(item.id)` | PASS: одна форма, то же имя в H1/breadcrumb |
+| Edit unchanged / valid dirty | Header Save | Disabled / возврат в тот же Composer | ItemForm guard + `saveItem` | PASS: ID тот же, изменённое количество/комментарий восстановлены при открытии |
+| Edit More `1953:4210 → 1917:3311` | Cancel Changes `1917:3319` | Composer `1782:6074`, старые saved values | OverflowMenu → ItemForm `onClose` | PASS: несохранённая правка отброшена явно, фокус на строку |
+| New More `1953:4227 → 1917:3323` | Cancel Input `1917:3329` | Composer `1810:12510`/исходный состав | OverflowMenu → `onClose` | PASS: позиция не добавляется, фокус на Secondary Add |
+| More `1914:650` / menus `1914:655..676` | Arrow/Enter/Space/Escape/outside | Открытие/выбор/закрытие, корректный фокус | Один Radix OverflowMenu | PASS: Esc→trigger, navigating item→consumer, outside close |
+| Dirty Item / navigation | Breadcrumb/Orders/смена роли | Нет неявной потери данных | dirty breadcrumb disabled; item editor guard; explicit Save/Cancel | PASS safe guard; production leave policy OPEN |
+| Compact Drawer + все пункты disabled | Открытие/Tab/Escape | Dialog focus, Escape закрывает, inert снят | NavigationDrawer fallback focus | PASS; regression сохраняет старый spring/optics |
+| Composer General fields `1169:437/681:203` | Ввод даты/комментария → список → открыть | Те же значения, без footer substitute | `save` → demo `saveDraft` | PASS ephemeral retention; server autosave не моделируется |
+| Desktop breadcrumbs `2330:2346` / compact AppShell | Root Orders → list | Фильтр/scroll сохранены | AppShell host → `backToList/useOrderPreview` | PASS: desktop opener focus, compact drawer trigger focus; touch scroll сохранён |
+| Valid Composer `1953:4170` | Send | Submitted `1994:5084`, readonly | `canSendDemo/onSend/sendDraft` → OrderDetail | PASS: explicit local send, повторный submit недоступен; API/1С OPEN |
+| Client draft → Manager list | Смена demo роли до отправки | Draft отсутствует | Workspace scopes only sent drafts | PASS: private draft не появляется у Manager |
+| Submitted → Manager list/detail `2500:9701` | Смена роли → открыть тот же ID | Те же items/date/comment | Shared store → OrdersList/OrderDetail | PASS data parity; proposed actions/ACL OPEN, agreed date readonly/Create disabled |
+| Completed `1846:2942/2982/3014` | More → Duplicate | Repeat `1846:3046/3092/3129` | Completed thin wrapper → shared Overflow → `duplicateOrder` | PASS: новый Order и Item IDs, источник неизменён, даты/доступ к файлу сброшены |
+| Repeat file unavailable | Open Item → HELP/новый файл → Save | Новый черновик готов к отправке | Тот же ItemForm/Composer | PASS: нет вымышленной связи со старым server file |
+| Lists GL03 / empty `1837:6275/6281/6287` | Фильтр/empty/reset/reload | Реальное членство fixtures, честное empty | Client/Manager controlled filters, Workspace reset | PASS: выбранная роль/фильтр, детерминированный reset; нет persistence |
+| Delete Draft/Item, Duplicate Item, My Layouts | Недоступное действие | Disabled до решения/контракта | Shared menu/Artwork guards | OPEN Owner/PO/API; не включено догадкой |
+
+Тесты: `order-compose`, `order-detail`, `client-orders`, `manager-orders`, `orders-components`, `orders-figma-parity`; screenshots пяти ширин, Chromium/Firefox/WebKit. Полный итог текущего прогона — HANDOFF. Figma/React side-by-side и список исключений — Component Registry; визуальная приёмка Owner/merge заблокированы до закрытия gate.
 
 - `PARTIAL`: есть часть рабочего React-экрана или общего шаблона, но не все сценарии/поля/переходы.
 - `NONE`: отдельного React-экрана нет; даже если в Figma есть макет.
@@ -28,12 +61,12 @@
 | ID | Композиция / сценарий | Figma источник | React в main | Очередь и граница |
 | --- | --- | --- | --- | --- |
 | C-00 | Вход по e-mail: ссылка + код; доверенное устройство | SRS/Scope; CURRENT Client UX V2 **не показывает подтверждённого auth screen** | NONE | UI требуется MVP; до реализации проверить auth UX и контракт Алексея |
-| C-01 | AppShell / клиентская навигация | DS Responsive Web Shell + Client UX; shared AppShell в React | PARTIAL — shared AppShell готов, клиентское подключение отсутствует | M5 / использовать существующий AppShell |
-| C-02 | «Мои заказы», список, фильтр статусов, empty | [CLIENT CORE](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1782-6000), [status states](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2009-5532) | NONE | **M5 P0**; reuse GlassPillTabs, OrderCard, AppShell |
-| C-03 | Детали заказа: черновик/review/production/completed/cancelled, read-only states | [CLIENT CORE](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1782-6000), [supporting states](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2026-6868) | NONE | M5 P0; OrderDetail + OrderItemSummary, с проверкой разрешённых действий |
-| C-04 | Новый заказ: пустой/1/2 позиции, готовность к отправке | CORE + supporting scenarios; [FOS Order Item templates](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2029-7296) | NONE | M5–M6; общий OrderEditor/ItemForm, mock-only |
-| C-05 | Repeat Order: заполнение из старого заказа и сохранение как новый черновик | CLIENT supporting scenarios / duplicate / E2E Repeat | NONE | M6; **вариант C-04**, а не вторая форма |
-| C-06 | Позиция заказа: новая, редактирование, сохранение, ошибки/dirty | [CLIENT Item Prototypes](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1998-5203), [Review editing](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2015-6179) | NONE | M5–M6; использовать shared OrderItemForm; backend field schema OPEN |
+| C-01 | AppShell / клиентская навигация | DS Responsive Web Shell + Client UX; shared AppShell в React | SHARED DONE — Client подключён в PR #14 | Навигация новых разделов отдельно |
+| C-02 | «Мои заказы», список, фильтр статусов, empty | [CLIENT CORE](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1782-6000), [status states](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2009-5532) | PARTIAL — list/filter/empty + QA в PR #14 | Только DEMO; API/data states отдельно |
+| C-03 | Детали заказа: черновик/review/production/completed/cancelled, read-only states | [CLIENT CORE](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1782-6000), [supporting states](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2026-6868) | PARTIAL — общая readonly detail PR #14 | FE-S02 добавляет editor только для локально созданных demo drafts |
+| C-04 | Новый заказ: пустой/1/2 позиции, готовность к отправке | CORE + supporting scenarios; [FOS Order Item templates](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2029-7296) | NONE в main | FE-S02/A ветка: общий Composer + Form, 0/1/N/edit/save/revert; send только демо |
+| C-05 | Repeat Order: заполнение из старого заказа и сохранение как новый черновик | CLIENT supporting scenarios / duplicate / E2E Repeat | NONE в main | FE-S02/B ветка: completed More/Duplicate → тот же C-04, новые IDs, старые сроки сброшены; CR-REP исключён |
+| C-06 | Позиция заказа: новая, редактирование, сохранение, ошибки/dirty | [CLIENT Item Prototypes](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1998-5203), [Review editing](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2015-6179) | NONE в main | FE-S02/A ветка: shared OrderItemForm Add/Edit, ID сохраняется; field schema/delete OPEN |
 | C-07 | Макет в составе позиции: upload/choose/help (источник макета) | DS Artwork file states / E2E; My Layouts `SCOPE OPEN` | NONE | Нужный для заказа минимум — только по решению Scope; **полная библиотека My Layouts отдельно OPEN** |
 | C-08 | Поддержка: мои обращения, новое (тема + описание), деталь, ответ/статус, отправлено | [CLIENT Support CORE](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1340-4351) + Scope FR-SUP | NONE | M7; только подтверждённые действия. Доп. ответ/удаление/черновик = UX CANDIDATE/OPEN |
 
@@ -44,7 +77,7 @@
 | M-01 | AppShell / навигация менеджера | [Manager CURRENT](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2495-8870) + DS | SHARED DONE; используется в Manager Orders | Реально готов только shell; пункты будущих разделов пока disabled |
 | M-02 | Все заказы, GL-03 статусы, cards, empty | [Manager 01.1](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2633-20095) | **PARTIAL** `ManagerOrdersScreen`, `OrdersList`, `OrderCard` | В main; `Новые/Все`, Company filter/search/sort, реальная навигация ещё OPEN |
 | M-03 | «Новые заказы» — очередь менеджера | Manager 01.1 — `PILOT / DEMO scope OPEN` | NONE | M6; UX queue semantics и API-контракт ждут Owner/PO/Алексея; не выводить бизнес-фильтр из demo-статуса |
-| M-04 | Детали заказа / подтверждение/согласование и статусы ожидания 1С | [Manager 01.2](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2634-20104), [01.6](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2634-20161) | NONE | M5–M6; read-only detail на fixtures сначала, затем действия только по подтверждённому контракту |
+| M-04 | Детали заказа / подтверждение/согласование и статусы ожидания 1С | [Manager 01.2](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2634-20104), [01.6](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2634-20161) | PARTIAL — readonly detail PR #14 | FE-S02/C ветка: тот же переданный Client Order; срок/Create disabled до API/ACL, manager processing не реализован |
 | M-05 | Создание менеджером для существующей компании, private draft 0/1/N items, позиции | [Manager 01.3](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2634-20114) | NONE | M6; UI-пилот по подтверждённым UX-полям; private/publish/ACL контракт OPEN |
 | M-06 | Выбор/загрузка макета для позиции менеджера | [Manager 01.4](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2634-20129), [01.5](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2634-20144) | NONE | Не принимать всё STAGE7 как MVP автоматически; reuse с C-07, Scope Gate |
 | M-07 | Компании: список, деталь компании, заказы компании | [Manager 02.1](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2634-20095) | NONE | M5–M7; не включать новый onboarding компании |

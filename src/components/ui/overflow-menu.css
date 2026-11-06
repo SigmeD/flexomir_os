@@ -1,0 +1,17 @@
+.fos-more { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 68px; height: 68px; padding: 0; border: 0; background: transparent; color: #1f2228; flex: none; cursor: pointer; font-family: Manrope, system-ui, sans-serif; }
+.fos-more__hit { display: grid; place-items: center; width: 48px; height: 48px; flex: none; }
+.fos-more__caption { height: 16px; font-size: 12px; font-weight: 600; line-height: 16px; }
+.fos-more { position: relative; }
+.fos-more__tooltip { display: none; position: absolute; top: calc(100% + 7px); left: 50%; transform: translateX(-50%); padding: 5px 9px; border-radius: 6px; background: #273141; color: white; font-size: 12px; line-height: 18px; white-space: nowrap; z-index: 51; pointer-events: none; }
+.fos-more--compact:is(:focus-visible,:hover) .fos-more__tooltip { display: block; }
+@media(max-width:1023px) { .fos-more--auto:focus-visible .fos-more__tooltip { display: block; } @media(hover:hover) { .fos-more--auto:hover .fos-more__tooltip { display: block; } } }
+.fos-more:disabled { opacity: .42; cursor: default; }
+.fos-more:focus-visible { outline: 2px solid #1f3861; outline-offset: 2px; border-radius: 4px; }
+.fos-more--compact { width: 48px; height: 48px; }
+.fos-more--compact .fos-more__caption { display: none; }
+.fos-overflow { width: 248px; max-width: calc(100vw - 32px); padding: 8px 6px; border: 1px solid #d1d9e3; border-radius: 12px; background: #fff; z-index: 50; font: 400 14px/20px Manrope, system-ui, sans-serif; }
+.fos-overflow__item { display: flex; align-items: center; min-height: 48px; padding: 10px 14px; border-radius: 8px; color: #2e3b4d; outline: none; cursor: pointer; }
+.fos-overflow__item[data-highlighted] { background: #ebf0f7; }
+.fos-overflow__item[data-disabled] { opacity: .42; cursor: default; }
+@media(max-width:1023px) { .fos-more--auto { width: 48px; height: 48px; } .fos-more--auto .fos-more__caption { display: none; } }
+@media(forced-colors:active) { .fos-overflow, .fos-overflow__item { background: Canvas; color: CanvasText; border-color: ButtonText; } .fos-overflow__item[data-highlighted] { outline: 2px solid Highlight; } .fos-more__hit { forced-color-adjust: none; background: white; } }

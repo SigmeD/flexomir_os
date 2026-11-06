@@ -1,6 +1,20 @@
 # Flexomir OS — текущее состояние проекта
 
-## FE-S01 / A + B — локально QA_VERIFIED, PR #14 Draft
+## FE-S02 / #15 — Figma parity CODE_DONE / Owner gate OPEN
+
+База `origin/main 884e78f` (FE-S01 PR #14 merged); обычная ветка `feat/fe-s02-order-compose-flow`, тот же [Draft PR #16](https://github.com/SigmeD/flexomir_os/pull/16). `5a26e4a` — shared masters; `03f55ac` — reference New Item; следующий коммит — остальные композиции + LIVE docs. Main/worktree/stash/Screenshot_3.png не изменены; новые ветки/PR/зависимости не создавались.
+
+Один UI-слой для Client/Manager: PageHeader/Breadcrumbs, расширенный HeaderAction, MoreAction/OverflowMenu, FOS fields/Action, PrintingMethodControl, ArtworkSource, SectionAddItem, целиком кликабельные OrderCard/OrderItemRow. Один ItemForm New/Edit, один Composer New/Repeat, один readonly Detail. Footer substitutes и отдельные Send/menu engines удалены. AppShell chrome приведена к общей DS; принятые Glass/GL03/Sidebar/Drawer optics/spring сохранены. Исправлены portal Escape, all-disabled Drawer focus, возврат фокуса и 320px grid.
+
+Функционально: 0/1/N, valid/dirty/disabled/error, Add/Save/явный Cancel по прототипу, сохранение общих полей в памяти, свежие clone IDs без изменения источника/старых дат, Send → «Заказ отправлен» / «Передан менеджеру» → та же Manager запись. Фильтры/reset/readonly и границы Company проверены на demo fixtures. `&demoTools=1` включает отдельный role-switch harness; обычная композиция его не показывает. API/1С/auth/storage не реализованы.
+
+Проверки: build PASS (175 modules), расширенный TypeScript src/tests/configs PASS. Полная регрессия **200 Chromium + 78 Firefox/WebKit PASS**; после добавления screen-wide axe — ещё 2 Chromium + 2 Firefox/WebKit PASS, 0 WCAG2A/AA/2.1AA violations на проверенных Client/Manager list/detail и Composer. После коррекции secondary text повторены shared-component/полные композиции и captures. Текущая CI-команда включает **202** Chromium cases, cross-engine config — **80**. Итог CI именно текущего head сверять в PR #16; локальный QA не заменяет Owner acceptance. Команды, раздельные engine captures/JSON и ограничения — [HANDOFF](HANDOFF.md).
+
+**Визуальная приёмка/merge BLOCKED.** [Screen Map](SCREEN_MAP_M4_2026-11-06.md#fe-s02--проверка-переходов-figma--react) содержит таблицу Figma → действие → state/frame → React handler → PASS/OPEN. [Component Registry](COMPONENT_REGISTRY_2026-11-06.md) содержит master/consumer/state QA и конкретные source conflicts: native controls/file policy/library, доступный secondary text вместо недостаточно контрастного Figma, Client agreed-date display, V3 против старых absolute offsets, Manager PROPOSED actions/ACL, production leave policy. Side-by-side D/T/M + captures пяти ширин в `output/fe-s02-parity/`; Owner исключения не объявлены согласованными.
+
+`CR-REP-2026-11-06` (подписной, новые поля Repeat, media/вложения/обязательный комментарий) DEFERRED. Backend/API/1С/ACL — Алексей; Delete Draft/Item, Duplicate Item, persisted upload/library, Manager publication/concurrency и физические устройства/полный screen reader audit OPEN/NOT RUN. Следующий шаг — визуальная приёмка реального PR #16 и решение перечисленных OPEN, затем только явно разрешённое слияние.
+
+## История FE-S01 до merge — PR #14 уже слит в main 884e78f
 
 База `15eb6d9`; ветка `feat/fe-s01-orders-core`, [единый PR #14](https://github.com/SigmeD/flexomir_os/pull/14), без merge в main. A (`3a15eb6`): Client `?view=client-orders` на готовом shell/GL-03/карточках, общие список/empty и оформление. B: один read-only OrderDetail/OrderItemSummary и переход список → деталь → назад для Client и Manager; сохраняются ID/статус, фильтр, фокус и прокрутка. Два клиентских заказа из общего DEMO-набора компании 01 — не серверная ACL.
 

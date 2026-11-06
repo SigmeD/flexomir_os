@@ -1,5 +1,15 @@
 # Flexomir OS — реестр решений и вопросов
 
+## FE-S02 / Owner scope 06.11.2026 — базовый сценарий и отложенный CR
+
+**Owner уточнение #15:** Figma parity всего Orders-flow обязательна; shared More/menus/Primary/fields/Artwork/rows/PageHeader, один PR #16, merge BLOCKED до визуальной приёмки. Prototype read подтвердил New More Cancel Input `1917:3329 → 1810:12510`, Edit More Cancel Changes `1917:3319 → 1782:6074`: явный Cancel возвращает без несохранённых Item правок. Footer Save/Revert/Close отсутствуют в CURRENT — удалены. General Order values удерживаются в ephemeral store при вводе/навигации; это не утверждённый server autosave. Production leave/reload policy OPEN.
+
+**OPEN для Owner/DS:** Artwork helper `634:445` имеет контраст 4.36:1 (`#737781` на `#fbfcfe`), React временно использует существующий `#586d7c` для доступности; Figma не изменена. Native date/select/checkbox appearance и file-policy text/library disabled требуют визуальной фиксации исключений до merge. Старый CORE status y102 против нового Header V3: используем более поздний V3 с subtitle после полной строки actions. Manager `2500:9701/9730/9756` помечен PROPOSED, бизнес-команды/права из него не утверждены. Полный список и evidence — Component Registry, без второго отчёта.
+
+Источник: прямое поручение Owner в сессии + [issue #15](https://github.com/SigmeD/flexomir_os/issues/15), [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). В текущий frontend инкремент входят New/Edit Draft/Items, стандартное дублирование completed заказа, общий read-only Manager demo. Пожелания 6 ноября (`CR-REP`: подписной, намотка/рулон/краски, дополнительные вложения, аудио/видео, обязательный комментарий) **DEFERRED / PENDING PO+TECH**, до согласования с заказчиком и Алексеем не реализуются.
+
+Demo field validation, Shape/Material samples и print selection — presentation-only, не закрывают backend schema/1С mapping. Date requiredness, server upload/library, Delete Draft/Item и unsaved-leave, Manager private draft/publication/versioning/права/queue OPEN. Item leave не теряет dirty values: Save или явный Figma Cancel; серверные удаления/автосохранение не моделируются. Reload честно обнуляет ephemeral demo. После локального Send — Figma title «Заказ отправлен» / UI marker «Передан менеджеру», filterId=null; это не mapping статуса API/1С. Базовые FE-S01 display fixtures остаются read-only; Composer редактирует только созданные в FE-S02 черновики.
+
 ## FE-DEC-09 / OWNER APPROVED 06.11.2026 — SDLC breadth-first, LIVE DOCS
 
 - **Принято:** сначала аудируем существующую Figma-архитектуру и собираем карту обоих кабинетов Client + Manager; затем общие React-каркасы и все основные экраны, потом сквозной путь заказа, системная UX/UI-полировка и общий QA. Не тратим сопоставимое время на каждую иконку или Glass-анимацию при неполном охвате экранов. Базовый QA и критические дефекты исправляем сразу.

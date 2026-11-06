@@ -171,9 +171,10 @@ export function NavigationDrawer({
     document.body.style.overflow = 'hidden'
     document.documentElement.style.overflow = 'hidden'
 
-    const first = dialogRef.current?.querySelector<HTMLButtonElement>('[aria-current="page"]')
+    const first = dialogRef.current?.querySelector<HTMLButtonElement>('[aria-current="page"]:not(:disabled)')
       ?? dialogRef.current?.querySelector<HTMLButtonElement>('button:not(:disabled)')
-    first?.focus()
+    // A guarded editor may disable every destination; Escape still needs a focused dialog.
+    ;(first ?? dialogRef.current)?.focus()
 
     return () => {
       if (root) root.inert = oldInert

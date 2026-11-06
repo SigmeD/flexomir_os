@@ -8,22 +8,24 @@
 .fos-app-shell__aside {
   flex: 0 0 240px;
   width: 240px;
-  padding: 36px 16px;
-  background: #f0f2f3;
+  padding: 20px 16px;
+  background: #f6f7f9;
   border-right: 1px solid #e1e6eb;
 }
 .fos-app-shell__brand {
-  margin: 0 16px;
-  color: #2c3a45;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: .025em;
+  margin: 0 4px;
+  color: #1f2228;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
 }
 .fos-app-shell__role {
-  margin: 10px 16px 32px;
-  color: #82909a;
-  font-size: 12px;
+  margin: 6px 4px 24px;
+  color: #1f2228;
+  font-size: 13px;
+  line-height: 22px;
 }
+.fos-app-shell[data-variant=manager] .fos-app-shell__role { font-size: 16px; font-weight: 600; }
 .fos-app-shell__content { flex: 1; min-width: 0; }
 .fos-app-shell__mobile-header { display: none; }
 @media (max-width: 1023px) {
@@ -39,7 +41,7 @@
     height: 72px;
     padding: 0 20px;
     border-bottom: 1px solid #e1e6eb;
-    background: #f6f7f8;
+    background: #f6f7f9;
   }
   .fos-app-shell__identity {
     display: flex;
@@ -49,5 +51,7 @@
     color: #506577;
     font-size: 12px;
   }
-  .fos-app-shell__identity strong { color: #2c3a45; font-weight: 800; }
+  .fos-app-shell__identity strong { color: #1f2228; font-size: 15px; line-height: 20px; font-weight: 600; }
+  .fos-app-shell__identity > span { display: none; }
 }
+@media(max-width:600px) { .fos-app-shell__identity strong { font-size: 14px; line-height: 18px; } }

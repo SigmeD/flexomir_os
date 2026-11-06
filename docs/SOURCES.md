@@ -37,6 +37,8 @@
 
 ## Внешние технические источники (не продуктовая норма)
 
+- [Manrope / Google Fonts](https://github.com/google/fonts/tree/main/ofl/manrope) — шрифт утверждённой Figma, локально `src/assets/fonts/Manrope-variable.ttf` + `OFL-Manrope.txt`; runtime без внешнего font request. Добавлен для PR #16 parity, не новая DS-типографика.
+
 - [Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
 - [Codex Configuration Reference](https://learn.chatgpt.com/docs/config-file/config-reference)
 - [Superpowers (obra)](https://github.com/obra/superpowers) — установку и доступные skills проверяй на фактической версии, а не по старому туториалу

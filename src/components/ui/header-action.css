@@ -112,6 +112,8 @@
 }
 .fos-ha__plus::before { width: 14px; height: 2px; left: 5px; top: 11px; }
 .fos-ha__plus::after { width: 2px; height: 14px; left: 11px; top: 5px; }
+.fos-ha__glyph { position: relative; z-index: 1; width: 24px; height: 24px; transform: translate3d(var(--ha-shift-x), var(--ha-shift-y), 0) scale(var(--ha-scale)); }
+.fos-ha__glyph img { display: block; }
 .fos-ha__caption {
   flex: none;
   width: 68px;
@@ -169,7 +171,7 @@
 }
 @media (prefers-reduced-motion:reduce) {
   .fos-ha__contact { transition: none; }
-  .fos-ha__plus,.fos-ha__circle::before,.fos-ha__circle::after { transform: none !important; }
+  .fos-ha__plus,.fos-ha__glyph,.fos-ha__circle::before,.fos-ha__circle::after { transform: none !important; }
 }
 @media (forced-colors:active) {
   .fos-ha__circle {
@@ -179,6 +181,7 @@
     box-shadow: none;
   }
   .fos-ha__plus { color: ButtonText; }
+  .fos-ha__glyph { forced-color-adjust: none; background: #273141; border-radius: 2px; }
   .fos-ha__circle::before,.fos-ha__circle::after,.fos-ha__contact { display: none; }
   .fos-ha:focus-visible { outline: 3px solid Highlight; }
   .fos-ha[data-pressed="true"] .fos-ha__circle { outline: 2px solid Highlight; }
