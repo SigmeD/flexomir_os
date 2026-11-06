@@ -5,7 +5,7 @@ import type { SidebarNavItem } from '@/components/ui/sidebar-nav'
 import { AppShell } from '@/components/layout/AppShell'
 import { OrdersList } from './OrdersList'
 import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from './model'
-import './manager-orders.css'
+import '@/components/orders/orders-page.css'
 
 const managerNav: readonly SidebarNavItem[] = [
   { id: 'orders', label: 'Заказы', icon: 'orders' },
@@ -37,7 +37,7 @@ export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
   }
 
   return (
-    <div className="manager-orders-screen" data-testid="manager-orders-screen">
+    <div className="fos-orders-page" data-testid="manager-orders-screen">
       <AppShell
         items={managerNav}
         activeId="orders"
@@ -48,20 +48,20 @@ export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
         triggerLabel="Открыть меню менеджера"
         footerText="Менеджер"
       >
-        <main className="manager-orders-screen__main">
-          <header className="manager-orders-screen__header">
+        <main className="fos-orders-page__main">
+          <header className="fos-orders-page__header">
             <div>
-              <p className="manager-orders-screen__eyebrow">Заказы</p>
+              <p className="fos-orders-page__eyebrow">Заказы</p>
               <h1>Заказы</h1>
             </div>
             <HeaderAction action="add" accessibleName="Добавить заказ" disabled />
           </header>
 
-          <p className="manager-orders-screen__disclaimer">
+          <p className="fos-orders-page__disclaimer">
             Демонстрационные данные. Интеграция с 1С не подключена.
           </p>
 
-          <section className="manager-orders-screen__filters" aria-label="Фильтры заказов">
+          <section className="fos-orders-page__filters" aria-label="Фильтры заказов">
             <GlassPillTabs
               items={ORDER_STATUS_FILTERS}
               value={filterId}

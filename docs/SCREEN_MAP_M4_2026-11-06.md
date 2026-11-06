@@ -4,6 +4,8 @@
 **Статус:** M4 inventory DONE / Owner product gate OPEN; это карта для реализации, **не изменение** SRS/Scope, Figma, маршрутов, backend/API/1С.
 **Канонический план:** [Google Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
 
+**FE-S01 / branch progress:** блок A — C-01/C-02 подключены в `feat/fe-s01-orders-core`, build и 38/38 Client+Manager checks PASS. Блок B C-03/M-04 — следующий. Колонка «React в main» ниже сохраняет исходный M4-снимок до merge; частичный список не означает готовность всего кабинета.
+
 ## Источники
 
 - [Figma / Primary Design System V2](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=634-60) — согласованные foundations, page header, orders/status, order item templates.

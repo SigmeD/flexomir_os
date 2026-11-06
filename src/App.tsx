@@ -5,6 +5,8 @@ import { SidebarNavLab } from './SidebarNavLab'
 import { GlassPillTabsLab } from './GlassPillTabsLab'
 import { ManagerOrdersScreen } from './screens/manager-orders/ManagerOrdersScreen'
 import { MANAGER_ORDERS_DEMO } from './screens/manager-orders/fixtures'
+import { ClientOrdersScreen } from './screens/client-orders/ClientOrdersScreen'
+import { CLIENT_DEMO_COMPANY, CLIENT_ORDERS_DEMO } from './screens/client-orders/fixtures'
 import { NavigationDrawerLab } from './NavigationDrawerLab'
 import {
   GlassSelect,
@@ -88,6 +90,10 @@ export function App() {
   if (view === 'sidebar-nav') return <SidebarNavLab />
   if (view === 'navigation-drawer') return <NavigationDrawerLab />
   if (view === 'glass-pill-tabs') return <GlassPillTabsLab />
+  if (view === 'client-orders') {
+    const previewEmpty = new URLSearchParams(window.location.search).get('fixture') === 'empty'
+    return <ClientOrdersScreen orders={previewEmpty ? [] : CLIENT_ORDERS_DEMO} companyName={CLIENT_DEMO_COMPANY} />
+  }
   if (view === 'manager-orders') {
     const previewEmpty = new URLSearchParams(window.location.search).get('fixture') === 'empty'
     return <ManagerOrdersScreen orders={previewEmpty ? [] : MANAGER_ORDERS_DEMO} />

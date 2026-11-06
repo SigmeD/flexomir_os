@@ -6,6 +6,8 @@
 
 ## Source of truth and constraints
 
+**FE-S01 / A, рабочая ветка:** ClientOrdersScreen (`src/screens/client-orders/ClientOrdersScreen.tsx`) подключает неизменённые AppShell/Drawer/GL-03/HeaderAction и существующий OrderCard. Общий OrdersList (`src/components/orders/OrdersList.tsx`, props `orders/total/idPrefix`), `order-model.ts` и `orders-page.css` используются обеими ролями. Прежние Manager entrypoints переэкспортируют shared слой; все синтетические записи — `src/demo/order-fixtures.ts`. Build + Client/Manager 38/38 PASS; экранная Owner-приёмка OPEN. Деталь заказа — блок B, ещё не реализована. Ниже — состояние исходного main до этого инкремента.
+
 **M4 audit / 06.11.2026:** unique React screen inventory and first reusable-component consumers confirmed in [M4 screen map](SCREEN_MAP_M4_2026-11-06.md). No new React components were added by this audit. `Client AppShell` composition, Client Orders and OrderDetail are still NOT implemented. Next: FE-S01 (#12), block A Client list/shell then block B shared read-only OrderDetail/OrderItemSummary for Client + Manager, in one feature branch/React PR with LIVE docs. New/Repeat, Manager processing, Support/Companies follow in separate increments. Source-of-truth Figma/Scope boundaries remain mandatory.
 
 **CURRENT / 06.11.2026:** Реестр — LIVE: при новом/изменённом React-компоненте укажи тип, потребителей Client/Manager, файл, props/state, QA, Owner gate и использующий экран. Обнови в том же PR, потом синхронизируй с Drive. Не создавай компоненты ради количества Figma-фреймов.

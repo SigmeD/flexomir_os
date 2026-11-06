@@ -1,5 +1,11 @@
 # Flexomir OS — текущее состояние проекта
 
+## FE-S01 / блок A — QA_VERIFIED в рабочей ветке
+
+База `15eb6d9`; ветка `feat/fe-s01-orders-core`, без merge в main. Клиентский `?view=client-orders` использует готовые AppShell/Drawer, GL-03 и OrderCard. Список/empty, общая модель и оформление переиспользуются Manager; две клиентские записи взяты из общего синтетического набора компании 01. Это не серверная ACL.
+
+Проверено: build PASS; Client + Manager Playwright **38/38 PASS**, пять размеров 1440/1024/768/390/320, фильтрация, empty, keyboard/touch и Drawer. PNG — игнорируемые `test-results/`, CI artifact `orders-core-screen-captures`. Core Glass/AppShell не изменены. **Следующий шаг — блок B**: общая read-only деталь и возврат к списку для обеих ролей; затем один итоговый React PR. Ниже — исходный снимок до FE-S01.
+
 ## CURRENT / 06.11.2026 — завершено слияние, следующая задача M4
 
 - Проверено: `origin/main` `89b043f9ae7e70a36a1eea8f5c98cd621e037aa9`; PR #5, #9, #10 закрыты как MERGED. Первый экран Manager Orders, AppShell и NavigationDrawer уже в React; **Client React-экраны ещё не реализованы**. Полный Manager/Client MVP не готов.

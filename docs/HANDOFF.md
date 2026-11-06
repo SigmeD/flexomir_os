@@ -1,5 +1,11 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## FE-S01 — рабочие блоки в одной ветке
+
+- **A: QA_VERIFIED.** Client shell/list/filter/empty/Drawer и общие OrdersList/view model/fixtures, `?view=client-orders`. Build PASS; Client + Manager **38/38 Playwright**, снимки пяти ширин. Состав: `src/screens/client-orders/`, `src/components/orders/`, `src/demo/order-fixtures.ts`, App preview, тесты и LIVE docs.
+- **B: NEXT.** Общие presentation-only OrderDetail/OrderItemSummary по проверенным Client CORE и Manager 01.2; один ID/статус в списке и детали, list → detail → back, сохранение фильтра и фокуса. Проверить обе роли на пяти размерах; New/Repeat, manager commands и API/1С не добавлять.
+- Затем финальные регрессии и один Draft React PR из `feat/fe-s01-orders-core`; не merge автоматически. Исходные локальные правки остаются в stash `9dabc03`, не применять поверх ветки. Старые CURRENT ниже описывают базу до FE-S01.
+
 ## CURRENT HANDOFF / 06.11.2026 — SDLC, LIVE DOCS
 
 - `origin/main` HEAD `89b043f`. PR #5/#9/#10 merged. Есть shared Glass/AppShell/Drawer и пилот `/?view=manager-orders`; нет основного набора экранов Client и полного модуля Manager. Кодовые/CI факты — GitHub; Owner экранная приёмка отдельно.
