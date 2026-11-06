@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AppShell } from '@/components/layout/AppShell'
 import { OrdersList } from '@/components/orders/OrdersList'
 import { OrderDetail } from '@/components/orders/OrderDetail'
@@ -22,14 +22,20 @@ interface ClientOrdersScreenProps {
   orders: readonly OrderListItem[]
   companyName: string
   demo?: OrderDemoController
+  initialFilterId?: OrderStatusFilterId
+  onFilterChange?: (id: OrderStatusFilterId) => void
 }
 
 /** Client composition: supplied data scope is never a substitute for server authorization. */
-export function ClientOrdersScreen({ orders, companyName, demo }: ClientOrdersScreenProps) {
-  const [filterId, setFilterId] = useState<OrderStatusFilterId>('all')
+export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId = 'all', onFilterChange }: ClientOrdersScreenProps) {
+  const [filterId, setLocalFilterId] = useState<OrderStatusFilterId>(initialFilterId)
+  const setFilterId = (id: OrderStatusFilterId) => { setLocalFilterId(id); onFilterChange?.(id) }
   const preview = useOrderPreview(orders)
   const visibleOrders = filterId === 'all' ? orders : orders.filter(order => order.filterId === filterId)
   const selectedDraft = demo?.drafts.find(draft => draft.id === preview.selectedOrder?.id && draft.stage === 'draft')
+  const editingDraft = Boolean(selectedDraft)
+  const editorStateChange = demo?.onEditorStateChange
+  useEffect(() => { editorStateChange?.(editingDraft); return () => editorStateChange?.(false) }, [editingDraft, editorStateChange])
 
   return (
     <div className="fos-orders-page" data-testid="client-orders-screen" ref={preview.surfaceRef}>

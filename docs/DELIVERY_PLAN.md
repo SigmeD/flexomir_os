@@ -8,8 +8,8 @@
 | --- | --- | --- |
 | M0–M3 | React baseline, shared Glass, AppShell, первый Manager Orders | В `main`; код/QA, экранная Owner-приёмка отдельно |
 | M4 | Карта уникальных экранов Client + Manager по CURRENT Figma/Drive; React статусы `готово/частично/нет` — [M4 screen map](SCREEN_MAP_M4_2026-11-06.md) | **AUDIT DONE / OWNER REVIEW OPEN** |
-| M5 | FE-S01 (#12): A — Client list/shell; B — общая read-only деталь Client + Manager, один React PR с LIVE docs | **A+B local QA_VERIFIED:** build, 180 Chromium + 58 Firefox/WebKit; [PR #14](https://github.com/SigmeD/flexomir_os/pull/14) Draft / OWNER_OPEN / NOT_MERGED |
-| M6 | Клиент → новый/повторный заказ → менеджер → клиент, сквозной React-путь | PLANNED |
+| M5 | FE-S01 (#12): Client list/shell + read-only деталь обеих ролей | **MERGED** PR #14, `884e78f`; QA_VERIFIED, не полный MVP |
+| M6 | FE-S02 (#15): A New/Edit Draft/Items, B completed Duplicate, C связанный Manager demo | A/B/C локально QA_VERIFIED: build, 192 Chromium + 70 Firefox/WebKit; один Draft PR из `feat/fe-s02-order-compose-flow`, Owner/merge OPEN |
 | M7 | Компании/Поддержка/прочие подтверждённые разделы MVP | PLANNED |
 | M8 | Системная UI/UX-полировка и рефакторинг общей DS | PLANNED после M5–M7 |
 | M9 | Финальный QA/handoff и подключение frontend к готовым API по мере доступности | PLANNED; backend/1С — Алексей |

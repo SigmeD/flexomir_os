@@ -12,17 +12,23 @@ export function CompletedOrderMenu({ onDuplicate }: { onDuplicate: () => void })
   useLayoutEffect(() => { if (open) action.current?.focus() }, [open])
   useEffect(() => {
     if (!open) return
-    const outside = (event: PointerEvent) => {
+    const outside = (event: Event) => {
       if (event.target instanceof Node && !container.current?.contains(event.target)) setOpen(false)
     }
     document.addEventListener('pointerdown', outside)
-    return () => document.removeEventListener('pointerdown', outside)
+    // Safari pointer clicks may blur a button to body before click. Close on an
+    // actual outside focus target, never on relatedTarget=null during that click.
+    document.addEventListener('focusin', outside)
+    return () => {
+      document.removeEventListener('pointerdown', outside)
+      document.removeEventListener('focusin', outside)
+    }
   }, [open])
   return (
     <div ref={container} className="fos-completed-actions" onKeyDown={event => {
       if (event.key === 'Escape') { event.stopPropagation(); setOpen(false); trigger.current?.focus() }
       if (open && ['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) { event.preventDefault(); action.current?.focus() }
-    }} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false) }}>
+    }}>
       <button type="button" className="fos-order-icon-action fos-order-icon-action--send" disabled aria-label="Отправить завершённый заказ" title="Завершённый заказ доступен только для просмотра"><span><img src={sendIcon} alt="" /></span><small>Отправить</small></button>
       <button ref={trigger} type="button" className="fos-order-icon-action" aria-label="Ещё" title="Другие действия" aria-haspopup="menu" aria-expanded={open} aria-controls={open ? menuId : undefined} onClick={() => setOpen(current => !current)} onKeyDown={event => { if (event.key === 'ArrowDown') { event.preventDefault(); setOpen(true) } }}><span><img src={moreIcon} alt="" /></span><small>Ещё</small></button>
       {open && <div id={menuId} role="menu" aria-label="Действия завершённого заказа" className="fos-completed-actions__menu"><button ref={action} type="button" role="menuitem" onClick={() => { setOpen(false); onDuplicate() }}>Дублировать заказ</button></div>}

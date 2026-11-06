@@ -108,4 +108,3 @@ test('touch detail/back restores the originating order and scroll position', asy
     await context.close()
   }
 })
-

@@ -106,4 +106,3 @@ test('Client screenshots for the five review sizes', async ({ page }, testInfo) 
     }
   }
 })
-

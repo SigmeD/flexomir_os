@@ -1,6 +1,6 @@
 # Flexomir OS — Frontend
 
-> **CURRENT 06.11.2026:** `origin/main` `89b043f` (PR #5, #9, #10 merged); shared React/AppShell/Drawer и пилот Manager Orders доступны. Новый SDLC-порядок: **карта экранов Client+Manager → каркасы/основные React-экраны обеих ролей → сквозной заказ → остальные подтверждённые MVP-разделы → системная UX/UI-полировка → QA**. Действующий [LIVE frontend-план](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); старые FE-08 TODO и срезы 04.11 ниже — история. Документацию обновлять в той же задаче, что код. Backend/API/1С — Алексей, React frontend — наш поток.
+> **CURRENT 06.11.2026:** FE-S01 (Client/Manager list + shared detail) в main через PR #14, база `884e78f`. FE-S02 / #15 в ветке `feat/fe-s02-order-compose-flow`: New/Edit/стандартное Duplicate → общий Manager demo. Статус QA/PR — в [PROJECT_STATE](docs/PROJECT_STATE.md), каноническая очередь — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Пожелания встречи 06.11 (подписной, новые реквизиты/вложения/audio/video) исключены. Backend/API/1С — Алексей.
 
 Рабочая система типографии для клиента и менеджера: заказы, компании, позиции и поддержка, с последующей интеграцией API и 1С. Границы MVP определяют утверждённые CURRENT требования. Рабочая папка: `D:\Projects\flexomir_os`.
 
@@ -37,6 +37,10 @@ Screens (OWNER уточнение 04.11): текущие Client UX V2 и Manager
 
 ## Запуск и проверки
 
+После запуска: [Клиент / Мои заказы](http://127.0.0.1:5173/?view=client-orders), [Менеджер / Заказы](http://127.0.0.1:5173/?view=manager-orders). В FE-S02 Client Add открывает Composer; «Завершённые» → DEMO-007 → Ещё → «Дублировать заказ». После «Передать менеджеру (демо)» переключите роль кнопкой «Демо: менеджер» **в той же странице**, откройте новый DEMO-ID в «Все заказы». Новая вкладка/перезагрузка начинают отдельный набор данных. «Сбросить демо» возвращает исходные fixtures; из редактора сначала сохраните/восстановите изменения и вернитесь к списку. Это просмотр двух ролей, не авторизация и не синхронизация с сервером. `&fixture=empty` проверяет пустой набор.
+
+Draft/Item сохраняются только в памяти, ID позиции стабилен при редактировании; положительных Delete Draft/Item нет. Валидация полей, варианты формы/материала и способ печати — UX DEMO, не required-field/API/1С-контракт. Желаемая дата и общий комментарий необязательны в демо. Файл отображается как выбранный локально, библиотека отключена; HELP — исключительный режим. У менеджера изменение согласованного срока и «Создать заказ» disabled до контрактов.
+
 ```powershell
 cd D:\Projects\flexomir_os
 npm install
@@ -49,6 +53,7 @@ npm run build
 npm run verify:material-optics
 npm run test:material
 npm run test:e2e -- --workers=2
+npx playwright test --config=playwright.orders.config.ts --workers=2
 ```
 
 Оптический тест измеряет положение настоящего разделителя заказов и изменение текстового профиля при неизменных DOM-координатах. Сравнительные PNG и метрики: `output/playwright/fos-material/`. Тесты Select включают фильтрацию, клавиатуру, axe, контраст и 14 визуальных эталонов в двух viewport. Эталоны обновляются только отдельной командой `npm run test:visual -- --update-snapshots`; обычная проверка их не меняет. Эталон теста не означает утверждение дизайна пользователем.

@@ -5,6 +5,7 @@ import type { SidebarNavItem } from '@/components/ui/sidebar-nav'
 import { AppShell } from '@/components/layout/AppShell'
 import { OrdersList } from './OrdersList'
 import { OrderDetail } from '@/components/orders/OrderDetail'
+import { ManagerDemoIntake } from '@/components/orders/ManagerDemoIntake'
 import { useOrderPreview } from '@/components/orders/useOrderPreview'
 import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from './model'
 import '@/components/orders/orders-page.css'
@@ -19,6 +20,9 @@ const managerNav: readonly SidebarNavItem[] = [
 interface ManagerOrdersScreenProps {
   /** Supplied by App in the isolated preview; real API binding remains a separate frontend task. */
   orders: readonly OrderListItem[]
+  demoOrderIds?: readonly string[]
+  initialFilterId?: OrderStatusFilterId
+  onFilterChange?: (id: OrderStatusFilterId) => void
 }
 
 /**
@@ -26,8 +30,8 @@ interface ManagerOrdersScreenProps {
  * No 1C mapping, backend statuses, real navigation or server-side ACL here.
  * Accepted Glass primitives remain unchanged.
  */
-export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
-  const [filterId, setFilterId] = useState<OrderStatusFilterId>('all')
+export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId = 'all', onFilterChange }: ManagerOrdersScreenProps) {
+  const [filterId, setFilterId] = useState<OrderStatusFilterId>(initialFilterId)
   const preview = useOrderPreview(orders)
   const visibleOrders = filterId === 'all'
     ? orders
@@ -36,6 +40,7 @@ export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
   const onSelectFilter = (id: string) => {
     if (ORDER_STATUS_FILTERS.some(filter => filter.id === id && !filter.disabled)) {
       setFilterId(id as OrderStatusFilterId)
+      onFilterChange?.(id as OrderStatusFilterId)
     }
   }
 
@@ -53,7 +58,10 @@ export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
       >
         <main className="fos-orders-page__main">
           {preview.selectedOrder?.detail ? (
-            <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} />
+            <>
+              <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} />
+              {demoOrderIds.includes(preview.selectedOrder.id) && <ManagerDemoIntake />}
+            </>
           ) : (
             <>
               <header className="fos-orders-page__header">

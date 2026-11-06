@@ -1,16 +1,22 @@
 # Flexomir OS — handoff между сессиями Codex
 
-## FE-S02 / #15 — план A/B/C, одна ветка и один PR
+## FE-S02 / #15 — A/B/C локально QA_VERIFIED, Owner/merge OPEN
 
 База main `884e78f` после PR #14; обычная ветка `feat/fe-s02-order-compose-flow`, без worktree. Скриншот владельца и существующие stash не трогать. Источники сверены 06.11: issue #15, Drive CURRENT/SRS/Scope/E2E, Client CORE `1782:6000`, Item Form `2029:7310`, Composer `1782:6074/6160`; используется текущая DS, без нового Glass motion.
 
 - [x] A: `src/demo/order-compose-model.ts` (типизированные frontend draft/items + demo validation), `src/demo/OrderDemoWorkspace.tsx` (ephemeral state), shared `OrderComposer`/`OrderItemForm`/FOS fields, Client Add/open/edit. E2E new→0/1/N→edit/revert→save + Client/detail regression: **36/36 Chromium PASS**, build PASS (82 modules). HELP эксклюзивен, local filename не означает upload, library/delete disabled. Новые draft IDs и item IDs стабильны; dirty leave блокируется до сохранения/восстановления. B/C ещё не выполнены на этом checkpoint.
 - [x] B: тот же composer, completed→More/Duplicate, fresh Order/Item IDs, reset dates, source immutable, недоступные макеты явно обозначены. Company01 completed DEMO-007 добавлен отдельно, чужой Company не копируется. Меню keyboard/Esc/focus/outside, без новых Glass effects; локальные SVG из Figma. Build PASS (88 modules); A+B + Client/detail regression **38/38 Chromium PASS**. C ещё впереди.
-- [ ] C: один store и явное demo-переключение ролей/reset, Client submit→Manager shared list/detail, согласованный срок и Create 1C disabled с объяснением. E2E связи/identity/reset, общая регрессия/пять ширин/Firefox+WebKit/скриншоты, коммит, один Draft PR.
+- [x] C: один store и явное demo-переключение ролей/reset, Client submit→Manager shared list/detail; ID, состав, дата и комментарий совпадают. Черновик виден только клиенту; «Передано менеджеру (демо)» — UI marker без API mapping (в «Все заказы»). Фильтр роли сохраняется при переключении; reset/reload детерминированны. Согласованный срок/Create 1C disabled с пояснением; private Manager draft/publication/concurrency не реализованы.
+
+**Финальный локальный QA:** build PASS (89 modules), расширенный tsc PASS; Chromium **192/192 PASS**, Firefox/WebKit **70/70 PASS**, все 1440/1024/768/390/320. Axe WCAG2A/AA/2.1AA в новой форме: 0 violations; полный screen reader/физические устройства NOT RUN. Исправлены контраст новых hints и Safari pointer blur, закрывавший меню до click; оба изменения перепроверены полными прогонами. Core `src/components/ui`, `layout`, `styles.css`, зависимости/lockfile не изменены. Новые прогоны не объявляются Owner acceptance.
+
+**Команды/evidence:** Orders Core CI запускает `tests/order-compose.spec.ts` вместе с Client/Manager/detail/Drawer/GL03/Sidebar/HeaderAction `--workers=2`; cross-engine `npx playwright test --config=playwright.orders.config.ts --workers=2`. JSON: `output/playwright/glass-select-theme/results.json` и `output/playwright/orders-cross-browser/results.json`. PNG `test-results/order-compose-*/fes02-{item,new,repeat,manager}-*.png` (по 5 размеров), artifact `orders-core-screen-captures`; результаты не коммитятся. Локально Windows/Node24.11.1; CI Node22. Снимки D1440/M390 просмотрены автором, приёмка Owner отдельно.
+
+**Доставка:** коммиты A `c60abe2`, B `08f827d`, C — текущий; один Draft PR из `feat/fe-s02-order-compose-flow`, CI финального SHA проверять в GitHub. Не merge автоматически. Следующий шаг — Owner screen review, после разрешения merge сверить main и Drive; затем согласовать следующий инкремент. При демонстрации переключать роли в той же странице: reload/new tab не синхронизируют ephemeral store. Исходные stash `9dabc03` и Screenshot_3.png не изменялись.
 
 Локальная валидация полей и enum-print — только UX DEMO, не backend contract. Date requiredness, persisted upload/library, Delete Draft/Item, unsaved-leave и Manager processing/публикация/ACL OPEN. До подтверждения leave не стирает dirty-данные: сначала сохранить или явно восстановить. Новые пожелания встречи 06.11 (`CR-REP`: подписной/намотка/краски/доп. файлы/audio/video/обязательный комментарий) исключены по прямому поручению Owner. API/1С — Алексей.
 
-## FE-S01 — рабочие блоки в одной ветке
+## История FE-S01 до merge (результат уже в main 884e78f, PR #14)
 
 - **A: QA_VERIFIED / `3a15eb6`.** Client shell/list/filter/empty/Drawer и общие OrdersList/view model/fixtures, `?view=client-orders`. Build + Client/Manager **38/38** до блока B; изменения в `src/screens/client-orders/`, `src/components/orders/`, `src/demo/order-fixtures.ts`, App, тестах и LIVE docs.
 - **B: локально QA_VERIFIED.** Общие OrderDetail/OrderItemSummary и `useOrderPreview` для обеих ролей: список → read-only деталь → назад, тот же ID/статус, фильтр/фокус/scroll восстановлены. Источники: Client CORE `1782:6000` / completed `1846:2942`, FOS Summary `2025:6608`, Manager 01.2 `2634:20104`. PROPOSED Manager-команды не реализованы; использованы только view-поля по явному FE-S01. Item/API schema и права остаются OPEN.

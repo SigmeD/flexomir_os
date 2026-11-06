@@ -1,5 +1,11 @@
 # Flexomir OS — реестр решений и вопросов
 
+## FE-S02 / Owner scope 06.11.2026 — базовый сценарий и отложенный CR
+
+Источник: прямое поручение Owner в сессии + [issue #15](https://github.com/SigmeD/flexomir_os/issues/15), [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). В текущий frontend инкремент входят New/Edit Draft/Items, стандартное дублирование completed заказа, общий read-only Manager demo. Пожелания 6 ноября (`CR-REP`: подписной, намотка/рулон/краски, дополнительные вложения, аудио/видео, обязательный комментарий) **DEFERRED / PENDING PO+TECH**, до согласования с заказчиком и Алексеем не реализуются.
+
+Demo field validation, Shape/Material samples и print selection — presentation-only, не закрывают backend schema/1С mapping. Date requiredness, server upload/library, Delete Draft/Item и unsaved-leave, Manager private draft/publication/versioning/права/queue OPEN. Технический выбор до разрешения leave: блокировать уход из dirty form до явного save/revert, не моделировать удаления/автосохранение. Reload честно обнуляет ephemeral demo. Базовые FE-S01 display fixtures остаются read-only; Composer редактирует только созданные в FE-S02 черновики.
+
 ## FE-DEC-09 / OWNER APPROVED 06.11.2026 — SDLC breadth-first, LIVE DOCS
 
 - **Принято:** сначала аудируем существующую Figma-архитектуру и собираем карту обоих кабинетов Client + Manager; затем общие React-каркасы и все основные экраны, потом сквозной путь заказа, системная UX/UI-полировка и общий QA. Не тратим сопоставимое время на каждую иконку или Glass-анимацию при неполном охвате экранов. Базовый QA и критические дефекты исправляем сразу.

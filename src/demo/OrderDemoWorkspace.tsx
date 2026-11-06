@@ -5,6 +5,7 @@ import { CLIENT_DEMO_COMPANY, CLIENT_ORDERS_DEMO } from '@/screens/client-orders
 import { MANAGER_ORDERS_DEMO } from '@/screens/manager-orders/fixtures'
 import { canSendDemo, draftView, type DemoDraft } from './order-compose-model'
 import { COMPLETED_DEMO_ITEMS, COMPLETED_DEMO_ORDER } from './order-compose-fixtures'
+import type { OrderStatusFilterId } from '@/components/orders/order-model'
 
 export interface OrderDemoController {
   drafts: readonly DemoDraft[]
@@ -12,14 +13,21 @@ export interface OrderDemoController {
   saveDraft: (draft: DemoDraft) => void
   sendDraft: (draft: DemoDraft) => void
   duplicateOrder: (sourceId: string) => string | undefined
+  onEditorStateChange: (open: boolean) => void
 }
 
 /** All state dies on reload. No browser persistence, auth, upload or network requests. */
 export function OrderDemoWorkspace({ role, empty = false }: { role: 'client' | 'manager'; empty?: boolean }) {
   const [drafts, setDrafts] = useState<readonly DemoDraft[]>([])
+  const [currentRole, setCurrentRole] = useState(role)
+  const [editorOpen, setEditorOpen] = useState(false)
+  const [version, setVersion] = useState(0)
+  const [clientFilter, setClientFilter] = useState<OrderStatusFilterId>('all')
+  const [managerFilter, setManagerFilter] = useState<OrderStatusFilterId>('all')
   const nextOrder = useRef(100)
   const controller: OrderDemoController = {
     drafts,
+    onEditorStateChange: setEditorOpen,
     createDraft() {
       const id = 'DEMO-NEW-' + nextOrder.current++
       setDrafts(current => [...current, { id, company: CLIENT_DEMO_COMPANY, items: [], requestedDate: '', comment: '', stage: 'draft' }])
@@ -42,7 +50,17 @@ export function OrderDemoWorkspace({ role, empty = false }: { role: 'client' | '
       return id
     },
   }
-  return role === 'client'
-    ? <ClientOrdersScreen orders={[...(empty ? [] : [...CLIENT_ORDERS_DEMO, COMPLETED_DEMO_ORDER]), ...drafts.map(draftView)]} companyName={CLIENT_DEMO_COMPANY} demo={controller} />
-    : <ManagerOrdersScreen orders={empty ? [] : MANAGER_ORDERS_DEMO} />
+  const sent = drafts.filter(draft => draft.stage === 'sent')
+  return <div className="fos-demo-workspace">
+    <aside className="fos-demo-workspace__controls" aria-label="Управление демонстрацией">
+      <p>Демо двух ролей · данные до перезагрузки</p>
+      <div><button className="fos-order-action" type="button" disabled={editorOpen} aria-pressed={currentRole === 'client'} onClick={() => setCurrentRole('client')}>Демо: клиент</button>
+        <button className="fos-order-action" type="button" disabled={editorOpen} aria-pressed={currentRole === 'manager'} onClick={() => setCurrentRole('manager')}>Демо: менеджер</button>
+        <button className="fos-order-action" type="button" disabled={editorOpen} onClick={() => { setDrafts([]); nextOrder.current = 100; setClientFilter('all'); setManagerFilter('all'); setVersion(current => current + 1) }}>Сбросить демо</button></div>
+      {editorOpen && <p>Для смены роли или сброса сохраните изменения и вернитесь к списку.</p>}
+    </aside>
+    {currentRole === 'client'
+      ? <ClientOrdersScreen key={'client-' + version} orders={[...(empty ? [] : [...CLIENT_ORDERS_DEMO, COMPLETED_DEMO_ORDER]), ...drafts.map(draftView)]} companyName={CLIENT_DEMO_COMPANY} demo={controller} initialFilterId={clientFilter} onFilterChange={setClientFilter} />
+      : <ManagerOrdersScreen key={'manager-' + version} orders={[...(empty ? [] : MANAGER_ORDERS_DEMO), ...sent.map(draftView)]} demoOrderIds={sent.map(draft => draft.id)} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />}
+  </div>
 }

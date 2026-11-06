@@ -6,6 +6,19 @@
 
 ## Source of truth and constraints
 
+**FE-S02 / #15:** New и Duplicate используют один `OrderComposer`; Add/Edit одной позиции — один `OrderItemForm`. Существующие Glass, AppShell/NavigationDrawer и общий readonly OrderDetail сохранены. Роли здесь переключаются только в явной ephemeral demo workspace, без auth/storage/API. FE-S01 PR #14 уже merged (`884e78f`); описание ниже — исторический component checkpoint до merge.
+
+| FE-S02 компонент | Контракт / данные | Потребитель |
+| --- | --- | --- |
+| `OrderComposer` | `draft: DemoDraft`, `onSave/onSend/onBack`; dirty/revert, 0/1/N, send только валидный сохранённый draft | Client New + Duplicate, пять ширин |
+| `OrderItemForm` | `item?: DemoItem`, `onSave/onClose`; Name/Quantity/Shape/Width/Height/Material + UX print, UPLOAD/HELP, library disabled | Composer Add/Edit; native labels/file, keyboard/Esc, локальная валидация |
+| `CompletedOrderMenu` | `onDuplicate`; только completed Client; FOS 2036:7604, More 1914:650, без новых Glass effects | Client OrderDetail `actions` slot; keyboard/outside/focus и Safari blur regression |
+| `ManagerDemoIntake` | readonly intake, agreed-date/Create disabled до API/ACL-контракта, без изменения Order | Manager detail только переданных DEMO-records |
+| `OrderDemoWorkspace` | initial role/empty; один in-memory набор draft/items, сохранение фильтров роли, явный reset | Оба существующих preview; новые вкладки не синхронизируются |
+| `order-compose-model.ts` | `DemoDraft`, `DemoItem`, `itemSummary/draftView`, local validation; никакого backend DTO/status enum | Composer/store → общий OrdersList/OrderDetail двух ролей |
+
+Figma Input `634:402`, Select `1148:311`, Note `681:203`, Action `835:259`, Item Form `2029:7310`, Composer `1782:6074/6160`, Manager `2500:9701`. Нативные поля/селекты передают интерактивную семантику без новой оптики. Малые SVG More/Send/Upload/Chevron сохранены локально в `src/assets/orders/` из этих контекстов, временных Figma URL в runtime нет. Backend required fields, print/1С mapping, library и delete OPEN. HELP или локальное имя не означают server file relation.
+
 **FE-S01 / A+B, [PR #14](https://github.com/SigmeD/flexomir_os/pull/14):** ClientOrdersScreen подключает неизменённые AppShell/Drawer/GL-03/HeaderAction; OrdersList (`orders/total/idPrefix/onOpen`), `order-model.ts` и `orders-page.css` общие для Client/Manager. OrderCard использует существующий optional `onOpen`; без `order.detail` активного открытия нет. Manager entrypoints совместимы через переэкспорт. Единый синтетический источник — `src/demo/order-fixtures.ts`, список и деталь читают одну запись. Build + 180 Chromium + 58 Firefox/WebKit PASS локально; main/Owner acceptance не присваиваются до merge/review.
 
 | Новый shared component | Контракт | Потребители / QA |

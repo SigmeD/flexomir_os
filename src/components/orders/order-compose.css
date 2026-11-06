@@ -1,4 +1,10 @@
 /* FOS Input 634:402, Select 1148:311, Note 681:203, Action 835:259. No new Glass effects. */
+.fos-demo-workspace { min-width: 0; }
+.fos-demo-workspace__controls { padding: 12px 20px; background: #eef2f6; border-bottom: 1px solid #d6d9e0; color: #263542; font-family: Manrope, Onest, system-ui, sans-serif; }
+.fos-demo-workspace__controls > div { display: flex; gap: 8px; flex-wrap: wrap; }
+.fos-demo-workspace__controls p { margin: 0 0 8px; font-size: 12px; }
+.fos-demo-workspace__controls p:last-child { margin: 8px 0 0; }
+.fos-demo-workspace__controls [aria-pressed=true] { background: #fff; border-color: #547b92; }
 .fos-order-composer, .fos-order-editor { min-width: 0; overflow-wrap: anywhere; }
 .fos-order-composer h1:focus { outline: none; }
 .fos-order-composer h2, .fos-order-editor h2 { margin: 0 0 16px; font-size: 20px; }
@@ -21,9 +27,9 @@
 .fos-order-editor__print input, .fos-order-editor__help input { width: 18px; height: 18px; }
 .fos-order-editor__artwork { margin: 4px 0 24px; }
 .fos-order-editor__file { max-width: 506px; padding: 20px; border: 1px dashed #c4d1e0; border-radius: 12px; background: #fbfcfe; }
-.fos-order-editor__hint { margin: 12px 0 20px; color: #697986; font-size: 12px; line-height: 1.6; }
+.fos-order-editor__hint { margin: 12px 0 20px; color: #586d7c; font-size: 12px; line-height: 1.6; }
 .fos-order-editor__actions { display: flex; flex-wrap: wrap; gap: 12px; }
-.fos-order-action { min-height: 44px; max-width: 100%; padding: 10px 16px; border: 1px solid #d6d9e0; border-radius: 8px; background: transparent; color: #263542; font-size: 14px; line-height: 20px; cursor: pointer; overflow-wrap: anywhere; }
+.fos-order-action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; max-width: 100%; padding: 10px 16px; border: 1px solid #d6d9e0; border-radius: 8px; background: transparent; color: #263542; font-size: 14px; line-height: 20px; cursor: pointer; overflow-wrap: anywhere; }
 .fos-order-action--primary { background: #273141; border-color: #273141; color: #fff; }
 .fos-order-action:disabled { opacity: .5; cursor: default; }
 .fos-order-action:focus-visible, .fos-order-field :focus-visible, .fos-order-editor input:focus-visible { outline: 2px solid #547b92; outline-offset: 3px; }
@@ -49,3 +55,8 @@
 @media(max-width:1023px) { .fos-order-icon-action { width: 48px; min-height: 48px; } .fos-order-icon-action small { display: none; } .fos-completed-actions { gap: 8px; } }
 .fos-order-detail:has(.fos-completed-actions) .fos-orders-page__header { flex-wrap: wrap; }
 @media(forced-colors:active) { .fos-order-action, .fos-order-field input, .fos-order-field select, .fos-order-field textarea { background: Canvas; color: CanvasText; border-color: ButtonText; } }
+@media(forced-colors:active) {
+  .fos-order-icon-action > span { forced-color-adjust: none; background: #fff; }
+  .fos-order-icon-action--send > span { background: #273141; }
+  .fos-completed-actions__menu, .fos-completed-actions__menu button { background: Canvas; color: CanvasText; border-color: ButtonText; }
+}
