@@ -1,5 +1,13 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT HANDOFF / 06.11.2026 — SDLC, LIVE DOCS
+
+- `origin/main` HEAD `89b043f`. PR #5/#9/#10 merged. Есть shared Glass/AppShell/Drawer и пилот `/?view=manager-orders`; нет основного набора экранов Client и полного модуля Manager. Кодовые/CI факты — GitHub; Owner экранная приёмка отдельно.
+- **M4 аудит выполнен**, карта [M4 screen map](SCREEN_MAP_M4_2026-11-06.md) создана в текущем docs PR; канонический Drive-план синхронизирован. Owner product/route gates OPEN; не принимать `PROPOSED`/`ARCHIVE` за scope. Дальше: **FE-S01 / блок A** — подключить существующий `AppShell` к первому клиентскому экрану «Мои заказы», использовать shared `GlassPillTabs` и `OrderCard` с synthetic fixtures; затем **блок B той же FE-S01** shared OrderDetail/OrderItemSummary, потом новые/повторные заказы и связанный Manager path. Сначала слить документационный PR #11, затем обычная ветка feat/fe-s01-orders-core от новой main; один React PR на оба блока, отдельные коммиты A/B, базовый QA/адаптивы/документация LIVE, не править Glass optic/backend/1C.
+- **После M4:** M5 основные экраны Client+Manager → M6 связанный заказ → M7 остальное подтверждённое MVP → M8 системная полировка → M9 итоговый QA/frontend consumption готового API.
+- **LIVE DO D:** по выполненному инкременту обнови [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) и релевантные `PROJECT_STATE`, `DELIVERY_PLAN`, `COMPONENT_REGISTRY`, `DECISIONS`, `HANDOFF`; проставь PR/CI/merge SHA, статус и следующий шаг. Не переписывай чужие одобренные SRS/Scope/DS без решения.
+- Не трогай чужие локальные незакоммиченные изменения. Backend/API/1С — Алексей.
+
 **Рабочий источник frontend:** [09_Frontend Development Plan CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Наш scope: React/frontend, shared components, screens, UX/QA, consuming approved API. Алексей владеет backend/API creation, server ACL, 1C exchange/integration. Figma = approved DS/masters plus scenario/state references, not 230 independent React screen requirements. UI label «В работе» Owner accepted; real 1C mapping not FE.
 
 ## Передача — 06.11.2026: PR #9 объединён с main

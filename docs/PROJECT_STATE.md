@@ -1,5 +1,13 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT / 06.11.2026 — завершено слияние, следующая задача M4
+
+- Проверено: `origin/main` `89b043f9ae7e70a36a1eea8f5c98cd621e037aa9`; PR #5, #9, #10 закрыты как MERGED. Первый экран Manager Orders, AppShell и NavigationDrawer уже в React; **Client React-экраны ещё не реализованы**. Полный Manager/Client MVP не готов.
+- **M4: AUDIT DONE / OWNER REVIEW OPEN.** Сверены CURRENT Figma DS/Client/Manager, CURRENT Scope/SRS/E2E и `origin/main` `89b043f`. Подробный реестр: [M4 screen map](SCREEN_MAP_M4_2026-11-06.md). Client: **0 собственных React-экранов**, общий `AppShell` есть, но не подключён к клиенту; Manager: `AppShell` готов, список «Все заказы» частично реализован, остальные модули не созданы. Подтверждённые UX не подменяются пилотами/архивами. Следующее React-задание агенту: **FE-S01 (#12): блок A Client Shell + «Мои заказы», блок B read-only OrderDetail для Client + Manager; одна ветка от main и один React PR с LIVE docs** на synthetic fixtures; Owner вопросы по auth, «Клиенты/Компании», queue и full My Layouts остаются OPEN.
+- **ДАЛЬШЕ:** M5 каркасы и основные экраны обоих кабинетов → M6 сквозной заказ между ролями → M7 оставшиеся утверждённые MVP-разделы → M8 UX/UI-полировка → M9 итоговый QA. Данные пока синтетические.
+- **Правило:** LIVE-документация обновляется в той же задаче, что код/решение; Drive-план, локальный статус, реестр компонентов, решение и handoff поддерживаются без вторых «актуальных» планов. Успешный CI/merge не равен продуктовой приёмке.
+- **Границы:** frontend/React — наша работа, backend/API/1С — ответственность Алексея. [Действующий план](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
+
 **Рабочий план:** [09_Frontend Development Plan CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Владелец 06.11 ограничил нашу работу React/frontend: компоненты, экраны, интерактивность, адаптивность, тесты и UI-интеграция с готовым API. Backend, создание API, server ACL и обмен с 1С — за Алексеем; не ставить эти работы в наш frontend-бэклог. Figma — DS + источник свойств компонентов, НЕ команда реализовать ~230 отдельных кадров.
 
 ## Последнее — 06.11.2026: PR #9 слит в main

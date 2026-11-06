@@ -1,5 +1,7 @@
 # Flexomir OS — Frontend
 
+> **CURRENT 06.11.2026:** `origin/main` `89b043f` (PR #5, #9, #10 merged); shared React/AppShell/Drawer и пилот Manager Orders доступны. Новый SDLC-порядок: **карта экранов Client+Manager → каркасы/основные React-экраны обеих ролей → сквозной заказ → остальные подтверждённые MVP-разделы → системная UX/UI-полировка → QA**. Действующий [LIVE frontend-план](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); старые FE-08 TODO и срезы 04.11 ниже — история. Документацию обновлять в той же задаче, что код. Backend/API/1С — Алексей, React frontend — наш поток.
+
 Рабочая система типографии для клиента и менеджера: заказы, компании, позиции и поддержка, с последующей интеграцией API и 1С. Границы MVP определяют утверждённые CURRENT требования. Рабочая папка: `D:\Projects\flexomir_os`.
 
 **Проверено 04.11.2026:** Git подключён к [SigmeD/flexomir_os](https://github.com/SigmeD/flexomir_os), `main` опубликована. Уже существует React/TypeScript/Vite Glass-полигон; `npm run build` проходит. Это ещё не принятый продуктовый экран Manager «Заказы». Не создавать рядом второе приложение.
