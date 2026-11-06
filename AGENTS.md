@@ -1,5 +1,12 @@
 # Flexomir OS — правила работы Codex
 
+## CURRENT 06.11.2026 — SDLC от общего к частному и LIVE-документация
+
+- **Фактическая база:** `origin/main` `89b043f9ae7e70a36a1eea8f5c98cd621e037aa9`; PR #5, #9 и #10 MERGED. PR #9 — первый частичный Manager Orders на React, НЕ готовый весь кабинет. Подробный актуальный порядок M4–M9 — [CURRENT Drive-план](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
+- **Новый порядок Owner:** M4 инвентаризация готовых DS/архитектуры/экранов Client+Manager и единая карта → M5 каркасы/основные React-экраны обеих ролей → M6 сквозной демосценарий заказа → M7 оставшиеся подтверждённые MVP-разделы → M8 системная UX/UI-полировка и рефакторинг → M9 интеграционная готовность/общий QA. Минимальная корректность, адаптивность, доступность и регрессия обязательны на каждом этапе; некритичная «оптика» не блокирует охват.
+- **LIVE DOCS / Definition of Done:** изменения в React/UX/архитектуре и их документационные правки — одна поставка. Обнови `docs/PROJECT_STATE.md` (что сделано/сейчас/далее), `docs/DELIVERY_PLAN.md` + [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) (актуальный этап), `docs/COMPONENT_REGISTRY_2026-11-06.md` (изменённые shared components), `docs/HANDOFF.md` (незакрытое/следующий шаг), `docs/DECISIONS.md` (только подтверждённые решения и OPEN), `docs/SOURCES.md` (если изменены источники). Обновляй только относящееся к задаче; не создавай второй CURRENT-план. Синхронизируй GitHub SHA/PR/CI и Drive после merge. Не помечай ACCEPTED/RELEASED без соответствующего gate.
+- Не меняй утверждённые SRS/Scope/Governance/дизайн-мастера без решения их владельца. Backend, API и 1С — зона Алексея; наша зона только React/frontend и подключение к готовому контрактному API.
+
 ## CURRENT / 06.11.2026 — Frontend-only ownership and execution plan (Owner instruction)
 
 **Canonical frontend execution plan:** [Drive / 09_FRONTEND_CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Before selecting the next frontend task, read its stage, status, owner, gate and blockers; use GitHub for actual code/CI/PR state. This replaces older 04.11 FE-08=TODO and Figma-frame-first descriptions as the ACTIVE work sequence without erasing historical notes.
