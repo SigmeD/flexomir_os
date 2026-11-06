@@ -1,4 +1,5 @@
 import type { OrderItemSummaryView } from './order-model'
+import './order-detail.css'
 
 /** FOS Order Item Summary 2025:6608: immutable display strings, not an Item form/schema. */
 export function OrderItemSummary({ item, position }: { item: OrderItemSummaryView; position: number }) {

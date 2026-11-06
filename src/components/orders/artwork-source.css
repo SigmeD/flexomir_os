@@ -2,8 +2,8 @@
 .fos-artwork-source > h2 { margin: 0 0 8px; font-size: 20px; font-weight: 600; line-height: 28px; color: #263244; }
 .fos-artwork-source__dropzone { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 183px; padding: 28px 12px 24px; border: 1px dashed #c4d1e0; border-radius: 12px; background: #fbfcfe; text-align: center; }
 .fos-artwork-source__dropzone > .fos-action { min-width: 164px; }
-.fos-artwork-source__dropzone p { margin: 24px 0 8px; color: #737781; font-size: 14px; line-height: 20px; overflow-wrap: anywhere; max-width: 100%; }
-.fos-artwork-source__dropzone small { color: #737781; font-size: 12px; line-height: 18px; }
+.fos-artwork-source__dropzone p { margin: 24px 0 8px; color: #586d7c; font-size: 14px; line-height: 20px; overflow-wrap: anywhere; max-width: 100%; }
+.fos-artwork-source__dropzone small { color: #586d7c; font-size: 12px; line-height: 18px; }
 .fos-artwork-source__dropzone[data-state=error] { border-color: #a33a3a; }
 .fos-artwork-source__options { display: flex; align-items: center; gap: 8px; margin-top: 16px; margin-bottom: 6px; flex-wrap: wrap; }
 .fos-artwork-source__options > .fos-action { min-width: 132px; }

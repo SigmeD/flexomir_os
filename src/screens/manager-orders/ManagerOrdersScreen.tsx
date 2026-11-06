@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { GlassPillTabs } from '@/components/ui/glass-pill-tabs'
 import { HeaderAction } from '@/components/ui/header-action'
+import { PageHeader } from '@/components/ui/page-header'
+import { MoreAction } from '@/components/ui/overflow-menu'
 import type { SidebarNavItem } from '@/components/ui/sidebar-nav'
 import { AppShell } from '@/components/layout/AppShell'
 import { OrdersList } from './OrdersList'
 import { OrderDetail } from '@/components/orders/OrderDetail'
-import { ManagerDemoIntake } from '@/components/orders/ManagerDemoIntake'
 import { useOrderPreview } from '@/components/orders/useOrderPreview'
 import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from './model'
 import '@/components/orders/orders-page.css'
@@ -49,30 +50,23 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
       <AppShell
         items={managerNav}
         activeId="orders"
-        onSelect={() => {}}
+        onSelect={() => preview.backToList()}
         roleLabel="Менеджер"
+        variant="manager"
         navigationLabel="Навигация менеджера"
         menuLabel="Меню менеджера"
         triggerLabel="Открыть меню менеджера"
         footerText="Менеджер"
       >
-        <main className="fos-orders-page__main">
+        <main className="fos-orders-page__main" data-role="manager" data-view={preview.selectedOrder ? 'detail' : 'list'}>
           {preview.selectedOrder?.detail ? (
             <>
-              <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} />
-              {demoOrderIds.includes(preview.selectedOrder.id) && <ManagerDemoIntake />}
+              <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} role="manager" managerIntake={demoOrderIds.includes(preview.selectedOrder.id)} />
             </>
           ) : (
             <>
-              <header className="fos-orders-page__header">
-                <div>
-                  <p className="fos-orders-page__eyebrow">Заказы</p>
-                  <h1>Заказы</h1>
-                </div>
-                <HeaderAction action="add" accessibleName="Добавить заказ" disabled />
-              </header>
-
-              <p className="fos-orders-page__disclaimer">
+              <PageHeader title="Заказы" breadcrumbs={[{ label: 'Заказы' }]} actions={<><HeaderAction action="add" accessibleName="Добавить заказ" disabled /><MoreAction disabled /></>} />
+              <p className="fos-sr-only">
                 Демонстрационные данные. Интеграция с 1С не подключена.
               </p>
 

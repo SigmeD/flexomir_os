@@ -1,70 +1,65 @@
-import { useId, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { canSendDemo, itemSummary, validDemoDate, type DemoDraft, type DemoItem } from '@/demo/order-compose-model'
+import { HeaderAction } from '@/components/ui/header-action'
+import { PageHeader } from '@/components/ui/page-header'
+import { OverflowMenu } from '@/components/ui/overflow-menu'
+import { FOSDateField, FOSTextarea } from '@/components/ui/fos-controls'
 import { OrderItemForm } from './OrderItemForm'
-import { OrderItemSummary } from './OrderItemSummary'
-import sendIcon from '@/assets/orders/send.svg'
-import chevronIcon from '@/assets/orders/chevron.svg'
+import { OrderItemRow } from './OrderItemRow'
+import { SectionAddItem } from './SectionAddItem'
 import './order-compose.css'
 
-/** Single draft composition for New and Repeat; no server commands or deletes. */
-export function OrderComposer({ draft, onSave, onSend, onBack }: {
+/** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
+export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChange }: {
   draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend: (draft: DemoDraft) => void; onBack: () => void
+  onItemEditorChange?: (open: boolean) => void
 }) {
-  const [saved, setSaved] = useState(draft)
   const [value, setValue] = useState(draft)
   const [editing, setEditing] = useState<string | null>(null)
   const [feedback, setFeedback] = useState('')
   const nextItem = useRef(1)
-  const commentId = useId()
-  const headingRef = useRef<HTMLHeadingElement>(null)
   const returnFocus = useRef<string | null>(null)
-  const rootRef = useRef<HTMLDivElement>(null)
-  const dirty = JSON.stringify(value) !== JSON.stringify(saved)
-  useLayoutEffect(() => { headingRef.current?.focus(); window.scrollTo(0, 0) }, [])
+  const root = useRef<HTMLDivElement>(null)
+  useEffect(() => { onItemEditorChange?.(editing !== null); return () => onItemEditorChange?.(false) }, [editing, onItemEditorChange])
   useLayoutEffect(() => {
-    if (editing !== null || !returnFocus.current) return
-    const target = returnFocus.current
-    rootRef.current?.querySelector<HTMLButtonElement>(target)?.focus()
+    if (editing !== null) return
+    const target = returnFocus.current ? root.current?.querySelector<HTMLElement>(returnFocus.current) : root.current?.querySelector<HTMLElement>('h1')
+    target?.focus({ preventScroll: true })
     returnFocus.current = null
   }, [editing])
-  function save(next: DemoDraft) { onSave(next); setSaved(next); setValue(next); setFeedback('Черновик сохранён только в памяти страницы') }
+  function save(next: DemoDraft) {
+    setValue(next); onSave(next); setFeedback('Черновик сохранён только в памяти страницы')
+  }
+  function addItem() { returnFocus.current = '[data-add-item]'; setEditing('new') }
   function saveItem(item: DemoItem) {
     const existing = value.items.find(current => current.id === editing)
     let id = existing?.id
-    if (!id) {
-      do { id = value.id + '-ITEM-' + nextItem.current++ } while (value.items.some(current => current.id === id))
-    }
-    const next = { ...value, items: existing ? value.items.map(current => current.id === existing.id ? { ...item, id } : current) : [...value.items, { ...item, id }] }
-    save(next)
+    if (!id) { do { id = value.id + '-ITEM-' + nextItem.current++ } while (value.items.some(current => current.id === id)) }
+    save({ ...value, items: existing ? value.items.map(current => current.id === existing.id ? { ...item, id } : current) : [...value.items, { ...item, id }] })
     setEditing(null)
   }
-  return (
-    <div className="fos-order-composer" ref={rootRef} data-testid="order-composer" data-order-id={value.id}>
-      {editing === null ? <>
-        <button className="fos-order-detail__back" type="button" disabled={dirty} onClick={onBack}>К списку заказов</button>
-        <header className="fos-orders-page__header"><div><h1 ref={headingRef} tabIndex={-1}>Новый заказ</h1><p>Черновик · {value.id}</p></div>
-          <button className="fos-order-icon-action fos-order-icon-action--send" type="button" aria-label="Передать менеджеру (демо)" title="Передать менеджеру (демо)" disabled={!canSendDemo(value) || dirty} onClick={() => onSend(value)}><span><img src={sendIcon} alt="" /></span><small>Отправить</small></button>
-        </header>
-        <p className="fos-order-editor__hint">Демо: данные живут до перезагрузки страницы. Документ 1С не создаётся.</p>
-        {value.sourceOrderId && <p>Дубликат заказа {value.sourceOrderId}. Исходный заказ не изменяется.</p>}
-        <section className="fos-order-composer__section" aria-label="Продукция">
-          <div className="fos-order-composer__section-heading"><h2>Продукция</h2><button data-add-item className="fos-order-action" type="button" onClick={() => { returnFocus.current = '[data-add-item]'; setEditing('new') }}>Добавить позицию</button></div>
+  return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id}>
+    {editing === null ? <>
+      <PageHeader title="Новый заказ" subtitle="Черновик" breadcrumbs={[{ label: 'Мои заказы', onSelect: onBack }, { label: 'Новый заказ' }]} actions={<>
+        <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!canSendDemo(value)} onAction={() => onSend(value)} />
+        <OverflowMenu items={[
+          { id: 'add', label: 'Добавить позицию', onSelect: addItem, focusAfter: 'consumer' },
+          { id: 'delete', label: 'Удалить черновик', disabled: true, reason: 'Удаление не согласовано' },
+        ]} />
+      </>} />
+      <div className="fos-order-composer__body">
+        <section className="fos-order-composer__products" data-empty={value.items.length === 0 || undefined} aria-labelledby="compose-products-title">
+          <div className="fos-order-composer__section-heading"><h2 id="compose-products-title">Продукция</h2><SectionAddItem onClick={addItem} /></div>
           {value.items.length ? <ul className="fos-order-detail__items">{value.items.map((item, index) => <li key={item.id} data-item-id={item.id}>
-            <OrderItemSummary item={itemSummary(item)} position={index + 1} />
-            <button className="fos-order-action" type="button" data-edit-index={index} aria-label={'Изменить позицию ' + (index + 1)} onClick={() => { returnFocus.current = '[data-edit-index="' + index + '"]'; setEditing(item.id) }}>Изменить <img src={chevronIcon} alt="" width="20" height="20" /></button>
-          </li>)}</ul> : <p>Позиции не указаны. Добавьте хотя бы одну для передачи.</p>}
+            <OrderItemRow item={itemSummary(item)} position={index + 1} onOpen={() => { returnFocus.current = '[data-item-id="' + item.id + '"] button'; setEditing(item.id) }} />
+          </li>)}</ul> : <p className="fos-order-detail__empty">Позиция ещё не добавлена. Добавьте первую позицию.</p>}
         </section>
-        <section className="fos-order-composer__section" aria-label="Общие данные заказа"><h2>Общие данные заказа</h2>
-          <label className="fos-order-field fos-order-composer__date">Желаемый срок<input type="date" value={value.requestedDate} onChange={event => setValue(current => ({ ...current, requestedDate: event.target.value }))} /></label>
-          <div className="fos-order-field"><label htmlFor={commentId}>Комментарий к заказу</label><textarea id={commentId} value={value.comment} placeholder="Необязательно" onChange={event => setValue(current => ({ ...current, comment: event.target.value }))} /></div>
+        <section className="fos-order-composer__general" aria-labelledby="compose-general-title"><h2 id="compose-general-title">Общие данные заказа</h2>
+          <FOSDateField wrapperClassName="fos-order-composer__date" label="Желаемый срок" value={value.requestedDate} error={!validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onChange={event => save({ ...value, requestedDate: event.target.value })} />
+          <FOSTextarea label="Комментарии" placeholder="Необязательно" value={value.comment} onChange={event => save({ ...value, comment: event.target.value })} />
         </section>
-        <p role="status">{dirty ? 'Есть несохранённые изменения заказа' : feedback || 'Черновик без несохранённых изменений'}</p>
-        <div className="fos-order-editor__actions"><button className="fos-order-action" type="button" disabled={!dirty || !validDemoDate(value.requestedDate)} onClick={() => save(value)}>Сохранить черновик</button>
-          <button className="fos-order-action" type="button" disabled={!dirty} onClick={() => { setValue(saved); setFeedback('Значения восстановлены') }}>Восстановить значения заказа</button>
-          <button className="fos-order-action" type="button" disabled aria-describedby="demo-delete-note">Удалить черновик / позицию</button>
-        </div>
-        <p id="demo-delete-note" className="fos-order-editor__hint">Удаление не согласовано. При несохранённых изменениях сначала сохраните или восстановите значения; переход не стирает их.</p>
-      </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} />}
-    </div>
-  )
+      </div>
+      <p className="fos-sr-only" role="status">{feedback || 'Черновик только в памяти страницы'}</p>
+    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} />}
+  </div>
 }

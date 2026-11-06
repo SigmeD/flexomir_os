@@ -6,6 +6,7 @@ test('shared FOS masters: stateful fields, segmented, overflow and all primary g
   await expect(page.getByLabel('Ошибка поля', { exact: true })).toHaveAttribute('aria-invalid', 'true')
   await expect(page.getByLabel('Только чтение', { exact: true })).toHaveAttribute('readonly', '')
   await page.getByRole('radio', { name: 'Флексопечать', exact: true }).check()
+  await page.getByRole('radio', { name: 'Флексопечать', exact: true }).focus()
   await page.keyboard.press('ArrowRight')
   await expect(page.getByRole('radio', { name: 'Цифровая печать', exact: true })).toBeChecked()
   await page.getByRole('button', { name: 'Ещё', exact: true }).click()

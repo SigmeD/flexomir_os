@@ -1,59 +1,47 @@
-/* FOS read-only fields and Item Summary; accepted shell/material/motion are composed unchanged. */
+/* Shared immutable Item Summary and readonly field composition. */
 .fos-order-detail { min-width: 0; overflow-wrap: anywhere; }
-.fos-order-detail__back {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  margin: -12px 0 16px;
-  padding: 0 4px;
-  border: 0;
-  background: transparent;
-  color: #293c49;
-  font-size: 13px;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+.fos-order-detail__body { max-width: 1050px; margin-top: 6px; }
+.fos-order-detail__products > h2,.fos-order-detail__general > h2 { margin: 0; color: #273343; font-size: 20px; font-weight: 600; line-height: 28px; }
+.fos-order-detail__products > h2 { margin-bottom: 30px; }
+.fos-order-detail__company { margin-bottom: 30px; }
+.fos-order-detail__general { margin-top: 36px; }
+.fos-order-detail__general > h2 { margin-bottom: 10px; }
+.fos-order-detail__dates { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; margin-bottom: 20px; }
+.fos-order-detail__dates:has(> :only-child) { grid-template-columns: minmax(0,720px); }
+.fos-order-detail__items { display: grid; gap: 24px; margin: 0; padding: 0; list-style: none; }
+.fos-order-item-summary { min-width: 0; min-height: 112px; padding: 16px; border: 1px solid #d8e0e9; border-radius: 13px; background: #fff; overflow-wrap: anywhere; }
+.fos-order-item-summary h3 { margin: 0; color: #253144; font-size: 16px; font-weight: 600; line-height: 22px; }
+.fos-order-item-summary__specifications { margin: 12px 0 0; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: 13px; line-height: 18px; }
+.fos-order-item-summary__artwork { margin: 10px 0 0; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: 12px; line-height: 16px; }
+.fos-order-detail__empty { margin: 0; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: 14px; line-height: 20px; }
+.fos-manager-intake { margin-top: 32px; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.fos-manager-intake p { margin: 0; color: #586d7c; font-size: 12px; line-height: 18px; }
+.fos-manager-intake .fos-action { min-width: 160px; }
+.fos-order-detail[data-role=manager] .fos-order-detail__body { max-width: 1056px; margin-top: 4px; }
+.fos-order-detail[data-role=manager] .fos-order-detail__company { margin-bottom: 32px; }
+.fos-order-detail[data-role=manager] .fos-order-detail__products > h2 { margin-bottom: 17px; }
+.fos-order-detail[data-role=manager] .fos-order-detail__items { gap: 14px; }
+.fos-order-detail[data-role=manager] .fos-order-detail__general { margin-top: 40px; }
+.fos-order-detail[data-role=manager] .fos-order-detail__general > h2 { margin-bottom: 19px; }
+.fos-order-detail[data-role=manager] .fos-order-detail__dates { margin-bottom: 22px; }
+@media(max-width:1023px) {
+  .fos-order-detail__body { margin-top: 30px; }
+  .fos-order-detail__products > h2 { margin-bottom: 45px; }
+  .fos-order-detail__products > h2,.fos-order-detail__general > h2 { font-size: 18px; line-height: 26px; }
+  .fos-order-detail__general > h2 { margin-bottom: 12px; }
+  .fos-order-detail[data-role=manager] .fos-order-detail__body { margin-top: 29px; }
+  .fos-order-detail[data-role=manager] .fos-order-detail__company { margin-bottom: 26px; }
+  .fos-order-detail[data-role=manager] .fos-order-detail__general { margin-top: 42px; }
+  .fos-order-detail[data-role=manager] .fos-order-detail__general > h2 { margin-bottom: 24px; }
+  .fos-order-detail[data-role=manager] .fos-order-detail__dates { margin-bottom: 27px; }
 }
-.fos-order-detail__back:focus-visible { outline: 2px solid #547b92; outline-offset: 3px; border-radius: 4px; }
-.fos-order-detail h1:focus { outline: none; }
-.fos-order-detail__status { margin: 10px 0 0; font-size: 14px; color: #586d7c; }
-.fos-order-detail__name { margin: 8px 0 0; color: #697986; font-size: 14px; }
-.fos-order-detail__section { margin-top: 28px; }
-.fos-order-detail__section h2 { margin: 0 0 16px; font-size: 20px; font-weight: 650; }
-.fos-order-detail__items { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
-.fos-order-item-summary {
-  min-width: 0;
-  min-height: 112px;
-  padding: 16px;
-  border: 1px solid #d8e0e9;
-  border-radius: 13px;
-  background: #fff;
-  overflow-wrap: anywhere;
+@media(max-width:600px) {
+  .fos-order-detail__products > h2,.fos-order-detail__general > h2 { font-size: 16px; line-height: 24px; }
+  .fos-order-detail__general > h2 { margin-bottom: 14px; }
+  .fos-order-detail__products > h2 { margin-bottom: 47px; }
+  .fos-order-detail__dates { grid-template-columns: minmax(0,1fr); }
+  .fos-order-detail[data-role=manager] .fos-order-detail__products > h2 { margin-bottom: 19px; }
+  .fos-order-detail[data-role=manager] .fos-order-detail__general > h2 { margin-bottom: 26px; }
+  .fos-order-detail[data-role=manager] .fos-order-detail__dates { row-gap: 26px; margin-bottom: 23px; }
 }
-.fos-order-item-summary h3 { margin: 0; color: #253144; font-size: 16px; font-weight: 650; line-height: 1.5; }
-.fos-order-item-summary__specifications { margin: 12px 0 0; color: #697986; font-size: 13px; line-height: 1.5; }
-.fos-order-item-summary__artwork { margin: 10px 0 0; color: #69788a; font-size: 12px; line-height: 1.5; }
-.fos-order-detail__fields { display: grid; gap: 18px; margin: 0; }
-.fos-order-detail__fields > div { min-width: 0; }
-.fos-order-detail__fields dt { margin: 0 0 8px; font-size: 13px; font-weight: 650; }
-.fos-order-detail__fields dd {
-  margin: 0;
-  min-height: 44px;
-  padding: 12px 16px;
-  border: 1px solid #d6d9e0;
-  border-radius: 8px;
-  background: #f6f7f9;
-  color: #586d7c;
-  font-size: 14px;
-  line-height: 20px;
-  white-space: pre-wrap;
-}
-.fos-order-detail__comment dd { min-height: 112px; }
-.fos-order-detail__empty { margin: 0; color: #697986; font-size: 14px; }
-@media(min-width:600px) {
-  .fos-order-detail__fields--dates { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
-  .fos-order-detail__comment { grid-column: 1 / -1; }
-}
-@media(forced-colors:active) {
-  .fos-order-item-summary,.fos-order-detail__fields dd { background: Canvas; color: CanvasText; border-color: ButtonText; }
-  .fos-order-detail__back { color: LinkText; }
-}
+@media(forced-colors:active) { .fos-order-item-summary { background: Canvas; color: CanvasText; border-color: ButtonText; } }

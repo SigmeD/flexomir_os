@@ -1,12 +1,11 @@
 import { useId } from 'react'
+import { FOSAction } from '@/components/ui/fos-controls'
 
-/** FOS Manager detail 2500:9701; no local substitute for agreed ACL/1C commands. */
+/** Manager command remains unavailable until Alexey's agreed API/ACL/1C contract. */
 export function ManagerDemoIntake() {
   const explanationId = useId()
-  return <section className="fos-order-composer__section" aria-label="Демонстрационный приём заказа">
-    <h2>Приём заказа · демо</h2>
-    <label className="fos-order-field fos-order-composer__date">Согласованный срок (менеджер)<input type="date" disabled aria-describedby={explanationId} /></label>
-    <p id={explanationId} className="fos-order-editor__hint">Редактирование срока и права действий ожидают согласованного API-контракта. Интеграция с 1С не подключена; документ не создаётся.</p>
-    <button className="fos-order-action" type="button" disabled aria-describedby={explanationId}>Создать заказ</button>
+  return <section className="fos-manager-intake" aria-label="Демонстрационный приём заказа">
+    <p id={explanationId} className="fos-sr-only">Создание заказа недоступно в демонстрации. Документ 1С не создаётся.</p>
+    <FOSAction hierarchy="primary" disabled title="Недоступно в демонстрации" aria-describedby={explanationId}>Создать заказ</FOSAction>
   </section>
 }

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { backToOrders, detailData } from './helpers/orders'
 
 const roles = ['client', 'manager'] as const
 const sizes = [
@@ -20,18 +21,18 @@ for (const role of roles) {
       await expect(detail).toBeVisible()
       await expect(detail.getByRole('heading', { name: 'Заказ DEMO-003', exact: true })).toBeFocused()
       await expect(detail.getByTestId('order-detail-status')).toHaveText('В работе')
-      await expect(detail.getByText('Демонстрационный заказ 03', { exact: true })).toBeVisible()
-      await expect(detail.getByText('Компания 01', { exact: true })).toBeVisible()
+      await expect(detail).toContainText('Демонстрационный заказ 03')
+      await expect(detail).toContainText('Компания 01')
       await expect(detail.getByTestId('order-item-summary')).toHaveCount(2)
-      await expect(detail.getByRole('textbox')).toHaveCount(0)
-      await expect(detail.getByRole('button', { name: /Создать|Отправить|Подтвердить|Повторить|Редактировать/ })).toHaveCount(0)
+      for (const field of await detail.locator('input,textarea').all()) await expect(field).toHaveAttribute('readonly', '')
+      for (const action of await detail.getByRole('button', { name: /Создать|Отправить|Подтвердить|Повторить|Редактировать/ }).all()) await expect(action).toBeDisabled()
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
       await expect(page).toHaveURL(new RegExp('\\?view=' + role + '-orders$'))
-      await detail.getByRole('button', { name: 'К списку заказов', exact: true }).click()
+      await backToOrders(page)
       await expect(page.getByTestId('order-detail')).toHaveCount(0)
       await expect(page.getByTestId('glass-pill-work')).toHaveAttribute('aria-pressed', 'true')
       await expect(page.getByTestId(role + '-order-count')).toHaveText(role === 'client' ? '1 из 3' : '2 из 6')
-      await expect(opener).toBeFocused()
+      await expect(width >= 1024 ? opener : page.getByTestId('navigation-drawer-trigger')).toBeFocused()
     }
   })
 
@@ -49,7 +50,7 @@ for (const role of roles) {
       await expect(detail.getByTestId('order-detail-status')).toHaveText(status)
       await expect(detail.getByTestId('order-item-summary')).toHaveCount(count)
       if (!count) await expect(detail.getByText('Позиции не указаны.', { exact: true })).toBeVisible()
-      await detail.getByRole('button', { name: 'К списку заказов', exact: true }).click()
+      await backToOrders(page)
       await expect(row).toBeVisible()
     }
   })
@@ -65,7 +66,7 @@ for (const role of roles) {
     await expect(page.getByTestId('navigation-drawer-layer')).toHaveCount(0)
     await expect(page.locator('#root')).not.toHaveAttribute('inert')
     await expect(page.getByTestId('order-detail')).toBeVisible()
-    await page.getByRole('button', { name: 'К списку заказов', exact: true }).click()
+    await backToOrders(page)
     await expect(page.getByTestId(role + '-orders-list')).toBeVisible()
   })
 
@@ -81,13 +82,13 @@ for (const role of roles) {
 }
 
 test('the same DEMO order has identical read-only content in both cabinets', async ({ page }) => {
-  const content: string[] = []
+  const content: Awaited<ReturnType<typeof detailData>>[] = []
   for (const role of roles) {
     await page.goto('/?view=' + role + '-orders')
     await page.getByRole('button', { name: 'Открыть заказ DEMO-003', exact: true }).click()
-    content.push(await page.getByTestId('order-detail').innerText())
+    content.push(await detailData(page))
   }
-  expect(content[0]).toBe(content[1])
+  expect(content[0]).toEqual(content[1])
 })
 
 test('touch detail/back restores the originating order and scroll position', async ({ browser }) => {
@@ -101,8 +102,10 @@ test('touch detail/back restores the originating order and scroll position', asy
     await opener.tap()
     await expect(page.getByTestId('order-detail')).toBeVisible()
     expect(await page.evaluate(() => window.scrollY)).toBe(0)
-    await page.getByRole('button', { name: 'К списку заказов', exact: true }).tap()
-    await expect(opener).toBeFocused()
+    await page.getByTestId('navigation-drawer-trigger').tap()
+    await page.getByRole('dialog').getByTestId('sidebar-nav-orders').tap()
+    await expect(page.getByTestId('navigation-drawer-layer')).toHaveCount(0)
+    await expect(page.getByTestId('navigation-drawer-trigger')).toBeFocused()
     expect(await page.evaluate(() => window.scrollY)).toBeCloseTo(originalY, 0)
   } finally {
     await context.close()

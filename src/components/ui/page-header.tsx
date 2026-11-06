@@ -12,7 +12,7 @@ export function PageHeader({ title, subtitle, context, actions, breadcrumbs, aut
   useLayoutEffect(() => { if (autoFocus) heading.current?.focus({ preventScroll: true }) }, [autoFocus, title])
   return <header className="fos-page-header">
     {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
-    <div className="fos-page-header__row"><h1 ref={heading} tabIndex={autoFocus ? -1 : undefined}>{title}</h1>{actions && <div className="fos-page-header__actions">{actions}</div>}</div>
+    <div className="fos-page-header__row"><h1 ref={heading} tabIndex={-1}>{title}</h1>{actions && <div className="fos-page-header__actions">{actions}</div>}</div>
     {subtitle && <p className="fos-page-header__subtitle">{subtitle}</p>}{context && <p className="fos-page-header__context">{context}</p>}
   </header>
 }

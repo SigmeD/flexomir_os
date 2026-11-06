@@ -55,14 +55,14 @@ export function itemSummary(item: DemoItem): OrderItemSummaryView {
     : item.fileName ? 'Макет: выбран локально ' + item.fileName + ' (не загружен)'
     : 'Макет: файл недоступен, выберите заново или запросите помощь'
   return { id: item.id, name: item.name,
-    specifications: `${item.width} × ${item.height} мм · ${item.quantity} шт. · ${item.shape} · ${item.material} · ${item.printMethod === 'flex' ? 'Флексопечать' : item.printMethod === 'digit' ? 'Цифровая печать' : 'Способ печати не указан'}`,
+    specifications: `${item.width} × ${item.height} мм · ${item.quantity} шт.`,
     artworkLabel }
 }
 
 export function draftView(draft: DemoDraft): OrderListItem {
   return {
     id: draft.id, company: draft.company, title: draft.items[0]?.name || 'Новый демонстрационный заказ',
-    statusLabel: draft.stage === 'draft' ? 'Черновик' : 'Передано менеджеру (демо)',
+    statusLabel: draft.stage === 'draft' ? 'Черновик' : 'Передан менеджеру',
     filterId: draft.stage === 'draft' ? 'draft' : null,
     detail: { items: draft.items.map(itemSummary), requestedDate: draft.requestedDate, comment: draft.comment },
   }

@@ -25,7 +25,10 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList }: {
   return <form ref={form} className="fos-item-form" data-testid="order-item-form" onSubmit={event => {
     event.preventDefault()
     if (dirty && validDemoItem(value)) onSave(value)
-  }} onKeyDown={event => { if (event.key === 'Escape' && !dirty) { event.stopPropagation(); onClose() } }}>
+  }} onKeyDown={event => {
+    // Portal events bubble through React parents; menu Escape must not also leave the form.
+    if (event.key === 'Escape' && !event.defaultPrevented && event.currentTarget.contains(event.target as Node) && !dirty) { event.stopPropagation(); onClose() }
+  }}>
     <PageHeader title={title} autoFocus breadcrumbs={[
       { label: 'Мои заказы', onSelect: onBackToList, disabled: dirty },
       { label: 'Новый заказ', onSelect: onClose, disabled: dirty }, { label: title },

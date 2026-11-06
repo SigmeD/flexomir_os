@@ -2,14 +2,14 @@
 
 ## CURRENT / 06.11.2026 — SDLC, единый frontend roadmap
 
-**База:** `origin/main` = `89b043f`, PR #5/#9/#10 merged. Manager Orders — первый React-пилот, не весь модуль и не весь кабинет. Принято Owner: **сначала целостная структура двух кабинетов, затем основные экраны и сценарии; глобальная визуальная полировка после охвата**.
+**База:** `origin/main` = `884e78f`, PR #5/#9/#10/#11/#14 merged. FE-S01 list/shared detail в main; FE-S02 в Draft PR #16. Принято Owner: **сначала целостная структура двух кабинетов, затем основные экраны и сценарии; глобальная визуальная полировка после охвата**. Уточнение Owner к #15: текущий Orders-flow должен соответствовать Figma целиком до merge.
 
 | Этап | Выход | Состояние |
 | --- | --- | --- |
 | M0–M3 | React baseline, shared Glass, AppShell, первый Manager Orders | В `main`; код/QA, экранная Owner-приёмка отдельно |
 | M4 | Карта уникальных экранов Client + Manager по CURRENT Figma/Drive; React статусы `готово/частично/нет` — [M4 screen map](SCREEN_MAP_M4_2026-11-06.md) | **AUDIT DONE / OWNER REVIEW OPEN** |
 | M5 | FE-S01 (#12): Client list/shell + read-only деталь обеих ролей | **MERGED** PR #14, `884e78f`; QA_VERIFIED, не полный MVP |
-| M6 | FE-S02 (#15): A New/Edit Draft/Items, B completed Duplicate, C связанный Manager demo | A/B/C локально QA_VERIFIED: build, 192 Chromium + 70 Firefox/WebKit; один Draft PR из `feat/fe-s02-order-compose-flow`, Owner/merge OPEN |
+| M6 | FE-S02 (#15): A New/Edit Draft/Items, B completed Duplicate, C связанный Manager demo; blocking Figma parity correction | Shared masters + reference New Item + оставшиеся композиции в том же PR #16. Финальный QA/исключения — HANDOFF/Component Registry; transition matrix — Screen Map. Owner visual gate OPEN / merge BLOCKED |
 | M7 | Компании/Поддержка/прочие подтверждённые разделы MVP | PLANNED |
 | M8 | Системная UI/UX-полировка и рефакторинг общей DS | PLANNED после M5–M7 |
 | M9 | Финальный QA/handoff и подключение frontend к готовым API по мере доступности | PLANNED; backend/1С — Алексей |
@@ -24,7 +24,7 @@
 
 **Figma:** актуальная дизайн-система и технические мастера; не переносим весь каталог адаптивных/сценарных Figma-макетов как отдельные React-проекты или страницы. Делаем общие React-компоненты и из них собираем роли и сценарии.
 
-**Локальный факт 06.11:** PR #9 слит в main (`0fc6536`) после пяти успешных CI-проверок; AppShell/NavigationDrawer интегрирован в Manager Orders. Визуальная приёмка экрана остаётся OPEN. Сейчас выполняется только слияние PR #9/#10. Первый результат следующего этапа — единая карта Client + Manager в существующем Drive-плане; новые экраны в этой задаче не разрабатываются.
+**Текущий факт 06.11:** FE-S01 уже merged PR #14; работа идёт над Figma parity FE-S02 в существующем PR #16. Новую ветку/PR/план не создаём; main не меняем. Следующий gate — проверка текущих композиций и OPEN exceptions владельцем, затем только разрешённое слияние.
 
 ## Предыдущие локальные сводки (история; актуальные этапы — в Drive)
 

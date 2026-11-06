@@ -17,6 +17,39 @@
 
 ## Статусы карты
 
+## FE-S02 — проверка переходов Figma → React
+
+Источник: Owner issue #15, тот же Draft PR #16. PASS ниже означает проверенный frontend переход на fixtures; не утверждение backend прав и не Owner visual acceptance. Фреймы: [Client CORE](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1782-6000), [supporting scenarios](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2026-6868), [Manager current](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2495-8870). Visual exceptions перечислены в Component Registry; unmatched state нельзя объявлять VISUAL_PASS.
+
+| Figma frame/state | Действие | Ожидаемый следующий frame/state | React consumer/handler | Результат |
+| --- | --- | --- | --- | --- |
+| List `634:6825/7368/7714` | Header Add | Empty Order `1810:12510/1837:6359/1810:12545` | Client `createDraft/openCreatedOrder` → Composer | PASS: свежий ID, 0 items, Send disabled |
+| Empty/1/N Composer, `1988:3939` | Secondary Add Item, Enter/touch | New Item `1791:6130/1837:6385/1791:6185` | `SectionAddItem` → Composer `addItem` | PASS: один ItemForm, фокус H1, единые поля |
+| New Item `1791:6130`, `1953:4168` | Пусто/invalid, Header Add | Disabled до валидного ввода | `validDemoItem` + HeaderAction disabled | PASS: 0/дробное количество/отрицательная ширина/no artwork; локальные правила, API OPEN |
+| Input `634:402`, Quantity `680:177` | Невалидное значение + blur | Error state + сообщение | FOSInput `aria-invalid/describedby` | PASS: ошибка связана с полем, action disabled |
+| Print `2315:9747/943:263` | Flex/Digit/arrow keys | Выбран ровно один вариант | PrintingMethodControl → `update` | PASS: native radio/segmented, wide/compact |
+| Artwork `634:445` | Upload/replace/drop | Local selected filename | ArtworkSource `selectFile` | PASS chooser/filename/replace UI; upload/storage OPEN, не success |
+| Artwork `634:445` | HELP on/off | Exclusive HELP / empty Upload | ArtworkSource `onChange` | PASS: upload/library скрыты при HELP, прежний local file не переносится незаметно |
+| New Item valid | Header Add | 1-item `1782:6001/1837:6436/1782:6103`, далее N | ItemForm `onSave` → Composer `saveItem` | PASS: item/order IDs стабильны, поля сохранены в памяти |
+| Composer `1782:6074/1837:6469/1782:6160` | Вся строка позиции, Enter/touch | Edit `1782:6025/1837:6509/1782:6119` | OrderItemRow → `setEditing(item.id)` | PASS: одна форма, то же имя в H1/breadcrumb |
+| Edit unchanged / valid dirty | Header Save | Disabled / возврат в тот же Composer | ItemForm guard + `saveItem` | PASS: ID тот же, изменённое количество/комментарий восстановлены при открытии |
+| Edit More `1953:4210 → 1917:3311` | Cancel Changes `1917:3319` | Composer `1782:6074`, старые saved values | OverflowMenu → ItemForm `onClose` | PASS: несохранённая правка отброшена явно, фокус на строку |
+| New More `1953:4227 → 1917:3323` | Cancel Input `1917:3329` | Composer `1810:12510`/исходный состав | OverflowMenu → `onClose` | PASS: позиция не добавляется, фокус на Secondary Add |
+| More `1914:650` / menus `1914:655..676` | Arrow/Enter/Space/Escape/outside | Открытие/выбор/закрытие, корректный фокус | Один Radix OverflowMenu | PASS: Esc→trigger, navigating item→consumer, outside close |
+| Dirty Item / navigation | Breadcrumb/Orders/смена роли | Нет неявной потери данных | dirty breadcrumb disabled; item editor guard; explicit Save/Cancel | PASS safe guard; production leave policy OPEN |
+| Compact Drawer + все пункты disabled | Открытие/Tab/Escape | Dialog focus, Escape закрывает, inert снят | NavigationDrawer fallback focus | PASS; regression сохраняет старый spring/optics |
+| Composer General fields `1169:437/681:203` | Ввод даты/комментария → список → открыть | Те же значения, без footer substitute | `save` → demo `saveDraft` | PASS ephemeral retention; server autosave не моделируется |
+| Desktop breadcrumbs `2330:2346` / compact AppShell | Root Orders → list | Фильтр/scroll сохранены | AppShell host → `backToList/useOrderPreview` | PASS: desktop opener focus, compact drawer trigger focus; touch scroll сохранён |
+| Valid Composer `1953:4170` | Send | Submitted `1994:5084`, readonly | `canSendDemo/onSend/sendDraft` → OrderDetail | PASS: explicit local send, повторный submit недоступен; API/1С OPEN |
+| Client draft → Manager list | Смена demo роли до отправки | Draft отсутствует | Workspace scopes only sent drafts | PASS: private draft не появляется у Manager |
+| Submitted → Manager list/detail `2500:9701` | Смена роли → открыть тот же ID | Те же items/date/comment | Shared store → OrdersList/OrderDetail | PASS data parity; proposed actions/ACL OPEN, agreed date readonly/Create disabled |
+| Completed `1846:2942/2982/3014` | More → Duplicate | Repeat `1846:3046/3092/3129` | Completed thin wrapper → shared Overflow → `duplicateOrder` | PASS: новый Order и Item IDs, источник неизменён, даты/доступ к файлу сброшены |
+| Repeat file unavailable | Open Item → HELP/новый файл → Save | Новый черновик готов к отправке | Тот же ItemForm/Composer | PASS: нет вымышленной связи со старым server file |
+| Lists GL03 / empty `1837:6275/6281/6287` | Фильтр/empty/reset/reload | Реальное членство fixtures, честное empty | Client/Manager controlled filters, Workspace reset | PASS: выбранная роль/фильтр, детерминированный reset; нет persistence |
+| Delete Draft/Item, Duplicate Item, My Layouts | Недоступное действие | Disabled до решения/контракта | Shared menu/Artwork guards | OPEN Owner/PO/API; не включено догадкой |
+
+Тесты: `order-compose`, `order-detail`, `client-orders`, `manager-orders`, `orders-components`, `orders-figma-parity`; screenshots пяти ширин, Chromium/Firefox/WebKit. Полный итог текущего прогона — HANDOFF. Figma/React side-by-side и список исключений — Component Registry; визуальная приёмка Owner/merge заблокированы до закрытия gate.
+
 - `PARTIAL`: есть часть рабочего React-экрана или общего шаблона, но не все сценарии/поля/переходы.
 - `NONE`: отдельного React-экрана нет; даже если в Figma есть макет.
 - `SHARED DONE`: компонент существует в `main`, не означает готовность всех экранов-потребителей.

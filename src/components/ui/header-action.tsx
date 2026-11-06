@@ -7,7 +7,7 @@ import editIcon from '@/assets/orders/edit.svg'
 export type HeaderActionPresentation = 'auto' | 'icon-label' | 'compact'
 
 export interface HeaderActionProps extends Omit<ComponentProps<'button'>, 'children' | 'onClick' | 'type'> {
-  /** FOS V2 1953:4168 / 2173:1425. Only approved plus-glyph variants in this increment. */
+  /** FOS V2 1953:4168 / 2173:1425: one accepted material/motion across action glyphs. */
   action: 'add' | 'create' | 'save' | 'send' | 'edit'
   accessibleName: string
   presentation?: HeaderActionPresentation

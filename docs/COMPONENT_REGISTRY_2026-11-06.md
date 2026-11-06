@@ -6,6 +6,39 @@
 
 ## Source of truth and constraints
 
+## PR #16 — результат компонентного переноса, 06.11
+
+`5a26e4a` — shared masters; `03f55ac` — эталон New Item; оставшиеся композиции используют тот же UI-слой. CODE_DONE не означает OWNER_ACCEPTED. Финальные команды/результаты — в HANDOFF; переходы — в [Screen Map](SCREEN_MAP_M4_2026-11-06.md#fe-s02--проверка-переходов-figma--react).
+
+| Figma мастер → shared React | Потребители / состояния | Проверка |
+| --- | --- | --- |
+| `634:402/418`, `1148:311`, `1169:437`, `680:177`, `681:203` → `ui/fos-controls.tsx` | Input/Quantity/Select/Date/Note; ItemForm, Composer, readonly Detail обеих ролей, lab | Default/focus/error/readonly/disabled; labels/aria-describedby; единые 44px/8px |
+| `1953:4168/2173:1425` → расширенный `HeaderAction` | Add/Save/Send/Edit/Create + disabled, оба кабинета и lab | Одна исходная Glass/motion family; оригинальные plus/pointer/keyboard/reduced-motion regression |
+| `1914:650`, `1914:655..676` → `MoreAction/OverflowMenu` | Item New/Edit, Composer, Completed thin wrapper, list/detail disabled | Один Radix lifecycle: click/Enter/Space, Arrow/Home/End, Esc/outside, focus return; навигационный consumer владеет фокусом |
+| `2302:2138`, `2330:2346` → `PageHeader/Breadcrumbs` | Все list/detail/composer/item headers | D30/40, T26/36, M22/30; 48/68 actions; compact без лишнего back/footer; длинный H1 переносится |
+| `943:263`, `2315:9747` → `PrintingMethodControl` | New/Edit Item; wide/compact × empty/flex/digit | Native radio семантика, единый segmented, touch/arrow keys |
+| `634:445` → `ArtworkSource` | New/Edit Item + lab; empty/local filename/HELP, library disabled | File picker внутри UI, drag/drop/local filename без upload success; error prop; HELP исключает upload/library |
+| `1986:774` → `SectionAddItem` | Inline «Продукция» в New/Repeat | 44px target, 34px circle, canonical plus; tooltip/accessible name; не Primary |
+| `2025:6608` → `OrderItemSummary/OrderItemRow` | Composer New/Repeat, readonly Detail Client/Manager | Одна целиком кликабельная строка, chevron; ID стабилен; Enter/touch/return focus; нет второй Edit кнопки |
+| `685:195` → существующие `OrderCard/OrderRow/OrdersList` | Client/Manager list | Вся строка открывает заказ, thumbnail placeholder, 92/104px; grid не выходит за 320px; empty/count live |
+| New `1791:6130/1837:6385/1791:6185`, Edit `1782:6025/1837:6509/1782:6119` → одна `OrderItemForm` | Поля/Print/Artwork/Note, Header Add или Save + More | Reference D/T/M + 1024/320, dirty/unchanged/invalid, cancel по prototype reactions, без footer substitutes |
+| Composer `1782:6074/1837:6469/1782:6160`, Repeat `1846:3046/3092/3129` → один `OrderComposer` | 0/1/N, inline Add, General Date/Note один раз | Saved item ID, новые clone IDs, source unchanged, даты сброшены, submit→общий store |
+| Shell/Drawer → прежние primitives + `AppShell` host | Оба кабинета, detail→root Orders | Оптика/spring не менялись. Host обрабатывает текущий раздел; Drawer получает fallback focus на dialog, если guard отключил все пункты |
+| `1438:474` Layout Upload Panel | Отдельная библиотека макетов | DEFER: не используется текущим ArtworkSource; нет фальшивых uploading/success состояний |
+
+**Визуальные материалы:** `output/fe-s02-parity/figma/` — исходные Figma PNG; `{project}/react-{screen}-{width}.png` — React; `chromium-1440/compare-{screen}-{1440,768,390}.png` — слева Figma, справа React без масштабирования. Browser projects хранятся отдельно, снимки разных движков не перезаписываются. Генератор `scripts/orders-figma-comparison.cjs`; результаты локальные/ignored, в Git не добавляются. Есть New/Edit, 0/1/2, Repeat, Client/Manager list/detail, More и submitted captures. 1024/320 проверяются как адаптивное продолжение D/T/M, не выдаются за отдельные найденные Figma-фреймы. Данные/количество demo записей могут отличаться от иллюстраций Figma; у Manager border/shadow Figma boards добавляют внешние поля в export, это не padding приложения.
+
+**OPEN / source conflicts и исключения для Owner:**
+
+- Принятые runtime Glass/GL03/Sidebar/Drawer приоритетнее старой optical simulation/Select в Figma; общий материал не переписан. Старые CORE status y102 против Header V3 «subtitle после всей 68px actions row»: применён V3, контент далее течёт без наложения; абсолютные старые y не считаются новым layout contract.
+- Artwork `634:445`: `#737781` на `#fbfcfe` даёт axe 4.36:1. React использует существующий более контрастный `#586d7c`; Owner/DS review цвета OPEN. Не изменяли Figma master. Текст size/formats заменён на «Форматы и размер файла уточняются», пока нет API policy; library disabled. Native date/calendar/select/checkbox rendering отличается между платформами, это **OPEN**, не pixel parity.
+- Screen-wide axe дополнительно подтвердил 4.48:1 у `#737781` на white и 4.33:1 у inactive GL03 text на page surface. Общий semantic secondary text для Orders/новых FOS controls теперь `#586d7c`; GL03 получает токен от host, его material/motion/CSS не менялись. Повторные axe проверки целых Client/Manager list/detail/Composer: 0 violations. DS/Owner exception цвета остаётся OPEN.
+- Delete Draft/Item и Duplicate Item имеют prototype reactions, но бизнес-права не утверждены: disabled. Для Edit More Cancel Changes подтверждён переход `1917:3319 → 1782:6074`, для New Cancel Input `1917:3329 → 1810:12510`; нет самодельного revert footer.
+- Общие поля Order сохраняются в ephemeral store при вводе, без выдуманной footer Save и без server autosave. Item уход защищён до Save/явного Cancel; production unsaved-leave/reload policy остаётся OPEN.
+- Manager detail `2500:9701/9730/9756` помечен PROPOSED: используем разрешённый readonly состав/DS для текущего demo, не утверждаем Manager commands/ACL/1С. Пустые/исторические display fixtures read-only, редактируются новые FE-S02 drafts. Owner screen acceptance, физические устройства и полный screen reader audit OPEN/NOT RUN.
+- Client completed `1846:2942/2982/3014` показывает только requested date; существующая shared view fixture содержит и agreed date, а CURRENT SRS хранит оба Order-level срока. Сохранён read-only agreed date при наличии данных; требуется Owner/PO решение о клиентском отображении. Это OPEN composition difference, не объявлено VISUAL_PASS.
+- Общая chrome AppShell приведена к DS `637:180` и web header `1952:727`: brand20/28 desktop, company context в Client/sidebar, одна brand-строка compact. Оптика/пружина Sidebar/Drawer не менялись; старые ручные CORE sidebar offsets отличаются от более поздней общей DS и принятых runtime primitives.
+
 ## PR #16 — blocking Figma parity audit (Owner 06.11, before screen refactor)
 
 Head `99303fe`: A/B/C TEST_PASS, **VISUAL_PASS/OWNER_ACCEPTED не присвоены**. Источники адресно перечитаны: DS `634:60`, Technical `1688:532`, Client `1782:6000`, Manager `2495:8870`, masters ниже. Задача #15 обновлена Owner: сначала общий UI и отдельный rendering, затем эталон New Item, затем остальные композиции; один PR #16, без merge.
@@ -23,7 +56,7 @@ Head `99303fe`: A/B/C TEST_PASS, **VISUAL_PASS/OWNER_ACCEPTED не присво�
 | Item Form `2025:6779/6822/6865`, New `1791:6130/1837:6385/1791:6185` | один ItemForm, неверная grid/footer/no note | RECOMPOSE из shared controls; Header Add/Save+More; убрать footer controls | reference D/T/M before spread |
 | Composer `1782:6074/1837:6469/1782:6160`, Repeat `1846:3046` | один Composer New/Repeat, неверные header/row/actions | RECOMPOSE из тех же primitives; compact Secondary Add; сохранить IDs/flow | A/B/C + full scenario matrix |
 
-OPEN exceptions до подтверждения: Delete Draft/Item и duplicate-item backend permissions, real library/upload, required date/1С mapping, unsaved-leave policy. `1914:668` разрешает локальный revert; `1914:673` явно содержит Cancel Input. Layout/SRS не дополняются догадкой. Устаревшее описание Draft Compose говорит Primary Add, но более поздний `1953:4168`/CORE — Send; используем более поздний Send. GL03 на всех ширинах и принятые Sidebar/Drawer/Glass сохраняются по Owner override. Остальные Companies/Support/library masters NEXT/OUT OF CURRENT SCOPE.
+OPEN exceptions до подтверждения: Delete Draft/Item и duplicate-item backend permissions, real library/upload, required date/1С mapping, unsaved-leave policy. Master `1914:668` содержит Cancel Changes, но фактический prototype `1917:3319` возвращает в composer без dirty правок; `1914:673` содержит Cancel Input. Layout/SRS не дополняются догадкой. Устаревшее описание Draft Compose говорит Primary Add, но более поздний `1953:4168`/CORE — Send; используем более поздний Send. GL03 на всех ширинах и принятые Sidebar/Drawer/Glass сохраняются по Owner override. Остальные Companies/Support/library masters NEXT/OUT OF CURRENT SCOPE.
 
 **FE-S02 / #15:** New и Duplicate используют один `OrderComposer`; Add/Edit одной позиции — один `OrderItemForm`. Существующие Glass, AppShell/NavigationDrawer и общий readonly OrderDetail сохранены. Роли здесь переключаются только в явной ephemeral demo workspace, без auth/storage/API. FE-S01 PR #14 уже merged (`884e78f`); описание ниже — исторический component checkpoint до merge.
 

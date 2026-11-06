@@ -6,6 +6,7 @@ import { MANAGER_ORDERS_DEMO } from '@/screens/manager-orders/fixtures'
 import { canSendDemo, draftView, type DemoDraft } from './order-compose-model'
 import { COMPLETED_DEMO_ITEMS, COMPLETED_DEMO_ORDER } from './order-compose-fixtures'
 import type { OrderStatusFilterId } from '@/components/orders/order-model'
+import { FOSAction } from '@/components/ui/fos-controls'
 
 export interface OrderDemoController {
   drafts: readonly DemoDraft[]
@@ -54,9 +55,9 @@ export function OrderDemoWorkspace({ role, empty = false }: { role: 'client' | '
   return <div className="fos-demo-workspace">
     {new URLSearchParams(window.location.search).get('demoTools') === '1' && <aside className="fos-demo-workspace__controls" aria-label="Управление демонстрацией">
       <p>Демо двух ролей · данные до перезагрузки</p>
-      <div><button className="fos-order-action" type="button" disabled={editorOpen} aria-pressed={currentRole === 'client'} onClick={() => setCurrentRole('client')}>Демо: клиент</button>
-        <button className="fos-order-action" type="button" disabled={editorOpen} aria-pressed={currentRole === 'manager'} onClick={() => setCurrentRole('manager')}>Демо: менеджер</button>
-        <button className="fos-order-action" type="button" disabled={editorOpen} onClick={() => { setDrafts([]); nextOrder.current = 100; setClientFilter('all'); setManagerFilter('all'); setVersion(current => current + 1) }}>Сбросить демо</button></div>
+      <div><FOSAction disabled={editorOpen} aria-pressed={currentRole === 'client'} onClick={() => setCurrentRole('client')}>Демо: клиент</FOSAction>
+        <FOSAction disabled={editorOpen} aria-pressed={currentRole === 'manager'} onClick={() => setCurrentRole('manager')}>Демо: менеджер</FOSAction>
+        <FOSAction disabled={editorOpen} onClick={() => { setDrafts([]); nextOrder.current = 100; setClientFilter('all'); setManagerFilter('all'); setVersion(current => current + 1) }}>Сбросить демо</FOSAction></div>
       {editorOpen && <p>Для смены роли или сброса сохраните изменения и вернитесь к списку.</p>}
     </aside>}
     {currentRole === 'client'
