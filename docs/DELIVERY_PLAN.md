@@ -1,4 +1,4 @@
-# CURRENT / 06.11.2026 — единый frontend-план и рабочие статусы
+# Flexomir OS — план frontend и Liquid Glass
 
 **Единственный исполняемый план фронтенда:** [09_Frontend Development Plan CURRENT в Google Drive](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Подробные этапы, критерии приёмки, ответственность и ссылки на доказательства находятся там. Исторический план от 04.11 ниже сохранён только для отслеживания решений; его `FE-08 TODO` больше не актуален.
 
@@ -6,26 +6,15 @@
 
 **Figma:** актуальная дизайн-система и технические мастера; не переносим весь каталог адаптивных/сценарных Figma-макетов как отдельные React-проекты или страницы. Делаем общие React-компоненты и из них собираем роли и сценарии.
 
-| Этап | Проверенный результат на 06.11 | Статус / следующий gate |
-| --- | --- | --- |
-| M0 React baseline / Git / QA | main React/Vite/TypeScript и CI | DONE |
-| M1 Shared Glass & UI | GL-03 Owner accepted + merged; SidebarNav, HeaderAction, GlassSelect в main | GL-03 DONE; прочие визуальные гейты по контрактам |
-| M2 Manager Orders пилот | [PR #9](https://github.com/SigmeD/flexomir_os/pull/9): OrderCard, OrdersList, ManagerOrdersScreen; 80/80 Chromium Playwright + build PASS | CODE_DONE / CI_PASS; OWNER_SCREEN_OPEN / DRAFT / NOT MERGED; после PR #5 конфликт с main в src/App.tsx |
-| M3 AppShell / Mobile+Tablet Drawer | [PR #5](https://github.com/SigmeD/flexomir_os/pull/5) MERGED 7372685, компонент в main | Навигационный компонент DONE; подключение в FE-08 и экранный QA OPEN |
-| M4 Manager Orders module | общие фильтры, поиск, Company, список/состояния, детали/позиции/макеты на fixtures | PLANNED после M2/M3; real new/all API semantics отдельно |
-| M5 Client Orders | переиспользуемые карточки/фильтры, клиентские действия и роли | PLANNED после стабилизации общих компонентов |
-| M6 Companies | список, карточка, выбор/детали, связанные заказы | PLANNED; создание новой компании не входит автоматически в MVP |
-| M7 Support | личные обращения Client/Manager: тема, описание, история, ответ команды | PLANNED; чаты, удаление и дополнительные ответы — UX PROPOSED/SCOPE OPEN |
-| M8 API consumption | только frontend adapters/hooks/types/UI request states по контрактам Алексея | BLOCKED_EXTERNAL для реальных данных; UI на моках не блокируется |
-| M9 Финальная регрессия | D1440/L1024/T768/M390/M320, a11y, cross-browser, Owner & release gates | PLANNED |
+**Локальный факт 06.11:** PR #9 слит в main (`0fc6536`) после пяти успешных CI-проверок; AppShell/NavigationDrawer интегрирован в Manager Orders. Визуальная приёмка экрана остаётся OPEN. Сейчас выполняется только слияние PR #9/#10. Первый результат следующего этапа — единая карта Client + Manager в существующем Drive-плане; новые экраны в этой задаче не разрабатываются.
 
-**СЕЙЧАС:** синхронизация PR #9 с main 7372685 (конфликт App.tsx) → интеграция принятого NavigationDrawer в Manager Orders → M2 визуальный/экранный QA → M4 составной Manager Orders; параллельно можно готовить контрактные компоненты M4 без API и без дублирования Glass. Календарные сроки/бюджет не утверждены, не придумывать даты.
+## Предыдущие локальные сводки (история; актуальные этапы — в Drive)
 
----
+### Исторический срез до слияния PR #9 — 06.11.2026
 
-## Архивный план 04.11 (исторический срез, не исполнять без сверки с CURRENT выше)
+Основной рабочий план: [Drive CURRENT M0–M9](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), перечитан 06.11. PR #5 NavigationDrawer находится в main (`7372685`). В PR #9 конфликт с этой базой устранён, Drawer подключён к Manager Orders через общий AppShell. Техническая проверка: [M3 QA](FE08_MANAGER_ORDERS_M3_QA_2026-11-06.md). Следующий gate — визуальная приёмка экрана владельцем; на момент этого среза PR #9 оставался Draft; последующее слияние указано выше. M4, маршруты других разделов и API/1С — отдельные этапы.
 
-# Flexomir OS — план frontend и Liquid Glass
+Ниже сохранён исходный срез 04.11; его TODO и статусы не переопределяют текущий инкремент.
 
 План основан на [Frontend Startup CURRENT](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit) и [Glass Visual Contract](https://docs.google.com/document/d/1VgaR8sfpRWeYVhDlN9jGkehLnXbCTiNQSBSEZCVWmGI/edit). Этот локальный список — рабочий срез, не отдельное продуктовое утверждение.
 

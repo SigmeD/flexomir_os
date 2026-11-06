@@ -1,0 +1,53 @@
+/* Layout boundary: desktop SidebarNav, compact header and the existing Drawer portal. */
+.fos-app-shell {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+}
+.fos-app-shell__aside {
+  flex: 0 0 240px;
+  width: 240px;
+  padding: 36px 16px;
+  background: #f0f2f3;
+  border-right: 1px solid #e1e6eb;
+}
+.fos-app-shell__brand {
+  margin: 0 16px;
+  color: #2c3a45;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .025em;
+}
+.fos-app-shell__role {
+  margin: 10px 16px 32px;
+  color: #82909a;
+  font-size: 12px;
+}
+.fos-app-shell__content { flex: 1; min-width: 0; }
+.fos-app-shell__mobile-header { display: none; }
+@media (max-width: 1023px) {
+  .fos-app-shell__aside { display: none; }
+  .fos-app-shell__mobile-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: 72px;
+    padding: 0 20px;
+    border-bottom: 1px solid #e1e6eb;
+    background: #f6f7f8;
+  }
+  .fos-app-shell__identity {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 3px;
+    color: #506577;
+    font-size: 12px;
+  }
+  .fos-app-shell__identity strong { color: #2c3a45; font-weight: 800; }
+}

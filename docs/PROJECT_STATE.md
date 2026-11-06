@@ -1,12 +1,14 @@
-# CURRENT STATUS / 06.11.2026 — Frontend only
+# Flexomir OS — текущее состояние проекта
 
 **Рабочий план:** [09_Frontend Development Plan CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Владелец 06.11 ограничил нашу работу React/frontend: компоненты, экраны, интерактивность, адаптивность, тесты и UI-интеграция с готовым API. Backend, создание API, server ACL и обмен с 1С — за Алексеем; не ставить эти работы в наш frontend-бэклог. Figma — DS + источник свойств компонентов, НЕ команда реализовать ~230 отдельных кадров.
 
-**Факты GitHub:** `main` = `7372685e9391f60279aad90d707aa9cc00d55138`, GL-03 accepted/merged; SidebarNav/HeaderAction/GlassSelect уже существуют. [FE-08 PR #9](https://github.com/SigmeD/flexomir_os/pull/9) — код первого Manager Orders и переиспользуемого OrderCard реализован, CI build + 80/80 Chromium PASS [доказательство](https://github.com/SigmeD/flexomir_os/actions/runs/42186230876), НО Draft/Owner review OPEN, НЕ в main и НЕ релиз. [Drawer PR #5](https://github.com/SigmeD/flexomir_os/pull/5) — MERGED 7372685 в main, компонентный CI PASS; подключение к FE-08 ещё не выполнено. PR #9 сейчас mergeable=false/dirty из-за src/App.tsx; следующим шагом устранить конфликт, сохранить обе точки входа и повторить регрессию. Реальный frontend router, Manager New/All behavior, API/1C data, Company/Support/Client pages ещё не готовы. Прежние заметки ниже — срез 04.11 и не переопределяют этот статус.
+## Последнее — 06.11.2026: PR #9 слит в main
 
----
-
-# Flexomir OS — текущее состояние проекта
+- PR #9 слит в `origin/main` (`0fc653667ac4acba675fe702920b476a2fda5ac8`) после пяти успешных CI-проверок на `aaaa4304`. PR #5 уже в main (`7372685`); оба preview-маршрута сохранены.
+- Общий `AppShell` подключает существующий Drawer к Manager Orders ниже 1024px, SidebarNav — от 1024px. Glass primitives, API/1С и бизнес-контракты не изменены; отсутствующие разделы остаются disabled.
+- Свежая локальная проверка: build PASS, combined Chromium **148/148**, финальный экранный Chromium **26/26**, Firefox/WebKit **26/26**, пять размеров и открытое меню T/M. [Протокол, команды, снимки и ограничения](FE08_MANAGER_ORDERS_M3_QA_2026-11-06.md).
+- Статус: `CODE_DONE / QA_VERIFIED / MERGED / OWNER_SCREEN_OPEN`. Слияние разрешено прямым поручением владельца; визуальная приёмка и релиз этим не объявляются. Сейчас завершается только слияние PR #9/#10; следующий этап — единая карта экранов Client + Manager в существующем Drive-плане. Название «Клиенты / Компании» остаётся Owner/PO OPEN.
+- Существующие локальные аудитные правки и удаления скриншотов сохранены отдельно от коммитов задачи. Ниже — прежние снимки; актуальный этап задаёт этот блок и [Drive CURRENT M0–M9](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
 
 **Локальный снимок:** 04.11.2026. **Источник свежих изменений:** [Frontend Startup CURRENT](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit). На новой сессии проверить изменения в Drive и фактический Git.
 

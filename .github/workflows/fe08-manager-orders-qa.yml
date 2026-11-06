@@ -1,0 +1,41 @@
+name: FE08 Manager Orders UI QA
+
+on:
+  push:
+    branches:
+      - feat/fe08-manager-orders-screen-gl03
+  pull_request:
+    paths:
+      - 'src/screens/manager-orders/**'
+      - 'src/components/orders/**'
+      - 'src/components/layout/**'
+      - 'src/components/ui/navigation-drawer*'
+      - 'src/App.tsx'
+      - 'tests/manager-orders.spec.ts'
+      - '.github/workflows/fe08-manager-orders-qa.yml'
+  workflow_dispatch:
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npx playwright test tests/manager-orders.spec.ts tests/navigation-drawer.spec.ts tests/glass-pill-tabs-react.spec.ts tests/gl03-compact-pill-tabs.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts --workers=2
+      - name: Save FE08 visual review captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fe08-manager-orders-screen-captures
+          path: |
+            test-results/**/fe08-manager-orders-*.png
+            test-results/**/error-context.md
+          if-no-files-found: warn
+          retention-days: 7

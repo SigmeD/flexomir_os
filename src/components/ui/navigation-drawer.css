@@ -1,0 +1,168 @@
+/*
+ * CURRENT Figma FOS V2 / Navigation Drawer:
+ * Client open overlay Tablet 1962:3834, Mobile 1962:3854.
+ * Top = 72px header. Right inset = 20px.
+ * Tablet 320x229, Mobile 296x229, radius20, padding16.
+ * Scrim #000 16%. Material = translucent neutral-white 72%, blur20,
+ * not a blue-tinted duplicate glass layer. One accepted SidebarNav lens inside.
+ */
+.fos-nav-drawer__trigger {
+  display: inline-grid;
+  position: relative;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #1f2228;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.fos-nav-drawer__trigger:focus-visible {
+  outline: 2px solid #587d93;
+  outline-offset: 2px;
+}
+.fos-nav-drawer__hamburger {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+.fos-nav-drawer__hamburger i {
+  position: absolute;
+  display: block;
+  left: 2px;
+  width: 16px;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: .75px;
+}
+.fos-nav-drawer__hamburger i:nth-child(1) { top: 5px; }
+.fos-nav-drawer__hamburger i:nth-child(2) { top: 9.25px; }
+.fos-nav-drawer__hamburger i:nth-child(3) { top: 13.5px; }
+
+.fos-nav-drawer__layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: auto;
+}
+.fos-nav-drawer__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.16);
+  cursor: default;
+  animation: fos-drawer-scrim-in 190ms ease-out both;
+}
+.fos-nav-drawer__panel {
+  position: fixed;
+  top: 72px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(296px, calc(100vw - 40px));
+  height: 229px;
+  max-height: calc(100dvh - 88px);
+  overflow-x: clip;
+  overflow-y: auto;
+  padding: 16px;
+  /* Figma strokes do not consume layout width: preserve inner nav 264/288px. */
+  border: 0;
+  outline: 1px solid rgba(222,225,229,.66);
+  border-radius: 20px;
+  background: rgba(255,255,255,.72);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 8px 24px rgba(38,41,45,.09),
+    inset 0 1px 2px rgba(255,255,255,.65);
+  font-family: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
+  animation: fos-drawer-panel-in 220ms cubic-bezier(.2,.85,.2,1) both;
+  isolation: isolate;
+}
+/*
+ * CSS :focus-visible can remain active after programmatic focusing when the
+ * last input was keyboard (e.g. Escape in the previous menu). The current
+ * opening modality controls the visual ring. Do not hide keyboard focus.
+ */
+.fos-nav-drawer__panel[data-focus-mode="pointer"] .fos-sidebar-nav__item:focus-visible {
+  outline: none;
+}
+.fos-nav-drawer__items {
+  flex: 0 0 152px;
+  min-height: 152px;
+  width: 100%;
+  overflow: hidden;
+}
+.fos-nav-drawer__items .fos-sidebar-nav {
+  width: 100%;
+  max-width: 100%;
+}
+.fos-nav-drawer__separator {
+  flex: 0 0 1px;
+  width: 100%;
+  background: #e6e9ef;
+}
+.fos-nav-drawer__footer {
+  flex: 0 0 18px;
+  width: 100%;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #4c5563;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fos-nav-drawer__layer[data-state="closing"] {
+  pointer-events: none;
+}
+.fos-nav-drawer__layer[data-state="closing"] .fos-nav-drawer__scrim {
+  animation: fos-drawer-scrim-out 180ms ease-in both;
+}
+.fos-nav-drawer__layer[data-state="closing"] .fos-nav-drawer__panel {
+  animation: fos-drawer-panel-out 180ms ease-in both;
+}
+@media (min-width: 600px) and (max-width: 1023px) {
+  .fos-nav-drawer__panel { width: 320px; }
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .fos-nav-drawer__panel { background: rgba(255,255,255,.97); }
+}
+@keyframes fos-drawer-scrim-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fos-drawer-scrim-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes fos-drawer-panel-in {
+  from { opacity: 0; transform: translate3d(0,-7px,0) scale(.985); }
+  to { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+}
+@keyframes fos-drawer-panel-out {
+  from { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+  to { opacity: 0; transform: translate3d(0,-5px,0) scale(.992); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fos-nav-drawer__scrim,.fos-nav-drawer__panel {
+    animation-duration: 0.01ms !important;
+    transition: none !important;
+  }
+}
+@media (forced-colors: active) {
+  .fos-nav-drawer__panel {
+    background: Canvas;
+    color: CanvasText;
+    outline: 2px solid ButtonText;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  .fos-nav-drawer__scrim { background: rgba(0,0,0,.6); }
+  .fos-nav-drawer__trigger { color: ButtonText; }
+  .fos-nav-drawer__trigger:focus-visible { outline: 3px solid Highlight; }
+  .fos-nav-drawer__separator { background: ButtonText; }
+  .fos-nav-drawer__footer { color: CanvasText; }
+}
