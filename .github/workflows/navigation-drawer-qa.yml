@@ -6,6 +6,8 @@ on:
       - 'src/components/ui/navigation-drawer.*'
       - 'src/NavigationDrawerLab.*'
       - 'src/App.tsx'
+      - 'src/components/ui/glass-pill-tabs.*'
+      - 'tests/glass-pill-tabs-react.spec.ts'
       - 'tests/navigation-drawer.spec.ts'
       - '.github/workflows/navigation-drawer-qa.yml'
   workflow_dispatch:
@@ -27,7 +29,7 @@ jobs:
       - name: Chromium
         run: npx playwright install --with-deps chromium
       - name: NavigationDrawer and shared-component regression
-        run: npx playwright test tests/navigation-drawer.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts --project chromium-1440 --project chromium-390
+        run: npx playwright test tests/navigation-drawer.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts tests/glass-pill-tabs-react.spec.ts --project chromium-1440 --project chromium-390
       - name: QA screenshot artifacts
         if: success()
         uses: actions/upload-artifact@v4
