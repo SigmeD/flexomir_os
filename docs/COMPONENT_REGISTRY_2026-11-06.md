@@ -31,7 +31,8 @@
 | OrdersList / OrderRow | `src/screens/manager-orders/OrdersList.tsx` | Branch implementation; list/empty, adapts display labels |
 | ManagerOrdersScreen | `src/screens/manager-orders/ManagerOrdersScreen.tsx` | Branch implementation, isolated `?view=manager-orders` |
 | Filter UI (GL-03) | Existing shared `GlassPillTabs` | Reuse unchanged |
-| UI filter fixture | `src/screens/manager-orders/fixtures.ts` | DEMO only, no 1C mapping |
+| UI data model | `src/screens/manager-orders/model.ts` | FE presentation-only `OrderListItem`, `OrderStatusFilterId`; **not** API or 1C schema |
+| UI filter fixture | `src/screens/manager-orders/fixtures.ts` | DEMO only; passed into screen via `orders` prop, no 1C mapping |
 | Real manager New/All queue | — | OPEN: definition and API contract |
 | Order search / company filter / sort | — | To compose from reusable Form components; semantics and data source need validation |
 | Order detail routing / creation command | — | OPEN: route, ACL, backend, no fake navigation |
@@ -64,6 +65,13 @@
 3. Component QA: keyboard/touch, accessible names, disabled, empty/error/loading, responsive D1440/L1024/T768/M390/M320, reduced motion, consistency with shared tokens and no regression.
 4. Integrate backend separately after matching data shape, role permissions, status filter membership and 1C mapping; exclude source-system enums from shared visual primitives.
 5. Roll out accepted card/filter composition to Client/Companies/Support where real semantics fit; do not reuse order semantics for tickets.
+
+## FE-08 incremental QA / 06.11.2026
+
+- M2 slice now receives `orders: readonly OrderListItem[]` as a prop; only preview `App.tsx` imports demo fixtures. No API client, ACL, 1C exchange, business mapping or server behavior added.
+- New screen Playwright captures D1440/L1024/T768/M390/M320 are emitted as CI artifacts for **human visual review**, not automatic pixel-perfect approval. CI and owner visual acceptance are separate gates.
+- Tablet/Mobile sidebar stays intentionally hidden until standalone NavigationDrawer PR #5 is reviewed. Its absence is a known M2/M3 integration gap, not an accepted final mobile design.
+- Manager sidebar label `Клиенты` vs UX section `Компании` is an owner/PO terminology mismatch; no speculative rename.
 
 ## Explicitly OPEN
 
