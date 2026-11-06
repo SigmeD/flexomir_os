@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { GlassPillTabs } from '@/components/ui/glass-pill-tabs'
 import { HeaderAction } from '@/components/ui/header-action'
-import { SidebarNav, type SidebarNavItem } from '@/components/ui/sidebar-nav'
+import type { SidebarNavItem } from '@/components/ui/sidebar-nav'
+import { AppShell } from '@/components/layout/AppShell'
 import { OrdersList } from './OrdersList'
 import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from './model'
 import './manager-orders.css'
@@ -37,41 +38,41 @@ export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
 
   return (
     <div className="manager-orders-screen" data-testid="manager-orders-screen">
-      <aside className="manager-orders-screen__aside" aria-label="Навигация">
-        <div className="manager-orders-screen__brand">FLEXOMIR OS</div>
-        <p className="manager-orders-screen__role">Менеджер</p>
-        <SidebarNav
-          items={managerNav}
-          activeId="orders"
-          onSelect={() => {}}
-          ariaLabel="Навигация менеджера"
-        />
-      </aside>
-      <main className="manager-orders-screen__main">
-        <div className="manager-orders-screen__mobile-brand">FLEXOMIR OS / Менеджер</div>
-        <header className="manager-orders-screen__header">
-          <div>
-            <p className="manager-orders-screen__eyebrow">Заказы</p>
-            <h1>Заказы</h1>
-          </div>
-          <HeaderAction action="add" accessibleName="Добавить заказ" disabled />
-        </header>
+      <AppShell
+        items={managerNav}
+        activeId="orders"
+        onSelect={() => {}}
+        roleLabel="Менеджер"
+        navigationLabel="Навигация менеджера"
+        menuLabel="Меню менеджера"
+        triggerLabel="Открыть меню менеджера"
+        footerText="Менеджер"
+      >
+        <main className="manager-orders-screen__main">
+          <header className="manager-orders-screen__header">
+            <div>
+              <p className="manager-orders-screen__eyebrow">Заказы</p>
+              <h1>Заказы</h1>
+            </div>
+            <HeaderAction action="add" accessibleName="Добавить заказ" disabled />
+          </header>
 
-        <p className="manager-orders-screen__disclaimer">
-          Демонстрационные данные. Интеграция с 1С не подключена.
-        </p>
+          <p className="manager-orders-screen__disclaimer">
+            Демонстрационные данные. Интеграция с 1С не подключена.
+          </p>
 
-        <section className="manager-orders-screen__filters" aria-label="Фильтры заказов">
-          <GlassPillTabs
-            items={ORDER_STATUS_FILTERS}
-            value={filterId}
-            onValueChange={onSelectFilter}
-            ariaLabel="Фильтр заказов по статусу"
-          />
-        </section>
+          <section className="manager-orders-screen__filters" aria-label="Фильтры заказов">
+            <GlassPillTabs
+              items={ORDER_STATUS_FILTERS}
+              value={filterId}
+              onValueChange={onSelectFilter}
+              ariaLabel="Фильтр заказов по статусу"
+            />
+          </section>
 
-        <OrdersList orders={visibleOrders} total={orders.length} />
-      </main>
+          <OrdersList orders={visibleOrders} total={orders.length} />
+        </main>
+      </AppShell>
     </div>
   )
 }

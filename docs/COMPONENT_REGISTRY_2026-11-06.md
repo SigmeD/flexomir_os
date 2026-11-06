@@ -7,7 +7,7 @@
 ## Source of truth and constraints
 
 - CURRENT Drive UX/UI index, Frontend Startup and Requirements SRS v0.5 (modified 04.11).
-- Repository `SigmeD/flexomir_os`, `main` reference SHA `aa1741bcd029e1d1dd1edea6544563da8f5a1730`.
+- Repository `SigmeD/flexomir_os`, merged Drawer baseline `origin/main` SHA `7372685e9391f60279aad90d707aa9cc00d55138`.
 - Approved shared GlassPillTabs uses exactly one existing `FosGlassMaterial`, 38px lens / 44px target; 7px top + 12px bottom scrollport shadow clearance. DO NOT fork its material, spring, or tokens.
 - Manager/Client views share visual components but have distinct permissions, data scopes and workflows. Backend integration is Alexey's domain. Do not invent status mapping, 1C contract, ACL, or route targets.
 - This registry is an implementation planning index, NOT new product Scope approval.
@@ -21,7 +21,8 @@
 | SidebarNav | `src/components/ui/sidebar-nav.tsx` | Existing shared component / screen QA open | Desktop Client/Manager navigation |
 | HeaderAction | `src/components/ui/header-action.tsx` | Existing shared component / screen QA open | Client/Manager page-header actions |
 | GlassSelect | `src/components/ui/glass-select.tsx` | Exists; used in legacy demo and future form/select needs | Form and select controls (not Orders status-pill replacement) |
-| NavigationDrawer (GL-02B) | PR #5 DRAFT | NOT in main; owner visual QA/open | Tablet/Mobile Client/Manager shell |
+| NavigationDrawer (GL-02B) | `src/components/ui/navigation-drawer.tsx` | PR #5 merged into main; reused unchanged | Tablet/Mobile shell, labs for Client/Manager |
+| AppShell | `src/components/layout/AppShell.tsx` | PR #9 integration; screen visual acceptance open | Manager Orders; role/items supplied by consumer |
 
 ## Manager Orders first vertical slice (FE-08)
 
@@ -70,13 +71,13 @@
 
 - M2 slice now receives `orders: readonly OrderListItem[]` as a prop; only preview `App.tsx` imports demo fixtures. No API client, ACL, 1C exchange, business mapping or server behavior added.
 - New screen Playwright captures D1440/L1024/T768/M390/M320 are emitted as CI artifacts for **human visual review**, not automatic pixel-perfect approval. CI and owner visual acceptance are separate gates.
-- Tablet/Mobile sidebar stays intentionally hidden until standalone NavigationDrawer PR #5 is reviewed. Its absence is a known M2/M3 integration gap, not an accepted final mobile design.
+- M3 supersedes the M2 navigation gap: PR #5 is merged; PR #9 composes the same Manager items into desktop SidebarNav (>=1024) and NavigationDrawer (<1024) through AppShell. Only the current Orders destination is enabled; unimplemented pages remain disabled.
 - Manager sidebar label `Клиенты` vs UX section `Компании` is an owner/PO terminology mismatch; no speculative rename.
 
 ## Explicitly OPEN
 
 - Browser screenshot parity and independent product UX approval for the FE-08 screen.
 - Real API/1C status mapping, especially user-facing `В работе`; the label is Owner-approved and needs NO additional UX approval.
-- NavigationDrawer PR #5 integration; it is outside this isolated slice.
+- Owner visual acceptance of the integrated shell/Orders screen; see [fresh M3 QA](FE08_MANAGER_ORDERS_M3_QA_2026-11-06.md).
 - Real on-page query/search/Company filter, sorting, navigation, security ACL, error/loading; not faked in the demo.
 - Public GitHub repository means all committed fixtures and examples must be synthetic.

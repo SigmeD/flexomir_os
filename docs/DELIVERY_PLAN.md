@@ -1,5 +1,11 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## Текущий инкремент — 06.11.2026
+
+Основной рабочий план: [Drive CURRENT M0–M9](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), перечитан 06.11. PR #5 NavigationDrawer находится в main (`7372685`). В PR #9 конфликт с этой базой устранён, Drawer подключён к Manager Orders через общий AppShell. Техническая проверка: [M3 QA](FE08_MANAGER_ORDERS_M3_QA_2026-11-06.md). Следующий gate — визуальная приёмка экрана владельцем; PR #9 остаётся Draft. M4, маршруты других разделов и API/1С — отдельные этапы.
+
+Ниже сохранён исходный срез 04.11; его TODO и статусы не переопределяют текущий инкремент.
+
 План основан на [Frontend Startup CURRENT](https://docs.google.com/document/d/18C7-AiVGNWirt7xaTPbW734ZEvBDM2MwFPYB690mDwk/edit) и [Glass Visual Contract](https://docs.google.com/document/d/1VgaR8sfpRWeYVhDlN9jGkehLnXbCTiNQSBSEZCVWmGI/edit). Этот локальный список — рабочий срез, не отдельное продуктовое утверждение.
 
 Импортирован из пакета владельца 04.11.2026; внешние источники в этой задаче не перечитывались. Локальные этапы ниже исправлены по фактическому Git и сборке. Новая задача выполняется в основной папке; worktree и параллельные агенты требуют отдельного основания и согласия по `AGENTS.md`.

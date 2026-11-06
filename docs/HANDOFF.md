@@ -1,5 +1,13 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## Передача — 06.11.2026: PR #9 после интеграции Drawer
+
+- Рабочая папка прежняя, `feat/fe08-manager-orders-screen-gl03`. PR #5 уже слит в main (`7372685`); эта база влита в PR #9 коммитом `8f5eeb7`, конфликт App разрешён с сохранением всех лабораторий и Manager Orders.
+- `src/components/layout/AppShell.tsx` объединяет desktop SidebarNav и готовый Drawer для T/M. При resize на desktop Drawer размонтируется и освобождает modal isolation. Фильтр/данные экрана сохраняются. Другие разделы disabled; маршруты не выдуманы.
+- Build и дополнительный TypeScript check PASS; общий Chromium **148/148**, повторный экранный Chromium **26/26**, Firefox/WebKit **26/26**. [Свежий M3 QA](FE08_MANAGER_ORDERS_M3_QA_2026-11-06.md) — команды, восемь снимков для Owner и ограничения.
+- Дальше: Owner visual review PR #9, затем отдельное решение о merge. PR остаётся Draft; название «Клиенты / Компании», M4 frontend-модуль и API/1С остаются отдельными вопросами. Drive M0–M9 перечитан; старые статусы документов ниже исторические.
+- Исходные незакоммиченные аудиты `docs/audits/`, их изменения PROJECT_STATE/HANDOFF и удаления `Screenshot_1.png`/`Screenshot_2.png` сохранены вне task commits. Не применять и не удалять существующие stash. Worktree и параллельных агентов не создавали.
+
 > Обновлено 04.11.2026. Перед работой сверить Git и CURRENT-источники.
 
 ## Последняя задача — объединение всех веток в main

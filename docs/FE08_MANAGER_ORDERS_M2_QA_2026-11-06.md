@@ -1,5 +1,7 @@
 # FE-08 / Manager Orders — M2 technical QA report
 
+**Historical M2 snapshot:** the mobile-navigation gap and PR #5 merge status below are superseded by [M3 integration QA](FE08_MANAGER_ORDERS_M3_QA_2026-11-06.md). The earlier test results remain evidence for their original revision.
+
 **Date:** 2026-11-06  
 **Scope:** React frontend only; product screen and visual QA are separate gates.  
 **Execution plan:** [Drive 09 Frontend CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).  

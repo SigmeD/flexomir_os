@@ -10,25 +10,6 @@
   color: #263542;
   font-family: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
 }
-.manager-orders-screen__aside {
-  flex: 0 0 240px;
-  width: 240px;
-  padding: 36px 16px;
-  background: #f0f2f3;
-  border-right: 1px solid #e1e6eb;
-}
-.manager-orders-screen__brand {
-  margin: 0 16px;
-  color: #2c3a45;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: .025em;
-}
-.manager-orders-screen__role {
-  margin: 10px 16px 32px;
-  color: #82909a;
-  font-size: 12px;
-}
 .manager-orders-screen__main {
   min-width: 0;
   width: 100%;
@@ -51,7 +32,6 @@
   font: 750 clamp(30px, 3vw, 42px)/1.2 Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -.04em;
 }
-.manager-orders-screen__mobile-brand { display: none; }
 .manager-orders-screen__disclaimer {
   margin: 22px 0 20px;
   color: #7b8995;
@@ -98,20 +78,11 @@
   font-size: 13px;
   color: #81909d;
 }
-@media(max-width:900px) {
-  .manager-orders-screen__aside { display: none; }
+@media(max-width:1023px) {
   .manager-orders-screen__main { padding: 24px 24px 48px; }
-  .manager-orders-screen__mobile-brand {
-    display: block;
-    font-size: 12px;
-    font-weight: 720;
-    color: #506577;
-    margin-bottom: 28px;
-  }
 }
 @media(max-width:600px) {
   .manager-orders-screen__main { padding: 20px 14px 36px; }
-  .manager-orders-screen__mobile-brand { margin-bottom: 24px; }
   .manager-orders-screen__eyebrow { display: none; }
   .manager-orders-screen__header { align-items: center; }
   .manager-orders-screen__header h1 { font-size: 30px; }
