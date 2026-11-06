@@ -3,6 +3,7 @@ import { GlassMaterialLab } from './GlassMaterialLab'
 import { HeaderActionLab } from './HeaderActionLab'
 import { SidebarNavLab } from './SidebarNavLab'
 import { GlassPillTabsLab } from './GlassPillTabsLab'
+import { NavigationDrawerLab } from './NavigationDrawerLab'
 import {
   GlassSelect,
   GlassSelectTrigger,
@@ -83,6 +84,7 @@ export function App() {
   const view = new URLSearchParams(window.location.search).get('view')
   if (view === 'header-action') return <HeaderActionLab />
   if (view === 'sidebar-nav') return <SidebarNavLab />
+  if (view === 'navigation-drawer') return <NavigationDrawerLab />
   if (view === 'glass-pill-tabs') return <GlassPillTabsLab />
   return view === 'material'
     ? <GlassMaterialLab orders={orders} statuses={statuses} />
