@@ -6,6 +6,16 @@
 
 ## Source of truth and constraints
 
+**FE-S01 / A+B, [PR #14](https://github.com/SigmeD/flexomir_os/pull/14):** ClientOrdersScreen подключает неизменённые AppShell/Drawer/GL-03/HeaderAction; OrdersList (`orders/total/idPrefix/onOpen`), `order-model.ts` и `orders-page.css` общие для Client/Manager. OrderCard использует существующий optional `onOpen`; без `order.detail` активного открытия нет. Manager entrypoints совместимы через переэкспорт. Единый синтетический источник — `src/demo/order-fixtures.ts`, список и деталь читают одну запись. Build + 180 Chromium + 58 Firefox/WebKit PASS локально; main/Owner acceptance не присваиваются до merge/review.
+
+| Новый shared component | Контракт | Потребители / QA |
+| --- | --- | --- |
+| `src/components/orders/OrderDetail.tsx` | `order: OrderListItem`, `detail: OrderDetailContent`, `onBack`; только чтение, фокус заголовка | ClientOrdersScreen + ManagerOrdersScreen; ID/статус/0-N items, пять ширин |
+| `src/components/orders/OrderItemSummary.tsx` | `item: OrderItemSummaryView`, `position`; строки названия/характеристик/макета, без файла или формы | OrderDetail обеих ролей; длинное имя, 320px |
+| `src/components/orders/useOrderPreview.ts` | список view models → выбранная запись, open/back, surfaceRef; локальное состояние и восстановление фокуса/scroll | Два экрана; keyboard/touch/list-detail-back, без URL/API/storage |
+
+`OrderDetailContent` содержит только необязательные view-строки дат/комментария и список Item summaries; это не договор обязательных Item-полей, DTO/ACL или mapping 1С. Ниже — исходный main до этого инкремента.
+
 **M4 audit / 06.11.2026:** unique React screen inventory and first reusable-component consumers confirmed in [M4 screen map](SCREEN_MAP_M4_2026-11-06.md). No new React components were added by this audit. `Client AppShell` composition, Client Orders and OrderDetail are still NOT implemented. Next: FE-S01 (#12), block A Client list/shell then block B shared read-only OrderDetail/OrderItemSummary for Client + Manager, in one feature branch/React PR with LIVE docs. New/Repeat, Manager processing, Support/Companies follow in separate increments. Source-of-truth Figma/Scope boundaries remain mandatory.
 
 **CURRENT / 06.11.2026:** Реестр — LIVE: при новом/изменённом React-компоненте укажи тип, потребителей Client/Manager, файл, props/state, QA, Owner gate и использующий экран. Обнови в том же PR, потом синхронизируй с Drive. Не создавай компоненты ради количества Figma-фреймов.

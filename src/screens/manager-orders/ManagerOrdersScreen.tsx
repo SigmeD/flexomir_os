@@ -4,8 +4,10 @@ import { HeaderAction } from '@/components/ui/header-action'
 import type { SidebarNavItem } from '@/components/ui/sidebar-nav'
 import { AppShell } from '@/components/layout/AppShell'
 import { OrdersList } from './OrdersList'
+import { OrderDetail } from '@/components/orders/OrderDetail'
+import { useOrderPreview } from '@/components/orders/useOrderPreview'
 import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from './model'
-import './manager-orders.css'
+import '@/components/orders/orders-page.css'
 
 const managerNav: readonly SidebarNavItem[] = [
   { id: 'orders', label: 'Заказы', icon: 'orders' },
@@ -26,6 +28,7 @@ interface ManagerOrdersScreenProps {
  */
 export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
   const [filterId, setFilterId] = useState<OrderStatusFilterId>('all')
+  const preview = useOrderPreview(orders)
   const visibleOrders = filterId === 'all'
     ? orders
     : orders.filter(order => order.filterId === filterId)
@@ -37,7 +40,7 @@ export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
   }
 
   return (
-    <div className="manager-orders-screen" data-testid="manager-orders-screen">
+    <div className="fos-orders-page" data-testid="manager-orders-screen" ref={preview.surfaceRef}>
       <AppShell
         items={managerNav}
         activeId="orders"
@@ -48,29 +51,35 @@ export function ManagerOrdersScreen({ orders }: ManagerOrdersScreenProps) {
         triggerLabel="Открыть меню менеджера"
         footerText="Менеджер"
       >
-        <main className="manager-orders-screen__main">
-          <header className="manager-orders-screen__header">
-            <div>
-              <p className="manager-orders-screen__eyebrow">Заказы</p>
-              <h1>Заказы</h1>
-            </div>
-            <HeaderAction action="add" accessibleName="Добавить заказ" disabled />
-          </header>
+        <main className="fos-orders-page__main">
+          {preview.selectedOrder?.detail ? (
+            <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} />
+          ) : (
+            <>
+              <header className="fos-orders-page__header">
+                <div>
+                  <p className="fos-orders-page__eyebrow">Заказы</p>
+                  <h1>Заказы</h1>
+                </div>
+                <HeaderAction action="add" accessibleName="Добавить заказ" disabled />
+              </header>
 
-          <p className="manager-orders-screen__disclaimer">
-            Демонстрационные данные. Интеграция с 1С не подключена.
-          </p>
+              <p className="fos-orders-page__disclaimer">
+                Демонстрационные данные. Интеграция с 1С не подключена.
+              </p>
 
-          <section className="manager-orders-screen__filters" aria-label="Фильтры заказов">
-            <GlassPillTabs
-              items={ORDER_STATUS_FILTERS}
-              value={filterId}
-              onValueChange={onSelectFilter}
-              ariaLabel="Фильтр заказов по статусу"
-            />
-          </section>
+              <section className="fos-orders-page__filters" aria-label="Фильтры заказов">
+                <GlassPillTabs
+                  items={ORDER_STATUS_FILTERS}
+                  value={filterId}
+                  onValueChange={onSelectFilter}
+                  ariaLabel="Фильтр заказов по статусу"
+                />
+              </section>
 
-          <OrdersList orders={visibleOrders} total={orders.length} />
+              <OrdersList orders={visibleOrders} total={orders.length} onOpen={preview.openOrder} />
+            </>
+          )}
         </main>
       </AppShell>
     </div>

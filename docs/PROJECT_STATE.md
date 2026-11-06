@@ -1,6 +1,12 @@
 # Flexomir OS — текущее состояние проекта
 
-## CURRENT / 06.11.2026 — завершено слияние, следующая задача M4
+## FE-S01 / A + B — локально QA_VERIFIED, PR #14 Draft
+
+База `15eb6d9`; ветка `feat/fe-s01-orders-core`, [единый PR #14](https://github.com/SigmeD/flexomir_os/pull/14), без merge в main. A (`3a15eb6`): Client `?view=client-orders` на готовом shell/GL-03/карточках, общие список/empty и оформление. B: один read-only OrderDetail/OrderItemSummary и переход список → деталь → назад для Client и Manager; сохраняются ID/статус, фильтр, фокус и прокрутка. Два клиентских заказа из общего DEMO-набора компании 01 — не серверная ACL.
+
+Проверено: build PASS (77 modules), расширенный TypeScript check PASS; общая регрессия Chromium **180/180**, списки/детали Firefox + WebKit **58/58**, пять размеров 1440/1024/768/390/320, длинные строки, 0/1/2 позиции, keyboard/touch, reduced-motion/forced-colors. A отдельно прошёл 38/38 до B. PNG локально в `test-results/`; CI artifact — `orders-core-screen-captures`. Core Glass/AppShell не изменены. Статус CI финального SHA проверять в PR; локальный PASS не заменяет CI или Owner acceptance. Дальше — Owner review PR #14, затем отдельный New/Repeat + Manager processing по контрактам. Полные кабинеты, API/1С, физические устройства и screen-reader audit не объявляются готовыми. Ниже — исходный снимок до FE-S01.
+
+## Исторический M4-снимок до FE-S01
 
 - Проверено: `origin/main` `89b043f9ae7e70a36a1eea8f5c98cd621e037aa9`; PR #5, #9, #10 закрыты как MERGED. Первый экран Manager Orders, AppShell и NavigationDrawer уже в React; **Client React-экраны ещё не реализованы**. Полный Manager/Client MVP не готов.
 - **M4: AUDIT DONE / OWNER REVIEW OPEN.** Сверены CURRENT Figma DS/Client/Manager, CURRENT Scope/SRS/E2E и `origin/main` `89b043f`. Подробный реестр: [M4 screen map](SCREEN_MAP_M4_2026-11-06.md). Client: **0 собственных React-экранов**, общий `AppShell` есть, но не подключён к клиенту; Manager: `AppShell` готов, список «Все заказы» частично реализован, остальные модули не созданы. Подтверждённые UX не подменяются пилотами/архивами. Следующее React-задание агенту: **FE-S01 (#12): блок A Client Shell + «Мои заказы», блок B read-only OrderDetail для Client + Manager; одна ветка от main и один React PR с LIVE docs** на synthetic fixtures; Owner вопросы по auth, «Клиенты/Компании», queue и full My Layouts остаются OPEN.
