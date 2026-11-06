@@ -1,0 +1,61 @@
+/* Shared OrderCard presentation; no bespoke glass, motion or order-state enums. */
+.fos-order-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 18px 20px;
+  border: 1px solid #e3e8ed;
+  border-radius: 18px;
+  background: rgba(255,255,255,.9);
+  font-family: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
+}
+.fos-order-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  flex: 1;
+}
+.fos-order-card__number,.fos-order-card__open {
+  display: inline-block;
+  align-self: flex-start;
+  color: #2b3944;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 730;
+}
+.fos-order-card__open {
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.fos-order-card__open:focus-visible { outline: 2px solid #547b92; outline-offset: 4px; }
+.fos-order-card__title,.fos-order-card__company {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #7e8b95;
+  font-size: 12px;
+  line-height: 18px;
+}
+.fos-order-card__status {
+  flex: 0 0 auto;
+  border: 1px solid #e1e8ed;
+  border-radius: 999px;
+  padding: 6px 10px;
+  background: #f8f9fa;
+  color: #586d7c;
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: 650;
+  text-align: center;
+}
+@media(max-width:600px) {
+  .fos-order-card { padding: 15px 13px; gap: 10px; border-radius: 14px; }
+  .fos-order-card__status { max-width: 120px; white-space: normal; font-size: 11px; }
+}
