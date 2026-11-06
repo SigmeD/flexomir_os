@@ -1,18 +1,7 @@
 import { useState } from 'react'
 import { SidebarNav, type SidebarNavItem } from '@/components/ui/sidebar-nav'
+import { clientNavigationDemoItems as clientItems, managerNavigationDemoItems as managerItems } from './navigation-demo-items'
 import './SidebarNavLab.css'
-
-const managerItems: readonly SidebarNavItem[] = [
-  { id: 'orders', label: 'Заказы', icon: 'orders' },
-  { id: 'clients', label: 'Клиенты', icon: 'clients' },
-  { id: 'support', label: 'Поддержка', icon: 'support' },
-]
-
-const clientItems: readonly SidebarNavItem[] = [
-  { id: 'orders', label: 'Заказы', icon: 'orders' },
-  { id: 'artworks', label: 'Макеты', icon: 'artworks' },
-  { id: 'support', label: 'Поддержка', icon: 'support' },
-]
 
 function RoleNavSample({
   role, caption, items, glassTone,
