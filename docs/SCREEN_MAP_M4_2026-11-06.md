@@ -1,7 +1,7 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
-**Проверено:** 06.11.2026 · React `origin/main` `89b043f9ae7e70a36a1eea8f5c98cd621e037aa9` · **READ-ONLY** Figma/Drive/GitHub.  
-**Статус:** M4 inventory DONE / Owner product gate OPEN; это карта для реализации, **не изменение** SRS/Scope, Figma, маршрутов, backend/API/1С.  
+**Проверено:** 06.11.2026 · React `origin/main` `89b043f9ae7e70a36a1eea8f5c98cd621e037aa9` · **READ-ONLY** Figma/Drive/GitHub.
+**Статус:** M4 inventory DONE / Owner product gate OPEN; это карта для реализации, **не изменение** SRS/Scope, Figma, маршрутов, backend/API/1С.
 **Канонический план:** [Google Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
 
 ## Источники
@@ -61,19 +61,19 @@
 
 ## Готовый backlog для React-агента (после M4 карты, строго по зависимостям)
 
-**FE-C01 / FIRST. Client AppShell + «Мои заказы» — [GitHub issue #12](https://github.com/SigmeD/flexomir_os/issues/12)**
+**FE-S01 / блок A. Client AppShell + «Мои заказы» — [GitHub issue #12](https://github.com/SigmeD/flexomir_os/issues/12)**
 
-- Из `main` создать отдельную ветку. Только React / `src/screens/client-orders/*`, разрешённое подключение одной preview-точки в `src/App.tsx`, переиспользовать `AppShell`, `GlassPillTabs`, `OrderCard`. Не редактировать core Glass/Sidebar/Drawer material/motion/CSS.
+- После слияния документационного PR #11 из актуального `main` создать обычную ветку `feat/fe-s01-orders-core` в основной папке. Один React-инкремент, два последовательных блока A/B, один итоговый React PR вместе с LIVE docs; после каждого блока — проверка, коммит и короткий handoff. Только React / `src/screens/client-orders/*`, одна preview-точка в `src/App.tsx`, существующие `AppShell`, `GlassPillTabs`, `OrderCard`. Не редактировать core Glass/Sidebar/Drawer material/motion/CSS.
 - Реализовать список из synthetic fixtures + status filtering, empty/loading/error *UI demonstrations* (никакого фальшивого реального network request), адаптивы D1440/L1024/T768/M390/M320. Не вводить API/1C enums, ACL, не объявлять dashboard.
 - Передать: React-screen, fixtures, Playwright, CI build, screenshots/evidence, `docs/PROJECT_STATE`/`COMPONENT_REGISTRY`/`HANDOFF` и Drive этап. Гейт: CODE+QA; Owner UI acceptance отдельно. Не merge автоматически.
 
-**FE-SH02 / NEXT. Общий OrderDetail + OrderItemSummary**
+**FE-S01 / блок B той же задачи. Общий OrderDetail + OrderItemSummary для Client + Manager**
 
 - Реализовать **presentation-only shared components** с вводом props по утверждённым VIEW полям (не копировать неполный 1C schema), варианты read-only/allowed UI states.
 - Сначала подтвердить потребителей C-03 и M-04; одна форма для двух ролей, адаптивы, fixtures, empty/error/loading. Не писать manager-команды создания/публикации или client editing, пока они не согласованы.
-- Затронуть только shared order primitives + изолированные preview-экраны; не менять core Glass. Проверить тесты и сравнить Client/Manager presentation.
+- Дать открыть выбранный заказ и вернуться к списку внутри обоих preview; сохранить ID/статус/фильтр без production routes и бизнес-команд. Shared order primitives и preview-экраны — в той же ветке и итоговом PR, что блок A. Не менять core Glass. Проверить обе роли и обновить LIVE docs.
 
-**FE-C03 / AFTER. Client New/Repeat draft + OrderItemForm**
+**FE-C03 / AFTER FE-S01. Client New/Repeat draft + OrderItemForm — следующий инкремент**
 
 - Доработать карту поведения формы: 0/1/N позиций, add/edit/save/dirty, New vs Repeat как варианты ОДНОЙ React формы; file sources только в явно подтверждённом Scope.
 - Демо-переход клиентский список → деталь → New/Repeat → draft; без реальных запросов и без придуманной схемы 1С. Manager processing UI вынести в последующий отдельный agent ticket.
@@ -81,7 +81,7 @@
 
 **FE-M04 / AFTER SHARED. Manager detail/queue and linked demo**
 
-- Переиспользовать FE-SH02 / FE-C03 компоненты, дополнить Manager detail. `Новые/Все` как business queue только после согласования semantics, не путать со статусами.
+- Переиспользовать общую деталь из FE-S01 и будущие FE-C03 компоненты, дополнить Manager processing. `Новые/Все` как business queue только после согласования semantics, не путать со статусами.
 - Построить связанную mock-сессию Client → Manager → Client, без псевдоинтеграции с 1С, подтверждённые пункты меню становятся доступными лишь после готовых роутов.
 
 **FE-SUP + FE-COMP / AFTER CORE. Support Client+Manager, затем Companies Manager**
@@ -89,10 +89,10 @@
 - Support только FR-SUP MVP: собственные тикеты, тема/описание, отправка, статус/ответ; не создавать интерфейс оператора поддержки и не реализовывать предложенные reply/delete.
 - Companies: список компаний/деталь/связанные заказы менеджера, без onboarding новых клиентов.
 
-**Для любого агента:** сначала `AGENTS.md`, `README.md`, `docs/PROJECT_STATE.md`, `docs/DELIVERY_PLAN.md`, этот M4 map + актуальные CURRENT Drive/Figma; проверить Git status/HEAD и локальные незакоммиченные изменения. Одна задача = один небольшой PR; не работать одновременно с другим агентом в `src/App.tsx` или shared CSS; не трогать `main` напрямую. Ответственность Алексея: backend/API/1C, вне agent-задач React. Все изменения поддерживаются LIVE-документацией в том же PR.
+**Для любого агента:** сначала `AGENTS.md`, `README.md`, `docs/PROJECT_STATE.md`, `docs/DELIVERY_PLAN.md`, этот M4 map + актуальные CURRENT Drive/Figma; проверить Git status/HEAD и локальные незакоммиченные изменения. Один законченный инкремент = один React PR с LIVE docs; внутри — небольшие проверяемые блоки и коммиты. FE-S01 включает A и B в одной ветке. Не работать одновременно с другим агентом в `src/App.tsx` или shared CSS; не трогать `main` напрямую. Ответственность Алексея: backend/API/1C, вне agent-задач React.
 
 ## Результат M4 и переход
 
 - Инвентаризация Figma/Drive/GitHub — **выполнена**; Figma/Scope утверждены НЕ автоматически.
-- Экранная карта построена; **Owner review OPEN** (особенно auth, admin, labels, queue, layouts). После утверждения границ M5 можно начинать с FE-C01 без ожидания backend.
+- Экранная карта построена; auth/admin/labels/queue/layouts остаются **Owner/PO OPEN**. Узкая реализация FE-S01 A/B разрешена отдельной задачей #12 без ожидания backend; не расширять её на New/Repeat, Companies, Support и интеграции.
 - Рекомендация: не делать заново архитектуру в Figma и не полировать GL03; перейти к первому Client-screen после согласования карты, затем общий OrderDetail и связанный сценарий между ролями.

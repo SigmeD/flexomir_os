@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | M0–M3 | React baseline, shared Glass, AppShell, первый Manager Orders | В `main`; код/QA, экранная Owner-приёмка отдельно |
 | M4 | Карта уникальных экранов Client + Manager по CURRENT Figma/Drive; React статусы `готово/частично/нет` — [M4 screen map](SCREEN_MAP_M4_2026-11-06.md) | **AUDIT DONE / OWNER REVIEW OPEN** |
-| M5 | Каркасы и основные экраны обоих кабинетов на fixtures; first agent task FE-C01 Client Shell + My Orders | **NEXT / after Owner map gate** |
+| M5 | FE-S01 (#12): A — Client Shell + My Orders; B — общая read-only деталь Client + Manager, один React PR с LIVE docs | **NEXT / отдельная ветка от main после PR #11** |
 | M6 | Клиент → новый/повторный заказ → менеджер → клиент, сквозной React-путь | PLANNED |
 | M7 | Компании/Поддержка/прочие подтверждённые разделы MVP | PLANNED |
 | M8 | Системная UI/UX-полировка и рефакторинг общей DS | PLANNED после M5–M7 |
