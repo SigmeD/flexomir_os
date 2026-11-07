@@ -1,5 +1,12 @@
 # Flexomir OS — React Component Registry
 
+## M8 / FE-S05 #21 audit delta — 08.11.2026
+
+- `AppShell` → `SidebarNav` / `NavigationDrawer` → Client Composer → `OrderItemForm` → `ArtworkSource` / `LayoutBrowser`: CURRENT LAY03 sets «Макеты» as the selected section during picker flow. `ClientOrdersScreen` now leaves that selected item enabled while the item editor guard still disables other destinations. Draft/focus state and accepted `FosGlassMaterial`/spring are unchanged. Consumer regression: `tests/m7-layouts.spec.ts` asserts active/enabled and guarded peer item on desktop and drawer.
+- Manager Orders panel `2495:8871/9000/9097`: Search/Company/Sort and New/All remain `OWNER_OPEN` / PILOT candidate. React uses the existing accepted GL03 status filter; do not duplicate controls or infer business semantics before decision.
+- Sidebar icons remain in the shared nav as an unresolved visual question against text-only CURRENT shell/nav references. Existing optional icon contract and tests are retained pending Owner review; no one-role workaround.
+- AuthCandidate has no approved CURRENT Figma master: `OWNER_DESIGN_OPEN`; no visual acceptance.
+
 ## FE-S04 / 07.11.2026 — A–D component map
 
 | Figma / requirement | React component | Props / state | Consumers / decision |

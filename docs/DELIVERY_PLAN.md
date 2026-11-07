@@ -1,5 +1,19 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 08.11.2026 — M8 / FE-S05 #21
+
+**Base:** `origin/main b5a8624`; **branch:** `feat/m8-ui-parity-refactor`; one feature branch / one PR; no merge without Owner permission. Drive CURRENT remains the canonical plan. Scope is shared React parity/polish only, with no backend/API/1C or unapproved product behavior.
+
+| Block | Result / gate |
+| --- | --- |
+| A — independent inventory and discrepancy matrix | CURRENT Figma DS V2, FOS Masters, Client/Manager UX V2 checked against fresh browser captures; Manager panel gap and nested LAY03 navigation recorded with gates. Baseline build PASS, related regression 236/236 Chromium. |
+| B — minimal shared-component correction | Done: in Client OrderComposer → ArtworkSource → LayoutPicker, keep the current `Макеты` sidebar item active and enabled while an Item editor is open; keep other destinations disabled until the editor guard clears. The draft guard and shared Glass are unchanged. |
+| C — representative and controlled rollout | Done in the existing shared AppShell consumer; no per-screen nav clone. |
+| D — regression QA | Build PASS; `m7-layouts.spec.ts` 22/22 across Chromium-1440/390 projects and 1440/1024/768/390/320 widths; full related Client/Manager/Orders/Glass regression 236/236 Chromium; targeted cross-browser regression 164/164 Firefox+WebKit. Includes accessibility, keyboard, touch, reduced-motion and drawer checks. Independent review remains pending. |
+| E — independent QA and Owner gate | Pending. Do not claim visual acceptance or merge. |
+
+**OPEN:** Manager Orders 01.1 `2495:8871/9000/9097` shows a PILOT / DEMO panel (New/All, search, company, sort) missing from React. Existing decision record says scope and semantics are Owner-open; do not add it before approval. Auth remains `OWNER_DESIGN_OPEN`. Compare current captures in ignored `output/playwright/m8/`.
+
 ## CURRENT 07.11.2026 — FE-S04 / #19, implementation checkpoint
 
 Один функциональный инкремент в `feat/fe-s04-client-manager-ui` от `origin/main 8099539`; [Draft PR #20](https://github.com/SigmeD/flexomir_os/pull/20), head `3f8c0a3`. Без merge без Owner. Блоки A–D реализованы и проверены.
@@ -10,7 +24,7 @@
 - **D Client↔Manager:** same in-memory store, новые клиентские submissions видны в Manager New; demo processing label возвращается в Client. Нет API/1С.
 - QA: `npm run build` PASS (207 modules); FE-S04 + Manager Orders 34/34 Chromium (1440/390); full M7 105/105 Chromium/Firefox/WebKit; expanded Orders/Composer/Glass/FE-S04 210/210 Chromium; `git diff --check` PASS. PR #20 awaits CI/Owner review. M8 visual polish/parity deferred.
 
-Последняя ревизия документации: 07.11.2026; следующая: 21.11.2026.
+Обновлено: 08.11.2026; плановая ревизия документации: 22.11.2026.
 
 ## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
 

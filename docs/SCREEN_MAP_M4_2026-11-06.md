@@ -1,5 +1,18 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
+## M8 / FE-S05 #21 — независимая матрица расхождений, 08.11.2026
+
+Текущий source set: [Primary DS V2 `634:60`](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=634-60), [FOS masters `1688:532`](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1688-532), Client UX V2 `634:6815`, Manager UX V2 `634:13621`, Drive CURRENT and issue #21. React captures were regenerated from the M8 branch at D1440/T768/M390 plus responsive L1024/M320. Historical FE-S03 screenshots are not treated as current evidence.
+
+| Surface / Figma | Current React evidence | Severity / decision | Action |
+| --- | --- | --- | --- |
+| Client LAY03 `1316:2015/2165/2315`; picker from New/Edit Item | React preserves parent breadcrumb and draft. `navigationSection` follows the picker, but every sidebar item was disabled while editing, including the active `Макеты`. | P1 interaction-state mismatch: selected route looked unavailable. | Fixed at shared `ClientOrdersScreen` consumer: active section remains enabled; other destinations remain disabled under the unsaved-item guard. Regression asserts active/enabled and other section disabled at desktop and drawer sizes. |
+| Manager Orders `2495:8871/9000/9097` | React shows accepted GL03 status filters + order list; PILOT New/All, Search, Company, Sort row is absent. | Structural candidate / `OWNER_OPEN`; current docs explicitly do not approve this panel's scope or semantics. | No implementation until decision. Keep GL03 and do not infer queue/sort/status behavior. |
+| AuthCandidate | No approved Auth section/master in CURRENT Figma. | `OWNER_DESIGN_OPEN`. | No visual-parity claim; defer to Owner. |
+| Shared Sidebar icon rows vs text-only shell/nav master | React retains existing optional icons and their tested optical behavior; source/approval status of the icon variant is not resolved by this M8 audit. | Visual decision OPEN; shared change would affect both roles and drawer. | Preserve existing shared component; record for Owner review instead of changing the master unilaterally. |
+
+**Evidence:** fresh captures in ignored `output/playwright/m8/`; pre-change and final related suites 236/236 Chromium; post-change build PASS and `m7-layouts.spec.ts` 22/22 across Chromium-1440/390 and D1440/L1024/T768/M390/M320; cross-browser related subset 164/164 Firefox+WebKit. Independent review remains OPEN. No backend/API/1C scope.
+
 ## FE-S03 — итоговая трассировка Figma → React → переход, 07.11
 
 | Figma CURRENT D/T/M | Shared React / consumer | Действие → следующий экран | Проверка / gate |

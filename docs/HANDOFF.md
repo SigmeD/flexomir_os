@@ -1,5 +1,15 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT 08.11.2026 — M8 / FE-S05 #21
+
+Branch `feat/m8-ui-parity-refactor` from `origin/main b5a8624`; one worktree and one feature branch, no merge. Four pre-existing stashes were inspected and preserved. PR will be the single delivery for FE-S05.
+
+- A: read Drive CURRENT, issue #21 and CURRENT Figma DS/FOS/Client/Manager sources; refreshed D1440/T768/M390 and L1024/M320 comparison captures in ignored `output/playwright/m8/`. Baseline build PASS and related Chromium regression 236/236.
+- B/C: `ClientOrdersScreen` keeps the current «Макеты» navigation item active and enabled during the nested picker; the unsaved item guard still disables other destinations. No Glass primitive/material or backend work.
+- D: build PASS; `npx playwright test tests/m7-layouts.spec.ts --workers=1` PASS, 22/22 across Chromium-1440 and Chromium-390 projects; the suite checks widths 1440/1024/768/390/320 and empty/error/cancel flows. Full related Client/Manager/Orders/Glass suite PASS, 236/236 Chromium. Cross-browser subset PASS, 164/164 Firefox+WebKit, including LAY03, Composer, shared nav/drawer, order lists/details and reduced-motion/forced-colors. A brittle CSS scientific-notation assertion was normalized; the affected Firefox/WebKit test passed on retry.
+- OPEN: Manager Orders PILOT controls (New/All/Search/Company/Sort) need Owner scope/semantics decision; Auth is `OWNER_DESIGN_OPEN`; sidebar icon parity needs Owner review. Independent review and Owner visual gate remain pending.
+- Next: final diff review, commit and open the one PR; independent review and Owner visual gate remain pending. Do not merge without explicit Owner permission. Update canonical Drive CURRENT only through the project delivery process.
+
 ## CURRENT 07.11.2026 — FE-S04 / #19
 
 Работа в основной папке, ветка `feat/fe-s04-client-manager-ui` от свежего `origin/main 8099539`. Один [Draft PR #20](https://github.com/SigmeD/flexomir_os/pull/20), head `3f8c0a3`; merge не выполнять без Owner. Stash #0–#3 сохранены без изменения.

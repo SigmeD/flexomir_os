@@ -53,6 +53,8 @@ for (const width of [1440, 1024, 768, 390, 320]) {
       await expect(pickerBreadcrumbs).toContainText('Новая позиция')
       await expect(pickerBreadcrumbs).toContainText('Мои макеты')
       await expect(page.getByTestId('sidebar-nav-artworks')).toHaveAttribute('aria-current', 'page')
+      await expect(page.getByTestId('sidebar-nav-artworks')).toBeEnabled()
+      await expect(page.getByTestId('sidebar-nav-orders')).toBeDisabled()
       await pickerBreadcrumbs.getByRole('button', { name: 'Новая позиция', exact: true }).click()
       await expect(page.getByTestId('layout-picker')).toHaveCount(0)
       await expect(page.getByLabel('Наименование продукции')).toHaveValue('Этикетка DEMO')
@@ -62,6 +64,8 @@ for (const width of [1440, 1024, 768, 390, 320]) {
     } else {
       await page.getByTestId('navigation-drawer-trigger').click()
       await expect(page.getByRole('dialog').getByTestId('sidebar-nav-artworks')).toHaveAttribute('aria-current', 'page')
+      await expect(page.getByRole('dialog').getByTestId('sidebar-nav-artworks')).toBeEnabled()
+      await expect(page.getByRole('dialog').getByTestId('sidebar-nav-orders')).toBeDisabled()
       await page.keyboard.press('Escape')
     }
     await page.getByRole('button', { name: 'Добавить макет', exact: true }).click()
