@@ -1,5 +1,25 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
+## FE-S03 — итоговая трассировка Figma → React → переход, 07.11
+
+| Figma CURRENT D/T/M | Shared React / consumer | Действие → следующий экран | Проверка / gate |
+| --- | --- | --- | --- |
+| Manager02.1 2498:10826/10963/11087; row1189:984 | CompanyRow, FOSInput, CabinetPage | Поиск → целая строка → scoped CompanyOrders | A PASS five sizes / Owner OPEN |
+| 2499:9435/9464/9490; company2 2548:10426/10456/10484; company3 2548:10513/10543/10571 | CompanyOrders + OrdersList/OrderDetail | Компания → только её fixture orders → та же деталь → Back | A identity/filter/focus PASS; real ACL OPEN |
+| Client SUP01 634:8098/8228/8314; Manager2605:32928/33010/33079 | SupportTicketRow/Form/Detail, ArtworkThumbnail60 | Свои обращения → Add → тема/описание → отправлено только в demo | B PASS both roles / candidate fields OUT |
+| Client NEW2412:10665/10680/10693; Manager2606:20379/20390/20399 | Shared FOSInput/Textarea + HeaderAction Send | Empty/invalid/ready → immutable own ticket | B empty/disabled/error/input retained PASS; real loading/API OPEN |
+| Client DETAIL634:8137/8263/8347; submitted634:13565/13594/13608; Manager2606:22577/22823/23030 and23411/23481/23538 | Same SupportTicketDetail | Subject H1 stays stable → requester text + support-team reply → back | B PASS; author reply/delete/operator OUT |
+| LAY01 634:8050/8193/8277 | LayoutBrowser(library), LayoutRow1313:2182 | My Layouts → whole row → same layout detail | C PASS; five sizes |
+| LAY02 1316:1966/2120/2268 | LayoutDetail + source/history action rows | Readonly detail → root/back | C PASS; download/history/More disabled, PROPOSED2101:7959 OPEN |
+| LAY03 1316:2015/2165/2315; LAY04 1316:2074/2223/2372 | Same LayoutBrowser(select), LayoutDetail(picker) | New Item → My Layouts → detail → Choose → same unsaved Item | C PASS; no invented order/payment command |
+| LAY05 1318:2371/2386/2401; LAY06 1318:2379/2394/2409 | Same LayoutBrowser(replace) | Edit Item → My Layouts → replacement detail → Choose → same Item | C PASS; old source replaced only in demo |
+| LAY07 1440:4989/5209/5419; LAY08 1440:5059/5275/5486; LAY09 1440:5128/5341/5552 | One LayoutUploadForm/Panel1438:474 + LocalFileControl | Library/select/replace → local file/name/optional preview/description → demo metadata → detail/Choose | C PASS empty/selected/error/cancel; server files/policy OPEN |
+| Shell637:180, header2302:2138, Primary1953:4168/2173:1425 | CabinetNavigation + AppShell/Drawer + HeaderAction/OverflowMenu | Available role destinations → after accepted spring → destination; input/context retained | D PASS; no new Glass engine / no API |
+| LAY03 desktop 1316:2015 — parent breadcrumbs + active Sidebar | LayoutBrowser breadcrumbs + parent AppShell | Figma: «Новая позиция / Мои макеты», active «Макеты»; React: «Мои макеты», active «Заказы» | STRUCTURAL VISUAL OPEN: breadcrumb parity pending; nested active-section policy — Owner gate before VISUAL_PASS |
+
+FUNCTIONAL and TECHNICAL evidence are separate from VISUAL/Owner acceptance. D1440/T768/M390 source pairs plus responsive L1024/M320; fixtures differ from illustrative company/status/date copy. Native readonly textareas follow shared FOS state and can differ from hand-styled frame overrides. No production status dictionary or server ACL claimed.
+
+
 FE-S03 C checkpoint / PR #18: LAY01…09 UI preview реализован одним LayoutBrowser (library/select/replace), LayoutRow/Detail/UploadForm/UploadPanel; HeaderAction расширен Choose из Figma, shared material/motion сохранён. ArtworkSource использует общий LocalFileControl и один LayoutPicker в New/Edit Item. Выбор/замена возвращает тот же Item с полями/фокусом/scroll; local names и synthetic IDs живут только до reload. Build PASS; Chromium C 11/11 (5 размеров + empty/error/cancel), FE-S02 targeted regression 7/7. Axe 0 list/detail/upload; captures local output/fe-s03. История/More ведут в UX PROPOSED 2101:7959, disabled; download/server storage/ACL OPEN. Illustrated 20MB/formats не внедрены как policy. B mobile thumbnail уточнён по master2409:11521:60px, без локального 48px. A/B/C checkpoints выполнены, D integration/full QA next. Owner visual acceptance OPEN, merge запрещён без разрешения.
 
 FE-S03 B checkpoint / PR #18: общий Support Client/Manager реализован по FR-SUP-001..006. Build PASS; Chromium 11/11 functional + 2/2 D/T/M visual-state suites, axe 0 на list/form/detail/submitted. Общие SupportTicketRow/Form/Detail + ArtworkThumbnail; субъект H1 сохраняется, отправка только в демосессии, owner data отдельно, fixture error сохраняет ввод. Category/attachments/author reply/delete/triage исключены; Client candidate form визуально сокращена до подтверждённых полей (Owner OPEN). Реальные server loading/ack/API не имитируются. A 614742f, B checkpoint next, C/D pending; merge не разрешён.

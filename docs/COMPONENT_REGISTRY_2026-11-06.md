@@ -1,5 +1,12 @@
 # Flexomir OS — React Component Registry
 
+## FE-S03 / final responsive checkpoint, 07.11
+
+LayoutBrowser(mode=select|replace) внутри OrderItemForm: REUSE тех же LayoutRow/LayoutDetail/UploadForm. layouts.css задаёт отступы host и preview по CURRENT LAY03/04 D/T/M (1316:2015/2074/2165/2223/2315/2372); library сохраняет свою композицию. Пять размеров 1440/1024/768/390/320, выбор/замена/возврат проверены в составе свежих 105 M7 и 202 Orders/Glass сценариев. Новый мастер и отдельный экранный CSS не создавались. CI Orders отслеживает layouts/** как зависимость формы позиции. Авторская визуальная сверка; независимое review и Owner gate OPEN.
+
+Structural VISUAL OPEN / LAY03 desktop 1316:2015: Figma breadcrumbs «Новая позиция / Мои макеты» и Sidebar «Макеты»; текущий LayoutBrowser даёт только «Мои макеты», а родительский AppShell сохраняет «Заказы». Влияние — контекст пути/навигации. Перед Owner VISUAL_PASS устранить parent breadcrumb на уровне LayoutBrowser и согласовать с Owner политику активного раздела вложенного picker; checkpoint CSS исправляет только геометрию. M8/Owner gate OPEN, не pixel-perfect.
+
+
 ## FE-S03 / D — integration contract
 
 CabinetNavigation supplies only available demo destinations. OrderDemoWorkspace composes existing Orders and new Companies/Support/Layouts; React Activity keeps visited same-role sections, form input and selection, while effects/Drawer locks clean up when hidden. Existing Orders role switch still remounts role presentation; draft/filter store is shared at workspace level. No new routing package.
