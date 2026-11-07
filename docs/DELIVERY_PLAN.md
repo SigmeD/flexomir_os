@@ -2,7 +2,7 @@
 
 ## CURRENT 08.11.2026 — M8 / FE-S05 #21
 
-**Base:** `origin/main b5a8624`; **branch:** `feat/m8-ui-parity-refactor`; one feature branch / one PR; no merge without Owner permission. Drive CURRENT remains the canonical plan. Scope is shared React parity/polish only, with no backend/API/1C or unapproved product behavior.
+**Base:** `origin/main b5a8624`; **branch:** `feat/m8-ui-parity-refactor`; [Draft PR #22](https://github.com/SigmeD/flexomir_os/pull/22) is open and mergeable. One feature branch / one PR; no merge without Owner permission. Drive CURRENT remains the canonical plan. Scope is shared React parity/polish only, with no backend/API/1C or unapproved product behavior.
 
 | Block | Result / gate |
 | --- | --- |

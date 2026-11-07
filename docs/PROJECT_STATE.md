@@ -2,13 +2,13 @@
 
 ## CURRENT 08.11.2026 — M8 / FE-S05 issue #21, в работе
 
-База `origin/main b5a8624b`; feature-ветка `feat/m8-ui-parity-refactor`, один Draft PR готовится. До старта проверены clean `main`, единственный worktree, четыре исходных stash — сохранены; открытых PR для этой ветки не было. Источники: Drive CURRENT M8, issue #21, CURRENT Figma DS V2 / FOS Technical Masters / Client UX V2 / Manager UX V2.
+База `origin/main b5a8624b`; feature-ветка `feat/m8-ui-parity-refactor`; [Draft PR #22](https://github.com/SigmeD/flexomir_os/pull/22) открыт, mergeable, не слит. До старта проверены clean `main`, единственный worktree, четыре исходных stash — сохранены; открытых PR для этой ветки не было. Источники: Drive CURRENT M8, issue #21, CURRENT Figma DS V2 / FOS Technical Masters / Client UX V2 / Manager UX V2.
 
 - Аудит A: повторно сняты Manager Orders D1440/T768/M390 и Client Orders, Layouts, Support, Manager Companies/Support. Базовый regression до правки: 236/236 Chromium; build PASS.
 - Матрица: Manager PILOT-панель «Новые/Все», Search, Company, Sort отсутствует в React, но scope/семантика остаются OWNER OPEN — не переносить без решения. AuthCandidate остаётся `OWNER_DESIGN_OPEN`. В LAY03 выбранный раздел «Макеты» был активным, но disabled во время редактирования позиции.
 - Минимальная правка B: сохранить guard незавершённого Item, включать только текущий активный раздел в sidebar/drawer; остальные назначения остаются disabled. Shared Glass/material/motion не менялись. Тест проверяет active/enabled и блокировку остальных пунктов.
 - После правки: `npm run build` PASS; LAY01–09 regression 22/22 на Chromium-1440 и Chromium-390 (5 ширин + empty/error/cancel); полный связанный Client/Manager/Orders/Glass regression 236/236 Chromium; cross-browser Client/Manager/Orders regression 164/164 Firefox+WebKit после нормализации числового CSS assertion.
-- Merge запрещён без Owner-разрешения; backend/API/1С не затронуты. Визуальная/Owner приёмка ещё OPEN.
+- Merge запрещён без Owner-разрешения; backend/API/1С не затронуты. Визуальная/Owner приёмка и независимое review ещё OPEN.
 
 ## CURRENT 07.11.2026 — FE-S04 / issue #19, в работе
 

@@ -2,7 +2,7 @@
 
 ## CURRENT 08.11.2026 — M8 / FE-S05 #21
 
-Branch `feat/m8-ui-parity-refactor` from `origin/main b5a8624`; one worktree and one feature branch, no merge. Four pre-existing stashes were inspected and preserved. PR will be the single delivery for FE-S05.
+Branch `feat/m8-ui-parity-refactor` from `origin/main b5a8624`; [Draft PR #22](https://github.com/SigmeD/flexomir_os/pull/22) is open and mergeable. One worktree and one feature branch; no merge. Four pre-existing stashes were inspected and preserved.
 
 - A: read Drive CURRENT, issue #21 and CURRENT Figma DS/FOS/Client/Manager sources; refreshed D1440/T768/M390 and L1024/M320 comparison captures in ignored `output/playwright/m8/`. Baseline build PASS and related Chromium regression 236/236.
 - B/C: `ClientOrdersScreen` keeps the current «Макеты» navigation item active and enabled during the nested picker; the unsaved item guard still disables other destinations. No Glass primitive/material or backend work.
