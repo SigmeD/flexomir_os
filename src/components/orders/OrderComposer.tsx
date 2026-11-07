@@ -76,6 +76,6 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
         </section>
       </div>
       <p className="fos-sr-only" role="status">{feedback || 'Черновик только в памяти страницы'}</p>
-    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} />}
+    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} ownerRole={value.ownerRole} parentDirty={managerUnsaved} />}
   </div>
 }
