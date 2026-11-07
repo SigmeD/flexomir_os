@@ -1,5 +1,15 @@
 # Flexomir OS — реестр решений и вопросов
 
+## FE-S04 / 07.11.2026 — approved scope and OPEN
+
+Основание: Owner поручил выполнить FE-S04 issue #19 по CURRENT Drive sequential A→B→C→D. Одобренные границы: React/fixtures only; одна feature-ветка и один PR; LIVE docs в той же поставке; базовый QA после блоков; merge только после разрешения.
+
+- Manager `Новые` = submissions, созданные Client в текущей демосессии; `Все` включает существующие Manager fixtures и private Manager drafts. Это UI grouping, не backend queue/status/ACL mapping.
+- Manager-created draft хранится только в shared in-memory workspace и отфильтрован из Client list. Существующие Company fixtures; no create-company or publish action.
+- Pending/success/error являются presentation-only demo states, не статусами производства или 1С. Imported-from-1C example synthetic, labeled, and shown only via explicit `fixture=imported-1c`.
+- Auth screen: **OWNER_DESIGN_OPEN** because no approved Auth section/login component was found in current Figma. Candidate UI covers email/code and invalid/expired/resend/trusted-device previews; no real address lookup, email/code send, identity, session, or persisted trust.
+- M8 owns visual parity/polish and remaining accepted-glass/native-control review. No visual or product acceptance is implied by QA.
+
 ## FE-S03 / Owner instruction 06.11.2026 — approved scope and OPEN
 
 Основание: [issue #17](https://github.com/SigmeD/flexomir_os/issues/17) и прямое поручение Owner в этой сессии. A Manager Companies → B shared requester Support → C My Layouts UI-only → D integration/QA, один PR #18, без merge до отдельного разрешения. Это frontend demo на синтетических данных, без backend/API/1С.

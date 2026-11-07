@@ -25,6 +25,7 @@ export interface DemoDraft {
   requestedDate: string
   comment: string
   stage: 'draft' | 'sent'
+  ownerRole: 'client' | 'manager'
   sourceOrderId?: string
 }
 
@@ -64,9 +65,9 @@ export function itemSummary(item: DemoItem): OrderItemSummaryView {
 
 export function draftView(draft: DemoDraft): OrderListItem {
   return {
-    id: draft.id, company: draft.company, title: draft.items[0]?.name || 'Новый демонстрационный заказ',
-    statusLabel: draft.stage === 'draft' ? 'Черновик' : 'Передан менеджеру',
-    filterId: draft.stage === 'draft' ? 'draft' : null,
+    id: draft.id, company: draft.company, title: draft.items[0]?.name || (draft.ownerRole === 'manager' ? 'Новый заказ менеджера' : 'Новый демонстрационный заказ'),
+    statusLabel: draft.ownerRole === 'manager' ? 'Черновик менеджера' : draft.stage === 'draft' ? 'Черновик' : 'Передан менеджеру',
+    filterId: draft.ownerRole === 'manager' || draft.stage === 'draft' ? 'draft' : null,
     detail: { items: draft.items.map(itemSummary), requestedDate: draft.requestedDate, comment: draft.comment },
   }
 }

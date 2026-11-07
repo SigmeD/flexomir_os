@@ -3,7 +3,7 @@ import { canSendDemo, itemSummary, validDemoDate, type DemoDraft, type DemoItem 
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
-import { FOSDateField, FOSTextarea } from '@/components/ui/fos-controls'
+import { FOSDateField, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
 import { OrderItemForm } from './OrderItemForm'
 import { OrderItemRow } from './OrderItemRow'
 import { SectionAddItem } from './SectionAddItem'
@@ -11,10 +11,11 @@ import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-compose.css'
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
-export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChange, onNavigationSectionChange }: {
+export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChange, onNavigationSectionChange, managerCompanies = [] }: {
   draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend: (draft: DemoDraft) => void; onBack: () => void
   onItemEditorChange?: (open: boolean) => void
   onNavigationSectionChange?: (section: CabinetSection) => void
+  managerCompanies?: readonly { id: string; name: string }[]
 }) {
   const [value, setValue] = useState(draft)
   const [editing, setEditing] = useState<string | null>(null)
@@ -30,7 +31,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
     returnFocus.current = null
   }, [editing])
   function save(next: DemoDraft) {
-    setValue(next); onSave(next); setFeedback('Черновик сохранён только в памяти страницы')
+    setValue(next); if (value.ownerRole !== 'manager') onSave(next); setFeedback('Черновик сохранён только в памяти страницы')
   }
   function addItem() { returnFocus.current = '[data-add-item]'; setEditing('new') }
   function saveItem(item: DemoItem) {
@@ -42,14 +43,22 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
   }
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id}>
     {editing === null ? <>
-      <PageHeader title="Новый заказ" subtitle="Черновик" breadcrumbs={[{ label: 'Мои заказы', onSelect: onBack }, { label: 'Новый заказ' }]} actions={<>
-        <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!canSendDemo(value)} onAction={() => onSend(value)} />
+      <PageHeader title="Новый заказ" subtitle={value.ownerRole === 'manager' ? 'Черновик менеджера · приватно в демосессии' : 'Черновик'} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: 'Новый заказ' }]} actions={<>
+        {value.ownerRole === 'manager'
+          ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
+          : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!canSendDemo(value)} onAction={() => onSend(value)} />}
         <OverflowMenu items={[
           { id: 'add', label: 'Добавить позицию', onSelect: addItem, focusAfter: 'consumer' },
           { id: 'delete', label: 'Удалить черновик', disabled: true, reason: 'Удаление не согласовано' },
         ]} />
       </>} />
       <div className="fos-order-composer__body">
+        {value.ownerRole === 'manager' && <FOSSelect wrapperClassName="fos-order-composer__company" label="Компания" value={managerCompanies.find(company => company.name === value.company)?.id ?? ''} onChange={event => {
+          const selected = managerCompanies.find(company => company.id === event.target.value)
+          if (selected) save({ ...value, company: selected.name })
+        }} required>
+          <option value="">Выберите компанию</option>{managerCompanies.map(company => <option key={company.id} value={company.id}>{company.name}</option>)}
+        </FOSSelect>}
         <section className="fos-order-composer__products" data-empty={value.items.length === 0 || undefined} aria-labelledby="compose-products-title">
           <div className="fos-order-composer__section-heading"><h2 id="compose-products-title">Продукция</h2><SectionAddItem onClick={addItem} /></div>
           {value.items.length ? <ul className="fos-order-detail__items">{value.items.map((item, index) => <li key={item.id} data-item-id={item.id}>

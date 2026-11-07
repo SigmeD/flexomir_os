@@ -6,6 +6,7 @@ import { GlassPillTabsLab } from './GlassPillTabsLab'
 import { OrderDemoWorkspace } from './demo/OrderDemoWorkspace'
 import { LayoutDemoProvider } from './demo/LayoutDemoProvider'
 import { OrdersComponentsLab } from './OrdersComponentsLab'
+import { AuthCandidateScreen } from './screens/auth/AuthCandidateScreen'
 import { NavigationDrawerLab } from './NavigationDrawerLab'
 import {
   GlassSelect,
@@ -87,6 +88,7 @@ export function App() { return <LayoutDemoProvider><AppViews /></LayoutDemoProvi
 function AppViews() {
   const view = new URLSearchParams(window.location.search).get('view')
   const fixture = new URLSearchParams(window.location.search).get('fixture') ?? ''
+  if (view === 'auth') return <AuthCandidateScreen />
   if (view === 'client-layouts' || view === 'manager-companies' || view === 'client-support' || view === 'manager-support') return <OrderDemoWorkspace role={view.startsWith('client') ? 'client' : 'manager'} initialSection={view === 'client-layouts' ? 'artworks' : view === 'manager-companies' ? 'clients' : 'support'} empty={fixture === 'empty'} errorFixture={fixture} />
   if (view === 'orders-components') return <OrdersComponentsLab />
   if (view === 'header-action') return <HeaderActionLab />

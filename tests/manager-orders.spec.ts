@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 test('composed Manager Orders uses approved shared UI primitives', async ({ page }) => {
   await expect(page.getByTestId('manager-orders-screen')).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Заказы', level: 1 })).toBeVisible()
-  const tabs = page.getByTestId('glass-pill-tabs')
+  const tabs = page.getByRole('group', { name: 'Фильтр заказов по статусу' })
   await expect(tabs.getByRole('button')).toHaveCount(5)
   await expect(tabs.getByTestId('glass-pill-work')).toHaveText('В работе')
   await expect(tabs.locator('[data-fos-glass-material]')).toHaveCount(1)
@@ -19,14 +19,14 @@ test('composed Manager Orders uses approved shared UI primitives', async ({ page
   } else {
     await expect(sidebar).toBeVisible()
   }
-  await expect(page.getByRole('button', { name: 'Добавить заказ' })).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Добавить заказ' })).toBeEnabled()
   await expect(page.getByTestId('manager-orders-list').locator('li')).toHaveCount(6)
   await expect(page.getByTestId('manager-order-count')).toHaveText('6 из 6')
   await expect(page.getByTestId('manager-orders-list').locator('.fos-order-card')).toHaveCount(6)
 })
 
 test('controlled GL-03 filter changes visible orders without backend mutations', async ({ page }) => {
-  const tabs = page.getByTestId('glass-pill-tabs')
+  const tabs = page.getByRole('group', { name: 'Фильтр заказов по статусу' })
   await tabs.getByTestId('glass-pill-work').click()
   await expect(tabs.getByTestId('glass-pill-work')).toHaveAttribute('aria-pressed', 'true')
   await expect(page.getByTestId('manager-order-count')).toHaveText('2 из 6')
@@ -45,13 +45,13 @@ test('screen is responsive D1440/L1024/T768/M390/M320 and glass shadow not clipp
     await page.setViewportSize({ width, height: width < 600 ? 844 : 900 })
     await expect(page.getByRole('heading', { name: 'Заказы', level: 1 })).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-    const scroll = page.getByTestId('glass-pill-scroll')
+    const scroll = page.getByRole('group', { name: 'Фильтр заказов по статусу' }).locator('..').locator('..').getByTestId('glass-pill-scroll')
     const padding = await scroll.evaluate(element => {
       const css = getComputedStyle(element)
       return [css.paddingTop, css.paddingBottom]
     })
     expect(padding).toEqual(['7px', '12px'])
-    await expect(page.getByTestId('glass-pill-lens')).toHaveCount(1)
+    await expect(page.getByRole('group', { name: 'Фильтр заказов по статусу' }).getByTestId('glass-pill-lens')).toHaveCount(1)
     if (width <= 390) {
       expect(await scroll.evaluate(element => element.scrollWidth > element.clientWidth)).toBe(true)
     }
@@ -86,7 +86,7 @@ test('viewport screenshots for independent Owner review', async ({ page }, testI
     await page.setViewportSize({ width, height })
     await page.goto('/?view=manager-orders')
     await expect(page.getByTestId('manager-orders-screen')).toBeVisible()
-    await expect(page.getByTestId('manager-order-count')).toHaveText('6 из 6')
+  await expect(page.getByTestId('manager-order-count')).toHaveText('6 из 6')
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({
       path: testInfo.outputPath('fe08-manager-orders-' + label + '.png'),
@@ -111,7 +111,7 @@ test('viewport screenshots for independent Owner review', async ({ page }, testI
 
 test('presentation is isolated from demo record fields and supports a clean empty data source', async ({ page }) => {
   await page.goto('/?view=manager-orders&fixture=empty')
-  const tabs = page.getByTestId('glass-pill-tabs')
+  const tabs = page.getByRole('group', { name: 'Фильтр заказов по статусу' })
   await expect(page.getByTestId('manager-order-count')).toHaveText('0 из 0')
   await tabs.getByTestId('glass-pill-work').click()
   await expect(page.getByTestId('manager-orders-empty')).toBeVisible()

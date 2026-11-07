@@ -28,17 +28,20 @@ interface ClientOrdersScreenProps {
   demo?: OrderDemoController
   initialFilterId?: OrderStatusFilterId
   onFilterChange?: (id: OrderStatusFilterId) => void
+  processingStates?: Readonly<Record<string, 'pending' | 'success' | 'error'>>
 }
 
 /** Client composition: supplied data scope is never a substitute for server authorization. */
-export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId = 'all', onFilterChange }: ClientOrdersScreenProps) {
+export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId = 'all', onFilterChange, processingStates = {} }: ClientOrdersScreenProps) {
   const navigation = useCabinetNavigation()
   const [filterId, setLocalFilterId] = useState<OrderStatusFilterId>(initialFilterId)
   const [itemEditorOpen, setItemEditorOpen] = useState(false)
   const [navigationSection, setNavigationSection] = useState<CabinetSection>('orders')
   const setFilterId = (id: OrderStatusFilterId) => { setLocalFilterId(id); onFilterChange?.(id) }
-  const preview = useOrderPreview(orders)
-  const visibleOrders = filterId === 'all' ? orders : orders.filter(order => order.filterId === filterId)
+  const resultLabel: Record<'pending' | 'success' | 'error', string> = { pending: 'Ожидает ответа (демо)', success: 'Демо-обработка завершена', error: 'Ошибка демо-обработки' }
+  const presentedOrders = orders.map(order => processingStates[order.id] ? { ...order, statusLabel: resultLabel[processingStates[order.id]] } : order)
+  const preview = useOrderPreview(presentedOrders)
+  const visibleOrders = filterId === 'all' ? presentedOrders : presentedOrders.filter(order => order.filterId === filterId)
   const selectedDraft = demo?.drafts.find(draft => draft.id === preview.selectedOrder?.id && draft.stage === 'draft')
   const editingDraft = Boolean(selectedDraft)
   const editorStateChange = demo?.onEditorStateChange

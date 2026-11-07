@@ -1,5 +1,17 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 07.11.2026 — FE-S04 / issue #19, в работе
+
+База: свежий `origin/main` `8099539d9a5e018492de93f7a55137cfa783b5de`; ветка `feat/fe-s04-client-manager-ui`; [Draft PR #20](https://github.com/SigmeD/flexomir_os/pull/20), head `3f8c0a3bd92e9cb6452bab0e6488fb39ef8fcb0d`. Merge запрещён без разрешения Owner. Исходные stash и локальные данные сохранены.
+
+- Перед FE-S04: TypeScript/build PASS на свежем main; FE-S03 regression M7 105/105 (Chromium/Firefox/WebKit) и Orders/Glass 202/202 Chromium. Изменения только README между `8b54886` и `8099539`.
+- FE-S04 A–D: Manager Orders `Новые/Все` и demo processing; приватный Manager draft по существующим компаниям через общий `OrderComposer`; Auth UI candidate; Client→Manager→Client на общем in-memory store плюс synthetic import fixture только при `fixture=imported-1c`.
+- Блоки A–D smoke прошли 34/34 Chromium на 1440 и 390; полный M7 regression — 105/105 Chromium/Firefox/WebKit; Orders/Composer/Glass/FE-S04 — 210/210 Chromium; `npm run build` PASS (207 modules), `git diff --check` PASS.
+- Границы: только React/fixtures; нет API, писем, аккаунтов, реальной проверки кода, синхронизации/1С или production status. Auth Figma отсутствует: `OWNER_DESIGN_OPEN`. Визуальная полировка и pixel parity остаются M8.
+- PR #20 открыт; проверять CI строго на head SHA. Drive CURRENT синхронизировать с PR и этим QA. Визуальное принятие и merge остаются Owner gates.
+
+Документация пересмотрена 07.11.2026; следующая ревизия 21.11.2026.
+
 ## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
 
 FE-S03 / M7 merged to `origin/main` in `7828005`. The post-merge Client OrderDetail correction and related docs were committed as `7078b39`, then merged and pushed to `origin/main` in `e184e01`. Screen acceptance and visual OPEN items remain open. CI for the correction and merge has not run; follow the Owner gate before release.
