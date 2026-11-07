@@ -82,10 +82,12 @@ Figma company detail and linked orders are the same composition. Add company dis
 | Valid Composer `1953:4170` | Send | Submitted `1994:5084`, readonly | `canSendDemo/onSend/sendDraft` → OrderDetail | PASS: explicit local send, повторный submit недоступен; API/1С OPEN |
 | Client draft → Manager list | Смена demo роли до отправки | Draft отсутствует | Workspace scopes only sent drafts | PASS: private draft не появляется у Manager |
 | Submitted → Manager list/detail `2500:9701` | Смена роли → открыть тот же ID | Те же items/date/comment | Shared store → OrdersList/OrderDetail | PASS data parity; proposed actions/ACL OPEN, agreed date readonly/Create disabled |
+| Client completed `1846:2942/2982/3014`, production `1838:6565` / Manager detail | Открыть readonly Detail | Client один Date Field, Manager requested + agreed | Общий OrderDetail, role-specific fields | PASS: число полей на пяти ширинах; agreed date в модели не удаляется |
 | Completed `1846:2942/2982/3014` | More → Duplicate | Repeat `1846:3046/3092/3129` | Completed thin wrapper → shared Overflow → `duplicateOrder` | PASS: новый Order и Item IDs, источник неизменён, даты/доступ к файлу сброшены |
 | Repeat file unavailable | Open Item → HELP/новый файл → Save | Новый черновик готов к отправке | Тот же ItemForm/Composer | PASS: нет вымышленной связи со старым server file |
 | Lists GL03 / empty `1837:6275/6281/6287` | Фильтр/empty/reset/reload | Реальное членство fixtures, честное empty | Client/Manager controlled filters, Workspace reset | PASS: выбранная роль/фильтр, детерминированный reset; нет persistence |
 | Delete Draft/Item, Duplicate Item, My Layouts | Недоступное действие | Disabled до решения/контракта | Shared menu/Artwork guards | OPEN Owner/PO/API; не включено догадкой |
+| Manager PILOT list `2495:8871/9000/9097` | «Новые/Все», поиск, компания, сортировка | Дополнительная панель списка | В текущем React только согласованные GL03 + OrdersList | OPEN Owner scope: панель не реализована; не подменять business semantics «Новые»/сортировки |
 
 Тесты: `order-compose`, `order-detail`, `client-orders`, `manager-orders`, `orders-components`, `orders-figma-parity`; screenshots пяти ширин, Chromium/Firefox/WebKit. Полный итог текущего прогона — HANDOFF. Figma/React side-by-side и список исключений — Component Registry; визуальная приёмка Owner/merge заблокированы до закрытия gate.
 

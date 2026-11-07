@@ -1,5 +1,13 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## Конец сессии 07.11.2026 — точка продолжения
+
+- Рабочая папка D:/Projects/flexomir_os, ветка feat/fe-s03-m7-client-manager-ui. Локальный HEAD и origin этой ветки совпадают: **0f468407eb82ca98af83a1c20e66d62e131eb313**. [Draft PR #18](https://github.com/SigmeD/flexomir_os/pull/18) открыт; merge не выполнялся и не разрешён. Main и origin/main остались на 351157c1891e9e23db677b02cfd32a5b1ea9ad1e.
+- Итоговый локальный QA: build PASS, M7 105/105, Orders/Glass 202/202. При завершении сессии повторно подтверждены **6/6 CI SUCCESS именно на 0f46840**; [M7](https://github.com/SigmeD/flexomir_os/actions/runs/42348095902), [Orders Core](https://github.com/SigmeD/flexomir_os/actions/runs/42348095800). Первый Firefox timeout, три диагностических повтора и визуальные OPEN описаны ниже; не скрывать их за итоговым PASS.
+- CURRENT Drive-план синхронизирован с SHA, CI и OPEN. Следующий шаг: независимое ревью и Owner gate PR #18; перед VISUAL_PASS закрыть desktop picker breadcrumbs и согласовать активный Sidebar. M8 — после текущего gate. Новые агенты, merge и удаление веток без соответствующего поручения не запускать.
+- Исходные 8 staged-файлов сохранены отдельно; их содержимое проверено сравнением patch. Не коммитить автоматически OrderDetail.tsx, tests/order-detail.spec.ts, исходные doc-правки и удаления Screenshot_1/2. Stash 9dabc03e041adfac80186b83c9e028907a293852 сохранён. Эта запись завершения сессии добавлена локально поверх прежних правок HANDOFF, без нового коммита.
+- Локальные доказательства: output/fe-s03/continuation-105-results.json, continuation-202-results.json, continuation-m7-serialized.log, continuation-regression.log, comparison/index.html. Тяжёлые материалы остаются ignored. В сессии запускался Vite на http://127.0.0.1:5173; перед следующим просмотром перепроверить процесс.
+
 ## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
 
 ### 1. Основные прогрессы
@@ -39,7 +47,17 @@ Branch feat/fe-s03-m7-client-manager-ui from fetched main 351157c. A Companies f
 Preexisting staged changes: Screenshot_1/2 deletions, four docs, OrderDetail.tsx and order-detail.spec.ts. Binary patch backup local output/fe-s03/preexisting-staged.patch. Do not commit/revert these as FE-S03. No stash/worktree mutations. Naming «Компании» vs visible Figma «Клиенты» remains OPEN.
 
 
+## Конец сессии 06.11.2026 — актуальная точка входа
+
+PR #16 MERGED на GitHub, merge commit `351157c1891e9e23db677b02cfd32a5b1ea9ad1e`. По поручению Owner локальная `main` синхронизирована с `origin/main`; сейчас открыта `main`. Повторный merge/push не нужен. Сборка текущего рабочего дерева PASS (175 modules); незакоммиченные правки сохранены без изменения содержимого при переключении. Техническое слияние не закрывает визуальные OPEN ниже.
+
+Не вошли в merge: финальное ограничение agreed-date поля ролью Manager в `OrderDetail.tsx`, проверка в `tests/order-detail.spec.ts`, сопутствующие изменения Component Registry / Screen Map / PROJECT_STATE / этого HANDOFF. Эти шесть tracked-файлов остаются незакоммиченными; `Screenshot_3.png` и `Screenshot_4.png` untracked. Stash, включая `9dabc03e041adfac80186b83c9e028907a293852`, не применялся и не удалялся. В следующей сессии сначала проверить Git и источники; продолжение кодовых правок — в обычной рабочей ветке, не коммитить их прямо в main. Способ доставки оставшейся коррекции определить с учётом уже закрытого PR #16.
+
+Локалка последней проверкой отвечала HTTP 200: `http://127.0.0.1:5173/?view=client-orders`, Manager — `?view=manager-orders`, сквозное демо — `?view=client-orders&demoTools=1`; перед новым просмотром перепроверить процесс. На замечание о фильтре подтверждено: Client и Manager используют один `GlassPillTabs` GL-03, копии нет; свежие 6 Chromium проверок фильтрации/empty PASS. Manager PILOT панель Search/Company/Sort/«Новые/Все» остаётся OPEN, Owner ответа о включении не дал. Более ранние записи ниже о Draft/merge BLOCKED — история до фактического слияния; нормативные и визуальные исключения не объявлены принятыми. Drive CURRENT и описание закрытого PR ещё требуют сверки с фактическим merge; не считать их уже синхронизированными.
+
 ## PR #16 / Figma parity correction — continuation 06.11
+
+Финальная сверка: убрано лишнее agreed-date поле из Client readonly Detail по CURRENT completed `1846:2942/2982/3014` и production `1838:6565`; данные и Manager поле сохранены. Build/expanded tsc PASS, затронутые сценарии **40 Chromium + 6 Firefox/WebKit PASS**, captures обновлены. У `df98092` все пять GitHub CI workflow SUCCESS, Orders Core **202 passed**. Последующая коррекция требует CI своего SHA, не приписывать ей старый результат. Manager list PILOT `2495:8871/9000/9097` имеет Search/Company/Sort/«Новые/Все», отсутствующие в текущем согласованном React: это конкретный structural OPEN, решение запрошено у Owner до визуальной приёмки.
 
 **Результаты:** build175 + expanded tsc PASS; полный Chromium 200/200 и Firefox/WebKit 78/78 PASS. После добавления screen-wide axe и контрастной secondary text — дополнительные 2 Chromium + 2 Firefox/WebKit PASS (Client/Manager list/detail + Composer); targeted shared/rendering captures перепроверены. В текущем CI ожидается 202 Chromium, в cross config 80 cases. Последний head/CI — PR #16. Это не OWNER_ACCEPTED; visual/merge BLOCKED.
 
