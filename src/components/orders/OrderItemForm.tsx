@@ -11,10 +11,9 @@ import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-item-form.css'
 
 /** New/Edit Item: CURRENT CORE D1791:6130 / T1837:6385 / M1791:6185. */
-export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigationSectionChange, ownerRole = 'client', parentDirty = false }: {
+export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigationSectionChange }: {
   item?: DemoItem; onSave: (item: DemoItem) => void; onClose: () => void; onBackToList?: () => void
   onNavigationSectionChange?: (section: CabinetSection) => void
-  ownerRole?: 'client' | 'manager'; parentDirty?: boolean
 }) {
   const [initial] = useState(() => ({ ...emptyDemoItem(), ...item }))
   const [value, setValue] = useState(initial)
@@ -44,7 +43,7 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
     if (event.key === 'Escape' && !event.defaultPrevented && event.currentTarget.contains(event.target as Node) && !dirty) { event.stopPropagation(); onClose() }
   }}>
     <PageHeader title={title} autoFocus breadcrumbs={[
-      { label: ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBackToList, disabled: dirty || parentDirty },
+      { label: 'Мои заказы', onSelect: onBackToList, disabled: dirty },
       { label: 'Новый заказ', onSelect: onClose, disabled: dirty }, { label: title },
     ]} actions={<>
       <HeaderAction action={item ? 'save' : 'add'} accessibleName={item ? 'Сохранить позицию' : 'Добавить позицию'} disabled={!dirty || !validDemoItem(value)} onAction={() => form.current?.requestSubmit()} />

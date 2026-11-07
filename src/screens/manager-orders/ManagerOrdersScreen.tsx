@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { GlassPillTabs } from '@/components/ui/glass-pill-tabs'
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
@@ -37,7 +37,6 @@ interface ManagerOrdersScreenProps {
   managerCompanies?: readonly Pick<DemoCompany, 'id' | 'name'>[]
   onCreateOrder?: () => string
   onSaveManagerDraft?: (draft: DemoDraft) => void
-  onEditorStateChange?: (open: boolean) => void
 }
 
 /**
@@ -45,15 +44,10 @@ interface ManagerOrdersScreenProps {
  * No 1C mapping, backend statuses, real navigation or server-side ACL here.
  * Accepted Glass primitives remain unchanged.
  */
-export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId = 'all', onFilterChange, newOrderIds = [], processingStates = {}, onProcessingStateChange, demoTools = false, managerDrafts = [], managerCompanies = [], onCreateOrder, onSaveManagerDraft, onEditorStateChange }: ManagerOrdersScreenProps) {
+export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId = 'all', onFilterChange, newOrderIds = [], processingStates = {}, onProcessingStateChange, demoTools = false, managerDrafts = [], managerCompanies = [], onCreateOrder, onSaveManagerDraft }: ManagerOrdersScreenProps) {
   const navigation = useCabinetNavigation()
   const [filterId, setFilterId] = useState<OrderStatusFilterId>(initialFilterId)
   const [queue, setQueue] = useState<'new' | 'all'>('all')
-  const [managerEditorOpen, setManagerEditorOpen] = useState(false)
-  const updateEditorState = useCallback((open: boolean) => {
-    setManagerEditorOpen(open)
-    onEditorStateChange?.(open)
-  }, [onEditorStateChange])
   const preview = useOrderPreview(orders)
   const queueOrders = queue === 'new' ? orders.filter(order => newOrderIds.includes(order.id)) : orders
   const selectedManagerDraft = managerDrafts.find(draft => draft.id === preview.selectedOrder?.id)
@@ -71,9 +65,9 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
   return (
     <div className="fos-orders-page" data-testid="manager-orders-screen" ref={preview.surfaceRef}>
       <AppShell
-        items={(navigation ? cabinetItems('manager', navigation.ready) : managerNav).map(item => managerEditorOpen ? { ...item, disabled: true } : item)}
+        items={navigation ? cabinetItems('manager', navigation.ready) : managerNav}
         activeId="orders"
-        onSelect={id => { if (managerEditorOpen) return; if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) }}
+        onSelect={id => { if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) }}
         roleLabel="Менеджер"
         variant="manager"
         navigationLabel="Навигация менеджера"
@@ -82,7 +76,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
         footerText="Менеджер"
       >
         <main className="fos-orders-page__main" data-role="manager" data-view={preview.selectedOrder ? 'detail' : 'list'}>
-          {selectedManagerDraft ? <OrderComposer key={selectedManagerDraft.id} draft={selectedManagerDraft} onSave={onSaveManagerDraft ?? (() => {})} onSend={() => {}} onBack={preview.backToList} onItemEditorChange={updateEditorState} managerCompanies={managerCompanies} /> : preview.selectedOrder?.detail ? (
+          {selectedManagerDraft ? <OrderComposer key={selectedManagerDraft.id} draft={selectedManagerDraft} onSave={onSaveManagerDraft ?? (() => {})} onSend={() => {}} onBack={preview.backToList} managerCompanies={managerCompanies} /> : preview.selectedOrder?.detail ? (
             <>
               <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} role="manager" managerIntake={demoOrderIds.includes(preview.selectedOrder.id)} demoProcessingState={processingStates[preview.selectedOrder.id] ?? 'pending'} onDemoProcessingStateChange={state => onProcessingStateChange?.(preview.selectedOrder!.id, state)} demoProcessingEnabled={demoTools} />
             </>

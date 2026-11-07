@@ -1,15 +1,5 @@
 # Flexomir OS — React Component Registry
 
-## FE-S04 / 07.11.2026 — shared Composer navigation safety
-
-| Source / need | Shared React implementation | Consumer | QA |
-| --- | --- | --- | --- |
-| Manager private draft: protect pending company/items/date/comment | `OrderComposer` derives `managerUnsaved` against persisted demo draft; guards own Orders breadcrumb and reports editing/unsaved flag via existing `onItemEditorChange` callback | `ManagerOrdersScreen` blocks AppShell navigation and forwards editing flag to `OrderDemoWorkspace` role switch/reset | Playwright regression added, current SHA CI OPEN |
-| Nested Manager ItemForm, clean child + dirty parent | `OrderItemForm` consumes `ownerRole` and `parentDirty`; shows Manager «Заказы» and disables parent navigation when dirty | Shared composer for Client and Manager | Chromium regression added; full cross-browser and Owner OPEN |
-
-The fix is in shared components, not an extra navigation subsystem or one-off page CSS. Business save/permissions remain UI-only fixtures, not API/1C contract.
-
-
 ## FE-S04 / 07.11.2026 — A–D component map
 
 | Figma / requirement | React component | Props / state | Consumers / decision |

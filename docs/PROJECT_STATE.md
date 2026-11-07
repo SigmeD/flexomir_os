@@ -1,13 +1,5 @@
 # Flexomir OS — текущее состояние проекта
 
-## FE-S04 / 07.11.2026 — независимый функциональный регрессионный checkpoint (PR #20)
-
-- На PR head `66113e3` все шесть GitHub CI workflows SUCCESS; исходная QA-сводка — build 207 modules, локально 105 M7 + 210 Orders/FE-S04 и 34 targeted Chromium PASS **до новой правки**.
-- При read-only code review найден риск **потери несохранённых изменений черновика Manager**: `OrderComposer` сообщал о блокировке переходов только во время редактирования Item, не при несохранённой компании/позициях/общих полях. Через role switch, reset, Sidebar/Breadcrumb можно было потерять in-memory draft. Root source — общий `OrderComposer` / его consumer `ManagerOrdersScreen`, не CSS и не backend.
-- Исправлено в том же PR: manager `managerUnsaved` блокирует переходы, сброс демо и роль до `Сохранить черновик менеджера`; при открытом вложенном ItemForm все ключевые переходы также блокируются; shared `OrderItemForm` получил `ownerRole` и `parentDirty` для правильной подписи «Заказы» и запрета выхода из незаписанного родителя. Клиентский composer остаётся без новой блокировки базовых полей.
-- Добавлен Playwright `tests/fe-s04.spec.ts` на Manager draft → редактирование Item → запрет смены роли/сброса/возврата → Save → переход и восстановление. **Новый тест и регрессия нового SHA ещё не проверены CI**; локальная Windows-worktree/stash не затрагивалась через GitHub connector. Нельзя переносить PASS с `66113e3` на текущий HEAD; CI, build и Owner gate повторить.
-- Вне изменений: реальная авторизация, API/1С/ACL, backend сохранение, Figma pixel parity (M8). PR Draft, merge не разрешён.
-
 ## CURRENT 07.11.2026 — FE-S04 / issue #19, в работе
 
 База: свежий `origin/main` `8099539d9a5e018492de93f7a55137cfa783b5de`; ветка `feat/fe-s04-client-manager-ui`; [Draft PR #20](https://github.com/SigmeD/flexomir_os/pull/20), head `3f8c0a3bd92e9cb6452bab0e6488fb39ef8fcb0d`. Merge запрещён без разрешения Owner. Исходные stash и локальные данные сохранены.

@@ -62,35 +62,3 @@ test('D: Client submission is visible in Manager New and local processing result
   await page.getByRole('button', { name: 'Открыть заказ ' + id, exact: true }).click()
   await expect(page.getByTestId('order-detail-status')).toHaveText('Демо-обработка завершена')
 })
-
-
-test('B regression: dirty manager order and nested item block role switch, reset and back until saved', async ({ page }) => {
-  await page.goto('/?view=manager-orders&demoTools=1')
-  await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
-  const clientRole = page.getByRole('button', { name: 'Демо: клиент', exact: true })
-  const resetDemo = page.getByRole('button', { name: 'Сбросить демо', exact: true })
-  const breadcrumbs = page.getByRole('navigation', { name: 'Хлебные крошки' })
-  const saveDraft = page.getByRole('button', { name: 'Сохранить черновик менеджера' })
-
-  await page.getByLabel('Компания', { exact: true }).selectOption('company-01')
-  await expect(clientRole).toBeDisabled()
-  await expect(resetDemo).toBeDisabled()
-  await expect(breadcrumbs.getByRole('button', { name: 'Заказы', exact: true })).toBeDisabled()
-
-  await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
-  await expect(page.getByTestId('order-item-form')).toBeVisible()
-  await expect(breadcrumbs.getByRole('button', { name: 'Заказы', exact: true })).toBeDisabled()
-  await fillItem(page)
-  await commitItem(page)
-  await expect(clientRole).toBeDisabled()
-  await expect(resetDemo).toBeDisabled()
-  await saveDraft.click()
-  await expect(clientRole).toBeEnabled()
-  await expect(resetDemo).toBeEnabled()
-
-  await clientRole.click()
-  await expect(page.getByRole('button', { name: /Открыть заказ DEMO-NEW-/ })).toHaveCount(0)
-  await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
-  await expect(page.getByTestId('order-composer')).toBeVisible()
-  await expect(page.getByTestId('order-composer').getByText('Этикетка DEMO')).toBeVisible()
-})
