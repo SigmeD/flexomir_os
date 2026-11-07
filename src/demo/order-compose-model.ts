@@ -12,6 +12,8 @@ export interface DemoItem {
   printMethod: '' | 'flex' | 'digit'
   artworkMode: 'UPLOAD' | 'LIBRARY' | 'HELP'
   fileName: string
+  layoutId?: string
+  layoutName?: string
   unavailableArtwork?: string
   comment?: string
 }
@@ -38,7 +40,7 @@ export function validDemoItem(item: DemoItem): boolean {
   return Boolean(item.name.trim() && item.shape && item.material && item.printMethod
     && positive(item.quantity) && Number.isSafeInteger(Number(item.quantity))
     && positive(item.width) && positive(item.height)
-    && (item.artworkMode === 'HELP' || (item.artworkMode === 'UPLOAD' && item.fileName)))
+    && (item.artworkMode === 'HELP' || (item.artworkMode === 'UPLOAD' && item.fileName) || (item.artworkMode === 'LIBRARY' && item.layoutId && item.layoutName)))
 }
 
 export function validDemoDate(value: string): boolean {
@@ -52,6 +54,7 @@ export const canSendDemo = (draft: DemoDraft) => draft.stage === 'draft' && draf
 
 export function itemSummary(item: DemoItem): OrderItemSummaryView {
   const artworkLabel = item.artworkMode === 'HELP' ? 'Макет: нужна помощь'
+    : item.artworkMode === 'LIBRARY' && item.layoutName ? 'Макет: ' + item.layoutName + ' (демосессия)'
     : item.fileName ? 'Макет: выбран локально ' + item.fileName + ' (не загружен)'
     : 'Макет: файл недоступен, выберите заново или запросите помощь'
   return { id: item.id, name: item.name,

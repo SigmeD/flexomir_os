@@ -24,6 +24,8 @@ export function AppShell({
   roleLabel, variant = 'client', identityLabel = roleLabel, navigationLabel, menuLabel, triggerLabel, footerText,
 }: AppShellProps) {
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 1023px)').matches)
+  const [drawerSelection, setDrawerSelection] = useState(activeId)
+  useEffect(() => { setDrawerSelection(activeId) }, [activeId])
 
   useEffect(() => {
     const media = window.matchMedia('(max-width: 1023px)')
@@ -56,8 +58,9 @@ export function AppShell({
           {compact && (
             <NavigationDrawer
               items={items}
-              activeId={activeId}
-              onSelect={onSelect}
+              activeId={drawerSelection}
+              onSelect={setDrawerSelection}
+              onSelectionSettled={onSelect}
               ariaLabel={menuLabel}
               triggerLabel={triggerLabel}
               footerText={footerText}

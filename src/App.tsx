@@ -4,6 +4,7 @@ import { HeaderActionLab } from './HeaderActionLab'
 import { SidebarNavLab } from './SidebarNavLab'
 import { GlassPillTabsLab } from './GlassPillTabsLab'
 import { OrderDemoWorkspace } from './demo/OrderDemoWorkspace'
+import { LayoutDemoProvider } from './demo/LayoutDemoProvider'
 import { OrdersComponentsLab } from './OrdersComponentsLab'
 import { NavigationDrawerLab } from './NavigationDrawerLab'
 import {
@@ -82,8 +83,11 @@ function GlassFilterDemo() {
   )
 }
 
-export function App() {
+export function App() { return <LayoutDemoProvider><AppViews /></LayoutDemoProvider> }
+function AppViews() {
   const view = new URLSearchParams(window.location.search).get('view')
+  const fixture = new URLSearchParams(window.location.search).get('fixture') ?? ''
+  if (view === 'client-layouts' || view === 'manager-companies' || view === 'client-support' || view === 'manager-support') return <OrderDemoWorkspace role={view.startsWith('client') ? 'client' : 'manager'} initialSection={view === 'client-layouts' ? 'artworks' : view === 'manager-companies' ? 'clients' : 'support'} empty={fixture === 'empty'} errorFixture={fixture} />
   if (view === 'orders-components') return <OrdersComponentsLab />
   if (view === 'header-action') return <HeaderActionLab />
   if (view === 'sidebar-nav') return <SidebarNavLab />

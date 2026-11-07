@@ -2,7 +2,11 @@
 
 Документация проверена по текущей задаче: **06.11.2026**. Следующая ревизия: **20.11.2026**.
 
-> **CURRENT 06.11.2026:** FE-S01 (Client/Manager list + shared detail) в main через PR #14, база `884e78f`. FE-S02 / #15 в ветке `feat/fe-s02-order-compose-flow`: New/Edit/стандартное Duplicate → общий Manager demo. Статус QA/PR — в [PROJECT_STATE](docs/PROJECT_STATE.md), каноническая очередь — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Пожелания встречи 06.11 (подписной, новые реквизиты/вложения/audio/video) исключены. Backend/API/1С — Алексей.
+> **CURRENT 06.11.2026:** FE-S02 PR #16 merged в `main 351157c`. FE-S03 / M7 / issue #17 — одна ветка `feat/fe-s03-m7-client-manager-ui`, [Draft PR #18](https://github.com/SigmeD/flexomir_os/pull/18): компании менеджера, общий Support двух ролей и Client Layouts UI preview. Статусы QA/Owner — в [PROJECT_STATE](docs/PROJECT_STATE.md), этапы — [DELIVERY_PLAN](docs/DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Merge без разрешения Owner запрещён. Backend/API/1С — Алексей; неподтверждённые функции не входят.
+
+После `npm run dev`: `?view=manager-companies`, `?view=client-support`, `?view=manager-support`, `?view=client-layouts`. Готовые разделы связаны через общий Sidebar/Drawer; Orders/New/Repeat доступны как прежде. Все данные синтетические, файлы выбираются только локально, перезагрузка очищает демосессию. `&demoTools=1` открывает существующие инструменты демороли; `&fixture=empty`, `&fixture=support-error`, `&fixture=layout-error` — явные QA fixtures.
+
+M7 QA: `npx playwright test --config=playwright.m7.config.ts --workers=2`; результаты/PNG локальны в `output/fe-s03/` и доступны в CI artifact `fe-s03-m7-browser-evidence`. Для сравнения с заново полученными CURRENT Figma PNG: `node scripts/m7-figma-comparison.cjs`; входные файлы и узлы перечислены в [реестре компонентов](docs/COMPONENT_REGISTRY_2026-11-06.md), готовый локальный обзор — `output/fe-s03/comparison/index.html`. Эти материалы не добавляются в Git.
 
 Рабочая система типографии для клиента и менеджера: заказы, компании, позиции и поддержка, с последующей интеграцией API и 1С. Границы MVP определяют утверждённые CURRENT требования. Рабочая папка: `D:\Projects\flexomir_os`.
 

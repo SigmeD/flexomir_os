@@ -1,5 +1,46 @@
 # Flexomir OS — React Component Registry
 
+## FE-S03 / final responsive checkpoint, 07.11
+
+LayoutBrowser(mode=select|replace) внутри OrderItemForm: REUSE тех же LayoutRow/LayoutDetail/UploadForm. layouts.css задаёт отступы host и preview по CURRENT LAY03/04 D/T/M (1316:2015/2074/2165/2223/2315/2372); library сохраняет свою композицию. Пять размеров 1440/1024/768/390/320, выбор/замена/возврат проверены в составе свежих 105 M7 и 202 Orders/Glass сценариев. Новый мастер и отдельный экранный CSS не создавались. CI Orders отслеживает layouts/** как зависимость формы позиции. Авторская визуальная сверка; независимое review и Owner gate OPEN.
+
+Structural VISUAL OPEN / LAY03 desktop 1316:2015: Figma breadcrumbs «Новая позиция / Мои макеты» и Sidebar «Макеты»; текущий LayoutBrowser даёт только «Мои макеты», а родительский AppShell сохраняет «Заказы». Влияние — контекст пути/навигации. Перед Owner VISUAL_PASS устранить parent breadcrumb на уровне LayoutBrowser и согласовать с Owner политику активного раздела вложенного picker; checkpoint CSS исправляет только геометрию. M8/Owner gate OPEN, не pixel-perfect.
+
+
+## FE-S03 / D — integration contract
+
+CabinetNavigation supplies only available demo destinations. OrderDemoWorkspace composes existing Orders and new Companies/Support/Layouts; React Activity keeps visited same-role sections, form input and selection, while effects/Drawer locks clean up when hidden. Existing Orders role switch still remounts role presentation; draft/filter store is shared at workspace level. No new routing package.
+
+AppShell separates Drawer selected UI from actual section change: local selection → accepted lens settles → existing onSelectionSettled → destination. Sidebar/GL03/HeaderAction material and spring unchanged. usePreviewNavigation uses a unique in-memory history namespace, supports StrictMode, browser Back, nested picker and explicit opener IDs (Safari pointer clicks need not focus buttons). Scope remains demo routes.
+
+Same CompanyOrders uses controlled per-company search/status. SupportTicketRow/Form/Detail use role-owned synthetic records; same subject is H1 before and after submission. LayoutBrowser(mode=library/select/replace) consumes one LayoutRow/Detail/UploadForm/Panel; ArtworkSource and uploader share LocalFileControl. Shared HeaderAction adds only Choose glyph24 from2047:7665; assets are local, root dimensions preserved.
+
+
+## FE-S03 / M7 — component-first map, 06.11
+
+**C / source map before JSX:** LAY01 `634:8050/8193/8277` → LayoutRow(layout,onOpen), master `1313:2182` Wide/Compact default/hover/pressed/focus, thumbnail `674:114` 60 (row instances including compact use 60). LAY02 `1316:1966/2120/2268` → LayoutDetail(layout), source/history action rows `2167:1357`, `2158:1347`; preview + readonly description, disabled Save/More/history/download where sources/permissions absent. CURRENT LAY02 has links to PROPOSED `2101:7959`; these actions remain OPEN, not implemented.
+
+LAY03/05 `1316:2015/2165/2315`, `1318:2371/2386/2401` → ONE LayoutPicker(mode=select|replace) list. LAY04/06 `1316:2074/2223/2372`, `1318:2379/2394/2409` → same LayoutDetail presentation=picker, HeaderAction EXTEND choose from Figma `2047:7665`, retain shared motion. Reactions confirm Choose → New Item `1791:6130` or Edit `1782:6025`; bind to existing OrderItemForm/ArtworkSource with synthetic layout ID/title only.
+
+LAY07/08/09 `1440:4989/5209/5419`, `1440:5059/5275/5486`, `1440:5128/5341/5552` → ONE LayoutUploadForm + LayoutUploadPanel master `1438:474` Empty/Selected/Error (static fixture), metadata `2109:8114` desktop + T/M variants. CREATE shared native LocalFileControl for existing ArtworkSource and library uploader; no upload/progress/server-success simulation. Save creates ephemeral demo metadata only. Type/size/requiredness/real files/storage/version/ACL OPEN, do not enforce illustrated 20MB policy. All domains reuse PageHeader/FOS controls/More; no per-frame components.
+
+**B / source mapping before JSX:** Support list `634:8098/8228/8314`, Manager `2605:32928/33010/33079` → CREATE shared SupportTicketRow(ticket,onOpen), FOS thumbnail `674:102` → shared ArtworkThumbnail(label,size). Ticket row masters `2409:11511/11521`: 92px wide/104px mobile, 60px thumbnail, 12px gap. REUSE PageHeader/Add/MoreDisabled.
+
+Form master `2272:2015` Empty, `2272:2047` Invalid, `2272:2163` ServerError; Manager `2606:20379/20390/20399`, ready/error frames → shared SupportTicketForm(value,onChange,touched,onBlur,error). FOSInput/FOSTextarea + Header Send. Client `2412:10665/10680/10693` includes candidate category/attachment; omit these per explicit #17 + FR-SUP-002 and record VISUAL exception. Client label «Описание», Manager «Сообщение» via props. Subject/description are the only fields, no production status enum.
+
+Detail `634:8137/8263/8347`, Manager `2606:22577/22823/23030`, submitted `634:13565/13594/13608`, `2606:23411/23481/23538` → shared SupportTicketDetail(ticket,submitted): same subject H1, readonly requester message + support-team reply, separate outcome feedback. No SupportStatus component: no distinct repeated approved status master; display supplied status text. Archive `2413:10812/10825/10837` is CANDIDATE: readonly fixture presentation only, no archive command or enum. Author reply/delete/triage remain OUT.
+
+| Figma node / variant | React contract | Consumers / action |
+| --- | --- | --- |
+| DS 634:60, FOS 1688:532, shell 637:180, header 2302:2138, controls 634:402/418 + 1148:311 | AppShell/SidebarNav/Drawer/PageHeader/HeaderAction/MoreAction/FOS controls | REUSE; CabinetPage composes new domains; Glass untouched |
+| Client Row set 1189:984, Default 634:316; Manager 2498:10826/10963/11087 | CompanyRow(company,onOpen), whole-row button / 80px / ellipsis | CREATE minimal domain row; no duplicate CompanyCard |
+| Linked orders 2499:9435/9464/9490; long company 2548:10426/10456/10484; third 2548:10513/10543/10571 | CompanyOrders(company,onOpen) + readonly FOS controls + OrdersList/OrderDetail(role=manager) | REUSE order components, CREATE composition; company detail IS linked orders, no invented intermediate page |
+| Shared in-session navigation | usePreviewNavigation(root), browser Back + focus/scroll return points | CREATE for all M7 list/detail flows; no production route or ACL contract |
+| Support / Layout masters | Source/variant map before B/C JSX | DEFER until preceding block QA |
+
+Naming OPEN: issue #17 calls domain «Компании», CURRENT Figma says «Клиенты». Preserve Figma visible label, no global rename. Fixture scoping does not prove server ACL.
+
+
 **Date:** 2026-11-06  
 **Scope:** frontend React, Client/Manager.  
 **Decision (Owner):** Figma maintains visual design-system references, **not a requirement to implement every Figma frame as an individual React screen**. Compose screens from shared React primitives and reusable domain components. Existing UX frames may inform scenarios and state coverage but do not override accepted shared React Glass.

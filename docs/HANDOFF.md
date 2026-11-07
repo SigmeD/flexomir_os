@@ -1,5 +1,44 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
+
+### 1. Основные прогрессы
+
+Завершён финальный responsive/QA checkpoint M7 A–D в той же ветке feat/fe-s03-m7-client-manager-ui и [Draft PR #18](https://github.com/SigmeD/flexomir_os/pull/18), база main 351157c. Свежая сборка PASS (205 modules); M7 **105/105** Chromium/Firefox/WebKit и Orders/Glass **202/202** Chromium, без failed/skipped/flaky. Эти результаты относятся к локальному дереву с сохранёнными исходными staged-правками; чистый PR проверяется CI отдельно.
+
+### 2. Какие задачи решались
+
+Codex — завершение 07.11: проверены отступы общего LayoutBrowser(select/replace) внутри New/Edit Item на 1440/1024/768/390/320; Figma CURRENT LAY03/04 D/T/M перепроверены по 1316:2015/2074/2165/2223/2315/2372. Список и detail используют прежние общие React-компоненты. CI Orders дополнен путём src/components/layouts/** для проверки их влияния на OrderItemForm.
+
+Команды: npm run build; npx playwright test --config=playwright.m7.config.ts --workers=1; полный Orders Core список файлов из .github/workflows/fe08-manager-orders-qa.yml с --workers=2. Доказательства локально: output/fe-s03/continuation-m7-serialized.log, continuation-regression.log, continuation-105-results.json, continuation-202-results.json; визуальные пары — output/fe-s03/comparison/index.html и manifest.json (27 D/T/M пар). Генератор node scripts/m7-figma-comparison.cjs запускать отдельно от тестов: запись HTML вызывает reload Vite.
+
+Первый M7: 104/105, Firefox390 timeout на ожидании стабильного пункта Drawer; журнал continuation-m7.log, JSON continuation-first-104-of-105.json и first-firefox-timeout.md сохранены. Изолированная диагностика с trace: 3/3 PASS (diagnostic-firefox.log, diagnostic-browser). Причина не подтверждена; гипотеза о нагрузке параллельного regression не объявлена установленным фактом. Полный M7 повторён отдельно, без изменения продукта, увеличения таймаутов или автоматических retries.
+
+Визуально: совпадают размеры рядов/detail и адаптивные отступы. Structural OPEN desktop picker LAY03 1316:2015: Figma показывает «Новая позиция / Мои макеты» и Sidebar «Макеты», React — только «Мои макеты» и активные «Заказы» от родительской формы. Не исправлено этим CSS checkpoint; учесть при M8/Owner gate. Отличаются также принятый runtime Glass, контраст secondary text, native fields, синтетический текст и явное предупреждение демосессии. Это авторская сверка; VISUAL/Owner acceptance остаётся OPEN.
+
+### 3. Что в процессе
+
+Независимый reviewer — не назначен, ревью OPEN; по правилам Owner отдельный агент не запускался. Owner — приёмка экранов и разрешение merge, срок не назначен. Алексей/PO/Owner — API/1С/ACL/реальное хранение файлов/full My Layouts scope, ожидаются согласованные контракты. CI финального SHA проверять по PR; не переносить PASS с 832f7c7 на новый commit. Main не изменён, merge/release OPEN.
+
+### 4. Основные договорённости
+
+Codex — доставить checkpoint и LIVE docs в существующий PR #18, 07.11; не создавать новую ветку/PR для этой корректировки. Owner — назначить независимое ревью и выполнить экранную приёмку перед merge; срок не назначен. Затем M8 по [CURRENT Drive](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Исходные 8 staged-файлов и stash сохранены отдельно; OrderDetail/test, исходные docs и удаления Screenshot_1/2 не включаются в checkpoint. Локальные ветки не удалялись.
+
+Ревизия документов: 06.11.2026; следующая 20.11.2026. Более ранние checkpoints ниже — история.
+
+FE-S03 D checkpoint / PR #18: доступные разделы подключены через единый CabinetNavigation/OrderDemoWorkspace; AppShell commits после onSelectionSettled. Сохранение формы Support и контекста компании проверено на пяти размерах; явные opener IDs исправляют Safari focus-on-click. Общий HeaderAction ограничивает tooltip viewport при hover/focus и disabled→enabled, без изменения material/spring. Build PASS; финальные 105 M7 и 202 regression перезапускаются после visual capture, результаты ещё PENDING. Ранее 98/105 и 201/202 не объявлены PASS: устранены реальное tooltip overflow и автоматический reload Vite от записи QA HTML. Генератор сравнений запускать отдельно от тестов. A614742f / B059b270 / Cbc52a45; D code checkpoint. Owner/independent review/merge OPEN, merge не разрешён.
+
+FE-S03 C checkpoint / PR #18: LAY01…09 UI preview реализован одним LayoutBrowser (library/select/replace), LayoutRow/Detail/UploadForm/UploadPanel; HeaderAction расширен Choose из Figma, shared material/motion сохранён. ArtworkSource использует общий LocalFileControl и один LayoutPicker в New/Edit Item. Выбор/замена возвращает тот же Item с полями/фокусом/scroll; local names и synthetic IDs живут только до reload. Build PASS; Chromium C 11/11 (5 размеров + empty/error/cancel), FE-S02 targeted regression 7/7. Axe 0 list/detail/upload; captures local output/fe-s03. История/More ведут в UX PROPOSED 2101:7959, disabled; download/server storage/ACL OPEN. Illustrated 20MB/formats не внедрены как policy. B mobile thumbnail уточнён по master2409:11521:60px, без локального 48px. A/B/C checkpoints выполнены, D integration/full QA next. Owner visual acceptance OPEN, merge запрещён без разрешения.
+
+FE-S03 B checkpoint / PR #18: общий Support Client/Manager реализован по FR-SUP-001..006. Build PASS; Chromium 11/11 functional + 2/2 D/T/M visual-state suites, axe 0 на list/form/detail/submitted. Общие SupportTicketRow/Form/Detail + ArtworkThumbnail; субъект H1 сохраняется, отправка только в демосессии, owner data отдельно, fixture error сохраняет ввод. Category/attachments/author reply/delete/triage исключены; Client candidate form визуально сокращена до подтверждённых полей (Owner OPEN). Реальные server loading/ack/API не имитируются. A 614742f, B checkpoint next, C/D pending; merge не разрешён.
+
+## CURRENT 06.11.2026 — FE-S03 / issue #17
+
+Branch feat/fe-s03-m7-client-manager-ui from fetched main 351157c. A Companies first; B shared Support then C Layouts preview then D integration/QA. One PR, no merge without Owner. CURRENT Drive plan/SRS/Scope and Figma Companies masters/variants/prototype links checked. A test first correctly failed for missing screen; implementation uses shared CabinetPage, CompanyRow/CompanyOrders and existing OrdersList/OrderDetail. QA: build PASS, Chromium 5/5, axe 0; D/M images inspected, Owner visual OPEN. No backend/API/1С changes.
+
+Preexisting staged changes: Screenshot_1/2 deletions, four docs, OrderDetail.tsx and order-detail.spec.ts. Binary patch backup local output/fe-s03/preexisting-staged.patch. Do not commit/revert these as FE-S03. No stash/worktree mutations. Naming «Компании» vs visible Figma «Клиенты» remains OPEN.
+
+
 ## PR #16 / Figma parity correction — continuation 06.11
 
 **Результаты:** build175 + expanded tsc PASS; полный Chromium 200/200 и Firefox/WebKit 78/78 PASS. После добавления screen-wide axe и контрастной secondary text — дополнительные 2 Chromium + 2 Firefox/WebKit PASS (Client/Manager list/detail + Composer); targeted shared/rendering captures перепроверены. В текущем CI ожидается 202 Chromium, в cross config 80 cases. Последний head/CI — PR #16. Это не OWNER_ACCEPTED; visual/merge BLOCKED.

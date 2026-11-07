@@ -6,22 +6,35 @@ import { PageHeader } from '@/components/ui/page-header'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
 import { ArtworkSource } from './ArtworkSource'
 import { PrintingMethodControl } from './PrintingMethodControl'
+import { LayoutBrowser } from '@/components/layouts/LayoutBrowser'
+import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-item-form.css'
 
 /** New/Edit Item: CURRENT CORE D1791:6130 / T1837:6385 / M1791:6185. */
-export function OrderItemForm({ item, onSave, onClose, onBackToList }: {
+export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigationSectionChange }: {
   item?: DemoItem; onSave: (item: DemoItem) => void; onClose: () => void; onBackToList?: () => void
+  onNavigationSectionChange?: (section: CabinetSection) => void
 }) {
   const [initial] = useState(() => ({ ...emptyDemoItem(), ...item }))
   const [value, setValue] = useState(initial)
   const [touched, setTouched] = useState<Record<string, boolean>>({})
+  const [pickerOpen, setPickerOpen] = useState(false)
+  const pickerScroll = useRef(0)
   const form = useRef<HTMLFormElement>(null)
   const dirty = JSON.stringify(value) !== JSON.stringify(initial)
   const update = (patch: Partial<DemoItem>) => setValue(current => ({ ...current, ...patch }))
   const title = item ? item.name : 'Новая позиция'
   useLayoutEffect(() => { window.scrollTo(0, 0) }, [])
+  function exitPicker() {
+    setPickerOpen(false)
+    requestAnimationFrame(() => { document.querySelector<HTMLElement>('[data-artwork-library]')?.focus({ preventScroll: true }); window.scrollTo(0, pickerScroll.current) })
+  }
   const error = (key: 'quantity' | 'width' | 'height') => touched[key] && value[key] !== '' && !(Number(value[key]) > 0 && (key !== 'quantity' || Number.isSafeInteger(Number(value[key])))) ? 'Введите положительное ' + (key === 'quantity' ? 'целое число' : 'число') : undefined
   const blur = (key: string) => () => setTouched(current => ({ ...current, [key]: true }))
+  if (pickerOpen) return <LayoutBrowser mode={item ? 'replace' : 'select'} parentContext={{
+    breadcrumb: { label: title },
+    navigation: onNavigationSectionChange ? { activeSection: 'artworks', returnSection: 'orders', onSectionChange: onNavigationSectionChange } : undefined,
+  }} onChoose={layout => update({ artworkMode: 'LIBRARY', layoutId: layout.id, layoutName: layout.title, fileName: '', unavailableArtwork: undefined })} onExit={exitPicker} />
   return <form ref={form} className="fos-item-form" data-testid="order-item-form" onSubmit={event => {
     event.preventDefault()
     if (dirty && validDemoItem(value)) onSave(value)
@@ -54,7 +67,7 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList }: {
           <option value="">Выберите материал</option><option>Бумага</option><option>Плёнка</option>
         </FOSSelect>
       </div>
-      <div className="fos-item-form__artwork"><ArtworkSource value={value} onChange={update} /></div>
+      <div className="fos-item-form__artwork"><ArtworkSource value={value} onChange={update} onOpenLibrary={() => { pickerScroll.current = window.scrollY; setPickerOpen(true) }} /></div>
       <FOSTextarea wrapperClassName="fos-item-form__note" label="Комментарии" placeholder="Необязательно" value={value.comment || ''} onChange={event => update({ comment: event.target.value })} />
     </div>
     <p className="fos-sr-only" role="status">{dirty ? 'Есть несохранённые изменения позиции' : 'Изменений позиции нет'}</p>

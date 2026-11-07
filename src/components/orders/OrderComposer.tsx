@@ -7,12 +7,14 @@ import { FOSDateField, FOSTextarea } from '@/components/ui/fos-controls'
 import { OrderItemForm } from './OrderItemForm'
 import { OrderItemRow } from './OrderItemRow'
 import { SectionAddItem } from './SectionAddItem'
+import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-compose.css'
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
-export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChange }: {
+export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChange, onNavigationSectionChange }: {
   draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend: (draft: DemoDraft) => void; onBack: () => void
   onItemEditorChange?: (open: boolean) => void
+  onNavigationSectionChange?: (section: CabinetSection) => void
 }) {
   const [value, setValue] = useState(draft)
   const [editing, setEditing] = useState<string | null>(null)
@@ -60,6 +62,6 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
         </section>
       </div>
       <p className="fos-sr-only" role="status">{feedback || 'Черновик только в памяти страницы'}</p>
-    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} />}
+    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} />}
   </div>
 }

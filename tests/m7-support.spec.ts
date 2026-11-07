@@ -1,0 +1,70 @@
+import { test, expect } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
+
+for (const role of ['client', 'manager']) for (const width of [1440, 1024, 768, 390, 320]) {
+  test(`B ${role} own support create/read/back ${width}`, async ({ page }, info) => {
+    await page.setViewportSize({ width, height: 960 })
+    await page.goto(`/?view=${role}-support`)
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Мои обращения')
+    await expect(page.getByText(role === 'client' ? 'Не работает фильтр заказов' : 'Не открывается макет', { exact: true })).toHaveCount(0)
+    const row = page.getByTestId('ticket-row-' + role + '-01')
+    await row.focus()
+    await page.keyboard.press('Enter')
+    const subject = role === 'client' ? 'Не открывается макет' : 'Не работает фильтр заказов'
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(subject)
+    await expect(page.getByTestId('support-team-reply')).toBeVisible()
+    await expect(page.getByRole('textbox')).toHaveCount(0)
+    await expect(page.getByRole('button', { name: 'Отправить обращение', exact: true })).toBeDisabled()
+    await page.goBack()
+    await expect(row).toBeFocused()
+    await page.getByRole('button', { name: 'Добавить обращение', exact: true }).click()
+    const send = page.getByRole('button', { name: 'Отправить обращение', exact: true })
+    await expect(send).toBeDisabled()
+    await page.getByLabel('Тема', { exact: true }).fill('Демо: длинная тема обращения по отображению заказа и макета')
+    await page.getByLabel(role === 'client' ? 'Описание' : 'Сообщение', { exact: true }).fill('Описание только для текущего автора')
+    await expect(page.getByLabel('Категория', { exact: true })).toHaveCount(0)
+    await send.click()
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Демо: длинная тема обращения по отображению заказа и макета')
+    await expect(page.getByRole('status')).toContainText('Обращение отправлено')
+    await expect(page.getByRole('status')).toContainText('только в этой демосессии')
+    await expect(page.getByRole('textbox')).toHaveCount(0)
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.screenshot({ path: info.outputPath(`fes03-support-${role}-submitted-${width}.png`), fullPage: true })
+    await page.goBack()
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Мои обращения')
+    await expect(page.getByTestId(/ticket-row-/)).toHaveCount(4)
+    await page.getByText('Демо: длинная тема обращения по отображению заказа и макета', { exact: true }).click()
+    await expect(page.getByTestId('support-ticket-detail')).toContainText('Описание только для текущего автора')
+  })
+}
+
+test('B empty/error fixtures preserve input and do not fabricate server success', async ({ page }) => {
+  await page.goto('/?view=client-support&fixture=empty')
+  await expect(page.getByTestId('support-empty')).toBeVisible()
+  await page.goto('/?view=client-support&fixture=support-error')
+  await page.getByRole('button', { name: 'Добавить обращение' }).click()
+  await page.getByLabel('Тема', { exact: true }).fill('Сохранить ввод')
+  await page.getByLabel('Описание', { exact: true }).fill('Демонстрация ошибки')
+  await page.getByRole('button', { name: 'Отправить обращение' }).click()
+  await expect(page.getByRole('alert')).toContainText('Ошибка отправки')
+  await expect(page.getByLabel('Тема', { exact: true })).toHaveValue('Сохранить ввод')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Новое обращение')
+})
+
+for (const role of ['client', 'manager']) test(`B ${role} Figma reference states D/T/M`, async ({ page }, info) => {
+  for (const width of [1440, 768, 390]) {
+    await page.setViewportSize({ width, height: 960 })
+    await page.goto(`/?view=${role}-support`)
+    await page.evaluate(() => document.fonts.ready)
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+    await page.screenshot({ path: info.outputPath(`fes03-support-${role}-list-${width}.png`), fullPage: true })
+    await page.getByRole('button', { name: 'Добавить обращение' }).click()
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+    await page.screenshot({ path: info.outputPath(`fes03-support-${role}-new-${width}.png`), fullPage: true })
+    await page.goBack()
+    await page.getByTestId('ticket-row-' + role + '-01').click()
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+    await page.screenshot({ path: info.outputPath(`fes03-support-${role}-detail-${width}.png`), fullPage: true })
+  }
+})

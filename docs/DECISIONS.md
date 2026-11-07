@@ -1,5 +1,17 @@
 # Flexomir OS — реестр решений и вопросов
 
+## FE-S03 / Owner instruction 06.11.2026 — approved scope and OPEN
+
+Основание: [issue #17](https://github.com/SigmeD/flexomir_os/issues/17) и прямое поручение Owner в этой сессии. A Manager Companies → B shared requester Support → C My Layouts UI-only → D integration/QA, один PR #18, без merge до отдельного разрешения. Это frontend demo на синтетических данных, без backend/API/1С.
+
+- Support: FR-SUP-001..006 разрешают тему/описание, свои обращения и ответ команды. Manager не оператор. Категории/вложения/author reply/delete/triage из CANDIDATE исключены; сокращение candidate Client NEW до двух подтверждённых полей — explicit #17, не изменение SRS.
+- Layouts: разрешён UI preview LAY01…09; полная библиотека/реальное хранение/versions/ACL по-прежнему OPEN. CURRENT LAY02 links ведут в PROPOSED section2101:7959: More/history остаются disabled. Download disabled без реального source file. Save хранит только demo metadata, не bytes или server upload.
+- Figma «Клиенты» vs issue «Компании»: UI label сохранён по CURRENT Figma, naming OPEN. Company detail и linked orders — одна Figma-композиция, отдельная промежуточная страница не добавлена. Sort disabled: fixture order не равен production rule.
+- Иллюстративные formats/20MB в Upload Panel не утверждены file-policy; не внедрены как ограничения. Required title/source — только demo Save affordance, не API schema. Native read-only/disabled rendering и более контрастный existing secondary color требуют DS/Owner review.
+- Принятый Glass/material/GL03/Sidebar/Drawer сохранён. AppShell использует существующий onSelectionSettled перед сменой раздела; новый motion engine не создан.
+- Код/авторский QA, независимое review, Owner acceptance, merge и release — отдельные статусы. Разрешения на merge нет.
+
+
 ## FE-S02 / Owner scope 06.11.2026 — базовый сценарий и отложенный CR
 
 **Owner уточнение #15:** Figma parity всего Orders-flow обязательна; shared More/menus/Primary/fields/Artwork/rows/PageHeader, один PR #16, merge BLOCKED до визуальной приёмки. Prototype read подтвердил New More Cancel Input `1917:3329 → 1810:12510`, Edit More Cancel Changes `1917:3319 → 1782:6074`: явный Cancel возвращает без несохранённых Item правок. Footer Save/Revert/Close отсутствуют в CURRENT — удалены. General Order values удерживаются в ephemeral store при вводе/навигации; это не утверждённый server autosave. Production leave/reload policy OPEN.

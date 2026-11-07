@@ -65,11 +65,11 @@ test('empty fixture renders honest list state', async ({ page }) => {
   await expect(page.getByTestId('manager-orders-list').locator('li')).toHaveCount(0)
 })
 
-test('non-implemented navigation and order routes cannot be clicked', async ({ page }) => {
+test('implemented navigation is available while unapproved Manager order commands stay disabled', async ({ page }) => {
   const nav = page.getByTestId('shared-sidebar-nav')
   // Query actual DOM nodes: the SidebarNav itself is hidden at mobile width.
-  await expect(nav.locator('[data-testid="sidebar-nav-clients"]')).toBeDisabled()
-  await expect(nav.locator('[data-testid="sidebar-nav-support"]')).toBeDisabled()
+  await expect(nav.locator('[data-testid="sidebar-nav-clients"]')).toBeEnabled()
+  await expect(nav.locator('[data-testid="sidebar-nav-support"]')).toBeEnabled()
   await expect(page.getByTestId('manager-orders-list').getByRole('link')).toHaveCount(0)
 })
 
@@ -131,18 +131,18 @@ test('tablet and mobile navigation opens on the real Orders screen and preserves
     const orders = dialog.getByRole('button', { name: 'Заказы', exact: true })
     await expect(orders).toBeFocused()
     await expect(orders).toHaveAttribute('aria-current', 'page')
-    await expect(dialog.getByRole('button', { name: 'Клиенты', exact: true })).toBeDisabled()
-    await expect(dialog.getByRole('button', { name: 'Поддержка', exact: true })).toBeDisabled()
+    await expect(dialog.getByRole('button', { name: 'Клиенты', exact: true })).toBeEnabled()
+    await expect(dialog.getByRole('button', { name: 'Поддержка', exact: true })).toBeEnabled()
     await expect(dialog.getByTestId('sidebar-selected-lens')).toHaveCount(1)
     await expect(dialog.getByText('Менеджер', { exact: true })).toBeVisible()
     await expect(page.locator('#root')).toHaveAttribute('inert', '')
     expect(await page.evaluate(() => [document.body.style.overflow, document.documentElement.style.overflow]))
       .toEqual(['hidden', 'hidden'])
     await page.keyboard.press('Tab')
-    await expect(orders).toBeFocused()
+    await expect(dialog.getByRole('button', { name: 'Клиенты', exact: true })).toBeFocused()
     await page.keyboard.press('Shift+Tab')
     await expect(orders).toBeFocused()
-    // Selecting the only implemented destination dismisses the modal, not the screen.
+    // Selecting the current destination dismisses the modal and preserves the screen.
     await orders.click()
     await expect(page.getByTestId('navigation-drawer-layer')).toHaveCount(0)
     await expect(trigger).toBeFocused()

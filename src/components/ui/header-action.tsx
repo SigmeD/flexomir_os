@@ -1,14 +1,15 @@
-import { useEffect, useRef, type ComponentProps, type KeyboardEvent, type PointerEvent } from 'react'
+import { useEffect, useLayoutEffect, useRef, type ComponentProps, type KeyboardEvent, type PointerEvent } from 'react'
 import './header-action.css'
 import saveIcon from '@/assets/orders/save.svg'
 import sendIcon from '@/assets/orders/send.svg'
 import editIcon from '@/assets/orders/edit.svg'
+import chooseIcon from '@/assets/layouts/choose.svg'
 
 export type HeaderActionPresentation = 'auto' | 'icon-label' | 'compact'
 
 export interface HeaderActionProps extends Omit<ComponentProps<'button'>, 'children' | 'onClick' | 'type'> {
   /** FOS V2 1953:4168 / 2173:1425: one accepted material/motion across action glyphs. */
-  action: 'add' | 'create' | 'save' | 'send' | 'edit'
+  action: 'add' | 'create' | 'save' | 'send' | 'edit' | 'choose'
   accessibleName: string
   presentation?: HeaderActionPresentation
   onAction?: () => void
@@ -50,6 +51,17 @@ export function HeaderAction({
   const buttonRef = useRef<HTMLButtonElement>(null)
   const circleRef = useRef<HTMLSpanElement>(null)
   const motion = useRef<PressState>(freshState())
+  function positionTooltip() {
+    const button = buttonRef.current
+    const tooltip = button?.querySelector<HTMLElement>('.fos-ha__tooltip')
+    if (!button || !tooltip) return
+    const bounds = button.getBoundingClientRect(), width = tooltip.getBoundingClientRect().width
+    if (!width) return
+    const ideal = bounds.left + bounds.width / 2 - width / 2
+    const left = Math.max(20, Math.min(ideal, window.innerWidth - width - 20))
+    button.style.setProperty('--ha-tooltip-shift', (left - ideal) + 'px')
+  }
+  useLayoutEffect(() => { if (!disabled) positionTooltip() }, [disabled, accessibleName])
 
   function reset() {
     const s = motion.current
@@ -173,8 +185,8 @@ export function HeaderAction({
     buttonProps.onKeyUp?.(event)
   }
 
-  const caption = { add: 'Добавить', create: 'Создать', save: 'Сохранить', send: 'Отправить', edit: 'Изменить' }[action]
-  const glyph = { save: saveIcon, send: sendIcon, edit: editIcon }[action as 'save' | 'send' | 'edit']
+  const caption = { add: 'Добавить', create: 'Создать', save: 'Сохранить', send: 'Отправить', edit: 'Изменить', choose: 'Выбрать' }[action]
+  const glyph = { save: saveIcon, send: sendIcon, edit: editIcon, choose: chooseIcon }[action as 'save' | 'send' | 'edit' | 'choose']
 
   return (
     <button
@@ -188,6 +200,8 @@ export function HeaderAction({
       data-action={action}
       className={['fos-ha', 'fos-ha--' + presentation, className].filter(Boolean).join(' ')}
       onClick={() => onAction?.()}
+      onPointerEnter={event => { positionTooltip(); buttonProps.onPointerEnter?.(event) }}
+      onFocus={event => { positionTooltip(); buttonProps.onFocus?.(event) }}
       onPointerDown={pointerDown}
       onPointerUp={pointerUp}
       onPointerCancel={(event) => { if (motion.current.pointerId === event.pointerId) end(); buttonProps.onPointerCancel?.(event) }}

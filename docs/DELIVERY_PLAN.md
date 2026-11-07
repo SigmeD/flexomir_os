@@ -1,5 +1,36 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
+
+Выполнены A → B → C → D и финальная адаптация общего LayoutBrowser для выбора/замены макета в New/Edit Item. Одна ветка feat/fe-s03-m7-client-manager-ui и [Draft PR #18](https://github.com/SigmeD/flexomir_os/pull/18), база main 351157c. Следующий шаг — независимое ревью и Owner gate этого PR; M8 после текущего gate. Merge не разрешён.
+
+- Готово: компании Manager → связанные заказы → общая деталь → назад; общий Support Client/Manager; My Layouts LAY01…09 UI preview и выбор/замена из формы позиции. Состояния, фокус, навигация и синтетические данные сохраняются в пределах демосессии.
+- Итоговая проверка 07.11: build PASS (205 modules), M7 **105/105** Chromium/Firefox/WebKit, Orders/Glass **202/202** Chromium; в итоговых прогонах skipped 0 / flaky 0 / failed 0. В первом M7 был Firefox Drawer timeout (104/105); три изолированных повтора PASS, первопричина не подтверждена, полный прогон повторён отдельно от regression. Команды и доказательства — [HANDOFF](HANDOFF.md). Локальное дерево включает исходные staged-правки, исключённые из PR; CI проверяет чистый commit.
+- Figma CURRENT LAY03/04 D/T/M перепроверены по узлам 1316:2015/2074/2165/2223/2315/2372. Визуальные пары: output/fe-s03/comparison/index.html (27). Совпадают геометрия рядов/detail и адаптивные отступы. Structural OPEN desktop picker: Figma показывает родительские breadcrumbs «Новая позиция / Мои макеты» и Sidebar «Макеты»; React показывает только «Мои макеты» и сохраняет Sidebar «Заказы» от формы позиции. Остальные отличия: runtime Glass, контраст secondary text, native fields и предупреждение демосессии. VISUAL/Owner acceptance OPEN.
+- CI Orders теперь реагирует также на src/components/layouts/**: эти стили используются внутри общего OrderItemForm. Статус финального SHA смотреть в PR, результаты предыдущего SHA ему не приписывать.
+- Независимое ревью OPEN; отдельные агенты не запускались. Backend/API/1С/реальный upload/ACL/full My Layouts scope — Алексей/PO/Owner, OPEN. Owner screen acceptance / merge / release OPEN.
+- Исходные 8 staged-файлов и stash сохранены отдельно: OrderDetail/test, исходные docs и удаления Screenshot_1/2 не входят в этот checkpoint.
+
+Ревизия документов: 06.11.2026; следующая 20.11.2026. Адресная синхронизация статуса: 07.11.2026. Более ранние checkpoints ниже — история.
+
+FE-S03 D checkpoint / PR #18: доступные разделы подключены через единый CabinetNavigation/OrderDemoWorkspace; AppShell commits после onSelectionSettled. Сохранение формы Support и контекста компании проверено на пяти размерах; явные opener IDs исправляют Safari focus-on-click. Общий HeaderAction ограничивает tooltip viewport при hover/focus и disabled→enabled, без изменения material/spring. Build PASS; финальные 105 M7 и 202 regression перезапускаются после visual capture, результаты ещё PENDING. Ранее 98/105 и 201/202 не объявлены PASS: устранены реальное tooltip overflow и автоматический reload Vite от записи QA HTML. Генератор сравнений запускать отдельно от тестов. A614742f / B059b270 / Cbc52a45; D code checkpoint. Owner/independent review/merge OPEN, merge не разрешён.
+
+FE-S03 C checkpoint / PR #18: LAY01…09 UI preview реализован одним LayoutBrowser (library/select/replace), LayoutRow/Detail/UploadForm/UploadPanel; HeaderAction расширен Choose из Figma, shared material/motion сохранён. ArtworkSource использует общий LocalFileControl и один LayoutPicker в New/Edit Item. Выбор/замена возвращает тот же Item с полями/фокусом/scroll; local names и synthetic IDs живут только до reload. Build PASS; Chromium C 11/11 (5 размеров + empty/error/cancel), FE-S02 targeted regression 7/7. Axe 0 list/detail/upload; captures local output/fe-s03. История/More ведут в UX PROPOSED 2101:7959, disabled; download/server storage/ACL OPEN. Illustrated 20MB/formats не внедрены как policy. B mobile thumbnail уточнён по master2409:11521:60px, без локального 48px. A/B/C checkpoints выполнены, D integration/full QA next. Owner visual acceptance OPEN, merge запрещён без разрешения.
+
+FE-S03 B checkpoint / PR #18: общий Support Client/Manager реализован по FR-SUP-001..006. Build PASS; Chromium 11/11 functional + 2/2 D/T/M visual-state suites, axe 0 на list/form/detail/submitted. Общие SupportTicketRow/Form/Detail + ArtworkThumbnail; субъект H1 сохраняется, отправка только в демосессии, owner data отдельно, fixture error сохраняет ввод. Category/attachments/author reply/delete/triage исключены; Client candidate form визуально сокращена до подтверждённых полей (Owner OPEN). Реальные server loading/ack/API не имитируются. A 614742f, B checkpoint next, C/D pending; merge не разрешён.
+
+## CURRENT 06.11.2026 — FE-S03 / M7, issue #17
+
+База после fetch: origin/main 351157c1891e9e23db677b02cfd32a5b1ea9ad1e; FE-S02 PR #16 merged. Одна ветка feat/fe-s03-m7-client-manager-ui, один PR, без merge до разрешения Owner. Это действующий план; прежние CURRENT-блоки ниже — исторические checkpoints. Последняя ревизия документов 06.11, следующая 20.11.
+
+- [x] A: CURRENT Manager 02.1 → CompanyRow + CompanyOrders + shared OrdersList/OrderDetail; list → company-linked orders → order → back. QA 1440/1024/768/390/320, keyboard/history/focus/scroll/empty и synthetic company isolation. Коммит и первый Draft PR.
+- [x] B: CURRENT Support + FR-SUP-001..006 → shared list/form/detail обеих ролей. Тема/описание, собственные тикеты и ответ команды; без author replies/delete/category/attachments/triage. QA ролей/отправки demo/адаптивов + коммит.
+- [x] C: CURRENT LAY-01…09 + prototype preconditions → LayoutRow/Detail/Picker/upload, ephemeral preview. Без PROPOSED edit/history 2101:7959. QA переходов и ArtworkSource regression + коммит.
+- [ ] D: общая навигация готовых разделов; Chromium/Firefox/WebKit, build/CI/axe, Orders/Glass regression, side-by-side D/T/M + 1024/320; LIVE docs + CURRENT Drive. Один итоговый PR без merge.
+
+Гейты отдельно FUNCTIONAL / VISUAL / TECHNICAL / OWNER. Контекст возврата, длинные названия, empty, роли и повторная отправка проверяются сценарными тестами. Backend/API/1С — Алексей. Исходные staged-правки и stash сохранены вне task commits.
+
+
 ## CURRENT / 06.11.2026 — SDLC, единый frontend roadmap
 
 **База:** `origin/main` = `884e78f`, PR #5/#9/#10/#11/#14 merged. FE-S01 list/shared detail в main; FE-S02 в Draft PR #16. Принято Owner: **сначала целостная структура двух кабинетов, затем основные экраны и сценарии; глобальная визуальная полировка после охвата**. Уточнение Owner к #15: текущий Orders-flow должен соответствовать Figma целиком до merge.
