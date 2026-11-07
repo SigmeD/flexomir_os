@@ -2,14 +2,14 @@
 
 ## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
 
-Выполнены A → B → C → D и финальная адаптация общего LayoutBrowser для выбора/замены макета в New/Edit Item. Одна ветка feat/fe-s03-m7-client-manager-ui и [Draft PR #18](https://github.com/SigmeD/flexomir_os/pull/18), база main 351157c. Следующий шаг — независимое ревью и Owner gate этого PR; M8 после текущего gate. Merge не разрешён.
+FE-S03 / M7 merged to `origin/main` in `7828005`. Post-merge Client OrderDetail correction `7078b39` is merged into local `main` but not pushed. Screen acceptance and visual OPEN items remain open; M8 follows the M7 Owner gate.
 
 - Готово: компании Manager → связанные заказы → общая деталь → назад; общий Support Client/Manager; My Layouts LAY01…09 UI preview и выбор/замена из формы позиции. Состояния, фокус, навигация и синтетические данные сохраняются в пределах демосессии.
-- Итоговая проверка 07.11: build PASS (205 modules), M7 **105/105** Chromium/Firefox/WebKit, Orders/Glass **202/202** Chromium; в итоговых прогонах skipped 0 / flaky 0 / failed 0. В первом M7 был Firefox Drawer timeout (104/105); три изолированных повтора PASS, первопричина не подтверждена, полный прогон повторён отдельно от regression. Команды и доказательства — [HANDOFF](HANDOFF.md). Локальное дерево включает исходные staged-правки, исключённые из PR; CI проверяет чистый commit.
+- Итоговая проверка 07.11: build PASS (205 modules), M7 **105/105** Chromium/Firefox/WebKit, Orders/Glass **202/202** Chromium; в итоговых прогонах skipped 0 / flaky 0 / failed 0. В первом M7 был Firefox Drawer timeout (104/105); три изолированных повтора PASS, первопричина не подтверждена, полный прогон повторён отдельно от regression. Команды и доказательства — [HANDOFF](HANDOFF.md). Эти результаты предшествуют correction `7078b39`; CI для correction/merge ещё не запускался.
 - Figma CURRENT LAY03/04 D/T/M перепроверены по узлам 1316:2015/2074/2165/2223/2315/2372. Визуальные пары: output/fe-s03/comparison/index.html (27). Совпадают геометрия рядов/detail и адаптивные отступы. Structural OPEN desktop picker: Figma показывает родительские breadcrumbs «Новая позиция / Мои макеты» и Sidebar «Макеты»; React показывает только «Мои макеты» и сохраняет Sidebar «Заказы» от формы позиции. Остальные отличия: runtime Glass, контраст secondary text, native fields и предупреждение демосессии. VISUAL/Owner acceptance OPEN.
 - CI Orders теперь реагирует также на src/components/layouts/**: эти стили используются внутри общего OrderItemForm. Статус финального SHA смотреть в PR, результаты предыдущего SHA ему не приписывать.
-- Независимое ревью OPEN; отдельные агенты не запускались. Backend/API/1С/реальный upload/ACL/full My Layouts scope — Алексей/PO/Owner, OPEN. Owner screen acceptance / merge / release OPEN.
-- Исходные 8 staged-файлов и stash сохранены отдельно: OrderDetail/test, исходные docs и удаления Screenshot_1/2 не входят в этот checkpoint.
+- Независимое ревью и экранная приёмка OPEN. Backend/API/1С/реальный upload/ACL/full My Layouts scope — Алексей/PO/Owner, OPEN. Remote push/release не выполнены.
+- Все восемь исходных изменений включены в `7078b39`; stash остаётся резервной копией до проверки итогового Git-состояния.
 
 Ревизия документов: 06.11.2026; следующая 20.11.2026. Адресная синхронизация статуса: 07.11.2026. Более ранние checkpoints ниже — история.
 
@@ -41,7 +41,7 @@ FE-S03 B checkpoint / PR #18: общий Support Client/Manager реализов
 | M4 | Карта уникальных экранов Client + Manager по CURRENT Figma/Drive; React статусы `готово/частично/нет` — [M4 screen map](SCREEN_MAP_M4_2026-11-06.md) | **AUDIT DONE / OWNER REVIEW OPEN** |
 | M5 | FE-S01 (#12): Client list/shell + read-only деталь обеих ролей | **MERGED** PR #14, `884e78f`; QA_VERIFIED, не полный MVP |
 | M6 | FE-S02 (#15): A New/Edit Draft/Items, B completed Duplicate, C связанный Manager demo; blocking Figma parity correction | Shared masters + reference New Item + оставшиеся композиции в том же PR #16. Финальный QA/исключения — HANDOFF/Component Registry; transition matrix — Screen Map. Owner visual gate OPEN / merge BLOCKED |
-| M7 | Компании/Поддержка/прочие подтверждённые разделы MVP | PLANNED |
+| M7 | Компании/Поддержка/прочие подтверждённые разделы MVP | **CODE MERGED** (`origin/main` 7828005); post-merge correction merged locally; Owner screen acceptance OPEN |
 | M8 | Системная UI/UX-полировка и рефакторинг общей DS | PLANNED после M5–M7 |
 | M9 | Финальный QA/handoff и подключение frontend к готовым API по мере доступности | PLANNED; backend/1С — Алексей |
 

@@ -2,9 +2,11 @@
 
 ## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
 
+PR #18 merged to `origin/main` as `7828005`. The post-merge Client order detail correction was committed as `7078b39` and merged locally into `main`; the local merge is not pushed. CI has not run for the correction or local merge.
+
 ### 1. Основные прогрессы
 
-Завершён финальный responsive/QA checkpoint M7 A–D в той же ветке feat/fe-s03-m7-client-manager-ui и [Draft PR #18](https://github.com/SigmeD/flexomir_os/pull/18), база main 351157c. Свежая сборка PASS (205 modules); M7 **105/105** Chromium/Firefox/WebKit и Orders/Glass **202/202** Chromium, без failed/skipped/flaky. Эти результаты относятся к локальному дереву с сохранёнными исходными staged-правками; чистый PR проверяется CI отдельно.
+Завершён финальный responsive/QA checkpoint M7 A–D в ветке feat/fe-s03-m7-client-manager-ui; [PR #18](https://github.com/SigmeD/flexomir_os/pull/18) merged в `origin/main` (`7828005`). Локальная `main` теперь содержит correction commit `7078b39` через локальный merge. Предыдущая сборка PASS (205 modules); M7 **105/105** Chromium/Firefox/WebKit и Orders/Glass **202/202** Chromium, без failed/skipped/flaky. Эти результаты предшествуют correction и не являются её CI.
 
 ### 2. Какие задачи решались
 
@@ -18,11 +20,11 @@ Codex — завершение 07.11: проверены отступы обще
 
 ### 3. Что в процессе
 
-Независимый reviewer — не назначен, ревью OPEN; по правилам Owner отдельный агент не запускался. Owner — приёмка экранов и разрешение merge, срок не назначен. Алексей/PO/Owner — API/1С/ACL/реальное хранение файлов/full My Layouts scope, ожидаются согласованные контракты. CI финального SHA проверять по PR; не переносить PASS с 832f7c7 на новый commit. Main не изменён, merge/release OPEN.
+Независимый reviewer — не назначен. Экранная приёмка остаётся OPEN. Алексей/PO/Owner — API/1С/ACL/реальное хранение файлов/full My Layouts scope, ожидаются согласованные контракты. `7078b39` и локальный merge commit ещё не имеют CI; не переносить PASS с `0f46840` на новые SHA. Локальный merge выполнен; push/release OPEN.
 
 ### 4. Основные договорённости
 
-Codex — доставить checkpoint и LIVE docs в существующий PR #18, 07.11; не создавать новую ветку/PR для этой корректировки. Owner — назначить независимое ревью и выполнить экранную приёмку перед merge; срок не назначен. Затем M8 по [CURRENT Drive](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Исходные 8 staged-файлов и stash сохранены отдельно; OrderDetail/test, исходные docs и удаления Screenshot_1/2 не включаются в checkpoint. Локальные ветки не удалялись.
+Post-merge correction `7078b39` contains all eight original file changes. Local merge was requested by the user; it has not been pushed. Owner screen acceptance remains open; M8 follows the M7 gate. The original stash is retained until final Git verification. No branches were deleted.
 
 Ревизия документов: 06.11.2026; следующая 20.11.2026. Более ранние checkpoints ниже — история.
 
@@ -40,6 +42,8 @@ Preexisting staged changes: Screenshot_1/2 deletions, four docs, OrderDetail.tsx
 
 
 ## PR #16 / Figma parity correction — continuation 06.11
+
+Финальная сверка: убрано лишнее agreed-date поле из Client readonly Detail по CURRENT completed `1846:2942/2982/3014` и production `1838:6565`; данные и Manager поле сохранены. Build/expanded tsc PASS, затронутые сценарии **40 Chromium + 6 Firefox/WebKit PASS**, captures обновлены. У `df98092` все пять GitHub CI workflow SUCCESS, Orders Core **202 passed**. Последующая коррекция требует CI своего SHA, не приписывать ей старый результат. Manager list PILOT `2495:8871/9000/9097` имеет Search/Company/Sort/«Новые/Все», отсутствующие в текущем согласованном React: это конкретный structural OPEN, решение запрошено у Owner до визуальной приёмки.
 
 **Результаты:** build175 + expanded tsc PASS; полный Chromium 200/200 и Firefox/WebKit 78/78 PASS. После добавления screen-wide axe и контрастной secondary text — дополнительные 2 Chromium + 2 Firefox/WebKit PASS (Client/Manager list/detail + Composer); targeted shared/rendering captures перепроверены. В текущем CI ожидается 202 Chromium, в cross config 80 cases. Последний head/CI — PR #16. Это не OWNER_ACCEPTED; visual/merge BLOCKED.
 
