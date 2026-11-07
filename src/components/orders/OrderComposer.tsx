@@ -20,10 +20,15 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
   const [value, setValue] = useState(draft)
   const [editing, setEditing] = useState<string | null>(null)
   const [feedback, setFeedback] = useState('')
+  const managerUnsaved = value.ownerRole === 'manager' && JSON.stringify(value) !== JSON.stringify(draft)
   const nextItem = useRef(1)
   const returnFocus = useRef<string | null>(null)
   const root = useRef<HTMLDivElement>(null)
-  useEffect(() => { onItemEditorChange?.(editing !== null); return () => onItemEditorChange?.(false) }, [editing, onItemEditorChange])
+  // A manager's unsaved company/items/date also block navigation and demo reset.
+  useEffect(() => {
+    onItemEditorChange?.(editing !== null || managerUnsaved)
+    return () => onItemEditorChange?.(false)
+  }, [editing, managerUnsaved, onItemEditorChange])
   useLayoutEffect(() => {
     if (editing !== null) return
     const target = returnFocus.current ? root.current?.querySelector<HTMLElement>(returnFocus.current) : root.current?.querySelector<HTMLElement>('h1')
@@ -43,7 +48,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
   }
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id}>
     {editing === null ? <>
-      <PageHeader title="Новый заказ" subtitle={value.ownerRole === 'manager' ? 'Черновик менеджера · приватно в демосессии' : 'Черновик'} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: 'Новый заказ' }]} actions={<>
+      <PageHeader title="Новый заказ" subtitle={value.ownerRole === 'manager' ? 'Черновик менеджера · приватно в демосессии' : 'Черновик'} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack, disabled: managerUnsaved }, { label: 'Новый заказ' }]} actions={<>
         {value.ownerRole === 'manager'
           ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
           : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!canSendDemo(value)} onAction={() => onSend(value)} />}
