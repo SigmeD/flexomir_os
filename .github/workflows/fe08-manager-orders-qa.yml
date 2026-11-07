@@ -20,6 +20,7 @@ on:
       - 'src/OrdersComponentsLab.tsx'
       - 'src/App.tsx'
       - 'tests/manager-orders.spec.ts'
+      - 'tests/fe-s04.spec.ts'
       - 'tests/client-orders.spec.ts'
       - 'tests/order-detail.spec.ts'
       - 'tests/order-compose.spec.ts'
@@ -43,7 +44,7 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run build
-      - run: npx playwright test tests/orders-components.spec.ts tests/orders-figma-parity.spec.ts tests/order-compose.spec.ts tests/client-orders.spec.ts tests/order-detail.spec.ts tests/manager-orders.spec.ts tests/navigation-drawer.spec.ts tests/glass-pill-tabs-react.spec.ts tests/gl03-compact-pill-tabs.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts --workers=2
+      - run: npx playwright test tests/orders-components.spec.ts tests/orders-figma-parity.spec.ts tests/order-compose.spec.ts tests/client-orders.spec.ts tests/order-detail.spec.ts tests/manager-orders.spec.ts tests/fe-s04.spec.ts tests/navigation-drawer.spec.ts tests/glass-pill-tabs-react.spec.ts tests/gl03-compact-pill-tabs.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts --workers=2
       - name: Save Orders Core visual review captures
         if: always()
         uses: actions/upload-artifact@v4
