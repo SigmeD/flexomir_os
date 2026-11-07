@@ -2,11 +2,11 @@
 
 ## CURRENT 07.11.2026 — FE-S04 / #19
 
-Работа в основной папке, ветка `feat/fe-s04-client-manager-ui` от свежего `origin/main 8099539`. Одна ветка/один PR; merge не выполнять без Owner. Stash #0–#3 сохранены без изменения.
+Работа в основной папке, ветка `feat/fe-s04-client-manager-ui` от свежего `origin/main 8099539`. Один [Draft PR #20](https://github.com/SigmeD/flexomir_os/pull/20), head `3f8c0a3`; merge не выполнять без Owner. Stash #0–#3 сохранены без изменения.
 
 - A–D реализованы: Manager New/All + UI-only processing states; private manager compose on shared `OrderComposer`; Auth UI candidate; shared in-memory Client↔Manager transition and synthetic import fixture via `fixture=imported-1c`.
 - Auth: approved Figma screen/component search returned no login form. `OWNER_DESIGN_OPEN`; текущий экран явно candidate. No email/code delivery, accounts, auth/session/persistence, API/1C.
-- Verification checkpoint: `npm run build` PASS, 207 modules; FE-S04 + Manager Orders targeted 34/34 Chromium across 1440/390; full M7 105/105 Chromium/Firefox/WebKit; expanded Orders/Composer/Glass/FE-S04 210/210 Chromium; `git diff --check` PASS. Draft PR awaits CI/Owner review.
+- Verification checkpoint: `npm run build` PASS, 207 modules; FE-S04 + Manager Orders targeted 34/34 Chromium across 1440/390; full M7 105/105 Chromium/Firefox/WebKit; expanded Orders/Composer/Glass/FE-S04 210/210 Chromium; `git diff --check` PASS. PR #20 awaits CI/Owner review.
 - Current target M8 visual polish deferred; do not claim visual/Owner acceptance. No secrets/local user data included.
 - Relevant files: `src/demo/OrderDemoWorkspace.tsx`, `src/demo/order-compose-model.ts`, Manager Orders, shared OrderComposer/OrderDetail, `src/screens/auth/`, `tests/fe-s04.spec.ts`.
 

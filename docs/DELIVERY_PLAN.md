@@ -2,13 +2,13 @@
 
 ## CURRENT 07.11.2026 — FE-S04 / #19, implementation checkpoint
 
-Один функциональный инкремент в `feat/fe-s04-client-manager-ui` от `origin/main 8099539`; один Draft PR, без merge без Owner. Блоки A–D реализованы и проверены.
+Один функциональный инкремент в `feat/fe-s04-client-manager-ui` от `origin/main 8099539`; [Draft PR #20](https://github.com/SigmeD/flexomir_os/pull/20), head `3f8c0a3`. Без merge без Owner. Блоки A–D реализованы и проверены.
 
 - **A Manager Orders:** `Новые/Все` используют текущие Client submissions и synthetic records; demo pending/success/error явно UI-only. Synthetic imported-from-1C пример отображается только при явном `fixture=imported-1c` и подписан как несинхронизированный fixture. Исходная GL-03 фильтрация сохранена.
 - **B Manager create:** общий `OrderComposer` расширен выбором существующей компании; manager drafts принадлежат Manager в ephemeral workspace и не попадают в Client list. Публикация/ACL/1С не включены.
 - **C Auth UI:** компонент-кандидат email → UI code states, invalid/expired/resend/trusted-device preview. Реальных аккаунтов, писем, кода, сессии и persist нет. Одобренный Auth Figma frame не найден: `OWNER_DESIGN_OPEN`.
 - **D Client↔Manager:** same in-memory store, новые клиентские submissions видны в Manager New; demo processing label возвращается в Client. Нет API/1С.
-- QA: `npm run build` PASS (207 modules); FE-S04 + Manager Orders 34/34 Chromium (1440/390); full M7 105/105 Chromium/Firefox/WebKit; expanded Orders/Composer/Glass/FE-S04 210/210 Chromium; `git diff --check` PASS. Draft PR awaits CI/Owner review. M8 visual polish/parity deferred.
+- QA: `npm run build` PASS (207 modules); FE-S04 + Manager Orders 34/34 Chromium (1440/390); full M7 105/105 Chromium/Firefox/WebKit; expanded Orders/Composer/Glass/FE-S04 210/210 Chromium; `git diff --check` PASS. PR #20 awaits CI/Owner review. M8 visual polish/parity deferred.
 
 Последняя ревизия документации: 07.11.2026; следующая: 21.11.2026.
 
