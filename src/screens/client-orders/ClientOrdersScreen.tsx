@@ -35,6 +35,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   const navigation = useCabinetNavigation()
   const [filterId, setLocalFilterId] = useState<OrderStatusFilterId>(initialFilterId)
   const [itemEditorOpen, setItemEditorOpen] = useState(false)
+  const [navigationSection, setNavigationSection] = useState<CabinetSection>('orders')
   const setFilterId = (id: OrderStatusFilterId) => { setLocalFilterId(id); onFilterChange?.(id) }
   const preview = useOrderPreview(orders)
   const visibleOrders = filterId === 'all' ? orders : orders.filter(order => order.filterId === filterId)
@@ -46,13 +47,13 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   return (
     <div className="fos-orders-page" data-testid="client-orders-screen" ref={preview.surfaceRef}>
       <AppShell
-        items={(navigation ? cabinetItems('client', navigation.ready) : clientNav).map(item => itemEditorOpen ? { ...item, disabled: true } : item)} activeId="orders" onSelect={id => { if (!itemEditorOpen) { if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) } }}
+        items={(navigation ? cabinetItems('client', navigation.ready) : clientNav).map(item => itemEditorOpen ? { ...item, disabled: true } : item)} activeId={navigationSection} onSelect={id => { if (!itemEditorOpen) { if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) } }}
         roleLabel="Клиент" identityLabel={companyName} variant="client" navigationLabel="Навигация клиента" menuLabel="Меню клиента"
         triggerLabel="Открыть меню клиента" footerText={companyName}
       >
         <main className="fos-orders-page__main" data-view={selectedDraft ? 'compose' : preview.selectedOrder ? 'detail' : 'list'}>
           {selectedDraft && demo ? (
-            <OrderComposer key={selectedDraft.id} draft={selectedDraft} onSave={demo.saveDraft} onSend={demo.sendDraft} onBack={preview.backToList} onItemEditorChange={setItemEditorOpen} />
+            <OrderComposer key={selectedDraft.id} draft={selectedDraft} onSave={demo.saveDraft} onSend={demo.sendDraft} onBack={preview.backToList} onItemEditorChange={setItemEditorOpen} onNavigationSectionChange={setNavigationSection} />
           ) : preview.selectedOrder?.detail ? (
             <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} submitted={demo?.drafts.some(draft => draft.id === preview.selectedOrder?.id && draft.stage === 'sent')}
               actions={demo && preview.selectedOrder.filterId === 'done' ? <CompletedOrderMenu onDuplicate={() => {
