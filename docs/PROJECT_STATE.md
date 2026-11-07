@@ -2,13 +2,13 @@
 
 ## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
 
-FE-S03 / M7 merged to `origin/main` in `7828005`. The post-merge Client OrderDetail correction and related docs were committed as `7078b39`, then merged into local `main`; the local merge is not pushed. Screen acceptance and visual OPEN items remain open. Next: verify this local merge and CI, then follow the Owner gate before release.
+FE-S03 / M7 merged to `origin/main` in `7828005`. The post-merge Client OrderDetail correction and related docs were committed as `7078b39`, then merged and pushed to `origin/main` in `e184e01`. Screen acceptance and visual OPEN items remain open. CI for the correction and merge has not run; follow the Owner gate before release.
 
 - Готово: компании Manager → связанные заказы → общая деталь → назад; общий Support Client/Manager; My Layouts LAY01…09 UI preview и выбор/замена из формы позиции. Состояния, фокус, навигация и синтетические данные сохраняются в пределах демосессии.
 - Итоговая проверка 07.11: build PASS (205 modules), M7 **105/105** Chromium/Firefox/WebKit, Orders/Glass **202/202** Chromium; в итоговых прогонах skipped 0 / flaky 0 / failed 0. В первом M7 был Firefox Drawer timeout (104/105); три изолированных повтора PASS, первопричина не подтверждена, полный прогон повторён отдельно от regression. Команды и доказательства — [HANDOFF](HANDOFF.md). Эти результаты предшествуют `7078b39`; CI для correction/merge ещё не запускался.
 - Figma CURRENT LAY03/04 D/T/M перепроверены по узлам 1316:2015/2074/2165/2223/2315/2372. Визуальные пары: output/fe-s03/comparison/index.html (27). Совпадают геометрия рядов/detail и адаптивные отступы. Structural OPEN desktop picker: Figma показывает родительские breadcrumbs «Новая позиция / Мои макеты» и Sidebar «Макеты»; React показывает только «Мои макеты» и сохраняет Sidebar «Заказы» от формы позиции. Остальные отличия: runtime Glass, контраст secondary text, native fields и предупреждение демосессии. VISUAL/Owner acceptance OPEN.
 - CI Orders теперь реагирует также на src/components/layouts/**: эти стили используются внутри общего OrderItemForm. CI для correction/merge OPEN.
-- Независимое ревью и экранная приёмка OPEN. Backend/API/1С/реальный upload/ACL/full My Layouts scope — Алексей/PO/Owner, OPEN. Remote push/release не выполнены.
+- Независимое ревью и экранная приёмка OPEN. Backend/API/1С/реальный upload/ACL/full My Layouts scope — Алексей/PO/Owner, OPEN. Push выполнен; release OPEN.
 - Все восемь исходных изменений включены в `7078b39`; stash остаётся резервной копией до проверки итогового Git-состояния.
 
 Ревизия документов: 06.11.2026; следующая 20.11.2026. Адресная синхронизация статуса: 07.11.2026. Более ранние checkpoints ниже — история.

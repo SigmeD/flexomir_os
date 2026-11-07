@@ -2,7 +2,7 @@
 
 ## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
 
-PR #18 merged to `origin/main` as `7828005`. The post-merge Client order detail correction was committed as `7078b39` and merged locally into `main`; the local merge is not pushed. CI has not run for the correction or local merge.
+PR #18 merged to `origin/main` as `7828005`. The post-merge Client order detail correction was committed as `7078b39`, merged locally, and pushed to `origin/main` in merge commit `e184e01`. CI has not run for the correction or merge.
 
 ### 1. Основные прогрессы
 
@@ -20,11 +20,11 @@ Codex — завершение 07.11: проверены отступы обще
 
 ### 3. Что в процессе
 
-Независимый reviewer — не назначен. Экранная приёмка остаётся OPEN. Алексей/PO/Owner — API/1С/ACL/реальное хранение файлов/full My Layouts scope, ожидаются согласованные контракты. `7078b39` и локальный merge commit ещё не имеют CI; не переносить PASS с `0f46840` на новые SHA. Локальный merge выполнен; push/release OPEN.
+Независимый reviewer — не назначен. Экранная приёмка остаётся OPEN. Алексей/PO/Owner — API/1С/ACL/реальное хранение файлов/full My Layouts scope, ожидаются согласованные контракты. `7078b39` и merge commit `e184e01` ещё не имеют CI; не переносить PASS с `0f46840` на новые SHA. Push выполнен; release OPEN.
 
 ### 4. Основные договорённости
 
-Post-merge correction `7078b39` contains all eight original file changes. Local merge was requested by the user; it has not been pushed. Owner screen acceptance remains open; M8 follows the M7 gate. The original stash is retained until final Git verification. No branches were deleted.
+Post-merge correction `7078b39` contains all eight original file changes. Local merge commit `e184e01` was pushed to `origin/main`. Owner screen acceptance remains open; M8 follows the M7 gate. The original stash is retained as a backup. No branches were deleted.
 
 Ревизия документов: 06.11.2026; следующая 20.11.2026. Более ранние checkpoints ниже — история.
 
