@@ -8,7 +8,7 @@ Branch `feat/m8-ui-parity-refactor` from `origin/main b5a8624`; [Draft PR #22](h
 - B/C: `ClientOrdersScreen` keeps the current «Макеты» navigation item active and enabled during the nested picker; the unsaved item guard still disables other destinations. No Glass primitive/material or backend work.
 - D: build PASS; `npx playwright test tests/m7-layouts.spec.ts --workers=1` PASS, 22/22 across Chromium-1440 and Chromium-390 projects; the suite checks widths 1440/1024/768/390/320 and empty/error/cancel flows. Full related Client/Manager/Orders/Glass suite PASS, 236/236 Chromium. Cross-browser subset PASS, 164/164 Firefox+WebKit, including LAY03, Composer, shared nav/drawer, order lists/details and reduced-motion/forced-colors. A brittle CSS scientific-notation assertion was normalized; the affected Firefox/WebKit test passed on retry.
 - OPEN: Manager Orders PILOT controls (New/All/Search/Company/Sort) need Owner scope/semantics decision; Auth is `OWNER_DESIGN_OPEN`; sidebar icon parity needs Owner review. Independent review and Owner visual gate remain pending.
-- Next: final diff review, commit and open the one PR; independent review and Owner visual gate remain pending. Do not merge without explicit Owner permission. Update canonical Drive CURRENT only through the project delivery process.
+- Next: independent review and Owner visual gate on Draft PR #22; check CI on the latest PR head. Do not merge without explicit Owner permission. Update canonical Drive CURRENT only through the project delivery process.
 
 ## CURRENT 07.11.2026 — FE-S04 / #19
 
