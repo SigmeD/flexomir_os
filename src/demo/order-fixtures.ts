@@ -25,3 +25,10 @@ export const DEMO_ORDERS: readonly OrderListItem[] = [
     requestedDate: '23.11.2026',
   } },
 ]
+
+export const DEMO_IMPORTED_1C_ORDER: OrderListItem = {
+  id: 'DEMO-1C-001', title: 'Синтетическая запись импорта из 1С', company: 'Компания 02 — демонстрационный полиграфический комплекс Центрального региона', statusLabel: 'Демо-фикстура, без синхронизации', filterId: null, detail: {
+    items: [{ id: 'DEMO-1C-001-1', name: 'Пример импортированной позиции', specifications: 'Пример из демосессии', artworkLabel: 'Макет: синтетическая запись, данные не загружались' }],
+    comment: 'Синтетический пример для сквозного сценария. Обмена с 1С не было.',
+  },
+}

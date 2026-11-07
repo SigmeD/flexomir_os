@@ -1,0 +1,8 @@
+.fos-auth-candidate { width: min(100%, 900px); margin: 0 auto; padding: 24px; }
+.fos-auth-candidate__panel { width: min(100%, 520px); margin: 24px auto; display: grid; gap: 20px; }
+.fos-auth-candidate__panel h2, .fos-auth-candidate__panel p { margin: 0; }
+.fos-auth-candidate__notice { padding: 12px; border: 1px solid #8a9aa3; border-radius: 8px; }
+.fos-auth-candidate__trusted { display: flex; align-items: flex-start; gap: 10px; }
+.fos-auth-candidate__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.fos-auth-candidate__feedback { min-height: 24px; }
+@media (max-width: 480px) { .fos-auth-candidate { padding: 16px; } }

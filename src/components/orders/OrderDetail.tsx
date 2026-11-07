@@ -11,13 +11,16 @@ import './order-detail.css'
 interface OrderDetailProps {
   order: OrderListItem; detail: OrderDetailContent; onBack: () => void; actions?: ReactNode
   role?: 'client' | 'manager'; managerIntake?: boolean; submitted?: boolean
+  demoProcessingState?: 'pending' | 'success' | 'error'
+  onDemoProcessingStateChange?: (state: 'pending' | 'success' | 'error') => void
+  demoProcessingEnabled?: boolean
 }
 function dateValue(value?: string) {
   if (!value) return ''
   return /^\d{2}\.\d{2}\.\d{4}$/.test(value) ? value.slice(6) + '-' + value.slice(3, 5) + '-' + value.slice(0, 2) : value
 }
 /** Shared readonly composition; Manager-only data slots never create production commands. */
-export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, submitted = false }: OrderDetailProps) {
+export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, submitted = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false }: OrderDetailProps) {
   const title = submitted ? 'Заказ отправлен' : 'Заказ ' + order.id
   return <div className="fos-order-detail" data-testid="order-detail" data-role={role} data-order-id={order.id}>
     <PageHeader title={title} autoFocus subtitle={<span data-testid="order-detail-status">{order.statusLabel}</span>}
@@ -38,7 +41,7 @@ export function OrderDetail({ order, detail, onBack, actions, role = 'client', m
         </div>
         <FOSTextarea label="Комментарии" value={detail.comment || ''} placeholder="Необязательно" readOnly />
       </section>
-      {managerIntake && <ManagerDemoIntake />}
+      {managerIntake && <ManagerDemoIntake state={demoProcessingState} onStateChange={onDemoProcessingStateChange} demoEnabled={demoProcessingEnabled} />}
     </div>
   </div>
 }

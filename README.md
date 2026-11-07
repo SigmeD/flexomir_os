@@ -1,8 +1,10 @@
 # Flexomir OS — frontend платформы типографии
 
+**CURRENT 07.11.2026:** FE-S04 / issue #19 is implemented in `feat/fe-s04-client-manager-ui` from `origin/main 8099539`. A–D cover Manager Orders, private Manager drafts, Auth UI candidate, and Client↔Manager demo flow. Build PASS (207 modules); targeted smoke 34/34; M7 105/105 and expanded Orders/FE-S04 regression 210/210 PASS. Auth design and visual acceptance remain OPEN for Owner/M8. No backend/API/1C changes; do not merge without Owner permission. See [project state](docs/PROJECT_STATE.md), [delivery plan](docs/DELIVERY_PLAN.md), [handoff](docs/HANDOFF.md), and [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
+
 React + TypeScript интерфейс системы типографии: кабинеты клиента и менеджера для заказов, компаний, поддержки и макетов. Серверные данные, права, API и интеграцию с 1С определяют согласованные контракты; frontend fixtures используются для демонстрации сценариев до подключения backend.
 
-Документация проверена по текущей задаче: **06.11.2026**. Следующая ревизия: **20.11.2026**.
+Документация проверена по текущей задаче: **07.11.2026**. Следующая ревизия: **21.11.2026**.
 
 > **CURRENT 07.11.2026:** FE-S03 / M7 merged в `origin/main` (`7828005`). Follow-up correction Client OrderDetail вошла в `main` (`7078b39`); актуальный `origin/main` — `8b54886`. CI correction и Owner screen acceptance остаются открытыми. Следующий функциональный этап — FE-S04 / issue #19; M8 visual QA следует после функционального покрытия. Статусы — в [PROJECT_STATE](docs/PROJECT_STATE.md), этапы — [DELIVERY_PLAN](docs/DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Backend/API/1С — Алексей; неподтверждённые функции не входят.
 

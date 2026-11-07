@@ -1,5 +1,16 @@
 # Flexomir OS — React Component Registry
 
+## FE-S04 / 07.11.2026 — A–D component map
+
+| Figma / requirement | React component | Props / state | Consumers / decision |
+| --- | --- | --- | --- |
+| Manager Orders CURRENT 01.1/01.2/01.6 (`2633:20095`, `2634:20104`, `2634:20161`) | REUSE `ManagerOrdersScreen`, `GlassPillTabs`, `OrdersList`, `OrderDetail` | queue `new/all`; order data and processing state supplied by `OrderDemoWorkspace` | Manager Orders; `New` means only current client submissions in the demo store; status tabs remain GL-03 |
+| Manager draft CURRENT (`2568:11735`) | EXTEND shared `OrderComposer`; REUSE `OrderItemForm`, `ArtworkSource`, `LayoutBrowser`, FOS controls | `ownerRole=manager`, existing company options, private in-memory draft | Manager Orders; no client publication, new company, or server contract |
+| Auth | CREATE `AuthCandidateScreen`; REUSE `PageHeader`, `FOSInput`, `FOSAction` | email/code, invalid/expired/resend, trusted-device preview | `?view=auth`; no approved Auth Figma found, `OWNER_DESIGN_OPEN`, visual details deferred to M8 |
+| Same-session Client↔Manager | EXTEND `OrderDemoWorkspace` and `DemoDraft`; REUSE Client/Manager Orders + shared composer/detail | local submission/processing maps; synthetic imported record | `demoTools=1`, import fixture only via `fixture=imported-1c`; no actual import/1C exchange |
+
+Review map: Figma master/variants → React shared component → props/states → screen consumers. Auth screen composition is a candidate pending Owner design review; don't treat build pass as visual acceptance.
+
 ## FE-S03 / final responsive checkpoint, 07.11
 
 LayoutBrowser(mode=select|replace) внутри OrderItemForm: REUSE тех же LayoutRow/LayoutDetail/UploadForm. layouts.css задаёт отступы host и preview по CURRENT LAY03/04 D/T/M (1316:2015/2074/2165/2223/2315/2372); library сохраняет свою композицию. Пять размеров 1440/1024/768/390/320, выбор/замена/возврат проверены в составе свежих 105 M7 и 202 Orders/Glass сценариев. Новый мастер и отдельный экранный CSS не создавались. CI Orders отслеживает layouts/** как зависимость формы позиции. Авторская визуальная сверка; независимое review и Owner gate OPEN.

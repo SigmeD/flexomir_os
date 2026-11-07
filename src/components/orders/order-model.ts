@@ -12,6 +12,8 @@ export interface OrderListItem {
   filterId: Exclude<OrderStatusFilterId, 'all'> | null
   /** Optional read-only presentation. No opener is rendered when this is absent. */
   detail?: OrderDetailContent
+  /** Ephemeral UI-only processing fixture; never an API or 1C status. */
+  demoProcessingState?: 'pending' | 'success' | 'error'
 }
 
 export interface OrderItemSummaryView {
