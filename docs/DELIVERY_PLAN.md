@@ -6,13 +6,13 @@
 
 | Block | Result / gate |
 | --- | --- |
-| A — independent inventory and discrepancy matrix | CURRENT Figma DS V2, FOS Masters, Client/Manager UX V2 checked against fresh browser captures; Manager panel gap and nested LAY03 navigation recorded with gates. Baseline build PASS, related regression 236/236 Chromium. |
+| A — inventory and discrepancy matrix | Full Client/Manager screen and state matrix completed in [SCREEN_MAP](SCREEN_MAP_M4_2026-11-06.md), with CURRENT nodes, shared component mapping, evidence, severity, root cause, reviewer and OPEN gates. 27 D/T/M pairs cover nine shared visual families. |
 | B — minimal shared-component correction | Done: in Client OrderComposer → ArtworkSource → LayoutPicker, keep the current `Макеты` sidebar item active and enabled while an Item editor is open; keep other destinations disabled until the editor guard clears. The draft guard and shared Glass are unchanged. |
 | C — representative and controlled rollout | Done in the existing shared AppShell consumer; no per-screen nav clone. |
-| D — regression QA | Build PASS; `m7-layouts.spec.ts` 22/22 across Chromium-1440/390 projects and 1440/1024/768/390/320 widths; full related Client/Manager/Orders/Glass regression 236/236 Chromium; targeted cross-browser regression 164/164 Firefox+WebKit. Includes accessibility, keyboard, touch, reduced-motion and drawer checks. Independent review remains pending. |
-| E — independent QA and Owner gate | Pending. Do not claim visual acceptance or merge. |
+| D — regression QA | Build PASS (207 modules); expanded Client/Manager/Orders/Glass/Layout/Support/FE-S04 suite 268/268 Chromium (1440/390 projects); LAY01–09 suite 22/22, five widths; earlier targeted cross-browser subset 164/164 Firefox+WebKit. Includes accessibility, keyboard, touch, reduced motion, forced colors, drawer and overflow checks. |
+| E — independent QA and Owner gate | Initial independent visual sample found no additional confirmed large P1; final re-review of this checkpoint pending. Owner visual acceptance remains OPEN; PR stays Draft and no merge. |
 
-**OPEN:** Manager Orders 01.1 `2495:8871/9000/9097` shows a PILOT / DEMO panel (New/All, search, company, sort) missing from React. Existing decision record says scope and semantics are Owner-open; do not add it before approval. Auth remains `OWNER_DESIGN_OPEN`. Compare current captures in ignored `output/playwright/m8/`.
+**OPEN:** Manager Orders PILOT Search/Company/Sort controls have no approved scope/semantics; existing FE-S04 New/All demo grouping is present. Auth remains `OWNER_DESIGN_OPEN`; Sidebar icon styling and company naming remain Owner questions. See the matrix and current comparison/capture paths in ignored `output/playwright/m8/`.
 
 ## CURRENT 07.11.2026 — FE-S04 / #19, implementation checkpoint
 

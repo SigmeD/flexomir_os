@@ -4,11 +4,11 @@
 
 Branch `feat/m8-ui-parity-refactor` from `origin/main b5a8624`; [Draft PR #22](https://github.com/SigmeD/flexomir_os/pull/22) is open and mergeable. One worktree and one feature branch; no merge. Four pre-existing stashes were inspected and preserved.
 
-- A: read Drive CURRENT, issue #21 and CURRENT Figma DS/FOS/Client/Manager sources; refreshed D1440/T768/M390 and L1024/M320 comparison captures in ignored `output/playwright/m8/`. Baseline build PASS and related Chromium regression 236/236.
+- A: read Drive CURRENT, issue #21 and CURRENT Figma DS/FOS/Client/Manager sources; completed the full role/screen/state matrix in [SCREEN_MAP](SCREEN_MAP_M4_2026-11-06.md). 27 comparison PNGs cover 9 shared families at D1440/T768/M390; other rows cite test evidence or clearly show no dedicated pair. Fresh captures are ignored under `output/playwright/m8/` and `test-results/`.
 - B/C: `ClientOrdersScreen` keeps the current «Макеты» navigation item active and enabled during the nested picker; the unsaved item guard still disables other destinations. No Glass primitive/material or backend work.
-- D: build PASS; `npx playwright test tests/m7-layouts.spec.ts --workers=1` PASS, 22/22 across Chromium-1440 and Chromium-390 projects; the suite checks widths 1440/1024/768/390/320 and empty/error/cancel flows. Full related Client/Manager/Orders/Glass suite PASS, 236/236 Chromium. Cross-browser subset PASS, 164/164 Firefox+WebKit, including LAY03, Composer, shared nav/drawer, order lists/details and reduced-motion/forced-colors. A brittle CSS scientific-notation assertion was normalized; the affected Firefox/WebKit test passed on retry.
-- OPEN: Manager Orders PILOT controls (New/All/Search/Company/Sort) need Owner scope/semantics decision; Auth is `OWNER_DESIGN_OPEN`; sidebar icon parity needs Owner review. Independent review and Owner visual gate remain pending.
-- Next: independent review and Owner visual gate on Draft PR #22; check CI on the latest PR head. Do not merge without explicit Owner permission. Update canonical Drive CURRENT only through the project delivery process.
+- D: `npm run build` PASS (207 modules); full related Client/Manager/Orders/Glass/Layout/Support/FE-S04 suite PASS, 268/268 Chromium on 1440/390 projects; LAY01–09 22/22 at 1440/1024/768/390/320; earlier cross-browser subset 164/164 Firefox+WebKit. Regression includes focus, keyboard, touch, reduced motion, forced colors, empty/error/cancel and overflow. Fresh New Item captures at all five widths.
+- Findings: zero P0; one confirmed P1 fixed at nested Client LAY03 nav; no other confirmed large P1 in the sampled comparison. Manager Search/Company/Sort PILOT, Sidebar icons, company naming and Auth remain Owner-open.
+- Next: final independent review of matrix + current patch, check CI on pushed PR head, then Owner visual gate. Keep PR #22 Draft. Do not merge without explicit Owner permission.
 
 ## CURRENT 07.11.2026 — FE-S04 / #19
 

@@ -20,7 +20,7 @@ test('Client/Manager list, readonly detail and draft composition meet basic scre
   await audit('[data-testid="order-composer"]')
 })
 
-test('reference New Item uses shared Header Add/More, FOS fields, segmented and no footer substitutes', async ({ page }) => {
+test('reference New Item uses shared Header Add/More, FOS fields, segmented and no footer substitutes', async ({ page }, testInfo) => {
   await page.goto('/?view=client-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
@@ -31,6 +31,17 @@ test('reference New Item uses shared Header Add/More, FOS fields, segmented and 
   await expect(form.locator('.fos-field')).toHaveCount(7)
   await expect(form.locator('.fos-segmented')).toBeVisible()
   await expect(form.getByRole('button', { name: /Восстановить значения|Закрыть форму позиции|Сохранить позицию/ })).toHaveCount(0)
+  // Fresh M8 evidence for the approved blank New Item reference, including narrow widths.
+  for (const width of [1440, 1024, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: width < 600 ? 844 : 960 })
+    await page.evaluate(() => document.fonts.ready)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.screenshot({
+      path: `output/playwright/m8/${testInfo.project.name}/client-item-new-${width}.png`,
+      fullPage: true,
+      animations: 'disabled',
+    })
+  }
 })
 
 test('complete Orders compositions at five widths for Figma side-by-side review', async ({ page }, testInfo) => {
