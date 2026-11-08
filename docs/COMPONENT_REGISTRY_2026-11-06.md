@@ -1,5 +1,14 @@
 # Flexomir OS — React Component Registry
 
+## FE-DEBUG-02 / issue #25 — shared workspace layout contract, 08.11.2026
+
+- **Source:** CURRENT AppShell FOS V2 `637:180` / content slot `637:119`; Client My Orders Desktop `634:6825`; shared Page Header `2302:2138` and Order Row `685:195`. Content region is the area after the fixed 240px Sidebar.
+- **REUSE:** `AppShell` → `.fos-app-shell__content` → `.fos-orders-page__main[data-layout="standard"]`. Shared CSS owns `width:100%`, `max-width:1440px` candidate and `margin-inline:auto`; each screen's existing Figma-approved inner gutters remain. No screen-specific centering offsets.
+- **Consumers:** Client My Orders/detail/New/Repeat/Item editor; Manager Orders/detail/New; Manager Companies; Client My Layouts and nested picker; Support in both roles. Add/More continue inside the existing shared PageHeader row.
+- **Responsive:** Client Orders uses 20px compact gutters; current Support/Layouts mobile Figma uses 16px. Desktop list/support uses 72px inset. Avoid nested main padding or centering a table/card independently.
+- **Mode:** `standard` is live. `wide` is DEFERRED because no current screen in this scope uses a complex wide table/dataset. Do not apply a wider manager-wide default without a real consumer and visual evidence.
+- **QA:** `tests/workspace-layout.spec.ts` checks centering, axis, and overflow for seven routes and seven widths in Chromium, Firefox, WebKit. Test evidence is local/ignored at `output/playwright/workspace-layout/`; Owner visual acceptance remains OPEN.
+
 ## FE-DEBUG-01 / issue #23 — demo stand delta, 08.11.2026
 
 - `AppViews` maps `/` to the existing Client Orders workspace. Direct `view` routes stay explicit; legacy `GlassFilterDemo` is retained at `?view=glass-filter-lab`, other labs keep their routes, and unknown values fall back to Client with a diagnostic.

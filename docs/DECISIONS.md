@@ -1,5 +1,13 @@
 # Flexomir OS — реестр решений и вопросов
 
+## 08.11.2026 — FE-DEBUG-02 / issue #25: centered workspace
+
+- **APPROVED direction (Owner):** center the constrained page workspace within the area to the right of Sidebar; keep header, filters, list, and actions in one shared content container. See [issue #25](https://github.com/SigmeD/flexomir_os/issues/25).
+- **IMPLEMENTATION candidate:** keep the existing React `max-width:1440px` as the standard layout limit and center it with automatic inline margins. It is a validated code baseline, **not an approved DS token**. Exact max width/outer gutters remain `OWNER_VISUAL_OPEN` until visual review.
+- **Figma gutters preserved:** current My Orders desktop content inset is 72px; mobile My Orders 20px; mobile Support/Layouts 16px. Do not silently normalize these family-specific values.
+- **DEFERRED:** no `wide` variant yet. Existing Manager Orders is a card list; no current complex table consumer demonstrates the need. Revisit with an approved table screen.
+- `AccountMenu` / `UserProfile` WIP, AppShell behavior, Sidebar, Glass, product state and routes are outside this decision.
+
 ## M8 / FE-S05 / 08.11.2026 — scope and open findings
 
 Основание: прямое поручение Owner по issue #21 и Drive CURRENT. Одна ветка/PR; React only; no merge without permission.

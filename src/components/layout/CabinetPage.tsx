@@ -23,7 +23,7 @@ export function CabinetPage({ role, section, children, onNavigate, ready = [sect
     <AppShell variant={role} items={cabinetItems(role, navigation?.ready ?? ready)} activeId={section} onSelect={id => (onNavigate ?? navigation?.navigate)?.(id as CabinetSection)}
       roleLabel={name} identityLabel={role === 'client' ? 'Компания 01' : name} navigationLabel={'Навигация ' + owner}
       menuLabel={'Меню ' + owner} triggerLabel={'Открыть меню ' + owner} footerText={role === 'client' ? 'Компания 01' : name}>
-      <main className="fos-orders-page__main fos-cabinet__main" data-role={role} data-section={section}>{children}</main>
+      <main className="fos-orders-page__main fos-cabinet__main" data-layout="standard" data-role={role} data-section={section}>{children}</main>
     </AppShell>
   </div>
 }

@@ -1,8 +1,9 @@
 /* Shared screen composition; accepted Glass controls keep their own surface/motion. */
 .fos-orders-page { --fos-v2-semantic-color-text-secondary: #586d7c; display: flex; min-width: 0; min-height: 100vh; background: #fff; color: #253144; font-family: Manrope, system-ui, sans-serif; }
 .fos-orders-page:has(main[data-view=list]),.fos-orders-page:has(main[data-role=manager]) { background: #fafbfc; }
-.fos-orders-page__main { min-width: 0; width: 100%; max-width: 1440px; padding: 52px 72px 64px 55px; }
-@media(min-width:1024px) { .fos-orders-page__main[data-view=list],.fos-orders-page__main[data-role=manager] { padding-left: 72px; } }
+.fos-orders-page__main { box-sizing: border-box; min-width: 0; width: 100%; margin-inline: auto; padding: 52px 72px 64px 55px; }
+.fos-orders-page__main[data-layout=standard] { max-width: 1440px; }
+@media(min-width:1024px) { .fos-orders-page__main[data-view=list],.fos-orders-page__main[data-role=manager],.fos-orders-page__main.fos-cabinet__main { padding-left: 72px; } }
 .fos-orders-page__filters { width: 100%; min-width: 0; margin-top: 12px; margin-bottom: 12px; overflow: visible; }
 .fos-orders-page__list { min-width: 0; }
 .fos-orders-page__list-header { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

@@ -1,5 +1,9 @@
 # Flexomir OS — CURRENT источники
 
+## FE-DEBUG-02 / issue #25 — layout references checked 08.11.2026
+
+Read-only Figma verification: Primary DS V2 `634:60` → FOS App Shell `637:180` / content slot `637:119` → Client My Orders Desktop `634:6825` (and mobile `634:7714`), Support Mobile `634:8314`, Layouts Mobile `634:8277`; shared Page Header `2302:2138`, Order Row `685:195`. Figma confirms 72px desktop content inset for My Orders and 16px compact inset for Support/Layouts. The 1440px container limit is from the current React baseline and remains an Owner visual candidate, not a Figma token. No Figma file or master was changed.
+
 ## M8 / FE-S05 — адресная CURRENT сверка 08.11.2026
 
 Read in this task: Owner PR #22 comment / issue #21, canonical Drive frontend CURRENT (modified 07.11.2026), SRS v0.5, Scope MVP v0.3, Primary DS V2 `634:60`, FOS Technical Masters `1688:532`, Client UX V2 `634:6815`, Manager UX V2 `2495:8870`. The Screen Map links CURRENT source nodes and test/screenshot evidence. Figma was read-only; no requirements/master was changed. Current Figma page/section hierarchy and representative Client/Manager frames were inspected; comparison images are local/ignored.

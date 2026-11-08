@@ -78,7 +78,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
         triggerLabel="Открыть меню менеджера"
         footerText="Менеджер"
       >
-        <main className="fos-orders-page__main" data-role="manager" data-view={preview.selectedOrder ? 'detail' : 'list'}>
+        <main className="fos-orders-page__main" data-layout="standard" data-role="manager" data-view={preview.selectedOrder ? 'detail' : 'list'}>
           {selectedManagerDraft ? <OrderComposer key={selectedManagerDraft.id} draft={selectedManagerDraft} onSave={onSaveManagerDraft ?? (() => {})} onSend={() => {}} onBack={() => { if (!managerDraftDirty) preview.backToList() }} onDraftDirtyChange={setManagerDraftDirty} managerCompanies={managerCompanies} /> : preview.selectedOrder?.detail ? (
             <>
               <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} role="manager" managerIntake={demoOrderIds.includes(preview.selectedOrder.id)} demoProcessingState={processingStates[preview.selectedOrder.id] ?? 'pending'} onDemoProcessingStateChange={state => onProcessingStateChange?.(preview.selectedOrder!.id, state)} demoProcessingEnabled={demoTools} />
