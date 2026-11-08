@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test('one Website Glass lens refracts real DOM and keeps foreground labels sharp', async ({ page }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   await page.getByTestId('filter-control').locator('button').click()
   const popup = page.getByRole('listbox')
   await expect(popup).toHaveCSS('opacity', '1')

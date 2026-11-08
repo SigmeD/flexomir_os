@@ -5,7 +5,21 @@
 .fos-demo-workspace__controls p { margin: 0 0 8px; font-size: 12px; }
 .fos-demo-workspace__controls p:last-child { margin: 8px 0 0; }
 .fos-demo-workspace__controls [aria-pressed=true] { background: #fff; border-color: #547b92; }
+.fos-demo-workspace__presentation, .fos-demo-workspace__technical { display: flex; align-items: center; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; padding: 12px clamp(16px, 4vw, 48px); }
+.fos-demo-workspace__intro { display: grid; gap: 2px; min-width: 220px; }
+.fos-demo-workspace__intro strong { font-size: 14px; line-height: 20px; }
+.fos-demo-workspace__intro span { color: #52616d; font-size: 12px; line-height: 18px; }
+.fos-demo-workspace__role { display: flex; gap: 8px; flex-wrap: wrap; }
+.fos-demo-workspace__controls .fos-demo-workspace__lock, .fos-demo-workspace__controls .fos-demo-workspace__diagnostic { flex-basis: 100%; margin: 0; }
+.fos-demo-workspace__diagnostic { color: #6c4e00; }
+.fos-demo-workspace__technical { background: #f8f8f6; }
 .fos-order-composer { min-width: 0; overflow-wrap: anywhere; }
+@media(max-width:600px) {
+  .fos-demo-workspace__presentation, .fos-demo-workspace__technical { align-items: stretch; padding: 12px 16px; }
+  .fos-demo-workspace__intro { min-width: 0; }
+  .fos-demo-workspace__role { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fos-demo-workspace__role .fos-action { min-width: 0; }
+}
 .fos-order-composer__body { max-width: 1050px; margin-top: 5px; }
 .fos-order-composer__section-heading { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 23px; }
 .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { margin: 0; color: #273343; font-size: 20px; font-weight: 600; line-height: 28px; }

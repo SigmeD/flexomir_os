@@ -1,5 +1,12 @@
 # Flexomir OS — React Component Registry
 
+## FE-DEBUG-01 / issue #23 — demo stand delta, 08.11.2026
+
+- `AppViews` maps `/` to the existing Client Orders workspace. Direct `view` routes stay explicit; legacy `GlassFilterDemo` is retained at `?view=glass-filter-lab`, other labs keep their routes, and unknown values fall back to Client with a diagnostic.
+- `OrderDemoWorkspace` reuses one Client/Manager state owner; role selection stays in the presentation strip and `demoTools=1` reset in a separate QA strip. `ManagerOrdersScreen` and shared `OrderComposer` report dirty Manager draft state so role/reset lock and cabinet navigation cannot discard unsaved edits. Save clears the guard.
+- Shared `OrderCard` now derives its accessible name from its visible contents and a visually hidden “Открыть заказ …” action. Client and Manager consumers retain the same card layout and interaction.
+- Consumers/regression: Client Orders, Manager Orders, direct route and FE-S04/composer tests; no new cabinet variants or design master.
+
 ## M8 / FE-S05 #21 audit delta — 08.11.2026
 
 - `AppShell` → `SidebarNav` / `NavigationDrawer` → Client Composer → `OrderItemForm` → `ArtworkSource` / `LayoutBrowser`: CURRENT LAY03 sets «Макеты» as the selected section during picker flow. `ClientOrdersScreen` now leaves that selected item enabled while the item editor guard still disables other destinations. Draft/focus state and accepted `FosGlassMaterial`/spring are unchanged. Consumer regression: `tests/m7-layouts.spec.ts` asserts active/enabled and guarded peer item on desktop and drawer.

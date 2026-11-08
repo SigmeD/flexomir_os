@@ -12,7 +12,7 @@ test('each Glass Select option filters the original orders and closes the list',
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()) })
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   const trigger = page.getByTestId('filter-control').locator('button')
   for (const choice of choices) {
     await trigger.click()
@@ -33,7 +33,7 @@ test('each Glass Select option filters the original orders and closes the list',
 })
 
 test('Escape and outside click dismiss without changing the selection', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   const trigger = page.getByTestId('filter-control').locator('button')
   await trigger.click()
   await expect(page.getByRole('listbox')).toBeVisible()
@@ -51,7 +51,7 @@ test('Escape and outside click dismiss without changing the selection', async ({
 })
 
 test('keyboard can open, navigate and select a status', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   const trigger = page.getByTestId('filter-control').locator('button')
   await page.keyboard.press('Tab')
   await expect(trigger).toBeFocused()
@@ -66,7 +66,7 @@ test('keyboard can open, navigate and select a status', async ({ page }) => {
 })
 
 test('open list overlays real order DOM without the experimental glass layers', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   await page.getByTestId('filter-control').locator('button').click()
   const list = page.getByRole('listbox')
   await expect(list).toBeVisible()

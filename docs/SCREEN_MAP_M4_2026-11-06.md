@@ -1,5 +1,15 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
+## FE-DEBUG-01 / issue #23 — stand entry and route-state map, 08.11.2026
+
+| Entry / state | React composition | Trigger → next state | Evidence / disposition |
+| --- | --- | --- | --- |
+| `/` default | `AppViews` → one `OrderDemoWorkspace(role="client", presentationMode)` → Client My Orders | Client/Manager selector updates role in place; shared new/send → Manager detail/demo result → Client detail | `tests/demo-entry.spec.ts`, `tests/demo-presentation.spec.ts`; full Chromium 338/338 and targeted cross-engine 147/147 per engine. D1440/T768/M390 captures are local/ignored. |
+| `?demoTools=1` | Same workspace + separate technical QA strip | QA reset is separate from presentation role control; role/reset disabled while editor is dirty | Client and Manager dirty-state assertions; no URL change/reload on role switch. |
+| `?view=glass-filter-lab` and other `view` routes | Existing explicit laboratory or direct cabinet screen | No lab becomes the default; unknown `view` returns Client with diagnostic | Filter tests now use the explicit lab URL; route-preservation coverage in `demo-entry.spec.ts`. |
+
+These rows document the demo entry point and are not additional approved product screens. The existing M8 Figma screen/state audit below remains the cabinet visual source of truth; the stand wrapper has no new Figma master or Owner visual acceptance.
+
 ## M8 / FE-S05 #21 — CURRENT Client + Manager screen/state matrix, 08.11.2026
 
 Sources: [Primary DS V2 `634:60`](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=634-60), [FOS masters `1688:532`](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1688-532), [Client UX V2 `634:6815`](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=634-6815), [Manager UX V2 `2495:8870`](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=2495-8870), Drive CURRENT and Owner PR #22 comment. Rows group responsive variants and states of one shared screen, not Figma frames into separate React pages. `D/T/M` = 1440/768/390; `L/M320` = 1024/320. Comparison PNGs are under ignored `output/playwright/m8/figma-comparison/`; test-generated state captures under `test-results/` and `output/playwright/m8/`. `—` means no dedicated side-by-side PNG; functional test evidence is named instead. Screenshot comparisons are technical evidence, not Owner visual acceptance.

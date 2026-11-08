@@ -11,9 +11,10 @@ import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-compose.css'
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
-export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChange, onNavigationSectionChange, managerCompanies = [] }: {
+export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChange, onDraftDirtyChange, onNavigationSectionChange, managerCompanies = [] }: {
   draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend: (draft: DemoDraft) => void; onBack: () => void
   onItemEditorChange?: (open: boolean) => void
+  onDraftDirtyChange?: (dirty: boolean) => void
   onNavigationSectionChange?: (section: CabinetSection) => void
   managerCompanies?: readonly { id: string; name: string }[]
 }) {
@@ -24,6 +25,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
   const returnFocus = useRef<string | null>(null)
   const root = useRef<HTMLDivElement>(null)
   useEffect(() => { onItemEditorChange?.(editing !== null); return () => onItemEditorChange?.(false) }, [editing, onItemEditorChange])
+  useEffect(() => { onDraftDirtyChange?.(JSON.stringify(value) !== JSON.stringify(draft)); return () => onDraftDirtyChange?.(false) }, [value, draft, onDraftDirtyChange])
   useLayoutEffect(() => {
     if (editing !== null) return
     const target = returnFocus.current ? root.current?.querySelector<HTMLElement>(returnFocus.current) : root.current?.querySelector<HTMLElement>('h1')

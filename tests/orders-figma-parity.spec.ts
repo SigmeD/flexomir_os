@@ -12,7 +12,7 @@ test('Client/Manager list, readonly detail and draft composition meet basic scre
   for (const role of ['client', 'manager']) {
     await page.goto('/?view=' + role + '-orders')
     await audit('[data-testid="' + role + '-orders-screen"]')
-    await page.getByRole('button', { name: 'Открыть заказ DEMO-003', exact: true }).click()
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
     await audit('[data-testid="order-detail"]')
   }
   await page.goto('/?view=client-orders')
@@ -78,7 +78,7 @@ test('complete Orders compositions at five widths for Figma side-by-side review'
     await page.getByLabel('Нужна помощь с макетом').check()
     await commitItem(page)
     await backToOrders(page)
-    await page.getByRole('button', { name: 'Открыть заказ DEMO-007', exact: true }).click()
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-007' }).click()
     await capture('client-detail')
     await page.getByRole('button', { name: 'Ещё', exact: true }).click()
     await capture('completed-menu')
@@ -93,7 +93,7 @@ test('complete Orders compositions at five widths for Figma side-by-side review'
     await capture('submitted')
     await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
     await capture('manager-list')
-    await page.getByRole('button', { name: 'Открыть заказ ' + id, exact: true }).click()
+    await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
     await capture('manager-detail')
   }
 })

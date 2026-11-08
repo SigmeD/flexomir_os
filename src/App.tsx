@@ -86,24 +86,26 @@ function GlassFilterDemo() {
 
 export function App() { return <LayoutDemoProvider><AppViews /></LayoutDemoProvider> }
 function AppViews() {
-  const view = new URLSearchParams(window.location.search).get('view')
-  const fixture = new URLSearchParams(window.location.search).get('fixture') ?? ''
+  const params = new URLSearchParams(window.location.search)
+  const view = params.get('view')
+  const fixture = params.get('fixture') ?? ''
+  if (!view) return <OrderDemoWorkspace role="client" presentationMode />
   if (view === 'auth') return <AuthCandidateScreen />
-  if (view === 'client-layouts' || view === 'manager-companies' || view === 'client-support' || view === 'manager-support') return <OrderDemoWorkspace role={view.startsWith('client') ? 'client' : 'manager'} initialSection={view === 'client-layouts' ? 'artworks' : view === 'manager-companies' ? 'clients' : 'support'} empty={fixture === 'empty'} errorFixture={fixture} />
+  if (view === 'client-layouts' || view === 'manager-companies' || view === 'client-support' || view === 'manager-support') return <OrderDemoWorkspace role={view.startsWith('client') ? 'client' : 'manager'} initialSection={view === 'client-layouts' ? 'artworks' : view === 'manager-companies' ? 'clients' : 'support'} empty={fixture === 'empty'} errorFixture={fixture} presentationMode={params.get('demoTools') === '1'} />
   if (view === 'orders-components') return <OrdersComponentsLab />
   if (view === 'header-action') return <HeaderActionLab />
   if (view === 'sidebar-nav') return <SidebarNavLab />
   if (view === 'navigation-drawer') return <NavigationDrawerLab />
   if (view === 'glass-pill-tabs') return <GlassPillTabsLab />
+  if (view === 'glass-filter-lab') return <GlassFilterDemo />
   if (view === 'client-orders') {
     const previewEmpty = new URLSearchParams(window.location.search).get('fixture') === 'empty'
-    return <OrderDemoWorkspace role="client" empty={previewEmpty} />
+    return <OrderDemoWorkspace role="client" empty={previewEmpty} presentationMode={params.get('demoTools') === '1'} />
   }
   if (view === 'manager-orders') {
     const previewEmpty = new URLSearchParams(window.location.search).get('fixture') === 'empty'
-    return <OrderDemoWorkspace role="manager" empty={previewEmpty} />
+    return <OrderDemoWorkspace role="manager" empty={previewEmpty} presentationMode={params.get('demoTools') === '1'} />
   }
-  return view === 'material'
-    ? <GlassMaterialLab orders={orders} statuses={statuses} />
-    : <GlassFilterDemo />
+  if (view === 'material') return <GlassMaterialLab orders={orders} statuses={statuses} />
+  return <OrderDemoWorkspace role="client" presentationMode diagnosticMessage={`Неизвестный экран «${view}». Открыт стенд клиента.`} />
 }

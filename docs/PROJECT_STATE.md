@@ -1,5 +1,19 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 08.11.2026 — FE-DEBUG-01 / issue #23
+
+Ветка `feat/frontend-qa-debug-cycle` основана на свежем `origin/main bc734d29163cb84c5751437839b75044b98eb29b`. Новая задача продолжает M8 после merged PR #22; [Draft PR #24](https://github.com/SigmeD/flexomir_os/pull/24), code/test head `e1a9069`. До начала подтверждены чистое дерево, единственный worktree и четыре исходных stash; stash не изменялись. Merge не выполняется.
+
+- `/` показывает Client «Мои заказы» и презентационную панель Client/Manager. Обе роли остаются в одном `OrderDemoWorkspace`; в QA через `demoTools=1` отдельная панель reset. Пока Manager draft изменён, роль/reset заблокированы, навигация не сбрасывает редактор; после явного Save переключение открывается.
+- Старый Glass Filter доступен только через `?view=glass-filter-lab`; остальные лаборатории и прямые маршруты Client/Manager/Auth сохранены. Неизвестный `view` возвращает на Client с пояснением.
+- Изменён shared `OrderCard` для доступного имени, сохраняя видимый номер и CTA. Новые проверки: `tests/demo-entry.spec.ts`, `tests/demo-presentation.spec.ts`; существующая регрессия фильтра закреплена за явным lab route.
+- Текущий checkpoint: build PASS (207 modules), полный Playwright suite **338/338 Chromium PASS** на проектах 1440/390; кроссбраузерный пакет root/route/presentation/FE-S04/M7 **147/147 на каждом Chromium, Firefox, WebKit**. Responsive assertions включают 1440/1024/768/390/320, Axe — 0 нарушений на стенде. `git diff --check` PASS. Независимый regression review PASS: подтверждённых P0/P1 в этой правке нет; Owner visual/UI review остаётся OPEN.
+- Снимки Client entry D1440/T768/M390 и JSON/прочие QA артефакты находятся в игнорируемом `output/playwright/fe-debug-cross-browser/`; они не добавляются в Git. Все шесть GitHub workflows завершились SUCCESS на code/test SHA `e1a9069`; следующий коммит — только документационный.
+
+Следующий шаг: дождаться Owner UI review. Production-ready статус не заявлять.
+
+Документация обновлена 08.11.2026; следующая ревизия 22.11.2026.
+
 ## CURRENT 08.11.2026 — M8 / FE-S05 issue #21, QA checkpoint
 
 База `origin/main b5a8624b`; feature-ветка `feat/m8-ui-parity-refactor`; [Draft PR #22](https://github.com/SigmeD/flexomir_os/pull/22) открыт, mergeable, не слит. До старта проверены clean `main`, единственный worktree, четыре исходных stash — сохранены; открытых PR для этой ветки не было. Источники: Drive CURRENT M8, issue #21, CURRENT Figma DS V2 / FOS Technical Masters / Client UX V2 / Manager UX V2.

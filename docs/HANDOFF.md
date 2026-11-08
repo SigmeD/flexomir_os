@@ -1,5 +1,23 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT 08.11.2026 — FE-DEBUG-01 / issue #23
+
+Ветка `feat/frontend-qa-debug-cycle` от проверенного `origin/main bc734d29163cb84c5751437839b75044b98eb29b`; открыт один [Draft PR #24](https://github.com/SigmeD/flexomir_os/pull/24), code/test SHA `e1a906910a77c372edd6edc1d10fbd2b2a66f97f`; merge не выполнен. Существовавшие четыре stash и рабочее дерево до правок сохранены.
+
+### Сделано
+
+- Корень `/` теперь показывает Client «Мои заказы» с переключением роли внутри одного `OrderDemoWorkspace`. Old Glass Filter открыт по `?view=glass-filter-lab`; остальные лаборатории и прямые `?view=` маршруты сохранены, неизвестный маршрут объясняет возврат на Client.
+- Разделены презентационный выбор роли и QA reset (`demoTools=1`). Не сохранённый Manager draft блокирует смену роли/reset и не закрывается навигацией. Shared order row name теперь доступно содержит видимый номер и действие.
+- План и новые тесты находятся в `docs/superpowers/plans/2026-11-08-fe-debug-01-demo-stand.md`, `tests/demo-entry.spec.ts`, `tests/demo-presentation.spec.ts`.
+
+### Проверки / осталось
+
+- `npm run build` PASS (207 modules); полный `npx playwright test --workers=2` — **338/338 PASS** на Chromium D1440/M390. Cross-browser config `output/playwright/fe-debug-cross-browser.config.ts`: **147/147 PASS на Chromium, 147/147 Firefox, 147/147 WebKit** для demo-entry/presentation, FE-S04 и полного набора M7. В responsive checks включены 1440/1024/768/390/320; Axe 0 на панели; `git diff --check` PASS.
+- Независимый read-only regression review: PASS, проверены root/fallback/lab isolation/direct routes, state ownership, draft dirty guard/save, responsive CSS, callbacks, Card accessible name и тестовые consumers; подтверждённых P0/P1 нет. Client entry снимки D1440/T768/M390 лежат локально в `output/playwright/fe-debug-cross-browser/` (ignored). Owner visual/UI review OPEN.
+- Drive CURRENT синхронизирован с PR #24/head и CI. Все шесть GitHub Actions успешны на code/test SHA `e1a9069`; последующий коммит содержит только документацию. Owner UI review OPEN. Merge NOT DONE.
+
+Документация обновлена 08.11.2026; следующая ревизия 22.11.2026.
+
 ## CURRENT 08.11.2026 — M8 / FE-S05 #21
 
 Branch `feat/m8-ui-parity-refactor` from `origin/main b5a8624`; [Draft PR #22](https://github.com/SigmeD/flexomir_os/pull/22) is open and mergeable. One worktree and one feature branch; no merge. Four pre-existing stashes were inspected and preserved.
