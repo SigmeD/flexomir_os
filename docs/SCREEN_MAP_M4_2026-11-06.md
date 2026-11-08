@@ -1,5 +1,14 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
+## FE-DEBUG-02 / Issue #25 — рабочая область
+
+| Reference / screens | Общий контейнер | Геометрия и проверка |
+| --- | --- | --- |
+| Client CORE / My Orders Desktop `634:6825`; AppShell content slot `637:119`; Page Header `2302:2138`; Order Row `685:195` | `.fos-orders-page__main[data-layout=standard]`, центрируется внутри `.fos-app-shell__content` — области справа от 240px Sidebar. Add/More остаются в PageHeader того же контейнера. | На 1920 исходный main был сдвинут на 120px, на 2560 — на 440px. После исправления center error ≤2px. В CURRENT 1440 main использует content gutters 72px, что сохранено. |
+| Client/Manager Orders + detail/composer/item forms, Manager Companies, Client Layouts и nested picker, Support обоих ролей | Один standard contract в AppShell consumers; переиспользуются CabinetPage / ClientOrdersScreen / ManagerOrdersScreen. Manager wide-table mode пока не нужен. | `tests/workspace-layout.spec.ts`, `playwright.workspace.config.ts`: 7 маршрутов × 7 ширин × 3 engine; горизонтального overflow нет. Client Orders header/tabs/cards/actions проверены по общей левой и правой оси. |
+
+Figma CURRENT compact references: My Orders 390 (`634:7714`) uses 20px content inset; Support M390 (`634:8314`) and Layouts M390 (`634:8277`) use 16px. These verified family-specific safe gutters remain. Current `max-width:1440px` is carried forward from React as a browser-checked candidate, not a confirmed design token. Full screenshots/metrics are local under ignored `output/playwright/workspace-layout/`; Owner visual approval remains OPEN.
+
 ## FE-DEBUG-01 / issue #23 — stand entry and route-state map, 08.11.2026
 
 | Entry / state | React composition | Trigger → next state | Evidence / disposition |

@@ -1,5 +1,21 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 08.11.2026 — FE-DEBUG-02 / issue #25
+
+База: `origin/main 25745e82e6b187b05642beb476f9d918cac71944`; одна ветка `feat/fe-debug-02-client-workspace-centering`, один Draft PR планируется. `standard` main теперь центрируется в области после Sidebar. Desktop baseline: исходное смещение 120px/440px при 1920/2560; после исправления ошибка центра ≤2px. Текущие Figma compact gutters (Client Orders 20px; Support/Layouts 16px) сохранены. Не менять AccountMenu/UserProfile WIP, Figma masters, стекло или бизнес-логику.
+
+| Gate | Статус |
+| --- | --- |
+| Свежая база / Git | PASS: main=origin/main `25745e8`, clean; четыре stash сохранены |
+| Client My Orders reference | PASS: первопричина зафиксирована на 1920/2560; Add/More остаются частью PageHeader/container |
+| Общий rollout | CODED: Orders/формы/детали, Companies, Layouts, Support Client/Manager через shared main contract |
+| Responsive/browser geometry | PASS: 49 route-width сочетаний × Chromium/Firefox/WebKit; 320/390/768/1024/1440/1920/2560, overflow=0, desktop center error ≤2px |
+| Build / workflow regression | PASS: build; 342/342 Playwright regression tests; 357 layout geometry checks across Chromium/Firefox/WebKit |
+| Independent review / PR CI | Independent QA PASS WITH RISKS (no confirmed issue in latest diff); Draft PR / CI OPEN |
+| Owner visual approval / merge | OPEN; merge не выполняется без отдельного разрешения |
+
+`standard max-width:1440px` — сохранённый текущий кодовый предел, кандидат для визуальной приёмки, не DS-токен. `wide` deferred: текущий Manager Orders рендерит карточки; consumer для расширенной таблицы в проверенных экранах отсутствует. Evidence: `output/playwright/workspace-layout/` (локальный, игнорируемый). Проверки сборки и локальной регрессии не заменяют Owner visual approval.
+
 ## CURRENT 08.11.2026 — FE-DEBUG-01 / issue #23
 
 **Base:** `origin/main bc734d29163cb84c5751437839b75044b98eb29b`; **branch:** `feat/frontend-qa-debug-cycle`; [Draft PR #24](https://github.com/SigmeD/flexomir_os/pull/24), code/test head `e1a9069`; no merge. Existing workspace was clean, one worktree, four existing stashes preserved.

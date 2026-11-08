@@ -1,5 +1,18 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 08.11.2026 — FE-DEBUG-02 / issue #25
+
+Работа начата от свежего `origin/main 25745e82e6b187b05642beb476f9d918cac71944` в `feat/fe-debug-02-client-workspace-centering`; рабочее дерево до начала было чистым, четыре исходных stash сохранены. Код, проверка и LIVE-документация входят в одну ветку; Draft PR и его head-CI ещё впереди.
+
+- Общий `.fos-orders-page__main[data-layout=standard]` теперь центрируется внутри `.fos-app-shell__content` после Sidebar. Первопричина воспроизведена до правки: смещение 120px на 1920 и 440px на 2560; после — не более 2px.
+- Потребители: Client Orders и вложенные формы/детали, Manager Orders, Companies, Layouts, Client/Manager Support. Header, tabs, cards и Add/More остаются в том же основном контейнере. Зафиксированные CURRENT Figma gutters сохранены.
+- `wide` режим отложен: среди текущих экранов нет широких таблиц/датасетов; Manager Orders остаётся карточным списком. Стандартный max-width 1440px унаследован от текущего кода как проверяемый кандидат, не утверждённый DS-токен.
+- Новая Playwright layout-матрица прошла в Chromium/Firefox/WebKit: 7 маршрутов × 7 ширин и 10 вложенных состояний × 7 ширин на каждом движке (357 проверок геометрии), без overflow; desktop центрирование и Client Orders общая ось PASS. Build PASS; полная функциональная регрессия PASS (342/342); независимая проверка PASS WITH RISKS, замечаний в последнем diff нет.
+
+Следом: создать один Draft PR и проверить CI на его head SHA; оставить визуальную приёмку Owner и merge открытыми. До Owner visual approval результат не считать принятым.
+
+Документация проверена 08.11.2026; следующая ревизия 22.11.2026.
+
 ## CURRENT 08.11.2026 — FE-DEBUG-01 / issue #23
 
 Ветка `feat/frontend-qa-debug-cycle` основана на свежем `origin/main bc734d29163cb84c5751437839b75044b98eb29b`. Новая задача продолжает M8 после merged PR #22; [Draft PR #24](https://github.com/SigmeD/flexomir_os/pull/24), code/test head `e1a9069`. До начала подтверждены чистое дерево, единственный worktree и четыре исходных stash; stash не изменялись. Merge не выполняется.

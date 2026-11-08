@@ -54,7 +54,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
         roleLabel="Клиент" identityLabel={companyName} variant="client" navigationLabel="Навигация клиента" menuLabel="Меню клиента"
         triggerLabel="Открыть меню клиента" footerText={companyName}
       >
-        <main className="fos-orders-page__main" data-view={selectedDraft ? 'compose' : preview.selectedOrder ? 'detail' : 'list'}>
+        <main className="fos-orders-page__main" data-layout="standard" data-view={selectedDraft ? 'compose' : preview.selectedOrder ? 'detail' : 'list'}>
           {selectedDraft && demo ? (
             <OrderComposer key={selectedDraft.id} draft={selectedDraft} onSave={demo.saveDraft} onSend={demo.sendDraft} onBack={preview.backToList} onItemEditorChange={setItemEditorOpen} onNavigationSectionChange={setNavigationSection} />
           ) : preview.selectedOrder?.detail ? (
