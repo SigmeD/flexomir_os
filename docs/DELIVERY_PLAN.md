@@ -10,7 +10,7 @@
 | B — minimal shared-component correction | Done: in Client OrderComposer → ArtworkSource → LayoutPicker, keep the current `Макеты` sidebar item active and enabled while an Item editor is open; keep other destinations disabled until the editor guard clears. The draft guard and shared Glass are unchanged. |
 | C — representative and controlled rollout | Done in the existing shared AppShell consumer; no per-screen nav clone. |
 | D — regression QA | Build PASS (207 modules); expanded Client/Manager/Orders/Glass/Layout/Support/FE-S04 suite 268/268 Chromium (1440/390 projects); LAY01–09 suite 22/22, five widths; earlier targeted cross-browser subset 164/164 Firefox+WebKit. Includes accessibility, keyboard, touch, reduced motion, forced colors, drawer and overflow checks. |
-| E — independent QA and Owner gate | Initial independent visual sample found no additional confirmed large P1; final re-review of this checkpoint pending. Owner visual acceptance remains OPEN; PR stays Draft and no merge. |
+| E — independent QA and Owner gate | Independent re-review PASS WITH RISKS: no additional P0/P1 or false parity claim; broad state-by-device overlays remain sampled. Three PR-head workflows SUCCESS on `515111d`. Owner visual acceptance remains OPEN; PR stays Draft and no merge. |
 
 **OPEN:** Manager Orders PILOT Search/Company/Sort controls have no approved scope/semantics; existing FE-S04 New/All demo grouping is present. Auth remains `OWNER_DESIGN_OPEN`; Sidebar icon styling and company naming remain Owner questions. See the matrix and current comparison/capture paths in ignored `output/playwright/m8/`.
 

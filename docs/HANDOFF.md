@@ -8,7 +8,7 @@ Branch `feat/m8-ui-parity-refactor` from `origin/main b5a8624`; [Draft PR #22](h
 - B/C: `ClientOrdersScreen` keeps the current «Макеты» navigation item active and enabled during the nested picker; the unsaved item guard still disables other destinations. No Glass primitive/material or backend work.
 - D: `npm run build` PASS (207 modules); full related Client/Manager/Orders/Glass/Layout/Support/FE-S04 suite PASS, 268/268 Chromium on 1440/390 projects; LAY01–09 22/22 at 1440/1024/768/390/320; earlier cross-browser subset 164/164 Firefox+WebKit. Regression includes focus, keyboard, touch, reduced motion, forced colors, empty/error/cancel and overflow. Fresh New Item captures at all five widths.
 - Findings: zero P0; one confirmed P1 fixed at nested Client LAY03 nav; no other confirmed large P1 in the sampled comparison. Manager Search/Company/Sort PILOT, Sidebar icons, company naming and Auth remain Owner-open.
-- Next: final independent review of matrix + current patch, check CI on pushed PR head, then Owner visual gate. Keep PR #22 Draft. Do not merge without explicit Owner permission.
+- Final: independent re-review PASS WITH RISKS; three GitHub workflows SUCCESS on `515111d` (Orders Core UI QA, FE-S03 M7 UI QA, NavigationDrawer GL-02B QA). Owner visual acceptance remains OPEN, so PR #22 stays Draft. Do not merge without explicit Owner permission.
 
 ## CURRENT 07.11.2026 — FE-S04 / #19
 
