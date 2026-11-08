@@ -8,6 +8,8 @@ Read in this task: Owner PR #22 comment / issue #21, canonical Drive frontend CU
 
 Owner issue [FE-DEBUG-01](https://github.com/SigmeD/flexomir_os/issues/23), fresh base `origin/main bc734d29163cb84c5751437839b75044b98eb29b`, canonical Drive frontend development plan (read in-session), existing OrderDemoWorkspace/Client/Manager routes and tests. Technical references were checked through Context7: [React Activity](https://react.dev/reference/react/Activity) for preserving hidden role state, and [Playwright assertions](https://playwright.dev/docs/test-assertions) for web-first cross-browser checks. No new Figma master or product rule was introduced; the approved stand wrapper remains subject to Owner UI review.
 
+Code/test delivery: [Draft PR #24](https://github.com/SigmeD/flexomir_os/pull/24), code/test head `e1a906910a77c372edd6edc1d10fbd2b2a66f97f`. All six GitHub Actions workflows succeeded on this SHA; the follow-up commit updates documentation only.
+
 ## FE-S03 — historical CURRENT verification 06.11.2026
 
 Перед реализацией прочитаны issue #17 (updated 19:45:50Z), CURRENT frontend plan (modified 19:46:49Z), SRS v0.5 (modified 12:54:47Z), Scope v0.3 (modified 30.10 18:27:41Z). Git fetch подтвердил main351157c и отсутствие открытых PR перед созданием единственного PR #18. Более новые исторические/candidate вставки не повышались до approved требований.

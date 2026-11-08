@@ -2,14 +2,14 @@
 
 ## CURRENT 08.11.2026 — FE-DEBUG-01 / issue #23
 
-**Base:** `origin/main bc734d29163cb84c5751437839b75044b98eb29b`; **branch:** `feat/frontend-qa-debug-cycle`; one Draft PR for the stand; no merge. Existing workspace was clean, one worktree, four existing stashes preserved.
+**Base:** `origin/main bc734d29163cb84c5751437839b75044b98eb29b`; **branch:** `feat/frontend-qa-debug-cycle`; [Draft PR #24](https://github.com/SigmeD/flexomir_os/pull/24), code/test head `e1a9069`; no merge. Existing workspace was clean, one worktree, four existing stashes preserved.
 
 | Area | Result / gate |
 | --- | --- |
 | Entry and routes | `/` opens Client My Orders with a Client/Manager selector. Existing direct cabinet/Auth routes and QA fixtures remain. Glass Filter moved to `?view=glass-filter-lab`; unknown views return to Client with a diagnostic. |
 | Presentation and demo flow | Role changes use one `OrderDemoWorkspace` without reload. QA reset is in its separate `demoTools=1` strip. Manager dirty drafts lock role/reset and cannot be left through cabinet navigation until saved. |
 | Verification | Build PASS (207 modules); full Playwright suite 338/338 Chromium PASS (1440/390 projects); selected entry/presentation/FE-S04/M7 regression 147/147 PASS each on Chromium, Firefox, WebKit. Five target widths, Axe and D/T/M stand captures checked. `git diff --check` PASS. |
-| Independent QA / Owner gate | Independent regression review PASS; no confirmed P0/P1 in this change. Owner UI review OPEN; Draft PR and CI checks still required on the pushed head. No merge. |
+| Independent QA / Owner gate | Independent regression review PASS; no confirmed P0/P1 in this change. Owner UI review OPEN. All six GitHub workflows succeeded on code/test head `e1a9069`; no merge. |
 
 **Scope:** React presentation and route framing only. No backend/API/1C/ACL, login, product semantics, Figma masters or global cabinet restyling changed.
 
