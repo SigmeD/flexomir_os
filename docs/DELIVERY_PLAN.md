@@ -11,7 +11,7 @@
 | Общий rollout | CODED: Orders/формы/детали, Companies, Layouts, Support Client/Manager через shared main contract |
 | Responsive/browser geometry | PASS: 49 route-width сочетаний × Chromium/Firefox/WebKit; 320/390/768/1024/1440/1920/2560, overflow=0, desktop center error ≤2px |
 | Build / workflow regression | PASS: build; 342/342 Playwright regression tests; 357 layout geometry checks across Chromium/Firefox/WebKit |
-| Independent review / PR CI | Independent QA PASS WITH RISKS (no confirmed issue in latest diff); [Draft PR #26](https://github.com/SigmeD/flexomir_os/pull/26), GitHub Actions IN PROGRESS on `185df06` |
+| Independent review / PR CI | Independent QA PASS WITH RISKS (no confirmed issue in latest diff); [Draft PR #26](https://github.com/SigmeD/flexomir_os/pull/26), final CI status is tracked on current PR head |
 | Owner visual approval / merge | OPEN; merge не выполняется без отдельного разрешения |
 
 `standard max-width:1440px` — сохранённый текущий кодовый предел, кандидат для визуальной приёмки, не DS-токен. `wide` deferred: текущий Manager Orders рендерит карточки; consumer для расширенной таблицы в проверенных экранах отсутствует. Evidence: `output/playwright/workspace-layout/` (локальный, игнорируемый). Проверки сборки и локальной регрессии не заменяют Owner visual approval.
