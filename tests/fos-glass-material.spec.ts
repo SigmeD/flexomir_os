@@ -27,7 +27,7 @@ test('Select reuses the verified material with accessible keyboard and browser f
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()) })
-  await page.goto('/?glass=matte')
+  await page.goto('/?view=glass-filter-lab&glass=matte')
   const trigger = page.getByTestId('filter-control').locator('button')
   await trigger.focus()
   await page.keyboard.press('ArrowDown')
@@ -52,7 +52,7 @@ test('Select reuses the verified material with accessible keyboard and browser f
 test('forced colors replaces optics with an accessible system surface', async ({ page, browserName }) => {
   test.skip(browserName !== 'chromium', 'Chromium forced-colors emulation')
   await page.emulateMedia({ forcedColors: 'active' })
-  await page.goto('/?glass=matte')
+  await page.goto('/?view=glass-filter-lab&glass=matte')
   await page.getByTestId('filter-control').locator('button').click()
   const material = page.getByRole('listbox').locator('[data-fos-glass-material]')
   await expect(material).toHaveAttribute('data-optics-mode', 'high-contrast')

@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test('light Select closed, open and keyboard focus match reviewed screenshots', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   const trigger = page.getByTestId('filter-control').locator('button')
   await expect(trigger).toContainText('Все заказы')
   await page.mouse.move(0, 0)
@@ -18,7 +18,7 @@ test('light Select closed, open and keyboard focus match reviewed screenshots', 
 })
 
 test('dark component palette matches reviewed closed and open screenshots', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   await page.evaluate(() => { document.documentElement.dataset.theme = 'dark' })
   const trigger = page.getByTestId('filter-control').locator('button')
   await expect(trigger).toHaveCSS('color-scheme', 'dark')
@@ -33,7 +33,7 @@ test('dark component palette matches reviewed closed and open screenshots', asyn
 })
 
 test('visual negative control rejects a return to unreadable white text', async ({ page }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   await expect(page.getByTestId('filter-control').locator('button')).toContainText('Все заказы')
   // This mutation exists only in this isolated browser context, never in application CSS.
   await page.addStyleTag({ content: ':root { --gs-foreground: #fff; }' })
@@ -43,7 +43,7 @@ test('visual negative control rejects a return to unreadable white text', async 
 })
 
 test('matte 97 preview matches reviewed closed and open screenshots', async ({ page }) => {
-  await page.goto('/?glass=matte')
+  await page.goto('/?view=glass-filter-lab&glass=matte')
   const trigger = page.getByTestId('filter-control').locator('button')
   await expect(trigger).toContainText('Все заказы')
   await page.mouse.move(0, 0)

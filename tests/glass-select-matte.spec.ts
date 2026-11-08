@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright'
 import { selectContrast } from './helpers/select-contrast'
 
 test('matte comparison uses a uniform 97% surface, a quiet rim and one soft shadow', async ({ page }, testInfo) => {
-  await page.goto('/?glass=matte')
+  await page.goto('/?view=glass-filter-lab&glass=matte')
   const trigger = page.getByTestId('filter-control').locator('button')
   await trigger.click()
   const popup = page.getByRole('listbox')

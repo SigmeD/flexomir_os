@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright'
 import { selectContrast } from './helpers/select-contrast'
 
 test('light closed and open Select pass axe without disabling contrast rules', async ({ page }, testInfo) => {
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   const trigger = page.getByTestId('filter-control').locator('button')
   await expect(trigger).toContainText('Все заказы')
   for (const state of ['closed', 'open']) {
@@ -26,7 +26,7 @@ test('light closed and open Select pass axe without disabling contrast rules', a
 
 for (const theme of ['light', 'dark'] as const) {
   test(`${theme} palette keeps text at least 4.5:1 in trigger, selected, hovered and focused options`, async ({ page }, testInfo) => {
-    await page.goto('/')
+    await page.goto('/?view=glass-filter-lab')
     await page.evaluate(t => { document.documentElement.dataset.theme = t }, theme)
     const trigger = page.getByTestId('filter-control').locator('button')
     await expect(trigger).toHaveCSS('color-scheme', theme)
@@ -51,7 +51,7 @@ for (const theme of ['light', 'dark'] as const) {
 
 test('explicit light theme survives a dark OS preference in the body portal', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark' })
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   const trigger = page.getByTestId('filter-control').locator('button')
   await expect(trigger).toHaveCSS('color-scheme', 'light')
   await trigger.click()
@@ -63,7 +63,7 @@ test('explicit light theme survives a dark OS preference in the body portal', as
 })
 
 test('keyboard focus is visible and closed options cannot receive focus', async ({ page }) => {
-  await page.goto('/')
+  await page.goto('/?view=glass-filter-lab')
   const trigger = page.getByTestId('filter-control').locator('button')
   await page.keyboard.press('Tab')
   await expect(trigger).toBeFocused()
@@ -88,7 +88,7 @@ test('theme classes, explicit data theme and system fallback agree between trigg
   ] as const
   for (const scenario of cases) {
     await page.emulateMedia({ colorScheme: scenario.os })
-    await page.goto('/')
+    await page.goto('/?view=glass-filter-lab')
     await page.evaluate(({ classes, theme }) => {
       document.documentElement.className = classes
       if (theme) document.documentElement.dataset.theme = theme

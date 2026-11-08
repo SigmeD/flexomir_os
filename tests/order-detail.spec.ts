@@ -13,7 +13,7 @@ for (const role of roles) {
       await page.setViewportSize({ width, height })
       await page.goto('/?view=' + role + '-orders')
       await page.getByTestId('glass-pill-work').click()
-      const opener = page.getByRole('button', { name: 'Открыть заказ DEMO-003', exact: true })
+      const opener = page.getByRole('button', { name: 'Открыть заказ DEMO-003' })
       await expect(opener).toBeVisible()
       await opener.focus()
       await page.keyboard.press('Enter')
@@ -45,7 +45,7 @@ for (const role of roles) {
     for (const [id, count] of cases) {
       const row = page.getByTestId(role + '-order-' + id)
       const status = await row.locator('.fos-order-card__status').innerText()
-      await row.getByRole('button', { name: 'Открыть заказ ' + id, exact: true }).click()
+      await row.getByRole('button', { name: 'Открыть заказ ' + id }).click()
       const detail = page.getByTestId('order-detail')
       await expect(detail.getByRole('heading', { name: 'Заказ ' + id, exact: true })).toBeVisible()
       await expect(detail.getByTestId('order-detail-status')).toHaveText(status)
@@ -60,7 +60,7 @@ for (const role of roles) {
     await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' })
     await page.setViewportSize({ width: 320, height: 740 })
     await page.goto('/?view=' + role + '-orders')
-    await page.getByRole('button', { name: 'Открыть заказ DEMO-003', exact: true }).click()
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
     await page.getByTestId('navigation-drawer-trigger').click()
     await expect(page.getByRole('dialog')).toBeVisible()
     await page.keyboard.press('Escape')
@@ -75,7 +75,7 @@ for (const role of roles) {
     for (const [label, width, height] of sizes) {
       await page.setViewportSize({ width, height })
       await page.goto('/?view=' + role + '-orders')
-      await page.getByRole('button', { name: 'Открыть заказ DEMO-003', exact: true }).click()
+      await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
       await expect(page.getByTestId('order-detail')).toBeVisible()
       await page.screenshot({ path: testInfo.outputPath('fes01-detail-' + role + '-' + label + '.png'), fullPage: true, animations: 'disabled' })
     }
@@ -86,7 +86,7 @@ test('the same DEMO order has identical read-only content in both cabinets', asy
   const content: Awaited<ReturnType<typeof detailData>>[] = []
   for (const role of roles) {
     await page.goto('/?view=' + role + '-orders')
-    await page.getByRole('button', { name: 'Открыть заказ DEMO-003', exact: true }).click()
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
     content.push(await detailData(page))
   }
   expect(content[0]).toEqual(content[1])
@@ -97,7 +97,7 @@ test('touch detail/back restores the originating order and scroll position', asy
   try {
     const page = await context.newPage()
     await page.goto('http://127.0.0.1:5173/?view=manager-orders')
-    const opener = page.getByRole('button', { name: 'Открыть заказ DEMO-006', exact: true })
+    const opener = page.getByRole('button', { name: 'Открыть заказ DEMO-006' })
     await opener.scrollIntoViewIfNeeded()
     const originalY = await page.evaluate(() => window.scrollY)
     await opener.tap()

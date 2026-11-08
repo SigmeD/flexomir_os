@@ -25,7 +25,7 @@ export interface OrderDemoController {
 }
 
 /** All state dies on reload. No browser persistence, auth, upload or network requests. */
-export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orders', errorFixture = '' }: { role: 'client' | 'manager'; empty?: boolean; initialSection?: CabinetSection; errorFixture?: string }) {
+export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orders', errorFixture = '', presentationMode = false, diagnosticMessage }: { role: 'client' | 'manager'; empty?: boolean; initialSection?: CabinetSection; errorFixture?: string; presentationMode?: boolean; diagnosticMessage?: string }) {
   const [drafts, setDrafts] = useState<readonly DemoDraft[]>([])
   const [currentRole, setCurrentRole] = useState(role)
   const [sections, setSections] = useState<Record<'client' | 'manager', CabinetSection>>({ client: role === 'client' ? initialSection : 'orders', manager: role === 'manager' ? initialSection : 'orders' })
@@ -73,17 +73,25 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     if (!visited.has(slotRole + ':' + section)) return null
     return <Activity key={slotRole + ':' + section + ':' + version} mode={currentRole === slotRole && activeSection === section ? 'visible' : 'hidden'}>{children}</Activity>
   }
+  const demoTools = new URLSearchParams(window.location.search).get('demoTools') === '1'
   return <div className="fos-demo-workspace">
-    {new URLSearchParams(window.location.search).get('demoTools') === '1' && <aside className="fos-demo-workspace__controls" aria-label="Управление демонстрацией">
-      <p>Демо двух ролей · данные до перезагрузки</p>
-      <div><FOSAction disabled={editorOpen} aria-pressed={currentRole === 'client'} onClick={() => visit('client', sections.client)}>Демо: клиент</FOSAction>
+    {presentationMode && <aside className="fos-demo-workspace__controls fos-demo-workspace__presentation" aria-label="Демонстрация кабинета" data-testid="demo-presentation-controls">
+      <div className="fos-demo-workspace__intro"><strong>Демонстрация кабинета</strong><span>Учебные данные · сохраняются только до перезагрузки страницы</span></div>
+      <div className="fos-demo-workspace__role" role="group" aria-label="Роль кабинета">
+        <FOSAction disabled={editorOpen} aria-pressed={currentRole === 'client'} onClick={() => visit('client', sections.client)}>Демо: клиент</FOSAction>
         <FOSAction disabled={editorOpen} aria-pressed={currentRole === 'manager'} onClick={() => visit('manager', sections.manager)}>Демо: менеджер</FOSAction>
-        <FOSAction disabled={editorOpen} onClick={() => { setDrafts([]); nextOrder.current = 100; setClientFilter('all'); setManagerFilter('all'); setVersion(current => current + 1) }}>Сбросить демо</FOSAction></div>
-      {editorOpen && <p>Для смены роли или сброса сохраните изменения и вернитесь к списку.</p>}
+      </div>
+      {editorOpen && <p className="fos-demo-workspace__lock" role="status">Сохраните черновик и закройте редактор, чтобы переключить роль или сбросить демо.</p>}
+      {diagnosticMessage && <p className="fos-demo-workspace__diagnostic" role="status" data-testid="demo-route-diagnostic">{diagnosticMessage}</p>}
+    </aside>}
+    {demoTools && <aside className="fos-demo-workspace__controls fos-demo-workspace__technical" aria-label="Техническая лаборатория" data-testid="demo-technical-controls">
+      <div className="fos-demo-workspace__intro"><strong>Технические инструменты QA</strong><span>Только для проверки демонстрационного состояния</span></div>
+      <div><FOSAction disabled={editorOpen} onClick={() => { setDrafts([]); nextOrder.current = 100; setClientFilter('all'); setManagerFilter('all'); setVersion(current => current + 1) }}>Сбросить демо</FOSAction></div>
+      {editorOpen && <p className="fos-demo-workspace__lock" role="status">Закройте редактор, чтобы сбросить демо.</p>}
     </aside>}
     <CabinetNavigation.Provider value={{ ready: currentRole === 'client' ? ['orders', 'artworks', 'support'] : ['orders', 'clients', 'support'], navigate: section => visit(currentRole, section) }}>
       {currentRole === 'client' && slot('client', 'orders', <ClientOrdersScreen orders={[...(empty ? [] : [...CLIENT_ORDERS_DEMO, COMPLETED_DEMO_ORDER]), ...drafts.filter(draft => draft.ownerRole === 'client').map(draftView)]} companyName={CLIENT_DEMO_COMPANY} demo={controller} processingStates={processingStates} initialFilterId={clientFilter} onFilterChange={setClientFilter} />)}
-      {currentRole === 'manager' && slot('manager', 'orders', <ManagerOrdersScreen orders={[...(empty ? [] : MANAGER_ORDERS_DEMO), ...(new URLSearchParams(window.location.search).get('fixture') === 'imported-1c' && !empty ? [DEMO_IMPORTED_1C_ORDER] : []), ...sent.map(draft => ({ ...draftView(draft), demoProcessingState: processingStates[draft.id] ?? 'pending' })), ...drafts.filter(draft => draft.ownerRole === 'manager').map(draftView)]} demoOrderIds={sent.map(draft => draft.id)} newOrderIds={sent.map(draft => draft.id)} managerDrafts={drafts.filter(draft => draft.ownerRole === 'manager')} managerCompanies={DEMO_COMPANIES} onCreateOrder={() => controller.createDraft('manager')} onSaveManagerDraft={controller.saveDraft} processingStates={processingStates} onProcessingStateChange={(id, state) => setProcessingStates(current => ({ ...current, [id]: state }))} demoTools={new URLSearchParams(window.location.search).get('demoTools') === '1'} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />)}
+      {currentRole === 'manager' && slot('manager', 'orders', <ManagerOrdersScreen orders={[...(empty ? [] : MANAGER_ORDERS_DEMO), ...(new URLSearchParams(window.location.search).get('fixture') === 'imported-1c' && !empty ? [DEMO_IMPORTED_1C_ORDER] : []), ...sent.map(draft => ({ ...draftView(draft), demoProcessingState: processingStates[draft.id] ?? 'pending' })), ...drafts.filter(draft => draft.ownerRole === 'manager').map(draftView)]} demoOrderIds={sent.map(draft => draft.id)} newOrderIds={sent.map(draft => draft.id)} managerDrafts={drafts.filter(draft => draft.ownerRole === 'manager')} managerCompanies={DEMO_COMPANIES} onCreateOrder={() => controller.createDraft('manager')} onSaveManagerDraft={controller.saveDraft} onEditorStateChange={controller.onEditorStateChange} processingStates={processingStates} onProcessingStateChange={(id, state) => setProcessingStates(current => ({ ...current, [id]: state }))} demoTools={demoTools} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />)}
       {slot('manager', 'clients', <ManagerCompaniesScreen empty={empty} />)}
       {slot('client', 'artworks', <ClientLayoutsScreen empty={empty} errorFixture={errorFixture === 'layout-error'} />)}
       {slot('client', 'support', <SupportScreen role="client" empty={empty} errorFixture={errorFixture === 'support-error'} />)}
