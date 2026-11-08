@@ -1,5 +1,16 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 08.11.2026 — M8 / FE-S05 issue #21, QA checkpoint
+
+База `origin/main b5a8624b`; feature-ветка `feat/m8-ui-parity-refactor`; [Draft PR #22](https://github.com/SigmeD/flexomir_os/pull/22) открыт, mergeable, не слит. До старта проверены clean `main`, единственный worktree, четыре исходных stash — сохранены; открытых PR для этой ветки не было. Источники: Drive CURRENT M8, issue #21, CURRENT Figma DS V2 / FOS Technical Masters / Client UX V2 / Manager UX V2.
+
+- Аудит A: составлена полная экранно-сценарная матрица Client + Manager с CURRENT node refs, общими masters/React consumers, состояниями/переходами, D/L/T/M/M320 доказательствами, severity, root cause и reviewer status — [SCREEN_MAP](SCREEN_MAP_M4_2026-11-06.md). 27 пар сравнения покрывают девять shared families D/T/M; там, где отдельной пары для каждого состояния нет, матрица честно указывает functional evidence/—.
+- Подтверждённое P1: в Client LAY03 активный `Макеты` был выключен guard-ом Item editor. Исправлено: активный пункт остаётся доступен, другие пункты остаются защищены до завершения Item. P0 не найдено; независимая визуальная выборка не выявила иных подтверждённых крупных P1.
+- Manager Orders New/All — существующая FE-S04 demo grouping; PILOT Search/Company/Sort остаются OWNER OPEN. AuthCandidate — `OWNER_DESIGN_OPEN`. Sidebar icon/text parity, “Клиенты/Компании”, server/API/1C/ACL status semantics, persistent file storage и Support async остаются OPEN — не менять без решения.
+- Минимальная правка B: сохранить guard незавершённого Item, включать только текущий активный раздел в sidebar/drawer; остальные назначения остаются disabled. Shared Glass/material/motion не менялись. Тест проверяет active/enabled и блокировку остальных пунктов.
+- Проверки head `515111d`: `npm run build` PASS (207 modules); расширенный связанный Client/Manager/Orders/Glass/Layout/Support/FE-S04 suite 268/268 Chromium на профилях 1440/390, responsive checks включают D/L/T/M/M320. Независимая выборка ранее прошла 164/164 Firefox+WebKit, layout 22/22 Chromium, comparison PNG 27 (9 families × D/T/M). Новые New Item D/L/T/M/M320 снимки созданы локально и игнорируются Git. Три GitHub workflow на этом head — SUCCESS.
+- Независимый re-review: PASS WITH RISKS; новых P0/P1 или ложного parity заявления не найдено, но полный state-by-device side-by-side набор не создавался. Owner visual acceptance остаётся OPEN; PR #22 Draft. Merge запрещён без Owner-разрешения; backend/API/1С не затронуты.
+
 ## CURRENT 07.11.2026 — FE-S04 / issue #19, в работе
 
 База: свежий `origin/main` `8099539d9a5e018492de93f7a55137cfa783b5de`; ветка `feat/fe-s04-client-manager-ui`; [Draft PR #20](https://github.com/SigmeD/flexomir_os/pull/20), head `3f8c0a3bd92e9cb6452bab0e6488fb39ef8fcb0d`. Merge запрещён без разрешения Owner. Исходные stash и локальные данные сохранены.
@@ -10,7 +21,7 @@
 - Границы: только React/fixtures; нет API, писем, аккаунтов, реальной проверки кода, синхронизации/1С или production status. Auth Figma отсутствует: `OWNER_DESIGN_OPEN`. Визуальная полировка и pixel parity остаются M8.
 - PR #20 открыт; проверять CI строго на head SHA. Drive CURRENT синхронизировать с PR и этим QA. Визуальное принятие и merge остаются Owner gates.
 
-Документация пересмотрена 07.11.2026; следующая ревизия 21.11.2026.
+Документация обновлена 08.11.2026; плановая ревизия 22.11.2026.
 
 ## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
 

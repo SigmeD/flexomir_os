@@ -1,5 +1,15 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT 08.11.2026 — M8 / FE-S05 #21
+
+Branch `feat/m8-ui-parity-refactor` from `origin/main b5a8624`; [Draft PR #22](https://github.com/SigmeD/flexomir_os/pull/22) is open and mergeable. One worktree and one feature branch; no merge. Four pre-existing stashes were inspected and preserved.
+
+- A: read Drive CURRENT, issue #21 and CURRENT Figma DS/FOS/Client/Manager sources; completed the full role/screen/state matrix in [SCREEN_MAP](SCREEN_MAP_M4_2026-11-06.md). 27 comparison PNGs cover 9 shared families at D1440/T768/M390; other rows cite test evidence or clearly show no dedicated pair. Fresh captures are ignored under `output/playwright/m8/` and `test-results/`.
+- B/C: `ClientOrdersScreen` keeps the current «Макеты» navigation item active and enabled during the nested picker; the unsaved item guard still disables other destinations. No Glass primitive/material or backend work.
+- D: `npm run build` PASS (207 modules); full related Client/Manager/Orders/Glass/Layout/Support/FE-S04 suite PASS, 268/268 Chromium on 1440/390 projects; LAY01–09 22/22 at 1440/1024/768/390/320; earlier cross-browser subset 164/164 Firefox+WebKit. Regression includes focus, keyboard, touch, reduced motion, forced colors, empty/error/cancel and overflow. Fresh New Item captures at all five widths.
+- Findings: zero P0; one confirmed P1 fixed at nested Client LAY03 nav; no other confirmed large P1 in the sampled comparison. Manager Search/Company/Sort PILOT, Sidebar icons, company naming and Auth remain Owner-open.
+- Final: independent re-review PASS WITH RISKS; three GitHub workflows SUCCESS on `515111d` (Orders Core UI QA, FE-S03 M7 UI QA, NavigationDrawer GL-02B QA). Owner visual acceptance remains OPEN, so PR #22 stays Draft. Do not merge without explicit Owner permission.
+
 ## CURRENT 07.11.2026 — FE-S04 / #19
 
 Работа в основной папке, ветка `feat/fe-s04-client-manager-ui` от свежего `origin/main 8099539`. Один [Draft PR #20](https://github.com/SigmeD/flexomir_os/pull/20), head `3f8c0a3`; merge не выполнять без Owner. Stash #0–#3 сохранены без изменения.

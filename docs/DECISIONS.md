@@ -1,5 +1,17 @@
 # Flexomir OS — реестр решений и вопросов
 
+## M8 / FE-S05 / 08.11.2026 — scope and open findings
+
+Основание: прямое поручение Owner по issue #21 и Drive CURRENT. Одна ветка/PR; React only; no merge without permission.
+
+- **Approved execution detail:** during Client LAY03/04/05/06 picker flow, keep `Макеты` as the active and enabled sidebar item while the Item editor is open; retain the existing unsaved-item guard for other destinations. This follows CURRENT frame `1316:2015` and does not add a new route or product command.
+- **OPEN / Owner:** Manager Orders PILOT row `2495:8871/9000/9097` (New/All, search, company, sort) has no approved scope/semantics. Do not add until decided. Current React GL03 status filters remain.
+- **OPEN / Owner:** shared Sidebar icon rows differ from text-only CURRENT shell/nav references; preserve existing tested shared behavior pending approval.
+- **OPEN / Owner:** AuthCandidate remains without an approved CURRENT Figma design; do not call it visually accepted.
+- **M8 audit result:** zero P0; one confirmed P1 (disabled active `Макеты` item in the nested LAY03 picker) repaired in the existing Client AppShell consumer. No additional confirmed large P1 was found in the independent visual sample. The full traceability matrix is the M8 section of `SCREEN_MAP_M4_2026-11-06.md`.
+- **OPEN / Owner:** company naming (“Клиенты” in Figma / “Компании” in product notes), production status/API/1C/ACL mapping, persistent layout storage and real Support async states remain outside this UI parity decision.
+- QA statuses are technical only: build and regression do not confer visual, screen, product or release acceptance.
+
 ## FE-S04 / 07.11.2026 — approved scope and OPEN
 
 Основание: Owner поручил выполнить FE-S04 issue #19 по CURRENT Drive sequential A→B→C→D. Одобренные границы: React/fixtures only; одна feature-ветка и один PR; LIVE docs в той же поставке; базовый QA после блоков; merge только после разрешения.

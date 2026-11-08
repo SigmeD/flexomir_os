@@ -1,5 +1,26 @@
 # Flexomir OS — React Component Registry
 
+## M8 / FE-S05 #21 audit delta — 08.11.2026
+
+- `AppShell` → `SidebarNav` / `NavigationDrawer` → Client Composer → `OrderItemForm` → `ArtworkSource` / `LayoutBrowser`: CURRENT LAY03 sets «Макеты» as the selected section during picker flow. `ClientOrdersScreen` now leaves that selected item enabled while the item editor guard still disables other destinations. Draft/focus state and accepted `FosGlassMaterial`/spring are unchanged. Consumer regression: `tests/m7-layouts.spec.ts` asserts active/enabled and guarded peer item on desktop and drawer.
+- Manager Orders panel `2495:8871/9000/9097`: Search/Company/Sort and New/All remain `OWNER_OPEN` / PILOT candidate. React uses the existing accepted GL03 status filter; do not duplicate controls or infer business semantics before decision.
+- Sidebar icons remain in the shared nav as an unresolved visual question against text-only CURRENT shell/nav references. Existing optional icon contract and tests are retained pending Owner review; no one-role workaround.
+- AuthCandidate has no approved CURRENT Figma master: `OWNER_DESIGN_OPEN`; no visual acceptance.
+
+### M8 screen-family traceability
+
+| CURRENT family / master | React component and contract | Client / Manager consumers | M8 evidence and disposition |
+| --- | --- | --- | --- |
+| Shell `637:180`, header `2302:2138`, HeaderAction `1953:4168/2173:1425`, FOS controls `1688:532` | REUSE `AppShell`, `SidebarNav`, `NavigationDrawer`, `PageHeader`, `HeaderAction`, `OverflowMenu`; same responsive/keyboard contract | Both roles, lists, details, nested picker | Navigation/header/drawer suites; optional sidebar icon styling OWNER OPEN |
+| Orders list, status, detail, row and GL03 | REUSE `OrdersList`, `OrderDetail`, `OrderItemSummary`, `GlassPillTabs`; role-specific data stays in `OrderDemoWorkspace` | Client Orders/detail/Repeat; Manager Orders/detail/New/All | Orders/GL03/FE-S04 regression; New/All are current FE-S04 demo grouping. PILOT search/company/sort remain OWNER OPEN |
+| New/Repeat order, Item New/Edit, ArtworkSource | REUSE shared `OrderComposer`, `OrderItemForm`, `ArtworkSource`, FOS fields, company selector | Client compose/repeat; Manager private draft | Composer/parity suites, five widths; local draft only; no backend contract inferred |
+| Layouts LAY01–09 | REUSE `LayoutBrowser(mode=library|select|replace)`, `LayoutDetail`, `LayoutUploadForm/Panel`, `LocalFileControl` | Client library and nested item select/replace; Manager draft picker | 27 comparison images cover list/detail/upload/select families at D/T/M; all five widths tested. Server storage/policy OPEN |
+| Support list/new/detail/submitted | REUSE `SupportTicketRow`, `SupportTicketForm`, `SupportTicketDetail`, `ArtworkThumbnail` | Client and Manager requester views | D/T/M comparison for list/detail; empty/invalid/error/submitted functional coverage. Async/API and operator functions excluded |
+| Companies list/linked orders/detail | REUSE `CompanyRow`, `CompanyOrders`, `OrdersList` and `OrderDetail` | Manager Companies → scoped fixture orders → detail/back | `compare-companies-{d,t,m}.png`; five sizes. “Клиенты/Компании” naming OPEN |
+| AuthCandidate | Candidate uses shared Header/fields/actions only | `?view=auth` | No approved CURRENT design; excluded from visual parity and M8 repairs |
+
+The complete state-by-state node / screenshot / viewport / severity / root-cause / reviewer matrix is in the M8 section at the top of [SCREEN_MAP](SCREEN_MAP_M4_2026-11-06.md). Frame variants are grouped by shared contract; they are not separate React components by default.
+
 ## FE-S04 / 07.11.2026 — A–D component map
 
 | Figma / requirement | React component | Props / state | Consumers / decision |
@@ -15,7 +36,7 @@ Review map: Figma master/variants → React shared component → props/states �
 
 LayoutBrowser(mode=select|replace) внутри OrderItemForm: REUSE тех же LayoutRow/LayoutDetail/UploadForm. layouts.css задаёт отступы host и preview по CURRENT LAY03/04 D/T/M (1316:2015/2074/2165/2223/2315/2372); library сохраняет свою композицию. Пять размеров 1440/1024/768/390/320, выбор/замена/возврат проверены в составе свежих 105 M7 и 202 Orders/Glass сценариев. Новый мастер и отдельный экранный CSS не создавались. CI Orders отслеживает layouts/** как зависимость формы позиции. Авторская визуальная сверка; независимое review и Owner gate OPEN.
 
-Structural VISUAL OPEN / LAY03 desktop 1316:2015: Figma breadcrumbs «Новая позиция / Мои макеты» и Sidebar «Макеты»; текущий LayoutBrowser даёт только «Мои макеты», а родительский AppShell сохраняет «Заказы». Влияние — контекст пути/навигации. Перед Owner VISUAL_PASS устранить parent breadcrumb на уровне LayoutBrowser и согласовать с Owner политику активного раздела вложенного picker; checkpoint CSS исправляет только геометрию. M8/Owner gate OPEN, не pixel-perfect.
+Historical FE-S03 note, superseded by M8 / FE-S05: CURRENT LAY03 parent context is present in the nested picker; `ClientOrdersScreen` now reports `Макеты` as active and leaves it enabled during Item editing, while peer destinations remain disabled by the unsaved-item guard. See the current matrix at the top of [SCREEN_MAP](SCREEN_MAP_M4_2026-11-06.md). Owner visual acceptance remains OPEN.
 
 
 ## FE-S03 / D — integration contract

@@ -1,6 +1,10 @@
 # Flexomir OS — CURRENT источники
 
-## FE-S03 — адресная CURRENT сверка 06.11.2026
+## M8 / FE-S05 — адресная CURRENT сверка 08.11.2026
+
+Read in this task: Owner PR #22 comment / issue #21, canonical Drive frontend CURRENT (modified 07.11.2026), SRS v0.5, Scope MVP v0.3, Primary DS V2 `634:60`, FOS Technical Masters `1688:532`, Client UX V2 `634:6815`, Manager UX V2 `2495:8870`. The Screen Map links CURRENT source nodes and test/screenshot evidence. Figma was read-only; no requirements/master was changed. Current Figma page/section hierarchy and representative Client/Manager frames were inspected; comparison images are local/ignored.
+
+## FE-S03 — historical CURRENT verification 06.11.2026
 
 Перед реализацией прочитаны issue #17 (updated 19:45:50Z), CURRENT frontend plan (modified 19:46:49Z), SRS v0.5 (modified 12:54:47Z), Scope v0.3 (modified 30.10 18:27:41Z). Git fetch подтвердил main351157c и отсутствие открытых PR перед созданием единственного PR #18. Более новые исторические/candidate вставки не повышались до approved требований.
 

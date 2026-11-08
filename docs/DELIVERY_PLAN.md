@@ -1,5 +1,19 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 08.11.2026 — M8 / FE-S05 #21
+
+**Base:** `origin/main b5a8624`; **branch:** `feat/m8-ui-parity-refactor`; [Draft PR #22](https://github.com/SigmeD/flexomir_os/pull/22) is open and mergeable. One feature branch / one PR; no merge without Owner permission. Drive CURRENT remains the canonical plan. Scope is shared React parity/polish only, with no backend/API/1C or unapproved product behavior.
+
+| Block | Result / gate |
+| --- | --- |
+| A — inventory and discrepancy matrix | Full Client/Manager screen and state matrix completed in [SCREEN_MAP](SCREEN_MAP_M4_2026-11-06.md), with CURRENT nodes, shared component mapping, evidence, severity, root cause, reviewer and OPEN gates. 27 D/T/M pairs cover nine shared visual families. |
+| B — minimal shared-component correction | Done: in Client OrderComposer → ArtworkSource → LayoutPicker, keep the current `Макеты` sidebar item active and enabled while an Item editor is open; keep other destinations disabled until the editor guard clears. The draft guard and shared Glass are unchanged. |
+| C — representative and controlled rollout | Done in the existing shared AppShell consumer; no per-screen nav clone. |
+| D — regression QA | Build PASS (207 modules); expanded Client/Manager/Orders/Glass/Layout/Support/FE-S04 suite 268/268 Chromium (1440/390 projects); LAY01–09 suite 22/22, five widths; earlier targeted cross-browser subset 164/164 Firefox+WebKit. Includes accessibility, keyboard, touch, reduced motion, forced colors, drawer and overflow checks. |
+| E — independent QA and Owner gate | Independent re-review PASS WITH RISKS: no additional P0/P1 or false parity claim; broad state-by-device overlays remain sampled. Three PR-head workflows SUCCESS on `515111d`. Owner visual acceptance remains OPEN; PR stays Draft and no merge. |
+
+**OPEN:** Manager Orders PILOT Search/Company/Sort controls have no approved scope/semantics; existing FE-S04 New/All demo grouping is present. Auth remains `OWNER_DESIGN_OPEN`; Sidebar icon styling and company naming remain Owner questions. See the matrix and current comparison/capture paths in ignored `output/playwright/m8/`.
+
 ## CURRENT 07.11.2026 — FE-S04 / #19, implementation checkpoint
 
 Один функциональный инкремент в `feat/fe-s04-client-manager-ui` от `origin/main 8099539`; [Draft PR #20](https://github.com/SigmeD/flexomir_os/pull/20), head `3f8c0a3`. Без merge без Owner. Блоки A–D реализованы и проверены.
@@ -10,7 +24,7 @@
 - **D Client↔Manager:** same in-memory store, новые клиентские submissions видны в Manager New; demo processing label возвращается в Client. Нет API/1С.
 - QA: `npm run build` PASS (207 modules); FE-S04 + Manager Orders 34/34 Chromium (1440/390); full M7 105/105 Chromium/Firefox/WebKit; expanded Orders/Composer/Glass/FE-S04 210/210 Chromium; `git diff --check` PASS. PR #20 awaits CI/Owner review. M8 visual polish/parity deferred.
 
-Последняя ревизия документации: 07.11.2026; следующая: 21.11.2026.
+Обновлено: 08.11.2026; плановая ревизия документации: 22.11.2026.
 
 ## CURRENT 07.11.2026 — FE-S03 / M7, PR #18
 

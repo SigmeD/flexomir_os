@@ -166,11 +166,13 @@ test('validation/dirty guard/error and keyboard escape; no fabricated upload suc
   await expect(action).toBeDisabled()
   await expect(page.getByLabel('Количество', { exact: true })).toHaveAttribute('aria-invalid', 'true')
   if ((page.viewportSize()?.width || 1440) >= 1024) {
-    await expect(page.getByRole('navigation', { name: 'Навигация клиента', exact: true }).getByTestId('sidebar-nav-orders')).toBeDisabled()
+    await expect(page.getByRole('navigation', { name: 'Навигация клиента', exact: true }).getByTestId('sidebar-nav-orders')).toBeEnabled()
+    await expect(page.getByRole('navigation', { name: 'Навигация клиента', exact: true }).getByTestId('sidebar-nav-support')).toBeDisabled()
     await expect(page.getByRole('navigation', { name: 'Хлебные крошки' }).getByRole('button', { name: 'Мои заказы' })).toBeDisabled()
   } else {
     await page.getByTestId('navigation-drawer-trigger').click()
-    await expect(page.getByRole('dialog').getByTestId('sidebar-nav-orders')).toBeDisabled()
+    await expect(page.getByRole('dialog').getByTestId('sidebar-nav-orders')).toBeEnabled()
+    await expect(page.getByRole('dialog').getByTestId('sidebar-nav-support')).toBeDisabled()
     await page.keyboard.press('Escape')
   }
   await expect(page.getByLabel('Количество', { exact: true })).toHaveValue('0')

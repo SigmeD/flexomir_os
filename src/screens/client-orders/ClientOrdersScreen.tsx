@@ -50,7 +50,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   return (
     <div className="fos-orders-page" data-testid="client-orders-screen" ref={preview.surfaceRef}>
       <AppShell
-        items={(navigation ? cabinetItems('client', navigation.ready) : clientNav).map(item => itemEditorOpen ? { ...item, disabled: true } : item)} activeId={navigationSection} onSelect={id => { if (!itemEditorOpen) { if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) } }}
+        items={(navigation ? cabinetItems('client', navigation.ready) : clientNav).map(item => itemEditorOpen && item.id !== navigationSection ? { ...item, disabled: true } : item)} activeId={navigationSection} onSelect={id => { if (!itemEditorOpen) { if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) } }}
         roleLabel="Клиент" identityLabel={companyName} variant="client" navigationLabel="Навигация клиента" menuLabel="Меню клиента"
         triggerLabel="Открыть меню клиента" footerText={companyName}
       >
