@@ -6,7 +6,7 @@
 - Root cause fixed at shared main container: `margin-inline:auto` centers the standard max-1440px workspace inside content after Sidebar. Baseline error was 120px at 1920 and 440px at 2560; after ≤2px. Existing Add/More remain in PageHeader.
 - Shared consumers and Figma gutters are recorded in [Component Registry](COMPONENT_REGISTRY_2026-11-06.md), [Screen Map](SCREEN_MAP_M4_2026-11-06.md), and [Decisions](DECISIONS.md). `wide` is deferred until a real complex table consumer exists.
 - Responsive test PASS: 7 routes × 7 widths plus 10 nested states × 7 widths × Chromium/Firefox/WebKit (357 geometry checks), no horizontal overflow. Full functional/regression suite PASS (342/342); `npm run build` PASS; independent QA PASS WITH RISKS, latest diff has no confirmed issue. Before/after captures are local/ignored in `output/playwright/workspace-layout/`.
-- Next: commit and push this single feature branch, create one Draft PR, check CI on its final head and sync existing Drive CURRENT. Keep `OWNER_VISUAL_OPEN`; no merge.
+- One [Draft PR #26](https://github.com/SigmeD/flexomir_os/pull/26) is open on head `185df06d1adf5787e10ffd52a4fdd900d73fe204`; GitHub Actions are in progress. Next: record final CI status in this branch and Drive CURRENT. Keep `OWNER_VISUAL_OPEN`; no merge.
 
 ## CURRENT 08.11.2026 — FE-DEBUG-01 / issue #23
 
