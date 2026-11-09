@@ -5,7 +5,7 @@
 - Implementation candidate follows current FOS V2 Action `835:259` and Work Dock `3143:1219` / adapter `3144:2851`, with existing Liquid Glass material and existing shared React controls. Figma is unchanged.
 - Confirmed local behavior: only existing paired Primary+More groups opt into responsive docking; singles remain inline. Profile's separate Save+More family and measured geometry remain unchanged.
 - QA is technical only: build, full Playwright, responsive geometry and component behavior pass (see [PROJECT_STATE](PROJECT_STATE.md) and [HANDOFF](HANDOFF.md)).
-- Code/test/documentation delivery: [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28), latest head `b682bd9`; not merged.
+- Code/test/documentation delivery: [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28); implementation/test checkpoint `f94f55b`; not merged.
 - **OPEN:** Owner visual acceptance of FOSAction treatment and responsive paired-action placement. Do not mark screen/component accepted or merge before the Owner gate.
 
 ## OPEN 09.11.2026 — FE-PROFILE-01 visual acceptance and product actions
