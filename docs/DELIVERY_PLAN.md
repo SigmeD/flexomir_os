@@ -2,7 +2,7 @@
 
 ## CURRENT 09.11.2026 — FE-PROFILE-01
 
-Один инкремент `feat/fe-profile-01-account-profile` основан на свежем `origin/main 806b9b5`. Реализован общий React Account Menu + Profile Settings для Client/Manager и проверены состояния демо-профиля. [Draft PR #27](https://github.com/SigmeD/flexomir_os/pull/27), code/test SHA `026697a`; два GitHub workflow выполняются.
+Один инкремент `feat/fe-profile-01-account-profile` основан на свежем `origin/main 806b9b5`. Реализован общий React Account Menu + Profile Settings для Client/Manager и проверены состояния демо-профиля. [Draft PR #27](https://github.com/SigmeD/flexomir_os/pull/27), code/test SHA `d9e83b0`.
 
 | Gate | Статус |
 | --- | --- |
@@ -10,7 +10,7 @@
 | Shared React | PASS: общий `AccountMenu`, `ProfileSettingsScreen`, scoped `ConfirmDialog`; одна реализация для двух ролей |
 | Functional / responsive | PASS: profile suite 37 passed / 3 expected skips across Chromium/Firefox/WebKit/touch Chromium; five widths; account/save/photo/guard/error flows |
 | Regression / technical | PASS locally: build; 128/128 related Client/Manager shell tests in Chromium 1440/390; after desktop account trigger a11y fix, affected M7 tests 105/105 across Chromium/Firefox/WebKit |
-| PR CI / Owner visual acceptance / merge | Initial `FE-S03 M7 UI QA` failed on axe label-content-name-mismatch, fixed after `026697a`; rerun on follow-up commit pending. Owner visual OPEN; PR #27 Draft, no merge; FE-ACTION-08NOV NOT STARTED |
+| PR CI / Owner visual acceptance / merge | Both `Orders Core UI QA` and `FE-S03 M7 UI QA` PASS on `d9e83b0` (initial axe label finding fixed). Owner visual OPEN; PR #27 Draft, no merge; FE-ACTION-08NOV NOT STARTED |
 
 WIP visual approval remains OPEN. No backend/API/1C/ACL or Figma master changes. Local visual evidence is ignored at `output/playwright/profile-settings/`; compare against the approved CURRENT WIP nodes before accepting.
 
