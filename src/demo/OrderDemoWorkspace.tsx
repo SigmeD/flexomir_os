@@ -158,6 +158,23 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     setPendingProfileAction(null)
     action()
   }
+  function discardAndContinue() {
+    const action = pendingProfileAction
+    if (!action) { setSaveBeforeNavigation(false); return }
+    setProfileDrafts(current => ({
+      ...current,
+      [currentRole]: {
+        displayName: activeIdentity.displayName,
+        photoFile: activeIdentity.photoFile,
+        photoPendingRemoval: false,
+      },
+    }))
+    setSaveBeforeNavigation(false)
+    setPendingProfileAction(null)
+    setProfileSaveError('')
+    setProfileSaveStatus('')
+    action()
+  }
   const activeSection = sections[currentRole]
   function slot(slotRole: 'client' | 'manager', section: CabinetSection, children: ReactNode) {
     if (!visited.has(slotRole + ':' + section)) return null
@@ -210,11 +227,11 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     <ConfirmDialog
       open={saveBeforeNavigation}
       title="Сохранить изменения?"
-      confirmLabel="ОК"
-      cancelLabel="Отмена"
+      confirmLabel="Да"
+      cancelLabel="Нет"
       busy={profileSaving}
       onConfirm={saveAndContinue}
-      onCancel={() => { setSaveBeforeNavigation(false); setPendingProfileAction(null); setProfileSaveError('') }}
+      onCancel={discardAndContinue}
     />
   </div>
 }

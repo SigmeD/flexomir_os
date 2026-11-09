@@ -3,6 +3,7 @@
 ## OPEN 09.11.2026 — FE-PROFILE-01 visual acceptance and product actions
 
 - **Implemented candidate:** common Client/Manager Account Menu + Profile Settings, based on CURRENT Figma nodes recorded in [Component Registry](COMPONENT_REGISTRY_2026-11-06.md) and [SOURCES](SOURCES.md). Functional and responsive QA passes; this does not imply Owner visual acceptance.
+- **Owner instruction 09.11.2026:** on the unsaved-profile navigation dialog, `Да` saves and continues to the requested screen; `Нет` discards the current profile draft and continues. Closing the dialog leaves the user on Profile.
 - **OPEN:** Owner acceptance of the WIP screen; approved semantics for Company Settings, Logout and Profile More; real profile persistence/API and authorization contracts remain outside frontend scope.
 - **Decision boundary:** leave those menu actions disabled and keep profile persistence demo-only until Owner/PO/backend contract confirms behavior. FE-ACTION-08NOV is NOT STARTED and remains a separate task.
 

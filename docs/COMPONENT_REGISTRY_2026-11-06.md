@@ -4,7 +4,7 @@
 
 - **Figma mapping:** Account Menu `3038:2667` → `AccountMenu` (desktop Sidebar footer + compact header trigger); Sidebar Account Footer `3123:1214` and App Shell `637:180` → existing `AppShell`; Profile Page Actions `3215:1357` → existing `PageHeader` + shared `HeaderAction`/`MoreAction`; Profile Avatar `3177:1314` → profile avatar (80px); unsaved Confirm Dialog `3098:1663` → scoped shared `ConfirmDialog` adapter.
 - **Consumers:** Client and Manager AppShells via `OrderDemoWorkspace`; Profile Settings is rendered inside the active shell to avoid duplicate hidden account triggers. Role-specific identity comes from isolated fixtures.
-- **States:** view/edit name, read-only email, local photo preview/remove/restore, dirty/save, navigation confirmation, failed demo save. Company Settings, Logout and Profile More stay disabled pending approved behavior.
+- **States:** view/edit name, read-only email, local photo preview/remove/restore, dirty/save, navigation confirmation (`Да` saves and continues; `Нет` discards the draft and continues), failed demo save. Closing the dialog keeps the user on Profile. Company Settings, Logout and Profile More stay disabled pending approved behavior.
 - **Responsive / QA:** D1440/L1024/T768/M390/M320; shared menu uses 40px compact avatar, footer anchored to desktop sidebar bottom. Tests: `tests/profile-settings.spec.ts`; evidence at ignored `output/playwright/profile-settings/`.
 - **Boundary:** demo-session save only; reload resets fixture. No server persistence, account mutation, API, ACL or identity/auth implementation. Owner visual acceptance remains OPEN.
 
