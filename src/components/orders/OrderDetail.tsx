@@ -23,7 +23,7 @@ function dateValue(value?: string) {
 export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, submitted = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false }: OrderDetailProps) {
   const title = submitted ? 'Заказ отправлен' : 'Заказ ' + order.id
   return <div className="fos-order-detail" data-testid="order-detail" data-role={role} data-order-id={order.id}>
-    <PageHeader title={title} autoFocus subtitle={<span data-testid="order-detail-status">{order.statusLabel}</span>}
+    <PageHeader title={title} floatingWorkActions={!actions} autoFocus subtitle={<span data-testid="order-detail-status">{order.statusLabel}</span>}
       breadcrumbs={[{ label: role === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]}
       actions={actions || <><HeaderAction action={role === 'manager' ? 'add' : 'send'} accessibleName={role === 'manager' ? 'Добавить позицию заказа' : 'Отправить заказ'} disabled /><MoreAction disabled /></>} />
     <p className="fos-sr-only">{order.title} · {order.company} · Только просмотр.</p>

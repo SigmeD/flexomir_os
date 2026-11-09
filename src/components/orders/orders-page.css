@@ -12,3 +12,4 @@
 .fos-orders-page__empty { padding: 24px 2px; font-size: 14px; line-height: 20px; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); }
 @media(max-width:1023px) { .fos-orders-page__main { padding: 26px 20px 48px; } .fos-orders-page__filters { margin-top: 20px; } }
 @media(max-width:600px) { .fos-orders-page__main { padding: 26px 20px 36px; } }
+@media(max-width:1023px) { .fos-orders-page__main:has(.fos-page-header__actions--floating) { padding-bottom: 96px; } }

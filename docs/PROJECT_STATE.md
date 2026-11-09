@@ -1,5 +1,16 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 09.11.2026 — FE-ACTION-08NOV / shared actions and responsive work dock
+
+Branch `feat/fe-action-08nov` is based on `origin/main a9b2217`; code, responsive tests and docs are in [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28); implementation/test checkpoint `f94f55b`. One shared `FOSAction` now carries the existing FOS Liquid Glass material, standard 44px and compact 40px pill sizes, and shares directional press handling with `HeaderAction`. `PageHeader` has an opt-in `floatingWorkActions` variant for actual Primary+More pairs only: desktop/laptop stay in the header; tablet/mobile use a fixed 108×48 dock with safe-area clearance. Client/Manager Orders, details, compose/item forms, Layouts, Support and Companies pairs are covered. Singles and Profile Save+More remain in their existing families/positions.
+
+- Account trigger/header alignment and Profile photo action centering were corrected only where responsive measurements failed; Profile Save+More geometry remains unchanged and passes D1440/L1024/T768/M390/M320.
+- Figma mapping: Action `835:259` → `FOSAction`; Work Dock `3143:1219` / adapter `3144:2851` → `PageHeader` opt-in; App Shell `637:180`, Account `3037:2656`, Avatar `3177:1314`, Profile Page Actions `3215:1357` → existing AppShell/Profile consumers. Reuse/extend; no Figma masters changed.
+- QA: `npm run build` PASS; new responsive actions suite 48/48 across Chromium/Firefox/WebKit; `m7-layouts` 33/33 across Chromium/Firefox/WebKit; full `npm run test:e2e` 392 passed, 2 expected touch-only skips; `git diff --check` PASS. Screenshots are local under ignored `test-results/`.
+- PR #28 is Draft and unmerged. Owner visual acceptance remains OPEN; do not call this accepted/released or merge. No API/backend/1C/ACL or business rules changed. User screenshots remain untracked and untouched.
+
+Документы синхронизированы 09.11.2026; следующая ревизия 23.11.2026.
+
 ## CURRENT 09.11.2026 — FE-PROFILE-01 / Client + Manager Account Menu and Profile
 
 Ветка `feat/fe-profile-01-account-profile` создана от свежего `origin/main 806b9b5`. Реализован общий account menu и профильный экран внутри текущего AppShell для Client/Manager, с изоляцией fixture identity, локальным photo preview, редактированием имени, dirty guard и confirm dialog. Для перехода: «Да» сохраняет и продолжает, «Нет» отбрасывает черновик и продолжает; закрытие диалога оставляет пользователя в профиле. Сохранение — только в демосессии; перезагрузка возвращает fixture. Company Settings, Logout и Profile More остаются disabled; backend/API/1C/ACL не менялись. [Draft PR #27](https://github.com/SigmeD/flexomir_os/pull/27); code/test SHA `d9e83b0`.

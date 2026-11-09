@@ -1,11 +1,19 @@
 # Flexomir OS — реестр решений и вопросов
 
+## OPEN 09.11.2026 — FE-ACTION-08NOV visual acceptance
+
+- Implementation candidate follows current FOS V2 Action `835:259` and Work Dock `3143:1219` / adapter `3144:2851`, with existing Liquid Glass material and existing shared React controls. Figma is unchanged.
+- Confirmed local behavior: only existing paired Primary+More groups opt into responsive docking; singles remain inline. Profile's separate Save+More family and measured geometry remain unchanged.
+- QA is technical only: build, full Playwright, responsive geometry and component behavior pass (see [PROJECT_STATE](PROJECT_STATE.md) and [HANDOFF](HANDOFF.md)).
+- Code/test/documentation delivery: [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28); implementation/test checkpoint `f94f55b`; not merged.
+- **OPEN:** Owner visual acceptance of FOSAction treatment and responsive paired-action placement. Do not mark screen/component accepted or merge before the Owner gate.
+
 ## OPEN 09.11.2026 — FE-PROFILE-01 visual acceptance and product actions
 
 - **Implemented candidate:** common Client/Manager Account Menu + Profile Settings, based on CURRENT Figma nodes recorded in [Component Registry](COMPONENT_REGISTRY_2026-11-06.md) and [SOURCES](SOURCES.md). Functional and responsive QA passes; this does not imply Owner visual acceptance.
 - **Owner instruction 09.11.2026:** on the unsaved-profile navigation dialog, `Да` saves and continues to the requested screen; `Нет` discards the current profile draft and continues. Closing the dialog leaves the user on Profile.
 - **OPEN:** Owner acceptance of the WIP screen; approved semantics for Company Settings, Logout and Profile More; real profile persistence/API and authorization contracts remain outside frontend scope.
-- **Decision boundary:** leave those menu actions disabled and keep profile persistence demo-only until Owner/PO/backend contract confirms behavior. FE-ACTION-08NOV is NOT STARTED and remains a separate task.
+- **Decision boundary:** leave those menu actions disabled and keep profile persistence demo-only until Owner/PO/backend contract confirms behavior. FE-ACTION-08NOV is now tracked separately in the CURRENT entry above.
 
 ## 08.11.2026 — FE-DEBUG-02 / issue #25: centered workspace
 

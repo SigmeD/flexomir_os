@@ -19,7 +19,7 @@ export function ArtworkSource({ value, onChange, disabled = false, error, onOpen
       {value.unavailableArtwork && <p className="fos-artwork-source__notice">Исходный макет недоступен: {value.unavailableArtwork}. Выберите файл заново или запросите помощь.</p>}
     </>}
     <div className="fos-artwork-source__options">
-      {value.artworkMode !== 'HELP' && <FOSAction disabled={disabled || !onOpenLibrary} onClick={onOpenLibrary} data-artwork-library title={onOpenLibrary ? 'Выбор синтетического макета в демосессии' : 'Библиотека компании не подключена'}>Мои макеты</FOSAction>}
+      {value.artworkMode !== 'HELP' && <FOSAction size="compact" disabled={disabled || !onOpenLibrary} onClick={onOpenLibrary} data-artwork-library title={onOpenLibrary ? 'Выбор синтетического макета в демосессии' : 'Библиотека компании не подключена'}>Мои макеты</FOSAction>}
       <label><input type="checkbox" disabled={disabled} checked={value.artworkMode === 'HELP'} onChange={event => onChange({ artworkMode: event.target.checked ? 'HELP' : 'UPLOAD', fileName: '', layoutId: undefined, layoutName: undefined })} />Нужна помощь с макетом</label>
     </div>
     {error && <p className="fos-field__error" role="alert">{error}</p>}

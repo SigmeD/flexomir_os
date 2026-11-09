@@ -20,7 +20,7 @@ export function ManagerCompaniesScreen({ empty = false, onNavigate }: { empty?: 
   const order = company && companyOrders(company).find(item => item.id === orderId)
   return <CabinetPage role="manager" section="clients" onNavigate={onNavigate}>
     {company && order?.detail ? <OrderDetail role="manager" order={order} detail={order.detail} onBack={nav.back} /> : <>
-      <PageHeader title={company ? 'Заказы клиента' : 'Клиенты'} autoFocus={Boolean(company)} breadcrumbs={company ? [{ label: 'Клиенты', onSelect: nav.back }, { label: 'Заказы клиента' }] : [{ label: 'Клиенты' }]}
+      <PageHeader title={company ? 'Заказы клиента' : 'Клиенты'} floatingWorkActions autoFocus={Boolean(company)} breadcrumbs={company ? [{ label: 'Клиенты', onSelect: nav.back }, { label: 'Заказы клиента' }] : [{ label: 'Клиенты' }]}
         actions={<><HeaderAction action="add" accessibleName={company ? 'Добавить заказ компании' : 'Добавить компанию'} disabled /><MoreAction disabled /></>} />
       {company ? <CompanyOrders company={company} filters={filters[company.id] ?? { search: '', status: '' }} onFilters={value => setFilters(current => ({ ...current, [company.id]: value }))} onOpen={id => nav.open('company/' + company.id + '/' + id, { attribute: 'data-order-open', value: id })} /> : <>
         <FOSInput wrapperClassName="fos-companies__search" label="Поиск компании" placeholder="Название компании" value={search} onChange={event => setSearch(event.target.value)} />
