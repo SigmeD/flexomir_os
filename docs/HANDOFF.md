@@ -1,5 +1,9 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT 09.11.2026 — post-FE11 focus/dismissal fixes
+
+Owner разрешил закрыть QA до merge. Scope — popup lifecycle, не изменение FE11-v0.2. Surface closed=inert/pointer-none; Account profile consumer owns focus; More защищён от trigger-as-outside при reopen и возвращает фокус по Escape, сохраняя outside-input focus. Дополнительно OrderComposer возвращает More focus после Cancel/close/Escape delete dialog. useDirectionalPress и frozen files не менялись. Исходные три FAIL подтверждены до fix, затем3/3PASS. Полная регрессия458passed/4skips/0failed, build и freeze PASS; cross-browser35/35PASS, Cancel-focus4/4PASS. Новые tests/config подключены к Orders/M7 CI, [live checks](https://github.com/SigmeD/flexomir_os/pull/29/checks). Root Owner PNG нетронуты. Следующий gate: окончательный CI и визуальная приёмка интегрированных меню; merge только после разрешения. [Evidence/causes](FE11_POPUP_PILOT_2026-11-09.md).
+
 ## CURRENT 09.11.2026 — FE11-v0.2 OWNER APPROVED / FROZEN
 
 Git checkpoints: reference `f527bcb`; shared implementation / adapter / typography delivery `2c303654906365d7cca255aaef5e28ce9ff4ca05`. Последующие документационные/whitespace правки не меняют frozen implementation. Единственный Draft PR #29; merge OPEN.

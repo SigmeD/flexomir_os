@@ -30,6 +30,10 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
   const nextItem = useRef(1)
   const returnFocus = useRef<string | null>(null)
   const root = useRef<HTMLDivElement>(null)
+  function cancelDelete() {
+    setConfirmDelete(false)
+    root.current?.querySelector<HTMLButtonElement>('button.fos-more')?.focus({ preventScroll: true })
+  }
   useEffect(() => { onItemEditorChange?.(editing !== null); return () => onItemEditorChange?.(false) }, [editing, onItemEditorChange])
   useEffect(() => { onDraftDirtyChange?.(JSON.stringify(value) !== JSON.stringify(draft)); return () => onDraftDirtyChange?.(false) }, [value, draft, onDraftDirtyChange])
   useLayoutEffect(() => {
@@ -84,7 +88,7 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
         onDeleteDraft?.(value.id)
         setConfirmDelete(false)
         onBack()
-      }} onCancel={() => setConfirmDelete(false)} onDismiss={() => setConfirmDelete(false)} />
+      }} onCancel={cancelDelete} onDismiss={cancelDelete} />
     </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} onExitActionsChange={onItemExitActionsChange} />}
   </div>
 }

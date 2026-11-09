@@ -18,6 +18,7 @@ export function AccountMenu({
   onOpenProfile: () => void
 }) {
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const consumerFocus = useRef(false)
   const initials = identity.displayName.trim().split(/\s+/u)[0]?.slice(0, 1).toLocaleUpperCase('ru-RU') || ''
   const secondary = identity.companyName || identity.email
   const triggerLabel = `${identity.displayName} — открыть меню аккаунта`
@@ -43,6 +44,12 @@ export function AccountMenu({
         sideOffset={12}
         alignOffset={placement === 'sidebar' ? 16 : 0}
         collisionPadding={16}
+        onCloseAutoFocus={event => {
+          // Opening Profile hands focus to that screen; delayed menu cleanup
+          // must not pull it away from its fields/actions.
+          if (consumerFocus.current) event.preventDefault()
+          consumerFocus.current = false
+        }}
         onInteractOutside={event => {
           // An exiting non-modal layer can observe the pointer that reopens its
           // trigger. The trigger owns toggling; do not dismiss that same click.
@@ -60,7 +67,7 @@ export function AccountMenu({
           </div>
           <DropdownMenu.Separator className="fos-account-menu__separator" />
           <FosPopupRows selectedId="profile">
-          <DropdownMenu.Item data-popup-item="profile" className="fos-account-menu__item" onSelect={onOpenProfile}><span data-popup-label="">Настройки профиля</span></DropdownMenu.Item>
+          <DropdownMenu.Item data-popup-item="profile" className="fos-account-menu__item" onSelect={() => { consumerFocus.current = true; onOpenProfile() }}><span data-popup-label="">Настройки профиля</span></DropdownMenu.Item>
           <DropdownMenu.Separator className="fos-account-menu__separator" />
           <DropdownMenu.Item data-popup-item="company" className="fos-account-menu__item" disabled><span data-popup-label="">Настройки компании</span></DropdownMenu.Item>
           <DropdownMenu.Separator className="fos-account-menu__separator" />

@@ -1,5 +1,9 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 09.11.2026 — close remaining popup QA
+
+Post-freeze lifecycle defects More/Profile-focus исправлены в оболочке/адаптерах; Cancel delete возвращает More focus в OrderComposer. Полный Chromium regression458passed/4expected skips, frozen reference без изменений; cross-browser35/35 и Cancel-focus4/4PASS. CI gated в прежних Orders/M7 jobs, затем Owner visual gate интегрированных меню. More lifecycle исправлен по новому поручению, визуальная migration/native FOSSelect остаются отдельными этапами. [FE11 QA](FE11_POPUP_PILOT_2026-11-09.md).
+
 ## CURRENT 09.11.2026 — FE11-v0.2 frozen reference → adapter QA
 
 Owner gate стенда закрыт явным подтверждением, Git reference `f527bcb`. Контроллер в общем FosPopupRows; Drawer/Account/GlassSelect подключены через semantic adapters. Freeze-contract защищает формулу/физику/material; на каждый адаптер отдельный QA. Текущая стадия — завершение регрессии/отчёта. More исключён, нативные Select требуют отдельного field-контракта; all-screen/product acceptance и merge остаются OPEN. [Реестр и QA](FE11_POPUP_PILOT_2026-11-09.md).

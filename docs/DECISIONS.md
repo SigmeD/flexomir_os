@@ -1,5 +1,9 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner scope 09.11.2026 — post-freeze QA fixes
+
+Owner «приступай» разрешил следующий этап: диагностику и исправление оставшихся More/FOSAction сбоев, повтор QA/CI и подготовку PR к приёмке. Исправления ограничены popup focus/dismissal lifecycle; More не переносится визуально на frozen v0.2. Reference `f527bcb`, формулы/параметры/frozen files остаются без изменений. Приёмка интегрированных экранов и merge не следуют автоматически из этого поручения.
+
 ## OWNER APPROVED / FROZEN 09.11.2026 — FE11-v0.2
 
 Прямое подтверждение Owner: «да теперь все верно, подтверждаю». Утверждён selection-only motion стенда v0.2; Git reference `f527bcb`, [freeze manifest](FE11_MOTION_FROZEN_V0_2.json). Контроллер перенесён в общий Rows без изменения frame/material/physics; Drawer/Account/GlassSelect подключаются через свои семантические адаптеры с отдельным QA. Нативный FOSSelect и исключённый Order More не мигрируются автоматически. Приёмка стенда не является Owner acceptance всех экранов. Любая правка frozen implementation — только по отдельному разрешению после причины/влияния/предложения; локальные CSS-обходы и копии запрещены.

@@ -6,6 +6,9 @@ on:
       - 'src/**'
       - 'tests/m7-*.spec.ts'
       - 'tests/order-compose.spec.ts'
+      - 'tests/popup-dismissal.spec.ts'
+      - 'tests/fe11-*.spec.ts'
+      - 'docs/FE11_MOTION_FROZEN_V0_2.json'
       - 'playwright*.ts'
       - 'package*.json'
       - '.github/workflows/fe-s03-m7-qa.yml'
@@ -25,6 +28,8 @@ jobs:
       - run: npx playwright install --with-deps chromium firefox webkit
       - run: npm run build
       - run: npx playwright test --config=playwright.m7.config.ts --workers=2
+      - name: Popup lifecycle and frozen motion regression
+        run: npx playwright test --config=playwright.popup-qa.config.ts --workers=1
       - name: Save M7 browser evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -35,5 +40,7 @@ jobs:
             output/fe-s03/browser/**/fes03-*.png
             output/fe-s03/browser/**/error-context.md
             output/fe-s03/browser/**/trace.zip
+            output/playwright/post-fe11/cross-browser.json
+            output/playwright/post-fe11/cross-browser/**/error-context.md
           if-no-files-found: warn
           retention-days: 7

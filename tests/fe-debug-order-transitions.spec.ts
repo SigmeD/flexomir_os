@@ -109,6 +109,7 @@ test('More deletes only the confirmed in-session draft and leaves other drafts i
   await expect(confirm).toBeVisible()
   await confirm.getByRole('button', { name: 'Отмена', exact: true }).click()
   await expect(page.getByTestId('order-composer')).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Ещё', exact: true })).toBeFocused()
 
   await page.getByRole('button', { name: 'Ещё' }).click()
   await page.getByRole('menuitem', { name: 'Удалить черновик', exact: true }).click()

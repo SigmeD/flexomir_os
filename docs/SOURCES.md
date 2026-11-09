@@ -1,5 +1,9 @@
 # Flexomir OS — CURRENT источники
 
+## Post-FE11 lifecycle QA — 09.11.2026
+
+Источник — прямое поручение Owner продолжить QA после утверждения frozen reference. Baseline `3bb9faf`, PR #29. До исправлений воспроизведены три failures; browser focus trace показал закрывающееся account menu как источник focus-steal. Переиспользована проверенная в этой сессии Radix Content onCloseAutoFocus/onInteractOutside семантика. Context7 Playwright TestProject grepInvert сверено для touch-проекта. Figma/визуальный master/engine не изменялись. [Отчёт](FE11_POPUP_PILOT_2026-11-09.md).
+
 ## FE11-v0.2 approval / controlled transfer — 09.11.2026
 
 Источник approval: прямой ответ Owner «да теперь все верно, подтверждаю» на стенд v0.2. Reference commit `f527bcb`; [manifest](FE11_MOTION_FROZEN_V0_2.json) фиксирует source hashes. Context7: Radix Primitives Content onInteractOutside/onCloseAutoFocus и Root non-modal contract — для исправления адаптерного Escape→reopen, без изменения motion. Figma masters не менялись. [Результат/границы/QA](FE11_POPUP_PILOT_2026-11-09.md).

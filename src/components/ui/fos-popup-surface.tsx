@@ -5,6 +5,7 @@ import { Track, spring, type Stop } from './glass-motion'
 import './fos-popup-surface.css'
 
 export interface FosPopupSurfaceProps extends ComponentProps<'div'> {
+  'data-state'?: 'open' | 'closed'
   /** Layout wrapper stays separate from Radix/menu semantics and surface positioning. */
   contentClassName?: string
   /** Drawer navigation already owns its selected-row lens through SidebarNav. */
@@ -116,6 +117,7 @@ export const FosPopupSurface = forwardRef<HTMLDivElement, FosPopupSurfaceProps>(
   return (
     <div
       {...props}
+      inert={props['data-state'] === 'closed' ? true : props.inert}
       ref={node => {
         surfaceRef.current = node
       }}

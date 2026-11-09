@@ -1,5 +1,9 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 09.11.2026 — post-FE11 QA closure
+
+Исправлены More delete/reopen, Escape return-focus и FOSAction press после Profile (реальная причина — delayed popup focus), без изменения frozen motion. Closed Surface теперь inert; Account передаёт focus экрану, More различает trigger/outside/Escape; OrderComposer возвращает More focus после отмены удаления. Build PASS, полная регрессия **458passed/4expected skips/0failed**; critical cross-browser35/35PASS, добавочный Cancel-focus4/4PASS. CI дополнен новыми проверками; [живой статус](https://github.com/SigmeD/flexomir_os/pull/29/checks). Подробности: [FE11 report](FE11_POPUP_PILOT_2026-11-09.md). PR #29 Draft, merge и Owner экранная приёмка OPEN; reference f527bcb не менялся.
+
 ## CURRENT 09.11.2026 — FE11-v0.2 approved reference and controlled rollout
 
 Owner подтвердил v0.2; референс сохранён в commit `f527bcb`, статус `OWNER APPROVED / FROZEN`. Общий `FosPopupRows` заменил lab-кандидат и старый hover-preview список; Drawer/Account/GlassSelect используют один контроллер, material и Surface с собственными semantics. Исправлен lifecycle Account Escape→reopen на trigger через Radix onInteractOutside; engine не изменён. Native FOSSelect и Order More не мигрированы. Build/freeze-contract PASS; cross-browser201passed/3Firefox teardown errors/8skips, три случая затем3/3PASS. Полный прогон444/8fail/4skip до последнего Account fix не считается зелёным; Account и M7 rechecks passed, More/FOSAction failures остаются отдельно. [FE11 report](FE11_POPUP_PILOT_2026-11-09.md). Экранная приёмка и merge OPEN.

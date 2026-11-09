@@ -88,7 +88,7 @@
   font-family: inherit;
 }
 .fos-popup-surface[data-state="open"] { animation: fos-popup-enter 190ms cubic-bezier(.2,.85,.2,1) both; }
-.fos-popup-surface[data-state="closed"] { animation: fos-popup-exit 150ms ease-in both; }
+.fos-popup-surface[data-state="closed"] { animation: fos-popup-exit 150ms ease-in both; pointer-events: none; }
 @supports not (backdrop-filter: blur(1px)) {
   .fos-popup-surface { background: rgba(255,255,255,.97); }
 }

@@ -1,5 +1,9 @@
 # Flexomir OS — React Component Registry
 
+## Post-FE11 lifecycle / 09.11.2026
+
+EXTEND существующий `FosPopupSurface`: closed=inert/pointer-none при прежней exit animation. EXTEND AccountMenu focus handoff для открытия Profile; EXTEND OverflowMenu trigger-aware outside handling и reason-aware Escape return-focus. Линзы, физика, материал и типографические преобразования не менялись. `FOSAction/useDirectionalPress` не менялись: исправлен источник потери клавиатурного фокуса в popup adapter. Регрессии `tests/popup-dismissal.spec.ts`, freeze/adapter suites и прежние order/profile сценарии. CI — существующие Orders Core / M7 jobs. [Причины и QA](FE11_POPUP_PILOT_2026-11-09.md).
+
 ## CURRENT FE11-v0.2 / OWNER APPROVED / FROZEN
 
 Owner подтвердил стенд; эталон зафиксирован в `f527bcb`, [manifest](FE11_MOTION_FROZEN_V0_2.json). Единственный общий visual list — `FosPopupRows`, оболочка — `FosPopupSurface`, оптика/пружина — прежние `FosGlassMaterial`/`glass-motion`. Потребители: Drawer (dialog), Account (Radix menu), GlassSelect (listbox). Lab использует тот же компонент, отдельный кандидат/render-slot удалены. Formulas/material/scale защищены freeze-contract test. Account Escape→reopen исправлен в адаптере через trigger-aware onInteractOutside; Select flip/clamp/scroll остаются в listbox adapter. Нативные FOSSelect и исключённый Order More не мигрированы. Проверка адаптеров ≠ автоматическая экранная приёмка. [QA и ограничения](FE11_POPUP_PILOT_2026-11-09.md).

@@ -1,5 +1,23 @@
 # FE-11 — пилот общих Liquid Glass popup
 
+## CURRENT — post-FE11 dismissal/focus QA / 09.11.2026
+
+Owner поручил закрыть оставшиеся QA-сбои после freeze и подготовить PR #29 к экранной приёмке. Это отдельное разрешение на lifecycle-исправления More; визуальная миграция More на FE11-v0.2 по-прежнему не выполнялась.
+
+**Первопричины и исправления:**
+
+- Закрытый popup оставался интерактивным во время exit-анимации. Roving focus мог перехватить pointer/focus у нового экрана. Общий Surface помечает closed-состояние inert и не принимает pointer; сама анимация/материал не изменены.
+- После выбора Profile отложенный Radix close-autofocus мог отнять фокус у действий профиля. Account adapter передаёт владение фокусом экрану при profile action. FOSAction/useDirectionalPress не менялись.
+- More повторно закрывался от того же pointerdown на trigger, который открывал его во время завершения предыдущего popup. Trigger-aware onInteractOutside предотвращает только это ложное outside dismissal.
+- Escape в More после модального подтверждения терял return-focus из-за накопленного outside-interaction состояния. Адаптер различает Escape, outside click и consumer-owned focus; Escape возвращает trigger, внешний input сохраняет свой фокус.
+- Отдельный read-only проход выявил возврат focus на body после отмены удаления. Новый failing regression подтвердил это; OrderComposer теперь сам возвращает focus на доступный More при Cancel/close/Escape диалога. Проверка удаления, отмены и сохранности другого черновика с новым focus-assert прошла во всех четырёх браузерных проектах.
+
+Все три исходно падавших сценария воспроизведены до изменения и прошли после него. Добавлены регрессии exit/inert, immediate reopen, outside-field focus, Profile focus/Space/blur. Тест press/focus отделён от нативного OS file chooser; photo selection покрыта существующими Profile tests.
+
+**Проверки:** build PASS; полный Chromium1440/390 прогон — **458 passed / 4 ожидаемых skips / 0 failed**, включая визуальные snapshots. Freeze-contract PASS; все пять frozen файлов и useDirectionalPress не изменены. Чистый critical cross-browser повтор — **35/35 PASS**; дополнительный Cancel-focus regression на итоговой форме — **4/4 PASS**. Матрица — Chromium/Firefox/WebKit/touch, responsive Account1440/1024/768/390/320 и основные Client/Manager сценарии. Итоговый повтор полного набора на delivery commit и live CI — [PR29 checks](https://github.com/SigmeD/flexomir_os/pull/29/checks).
+
+CI: Orders Core включает новые lifecycle/freeze/adapter/session-draft тесты; M7 UI QA дополнен сериализованным cross-browser popup набором. Новых release-required check names не создавалось. Экранная приёмка Owner и merge остаются OPEN; внешний независимый reviewer не назначался. Отдельный авторский read-only browser/adversarial проход фиксируется в этом же отчёте, не выдаётся за внешнее review.
+
 ## CURRENT — FE11-v0.2 / OWNER APPROVED / FROZEN
 
 Owner: «да теперь все верно, подтверждаю». Точный утверждённый исходник и реестр сохранены в Git commit `f527bcb`; [machine-readable freeze manifest](FE11_MOTION_FROZEN_V0_2.json) содержит исходные SHA-256, нормализованные LF fingerprints и hashes формулы/параметров.
@@ -14,7 +32,7 @@ Shared implementation checkpoint: `2c303654906365d7cca255aaef5e28ce9ff4ca05`, Dr
 | AccountMenu / header+footer / обе роли | Тот же Surface + Rows, Radix menu, identity/разделители/disabled; profile — начальная визуальная опора без выдуманного ARIA selected | Перенесён; per-adapter QA |
 | GlassSelect / body portal | Тот же Surface + Rows, listbox/value/keyboard/scroll; focus и hover не выбирают значение; выбор закрывает список по его контракту | Перенесён; per-adapter QA |
 | Native FOSSelect | Нативный field master 1148:311 с required/validation/onChange | Отдельный контрактный этап, не заменялся автоматически по приёмке стенда |
-| Order More | Существующая legacy surface/lens | EXCLUDED; ранее накопленный diff сохранён, новых правок его файлов в этом этапе нет |
+| Order More | Существующая legacy surface/lens | EXCLUDED из визуальной миграции; последующие lifecycle-исправления описаны в CURRENT выше |
 | ConfirmDialog | Alertdialog | Вне popup migration |
 
 Рисунок оболочки, материал и оптика общие. Размеры строк остаются адаптерными (Drawer44, Account56, Select согласно своему контролу); выделен один движущийся материал, отдельный материал оболочки статичен. Поэтому два SVG displacement map в Chromium означают shell + lens, а не две активные линзы. Semantics, trigger placement и business callbacks не перенесены в visual primitive.
