@@ -42,10 +42,7 @@
 }
 .fos-popup-surface [role="menuitem"],
 .fos-popup-surface [role="option"] {
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 20px;
+  font: var(--fos-type-popup-item);
   color: #253144;
   background: transparent;
   transform-origin: center;

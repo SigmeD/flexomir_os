@@ -1,5 +1,9 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 10.11.2026 — navigation/popup typography
+
+По новому решению Owner Sidebar/Drawer и popup commands используют общую базовую роль Manrope 14/18 Medium 500 через два алиаса. Код — продолжение PR #29; высоты строк 44/56/48/36px сохранены, profile identity/title/caption roles и frozen engine не менялись. Build, typography/surface/freeze 9/9 и cross-browser typography 24/24 PASS. Полный QA и CI на новом head — [PR checks](https://github.com/SigmeD/flexomir_os/pull/29/checks). **Owner visual acceptance / Figma update / final DS standard OPEN**, merge не разрешён. [Детали](TYPOGRAPHY_AUDIT_2026-11-09.md).
+
 ## CURRENT 09.11.2026 — post-FE11 QA closure
 
 Исправлены More delete/reopen, Escape return-focus и FOSAction press после Profile (реальная причина — delayed popup focus), без изменения frozen motion. Closed Surface теперь inert; Account передаёт focus экрану, More различает trigger/outside/Escape; OrderComposer возвращает More focus после отмены удаления. Build PASS, полная регрессия **458passed/4expected skips/0failed**; critical cross-browser35/35PASS, добавочный Cancel-focus4/4PASS. CI дополнен новыми проверками; [живой статус](https://github.com/SigmeD/flexomir_os/pull/29/checks). Подробности: [FE11 report](FE11_POPUP_PILOT_2026-11-09.md). PR #29 Draft, merge и Owner экранная приёмка OPEN; reference f527bcb не менялся.

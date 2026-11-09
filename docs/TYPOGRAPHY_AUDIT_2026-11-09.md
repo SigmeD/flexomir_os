@@ -1,5 +1,25 @@
 # Typography audit — 09.11.2026
 
+## CURRENT 10.11.2026 — единая роль navigation/item + popup/item
+
+**Статус: OWNER DECISION / IMPLEMENTED; VISUAL ACCEPTANCE OPEN; FIGMA UPDATE OPEN.** Владелец поручил Manrope 14px/18px Medium 500 для пунктов Sidebar и popup. Это более новое решение заменяет прежние размеры/веса navigation и команд Account (включая вопрос TY-05 ниже), но не меняет типографическую трансформацию линзы. Исторический аудит ниже описывает состояние до этого решения.
+
+`src/styles.css` содержит одну составную роль `--fos-type-menu-item` и два алиаса: `--fos-type-navigation-item`, `--fos-type-popup-item`. Sidebar/Drawer используют первый; общая Surface задаёт второй для menuitem/option в Account, More и GlassSelect portal. Локальный `text-sm` удалён только у Select option; trigger и другие поля сохраняют свои роли. Заголовки, подписи, имя/компания/аватар профиля и tabs не включены в новую роль.
+
+Геометрия: Sidebar/Drawer 44px, Account command 56px, More 48px, Select option 36px. У Select прежняя высота зависела от 20px line-height + 16px padding; сохранён min-height 36px при новом line-height 18px. Меняются только надписи, не контейнеры/иконки/оптика. В forced-colors прежний локальный 700 у selected Sidebar удалён; цвет Highlight и focus outline сохранены.
+
+Источники проверены read-only: Drive CURRENT frontend (modified 09.11.2026), Figma Navigation Item component set `634:511` (Default/Selected 13/18/600), Account Menu `3038:2667` (commands 15px SemiBold). Эти мастера пока отражают старую типографику; целевую роль задаёт прямое решение Owner 10.11.2026. Figma не редактировалась до визуальной приёмки.
+
+Доказательства: `output/playwright/navigation-typography/{before,after}-{sidebar,account,drawer}.png`, `after-select.png` и Select expected/actual/diff в `visual-before-baseline/`. Просмотрены Sidebar/Account и Drawer после изменения; стабильный Select diff light/matte показывает изменения только в текстовых областях, dark проверен отдельно. Ранние ручные кадры Select попали в entry-анимацию, сохранены с префиксом diagnostic и не используются как статическое сравнение. Шесть технических open-Select snapshots обновлены под новый кандидат; closed/focus snapshots не менялись. Это не Owner acceptance. Новые тесты сначала подтвердили FAIL старого 13px Sidebar и отсутствие наследования базовой роли, затем прошли после замены токенов.
+
+QA: build PASS; начальные typography/surface/freeze 9/9 PASS; cross-browser typography 24/24 PASS (Chromium, Firefox, WebKit, touch), обе роли и ширины 1440/1024/768/390/320; проверены disabled/selected/forced-colors, профильные роли и распространение изменения базового токена в body portal. Полная регрессия, cross-browser motion/adapter и delivery CI — результаты ниже/в [PR #29 checks](https://github.com/SigmeD/flexomir_os/pull/29/checks). Замороженные пять файлов из manifest и Sidebar motion controller не изменялись. Внешний независимый reviewer не назначен.
+
+Следующий gate: показать новую типографику Owner → визуальная приёмка → обновить Figma/статус DS-стандарта. Ни принятие к реализации, ни зелёный CI не заменяют этот gate. Merge отдельно.
+
+Диагностические прогоны сохранены отдельно: первый полный 460 PASS / 2 timeout / 4 expected skips; оба сценария изолированно прошли на двух viewport projects (4/4), без изменения production-кода/таймаутов тестов. В motion/adapter прогоне 28 PASS / 3 Firefox teardown protocol errors / 5 expected skips; в последовательном повторе Firefox прошёл, но четыре WebKit page-creation завершились до открытия приложения (27 PASS / 4 browser errors / 5 skips). Изолированный WebKit motion-повтор: 5 PASS / 1 expected skip, включая все четыре случая. Это диагностика инфраструктурной нестабильности, не чистые исходные прогоны. Итоговый изолированный полный повтор сохраняется в `output/playwright/navigation-typography/final-regression.json`; статус на delivery SHA — в PR #29.
+
+## Исторический аудит 09.11.2026
+
 **Status:** Typography implementation complete; technical checks completed with pre-existing menu/focus regressions still open. Owner visual acceptance remains open. No merge.
 **Scope:** production-facing Client and Manager React UI; inspect legacy labs for shared-style regressions. No merge.
 

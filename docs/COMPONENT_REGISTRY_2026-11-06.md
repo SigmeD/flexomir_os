@@ -1,5 +1,17 @@
 # Flexomir OS — React Component Registry
 
+## Navigation / popup item typography — Owner decision 10.11.2026
+
+К реализации: базовая роль `--fos-type-menu-item` = Manrope 14/18 Medium 500; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item` ссылаются на неё. Визуальная приёмка и синхронизация Figma OPEN.
+
+| Figma master / Owner delta | React component / disposition | Props/states and consumers |
+| --- | --- | --- |
+| Navigation Item `634:511`, Default/Selected; новая Owner роль вместо прежней 13/18/600 | EXTEND typography token in existing `SidebarNav` CSS | Все состояния; Client/Manager Sidebar и NavigationDrawer; строки 44px, прежние иконки и motion |
+| Account Menu `3038:2667`; item role вместо прежней 15/20/500 | REUSE `FosPopupSurface` typography selector | AccountMenu, GlassSelect portal, OverflowMenu; disabled/focus/hover/selected; строки 56/36/48px |
+| Profile identity/header/caption roles | KEEP | Имя/компания/аватар, page titles и подписи не являются navigation/item или popup/item |
+
+Frozen `FosPopupRows`, GlassLens, material/physics/optical scaling не редактируются. More получает только новую общую типографику, без визуальной миграции движка.
+
 ## Post-FE11 lifecycle / 09.11.2026
 
 EXTEND существующий `FosPopupSurface`: closed=inert/pointer-none при прежней exit animation. EXTEND AccountMenu focus handoff для открытия Profile; EXTEND OverflowMenu trigger-aware outside handling и reason-aware Escape return-focus. Линзы, физика, материал и типографические преобразования не менялись. `FOSAction/useDirectionalPress` не менялись: исправлен источник потери клавиатурного фокуса в popup adapter. Регрессии `tests/popup-dismissal.spec.ts`, freeze/adapter suites и прежние order/profile сценарии. CI — существующие Orders Core / M7 jobs. [Причины и QA](FE11_POPUP_PILOT_2026-11-09.md).

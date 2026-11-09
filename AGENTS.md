@@ -1,5 +1,11 @@
 # Flexomir OS — правила работы Codex
 
+## CURRENT / 10.11.2026 — Owner typography decision / VISUAL OPEN
+
+- `navigation/item` и `popup/item` используют одну базовую роль Manrope 14px/18px Medium 500. React source: `--fos-type-menu-item`; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item`. Не дублировать font-size/line-height/font-weight в CSS потребителей и не создавать локальные исключения.
+- Это разрешение на базовую типографику пунктов Sidebar/Drawer/Account/More/GlassSelect, не на изменение утверждённых GlassLens/Motion Engine, optical scale или материалов. Заголовки, подписи, профильные identity/data и trigger typography имеют отдельные роли.
+- Решение Owner принято к реализации. Визуальная приёмка новой роли и синхронизация Figma остаются OPEN; не объявлять её окончательно утверждённым DS-стандартом до приёмки. [Токены, влияние и QA](docs/TYPOGRAPHY_AUDIT_2026-11-09.md).
+
 ## CURRENT / 09.11.2026 — FE-11 Motion approval and freeze (Owner instruction)
 
 - Сначала доработать и показать Motion Engine / GlassLens на тестовом стенде. Перенос в общие Liquid Glass компоненты и подключение каждого типа меню — только после явного подтверждения Owner и с регрессией.

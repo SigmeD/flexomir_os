@@ -1,5 +1,60 @@
 import { expect, test, type Page } from '@playwright/test'
 
+test('navigation and popup items share the Owner 14/18 Medium role without changing row geometry', async ({ page }) => {
+  test.setTimeout(60000)
+  async function itemType(selector: string, height: number) {
+    const items = page.locator(selector)
+    expect(await items.count()).toBeGreaterThan(0)
+    await items.first().evaluate(element => Promise.all(element.closest('[data-fos-popup-surface]')?.getAnimations().map(animation => animation.finished) ?? []))
+    for (const item of await items.all()) {
+      await expect(item).toHaveCSS('font-family', /Manrope/)
+      await expect(item).toHaveCSS('font-size', '14px')
+      await expect(item).toHaveCSS('line-height', '18px')
+      await expect(item).toHaveCSS('font-weight', '500')
+      expect((await item.boundingBox())!.height).toBeCloseTo(height, 1)
+    }
+  }
+  for (const role of ['client', 'manager']) for (const width of [1440, 1024, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/?view=' + role + '-orders')
+    await page.evaluate(() => document.fonts.ready)
+    if (width < 1024) await page.getByTestId('navigation-drawer-trigger').click()
+    await itemType('.fos-sidebar-nav__item:visible', 44)
+    if (width < 1024) await page.keyboard.press('Escape')
+    await page.getByTestId('account-menu-trigger').click()
+    await itemType('.fos-account-menu__item', 56)
+    // Identity is a separate role, not a menu command.
+    await expect(page.locator('.fos-account-menu__copy strong')).toHaveCSS('font-size', '16px')
+    await expect(page.locator('.fos-account-menu__copy strong')).toHaveCSS('font-weight', '600')
+    await expect(page.locator('.fos-account-menu__copy small')).toHaveCSS('font-size', '12px')
+    await page.keyboard.press('Escape')
+    if (role === 'client') {
+      await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+      await page.getByRole('button', { name: 'Ещё', exact: true }).click()
+      await itemType('.fos-overflow__item', 48)
+    }
+  }
+  await page.goto('/?view=glass-filter-lab')
+  await page.locator('[data-glass-select-trigger]').click()
+  await itemType('[role="option"]', 36)
+})
+
+test('changing the base item role propagates to navigation and body-portalled popup aliases', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/?view=client-orders')
+  await page.getByTestId('account-menu-trigger').click()
+  await page.evaluate(() => document.documentElement.style.setProperty('--fos-type-menu-item', '500 16px/22px var(--fos-font-family)'))
+  for (const selector of ['.fos-sidebar-nav__item', '.fos-account-menu__item']) {
+    await expect(page.locator(selector).first()).toHaveCSS('font-size', '16px')
+    await expect(page.locator(selector).first()).toHaveCSS('line-height', '22px')
+  }
+  await expect(page.locator('.fos-account-menu__copy strong')).toHaveCSS('font-size', '16px')
+  await expect(page.locator('.fos-account-menu__copy strong')).toHaveCSS('line-height', '20px')
+  await page.evaluate(() => document.documentElement.style.removeProperty('--fos-type-menu-item'))
+  await page.emulateMedia({ forcedColors: 'active' })
+  await expect(page.locator('.fos-sidebar-nav__item[aria-current="page"]')).toHaveCSS('font-weight', '500')
+})
+
 async function openProfile(page: Page) {
   await page.goto('/?demoTools=1')
   await page.locator('[data-testid="account-menu-trigger"]:visible').click()

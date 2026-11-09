@@ -1,5 +1,9 @@
 # Flexomir OS — CURRENT источники
 
+## Navigation/popup typography — 10.11.2026
+
+Источник новой роли — прямое решение Owner в чате: `navigation/item` и `popup/item` → Manrope 14/18 Medium 500, единая база/алиасы, сохранение profile roles и frozen motion, окончательный стандарт после визуальной приёмки. Read-only Figma: `634:511` и `3038:2667`; мастера пока содержат прежнюю типографику, не изменены. Drive frontend CURRENT проверен (modified 09.11.2026); GitHub PR #29 open/Draft на baseline 785696e. Context7 Playwright: computed CSS assertions и screenshot comparison для регрессии. [Карта и evidence](TYPOGRAPHY_AUDIT_2026-11-09.md).
+
 ## Post-FE11 lifecycle QA — 09.11.2026
 
 Источник — прямое поручение Owner продолжить QA после утверждения frozen reference. Baseline `3bb9faf`, PR #29. До исправлений воспроизведены три failures; browser focus trace показал закрывающееся account menu как источник focus-steal. Переиспользована проверенная в этой сессии Radix Content onCloseAutoFocus/onInteractOutside семантика. Context7 Playwright TestProject grepInvert сверено для touch-проекта. Figma/визуальный master/engine не изменялись. [Отчёт](FE11_POPUP_PILOT_2026-11-09.md).

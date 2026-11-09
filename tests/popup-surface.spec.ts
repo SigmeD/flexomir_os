@@ -51,7 +51,7 @@ test('approved Drawer, Account and Select share one Liquid Glass surface; Order 
   const accountSurface = page.getByTestId('account-menu')
   await expect(accountSurface).toBeVisible()
   expect(await signature(accountSurface)).toEqual(expected)
-  const menuTypography = { family: expected.font, size: '15px', weight: '500', lineHeight: '20px' }
+  const menuTypography = { family: expected.font, size: '14px', weight: '500', lineHeight: '18px' }
   expect(await itemTypography(accountSurface.getByRole('menuitem', { name: 'Настройки профиля' }))).toEqual(menuTypography)
 
   await page.goto('/?view=client-orders&demoTools=1')

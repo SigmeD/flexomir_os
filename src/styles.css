@@ -1,4 +1,11 @@
 @import "tailwindcss";
+/* Owner decision 10.11.2026: navigation/item and popup/item share one role.
+ * Base typography only; approved optical transforms remain in GlassLens. */
+:root {
+  --fos-type-menu-item: 500 14px/18px var(--fos-font-family);
+  --fos-type-navigation-item: var(--fos-type-menu-item);
+  --fos-type-popup-item: var(--fos-type-menu-item);
+}
 :root{--fos-font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;--fos-type-page-size:30px;--fos-type-page-line-height:40px;--fos-type-card-size:16px;--fos-type-card-line-height:22px;--fos-type-body-size:14px;--fos-type-body-line-height:20px;--fos-type-label-size:13px;--fos-type-label-line-height:18px;--fos-type-secondary-size:12px;--fos-type-secondary-line-height:18px;font-family:Onest,Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-synthesis:none;color:#244356;background:#f4f8fa}
 @media(max-width:1023px){:root{--fos-type-page-size:26px;--fos-type-page-line-height:36px}}
 @media(max-width:600px){:root{--fos-type-page-size:22px;--fos-type-page-line-height:30px}}

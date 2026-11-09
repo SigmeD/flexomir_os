@@ -1,5 +1,9 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT 10.11.2026 — shared item typography
+
+Owner разрешил Manrope 14/18 Medium 500: `--fos-type-menu-item` → navigation/popup aliases в `src/styles.css`. Sidebar/Drawer/Account/More/GlassSelect переиспользуют роль; локальных размеров/весов пунктов нет, Select сохраняет прежнюю 36px строку. Profile data/headings/captions и frozen implementation не редактировались. Build и cross-browser typography 24/24 PASS; новый контракт включён в M7 CI. Продолжается прежняя ветка/PR #29; [QA](TYPOGRAPHY_AUDIT_2026-11-09.md). Следующий gate — Owner visual acceptance; только затем Figma + статус утверждённого DS-стандарта. Merge OPEN.
+
 ## CURRENT 09.11.2026 — post-FE11 focus/dismissal fixes
 
 Owner разрешил закрыть QA до merge. Scope — popup lifecycle, не изменение FE11-v0.2. Surface closed=inert/pointer-none; Account profile consumer owns focus; More защищён от trigger-as-outside при reopen и возвращает фокус по Escape, сохраняя outside-input focus. Дополнительно OrderComposer возвращает More focus после Cancel/close/Escape delete dialog. useDirectionalPress и frozen files не менялись. Исходные три FAIL подтверждены до fix, затем3/3PASS. Полная регрессия458passed/4skips/0failed, build и freeze PASS; cross-browser35/35PASS, Cancel-focus4/4PASS. Новые tests/config подключены к Orders/M7 CI, [live checks](https://github.com/SigmeD/flexomir_os/pull/29/checks). Root Owner PNG нетронуты. Следующий gate: окончательный CI и визуальная приёмка интегрированных меню; merge только после разрешения. [Evidence/causes](FE11_POPUP_PILOT_2026-11-09.md).

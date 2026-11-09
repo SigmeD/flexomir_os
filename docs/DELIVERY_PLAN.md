@@ -1,5 +1,9 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 10.11.2026 — shared navigation/popup item role
+
+Owner typography delta в текущем PR #29: одна роль 14/18 Medium 500 → два алиаса → существующие Sidebar/Drawer/Account/More/GlassSelect. Код реализован, обе роли/пять ширин проверены в четырёх browser/input проектах (24/24). Motion unchanged; далее итоговый regression/CI → Owner visual gate → Figma/утверждённый DS standard. Последние два шага пока OPEN. [Контракт и QA](TYPOGRAPHY_AUDIT_2026-11-09.md).
+
 ## CURRENT 09.11.2026 — close remaining popup QA
 
 Post-freeze lifecycle defects More/Profile-focus исправлены в оболочке/адаптерах; Cancel delete возвращает More focus в OrderComposer. Полный Chromium regression458passed/4expected skips, frozen reference без изменений; cross-browser35/35 и Cancel-focus4/4PASS. CI gated в прежних Orders/M7 jobs, затем Owner visual gate интегрированных меню. More lifecycle исправлен по новому поручению, визуальная migration/native FOSSelect остаются отдельными этапами. [FE11 QA](FE11_POPUP_PILOT_2026-11-09.md).

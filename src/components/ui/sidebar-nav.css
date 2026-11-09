@@ -1,7 +1,8 @@
 /*
  * CURRENT Figma FOS V2:
  * 637:108 App Shell 240px pane / 208px nav group;
- * 634:511 default Navigation Item 44px height / 16px left padding / 13px Manrope;
+ * 634:511 Navigation Item 44px height / 16px left padding;
+ * Owner 10.11.2026: shared navigation/item typography supersedes 13px/600.
  * 1597:550 selected item / 1578:493 single Adaptive Glass Lens.
  *
  * Sidebar 2.2.5 C light and vertical spring run only for the selected route.
@@ -10,14 +11,13 @@
 .fos-sidebar-nav {
   --fos-sidebar-item-height: 44px;
   --fos-sidebar-item-gap: 4px;
-  --fos-sidebar-font: var(--fos-font-family);
   --fos-sidebar-text: var(--fos-v2-semantic-color-text-secondary, #737781);
   --fos-sidebar-selected-text: var(--fos-v2-semantic-color-text-brand, #1f3861);
   position: relative;
   width: 208px;
   max-width: 100%;
   min-height: 0;
-  font-family: var(--fos-sidebar-font);
+  font-family: var(--fos-font-family);
 }
 .fos-sidebar-nav__list {
   position: relative;
@@ -52,7 +52,7 @@
   color: var(--fos-sidebar-text);
   background: transparent;
   text-align: left;
-  font: 600 13px/18px var(--fos-sidebar-font);
+  font: var(--fos-type-navigation-item);
   white-space: nowrap;
   cursor: pointer;
   transition: color 160ms ease;
@@ -108,6 +108,6 @@
   .fos-sidebar-nav__label { transform: none !important; will-change: auto; }
   .fos-sidebar-nav__icon { transform: none !important; will-change: auto; }
   .fos-sidebar-nav__lens { border: 1px solid Highlight; background: Canvas; }
-  .fos-sidebar-nav__item[aria-current="page"] { color: Highlight; font-weight: 700; }
+  .fos-sidebar-nav__item[aria-current="page"] { color: Highlight; }
   .fos-sidebar-nav__item:focus-visible { outline: 3px solid Highlight; }
 }

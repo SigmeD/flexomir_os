@@ -285,7 +285,7 @@ export function GlassSelectItem({
         if (!event.defaultPrevented) setValue(value);
       }}
       className={cn(
-        "flex w-full items-center justify-between gap-2 px-3.5 py-2 text-sm outline-none transition-colors",
+        "flex w-full items-center justify-between gap-2 px-3.5 py-2 outline-none transition-colors",
         className,
       )}
     >

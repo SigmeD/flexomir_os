@@ -95,6 +95,8 @@
 }
 
 [data-glass-select-item] {
+  /* Preserve the existing hit area when the shared item line changes 20→18. */
+  min-height: 36px;
   color: var(--gs-foreground);
   font-family: inherit;
 }
