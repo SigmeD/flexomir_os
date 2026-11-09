@@ -2,12 +2,12 @@
 
 # CURRENT / 09.11.2026 — FE-ACTION-08NOV
 
-Branch: `feat/fe-action-08nov`, created from the fresh `origin/main` after PR #27 landed. Implementation complete locally; no commit or PR yet.
+Branch: `feat/fe-action-08nov`, created from `origin/main a9b2217` after PR #27 landed. [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28), head `f94f55bcbb3d7dad7cbfe32a08763f6dc145cf02`.
 
 - Shared FOSAction retains Liquid Glass, has the 44px standard and 40px compact sizes, and uses shared directional press handling also used by HeaderAction. Paired Primary+More actions opt into the fixed responsive dock only for tablet/mobile; desktop remains inline. Consumers are listed in the [Component Registry](COMPONENT_REGISTRY_2026-11-06.md).
 - Profile audit: Account trigger/header alignment and photo-button vertical centering fixed; Save+More positions were already correct and remain unchanged. Measured D1440/L1024/T768/M390/M320.
 - QA: build PASS; `m7-responsive-actions` 48/48 and `m7-layouts` 33/33 across Chromium/Firefox/WebKit; full Playwright 392 passed / 2 expected touch-only skips; `git diff --check` PASS. Local screenshots: ignored `test-results/m7-responsive-actions-*`.
-- **Next:** inspect final diff, commit/push branch, create one Draft PR and update Drive CURRENT. Owner visual gate remains OPEN; do not merge or declare product acceptance. No API/backend/1C/ACL or business behavior changed. `Screenshot_1.png` and `Screenshot_2.png` remain untracked and untouched.
+- **Next:** Owner visual review and PR CI. Update Drive post-merge only after an authorized merge. Owner visual gate remains OPEN; do not merge or declare product acceptance. No API/backend/1C/ACL or business behavior changed. `Screenshot_1.png` and `Screenshot_2.png` remain untracked and untouched.
 
 ## CURRENT / 09.11.2026 — FE-PROFILE-01
 

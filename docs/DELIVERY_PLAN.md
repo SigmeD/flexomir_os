@@ -2,7 +2,7 @@
 
 ## CURRENT 09.11.2026 — FE-ACTION-08NOV / implementation and QA checkpoint
 
-Ветка `feat/fe-action-08nov` основана на актуальном `origin/main` перед FE-PROFILE-01. Реализована shared-правка `FOSAction` и responsive `Primary + More` placement. PR ещё не создан; merge не выполнялся.
+Ветка `feat/fe-action-08nov` основана на `origin/main a9b2217`. Реализована shared-правка `FOSAction` и responsive `Primary + More` placement. [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28), head `f94f55b`; merge не выполнялся.
 
 | Gate | Статус |
 | --- | --- |
@@ -11,9 +11,9 @@
 | Screen consumers | PASS: Client/Manager Orders list/detail, compose/item editor, Layouts list/detail/upload/picker, Support, Companies; only real Primary+More pairs dock. Profile Save+More remains separate. |
 | Responsive / profile audit | PASS measured at D1440/L1024/T768/M390/M320; dock 108×48 with right 24/20/16 and bottom24 on compact; account trigger/profile photo corrections; Profile Save+More unchanged. |
 | Technical QA | PASS: build; responsive actions 48/48 Chromium/Firefox/WebKit; M7 Layouts 33/33 Chromium/Firefox/WebKit; full E2E 392 passed / 2 expected touch-only skips; diff check. |
-| Owner / PR | OPEN: Owner visual acceptance; PR not opened yet; no merge/release. Screenshots only in ignored local `test-results/`. |
+| Owner / PR | OPEN: Owner visual acceptance; PR #28 Draft, not merged/released. Screenshots only in ignored local `test-results/`. |
 
-No backend, API, 1C, ACL, status mapping, routes or business rules changed. Next: review diff, commit/push the single feature branch, open one Draft PR, synchronize Drive CURRENT, leave Owner gate open.
+No backend, API, 1C, ACL, status mapping, routes or business rules changed. Drive CURRENT is synchronized with PR #28. Next: Owner visual review and PR CI; leave merge and release open until the Owner gate.
 
 ## CURRENT 09.11.2026 — FE-PROFILE-01
 
