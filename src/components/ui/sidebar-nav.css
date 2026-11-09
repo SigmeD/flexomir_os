@@ -10,7 +10,7 @@
 .fos-sidebar-nav {
   --fos-sidebar-item-height: 44px;
   --fos-sidebar-item-gap: 4px;
-  --fos-sidebar-font: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
+  --fos-sidebar-font: var(--fos-font-family);
   --fos-sidebar-text: var(--fos-v2-semantic-color-text-secondary, #737781);
   --fos-sidebar-selected-text: var(--fos-v2-semantic-color-text-brand, #1f3861);
   position: relative;
@@ -85,8 +85,9 @@
 }
 /*
  * Magnification is an optical transform, not a new font size or layout change.
- * 2.2.5 C: max 1.043x while selected lens approaches the label.
- * Hover/focus only change color/outline. The lens arrival alone controls scale.
+ * 2.2.5 C: max 1.043x while the lens approaches its active label.
+ * The drawer opts into hover/focus lens travel; the persistent sidebar keeps
+ * its selected-only lens and color/outline hover behavior.
  */
 .fos-sidebar-nav__label {
   --fos-sidebar-label-scale: 1;

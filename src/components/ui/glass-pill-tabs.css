@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  font-family: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--fos-font-family);
 }
 .fos-glass-pill-tabs__scroll {
   width: 100%;

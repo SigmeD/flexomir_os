@@ -36,16 +36,9 @@ export async function selectContrast(page: Page) {
     }
     const trigger = getComputedStyle(document.querySelector('[data-testid="filter-control"] button')!)
     const surface = document.querySelector('[role="listbox"] > div')!
-    const layers = [...surface.querySelectorAll('.fos-glass-optics > div[aria-hidden]')]
-    // Bound all non-central lighting coats by black/white underneath the reading fill.
-    // This includes every possible composite of the common material's gradients.
     return {
       trigger: { text: color(trigger.color), background: color(trigger.backgroundColor), border: color(trigger.borderColor), focus: color(trigger.outlineColor) },
       surface: color(getComputedStyle(surface).backgroundColor),
-      readingCore: color('rgb(var(--fos-center-rgb) / var(--fos-center-opacity))', surface),
-      tint: [],
-      sheen: [[0, 0, 0, 0] as Color],
-      coats: layers.length,
       options: [...document.querySelectorAll('[role="option"]')].map(el => ({
         label: el.textContent!.trim(), selected: el.getAttribute('aria-selected') === 'true',
         text: color(getComputedStyle(el).color), background: color(getComputedStyle(el).backgroundColor),
@@ -54,12 +47,7 @@ export async function selectContrast(page: Page) {
   })
   const extremes: Color[] = [[0, 0, 0, 1], [255, 255, 255, 1]]
   const panelCandidates = extremes.flatMap(backdrop => {
-    let background = over(styles.surface, backdrop)
-    for (const tint of styles.tint) background = over(tint, background)
-    return styles.sheen.map(sheen => {
-      const optics = over(sheen, background)
-      return styles.readingCore ? over(styles.readingCore, optics) : optics
-    })
+    return [over(styles.surface, backdrop)]
   })
   return {
     trigger: Math.min(...extremes.map(bg => ratio(styles.trigger.text, over(styles.trigger.background, bg)))),

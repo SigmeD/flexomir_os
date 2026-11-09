@@ -1,5 +1,17 @@
 # Flexomir OS — CURRENT источники
 
+## FE11-v0.2 approval / controlled transfer — 09.11.2026
+
+Источник approval: прямой ответ Owner «да теперь все верно, подтверждаю» на стенд v0.2. Reference commit `f527bcb`; [manifest](FE11_MOTION_FROZEN_V0_2.json) фиксирует source hashes. Context7: Radix Primitives Content onInteractOutside/onCloseAutoFocus и Root non-modal contract — для исправления адаптерного Escape→reopen, без изменения motion. Figma masters не менялись. [Результат/границы/QA](FE11_POPUP_PILOT_2026-11-09.md).
+
+## FE-11 v0.2 selection-only and freeze policy — 09.11.2026
+
+Новый Owner источник: `D:/downloads/FLEXOMIR_FE11_NAVIGATION_DRAWER_LENS_SCENARIO_2026-11-09.md` и прямое поручение о порядке стенд→подтверждение→общий React→адаптеры→QA→freeze. Это заменяет hover-preview из предыдущего MD. Видео `bandicam 2026-11-09 22-11-25-875.mp4` найдено; прямой просмотр не выполнен. Проверен текстовый сценарий и живой стенд с покадровыми данными. Figma/material/spring не менялись. [Версия/источники/approval](FE11_POPUP_PILOT_2026-11-09.md).
+
+## FE-11 pilot — 09.11.2026
+
+Новый источник Owner: `D:/downloads/FLEXOMIR_FE11_UNIFIED_LIQUID_GLASS_POPUPS_2026-11-09.md`; форма `D:/Projects/flexomir_os/Форма бургер меню.png` просмотрена. Видео 20-13-48 найдено, покадровая проверка не выполнена. Read-only GitHub PR #29 OPEN Draft подтверждён; origin/main `01721e1`. Использованы DS/FOS ссылки, проверенные ранее в этой сессии; Figma в этом пилоте заново не запрашивалась, masters не редактировались. [Границы/источники/QA](FE11_POPUP_PILOT_2026-11-09.md).
+
 ## FE-DEBUG-2026-11-09 — checked 09.11.2026
 
 Task brief: `D:/downloads/FLEXOMIR_OS_CODEX_FRONTEND_FIXES_2026-11-09.md`; user evidence: six Bandicam recordings and numbered images `1.png`–`12.png` under `D:/Business_Profit/Syntecore/Флексомир/Фронт/Фиксы 09.11/` (read-only). Read current Drive frontend plan, UX/UI source index, SRS v0.5, Data & Integration, E2E, Liquid Glass contract, and Account/Profile 08.11 update before coding. Read-only Figma context: AppShell `637:180`, Sidebar Account Footer `3123:1214`, Adaptive GlassLens `1578:453/493`, Drawer `1962:3834/3854`, More `1914:655..676`, Profile Page Actions `3215:1357`. Figma was not edited. The CURRENT references explicitly use a frosted Drawer and white More menu; cross-menu material consolidation therefore remains an Owner visual decision. Context7 React docs were fetched for current effect/event cleanup patterns. All external screenshots/videos remain outside Git.

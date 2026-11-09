@@ -62,7 +62,7 @@ export function AppShell({
     }}>
       <aside className="fos-app-shell__aside" aria-label="Навигация">
         <div className="fos-app-shell__brand">FLEXOMIR OS</div>
-        <SidebarNav items={items} activeId={activeId} onSelect={onSelect} ariaLabel={navigationLabel} />
+        <SidebarNav items={items} activeId={activeId} motionFromId={navigation?.motionFromSection} onSelect={onSelect} ariaLabel={navigationLabel} />
         {!compact && <AccountMenu identity={accountIdentity} photoPreview={accountPhotoPreview} placement="sidebar" onOpenProfile={onOpenProfile} />}
       </aside>
       <div className="fos-app-shell__content">

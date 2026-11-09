@@ -38,6 +38,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
   const [drafts, setDrafts] = useState<readonly DemoDraft[]>([])
   const [currentRole, setCurrentRole] = useState(role)
   const [sections, setSections] = useState<Record<'client' | 'manager', CabinetSection>>({ client: role === 'client' ? initialSection : 'orders', manager: role === 'manager' ? initialSection : 'orders' })
+  const [motionFromSection, setMotionFromSection] = useState<CabinetSection | null>(null)
   const [visited, setVisited] = useState(() => new Set([role + ':' + initialSection]))
   const [editorOpen, setEditorOpen] = useState(false)
   const [version, setVersion] = useState(0)
@@ -101,6 +102,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
   }
   const sent = drafts.filter(draft => draft.stage === 'sent')
   function visit(nextRole: 'client' | 'manager', section: CabinetSection) {
+    setMotionFromSection(sections[currentRole])
     setVisited(current => new Set(current).add(nextRole + ':' + section))
     setSections(current => ({ ...current, [nextRole]: section }))
     setCurrentRole(nextRole)
@@ -221,6 +223,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     <CabinetNavigation.Provider value={{
       ready: currentRole === 'client' ? ['orders', 'artworks', 'support'] : ['orders', 'clients', 'support'],
       navigate: navigateSection,
+      motionFromSection,
       identity: activeIdentity,
       photoPreview: currentRole === 'client' ? savedClientPhoto : savedManagerPhoto,
       openProfile: () => requestProfileTransition(() => { setProfileSaveError(''); setProfileSaveStatus(''); setProfileOpen(true) }),

@@ -73,6 +73,55 @@ test('implemented navigation is available while unapproved Manager order command
   await expect(page.getByTestId('manager-orders-list').getByRole('link')).toHaveCount(0)
 })
 
+test('desktop sidebar lens visibly travels during a real Manager section change', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  const ordersNav = page.getByTestId('manager-orders-screen').getByTestId('sidebar-nav-clients')
+  await ordersNav.click()
+  await expect(page.getByTestId('manager-clients-screen')).toBeVisible()
+  const clients = page.getByTestId('manager-clients-screen').getByTestId('sidebar-nav-clients')
+  await expect(clients).toHaveAttribute('aria-current', 'page')
+
+  const lens = page.getByTestId('manager-clients-screen').getByTestId('sidebar-selected-lens')
+  await expect(lens).toHaveAttribute('data-travel-target', '48')
+  await expect(lens).toHaveAttribute('data-motion-state', 'moving')
+  await page.waitForTimeout(48)
+  const [midBox, originBox, clientsBox] = await Promise.all([
+    lens.boundingBox(),
+    page.getByTestId('manager-clients-screen').getByTestId('sidebar-nav-orders').boundingBox(),
+    clients.boundingBox(),
+  ])
+  expect((midBox?.y ?? 0) - (originBox?.y ?? 0)).toBeGreaterThan(0)
+  expect((midBox?.y ?? 0)).toBeLessThan((clientsBox?.y ?? 0) - 2)
+  await expect(lens).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  const [lensBox, settledClientsBox] = await Promise.all([lens.boundingBox(), clients.boundingBox()])
+  expect(Math.abs((lensBox?.y ?? 0) - (settledClientsBox?.y ?? 0))).toBeLessThan(1.25)
+})
+
+test('desktop sidebar lens visibly travels during a real Client section change', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/?view=client-orders')
+  const ordersNav = page.getByTestId('client-orders-screen').getByTestId('sidebar-nav-artworks')
+  await ordersNav.click()
+  await expect(page.getByTestId('client-artworks-screen')).toBeVisible()
+  const layoutsNav = page.getByTestId('client-artworks-screen').getByTestId('sidebar-nav-artworks')
+  await expect(layoutsNav).toHaveAttribute('aria-current', 'page')
+
+  const lens = page.getByTestId('client-artworks-screen').getByTestId('sidebar-selected-lens')
+  await expect(lens).toHaveAttribute('data-travel-target', '48')
+  await expect(lens).toHaveAttribute('data-motion-state', 'moving')
+  await page.waitForTimeout(48)
+  const [midBox, originBox, layoutsBox] = await Promise.all([
+    lens.boundingBox(),
+    page.getByTestId('client-artworks-screen').getByTestId('sidebar-nav-orders').boundingBox(),
+    layoutsNav.boundingBox(),
+  ])
+  expect((midBox?.y ?? 0) - (originBox?.y ?? 0)).toBeGreaterThan(0)
+  expect((midBox?.y ?? 0)).toBeLessThan((layoutsBox?.y ?? 0) - 2)
+  await expect(lens).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  const [lensBox, settledLayoutsBox] = await Promise.all([lens.boundingBox(), layoutsNav.boundingBox()])
+  expect(Math.abs((lensBox?.y ?? 0) - (settledLayoutsBox?.y ?? 0))).toBeLessThan(1.25)
+})
+
 
 test('viewport screenshots for independent Owner review', async ({ page }, testInfo) => {
   const sizes = [

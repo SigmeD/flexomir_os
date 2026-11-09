@@ -1,8 +1,24 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 09.11.2026 — FE11-v0.2 frozen reference → adapter QA
+
+Owner gate стенда закрыт явным подтверждением, Git reference `f527bcb`. Контроллер в общем FosPopupRows; Drawer/Account/GlassSelect подключены через semantic adapters. Freeze-contract защищает формулу/физику/material; на каждый адаптер отдельный QA. Текущая стадия — завершение регрессии/отчёта. More исключён, нативные Select требуют отдельного field-контракта; all-screen/product acceptance и merge остаются OPEN. [Реестр и QA](FE11_POPUP_PILOT_2026-11-09.md).
+
+## CURRENT 09.11.2026 — FE-11 v0.2 scenario before shared rollout
+
+Новый selection-only сценарий Owner отменяет hover-preview из предыдущей постановки. Кандидат v0.2 — только стенд NavigationDrawerLab; сначала промежуточные кадры/сценарная проверка и явное подтверждение Owner, затем перенос в общий React popup, проверка каждого разрешённого типа меню и полный QA. Freeze с версией/эталоном/Git SHA только после приёмки. Текущий статус OWNER OPEN / NOT FROZEN. [Реестр](FE11_POPUP_PILOT_2026-11-09.md).
+
+## CURRENT 09.11.2026 — FE-11 pilot gate
+
+Новая постановка `FLEXOMIR_FE11_UNIFIED_LIQUID_GLASS_POPUPS_2026-11-09.md`: A/B инвентаризация и архитектура → C пилот NavigationDrawer → Owner visual gate → D AccountMenu/GlassSelect/native select → E независимый QA и регрессия. Пилот реализован через существующий Surface и общий Rows на материале Sidebar. Order More исключён, ConfirmDialog отдельно. Не распространять новый opt-in до одобрения пилота. [Подробности и доказательства](FE11_POPUP_PILOT_2026-11-09.md).
+
+## CURRENT 09.11.2026 — M8 typography audit and correction
+
+Typography implementation is complete on the existing `feat/fe-debug-2026-11-09` / Draft PR #29 branch. Stage A checked current Drive sources, FOS V2 Figma masters and computed browser styles; the scoped Manrope token and semantic roles correct active cabinet inheritance, Profile PageHeader/photo action sizes, Composer empty copy and GlassSelect body portal while preserving lab Onest, Support Body SM and Glass lens optics. Build PASS; typography contract 16/16 across Chromium/Firefox/WebKit/touch Chromium; GlassSelect visual checks 8/8. Full Playwright regression is 427 passed / 9 failed / 2 expected skips; five distinct menu/focus checks remain OPEN (some repeat across viewport projects), so branch regression is not clean. Owner visual acceptance and decisions TY-05/TY-08 remain OPEN. Do not merge. Findings and acceptance details: [typography audit](TYPOGRAPHY_AUDIT_2026-11-09.md).
+
 ## CURRENT 09.11.2026 — FE-DEBUG-2026-11-09
 
-One feature branch `feat/fe-debug-2026-11-09` from fresh `origin/main 01721e1`; Draft [PR #29](https://github.com/SigmeD/flexomir_os/pull/29) is open and unmerged. FE-01/02/03/04/05/06/08 are implemented; FE-09 and FE-10 are verified with no source changes. FE-07 base `DEMO-001` stays read-only pending ownership/editability contract. FE-11 broad popup surface unification is `OWNER_OPEN` because CURRENT Figma specifies distinct Drawer and More surfaces. Build PASS; configured full run 404 PASS / 16 stale test assumptions; corrected affected regression set 88/88 PASS across Chromium 1440/390; feature + Composer role flow 5/5 PASS; `git diff --check` PASS. PR checks: Orders Core, NavigationDrawer and SidebarNav passed; M7 was still running at last check. Firefox/WebKit projects are not configured; cross-browser, independent QA and Owner visual acceptance remain OPEN. Details: `docs/HANDOFF.md` and `docs/superpowers/plans/2026-11-09-fe-debug-frontend-systemic-fixes.md`.
+One feature branch `feat/fe-debug-2026-11-09` from fresh `origin/main 01721e1`; Draft [PR #29](https://github.com/SigmeD/flexomir_os/pull/29) is open and unmerged. FE-01/02/03/04/05/06/08 are implemented. FE-09 real route-shell motion was fixed after recheck. FE-10 mobile Manager selection remains `NOT_REPRODUCED`. FE-07 base `DEMO-001` stays read-only pending ownership/editability contract. FE-11 shares one frosted `FosPopupSurface` across Drawer, Account, More and GlassSelect, anchored beneath the hamburger. Menus use shared Manrope 15/20/500 type and a travelling hover/focus lens; Drawer reuses its selected lens to preview hover/focus without adding a second lens. Build PASS; manual Playwright review covered Account, More and Drawer hover; FE-11 automated suites have not been rerun after the latest lens update. Cross-browser, independent QA and final Owner visual acceptance remain OPEN. Details: `docs/HANDOFF.md` and `docs/superpowers/plans/2026-11-09-fe-debug-frontend-systemic-fixes.md`.
 
 Документация актуализирована 09.11.2026; следующая ревизия 23.11.2026.
 

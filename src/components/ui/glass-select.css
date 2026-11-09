@@ -13,6 +13,8 @@
   --gs-hover: rgba(36, 67, 86, 0.08);
   --gs-focus: #286f93;
   --gs-mark: #236786;
+  --gs-popup-hover: var(--fos-v2-semantic-color-text-brand, #1f3861);
+  --gs-popup-fill: rgba(255,255,255,.72);
 }
 
 /* Match Website Glass's precedence: .dark, .light, data-theme, then OS. */
@@ -31,6 +33,8 @@
   --gs-hover: rgba(193, 225, 244, 0.12);
   --gs-focus: #95d8ff;
   --gs-mark: #8dd6ff;
+  --gs-popup-hover: var(--gs-mark);
+  --gs-popup-fill: rgb(var(--gs-material-rgb) / var(--gs-material-opacity));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -48,6 +52,8 @@
     --gs-hover: rgba(193, 225, 244, 0.12);
     --gs-focus: #95d8ff;
     --gs-mark: #8dd6ff;
+    --gs-popup-hover: var(--gs-mark);
+    --gs-popup-fill: rgb(var(--gs-material-rgb) / var(--gs-material-opacity));
   }
 }
 
@@ -55,6 +61,7 @@
 [data-glass-select-content] {
   color-scheme: var(--gs-scheme);
   color: var(--gs-foreground);
+  font-family: var(--fos-font-family);
 }
 
 [data-glass-select-trigger] {
@@ -72,31 +79,29 @@
 }
 
 .glass-select-material {
-  /* All optics, lighting, reading fill and shadows belong to FosGlassMaterial. */
-  overflow: visible;
+  width: 100%;
 }
 
 .glass-select-viewport {
   /* Foreground scrolls independently of the one optical layer. */
+  max-height: min(16rem, var(--fos-popup-max-height, 16rem));
+  overflow: auto;
   background: transparent;
+  padding: .375rem 0;
 }
 
 [data-glass-select-trigger][data-appearance="matte"] {
   background-color: var(--gs-matte-surface);
 }
 
-[data-glass-select-content][data-appearance="matte"] {
-  --gs-material-opacity: .97;
-  --gs-material-rim-width: 2px;
-}
-
 [data-glass-select-item] {
   color: var(--gs-foreground);
+  font-family: inherit;
 }
 
 [data-glass-select-item]:hover,
 [data-glass-select-item]:focus-visible {
-  background-color: var(--gs-hover);
+  background-color: transparent;
 }
 
 [data-glass-select-item] > svg {
@@ -110,7 +115,7 @@
 }
 
 [data-glass-select-item]:focus-visible {
-  outline-offset: -3px;
+  outline: none;
 }
 
 @media (forced-colors: active) {

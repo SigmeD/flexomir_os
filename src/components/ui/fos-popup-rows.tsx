@@ -1,15 +1,14 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react'
-import { FosGlassMaterial } from '@/components/ui/fos-glass-material'
-import { SidebarNavIcon } from '@/components/ui/sidebar-nav-icons'
-import type { NavigationDrawerProps } from '@/components/ui/navigation-drawer'
-import '@/components/ui/fos-popup-rows.css'
+import { useCallback, useLayoutEffect, useRef, useState, type ComponentProps } from 'react'
+import { FosGlassMaterial } from './fos-glass-material'
+import './fos-popup-rows.css'
 
-/** FE-11 candidate v0.2, LAB ONLY / OWNER OPEN.
- * No spring/Track implementation here: the existing material owns travel.
- * Only actual vertical coverage of untransformed label/icon slots drives scale.
+/** FE11-v0.2 OWNER APPROVED / FROZEN; reference commit f527bcb.
+ * Adapter shell around the approved coverage controller. Never change its
+ * physics, material or scale formula without separate Owner approval.
+ * Adapters supply selectedId and semantic rows/slots, and own commit/dismissal.
  */
-export function DrawerLensCandidate({ items, activeId, onSelect }:
-  Pick<NavigationDrawerProps, 'items' | 'activeId' | 'onSelect'>) {
+export function FosPopupRows({ selectedId: activeId, lensTestId = 'popup-selected-lens', children, className = '', ...props }:
+  ComponentProps<'div'> & { selectedId?: string; lensTestId?: string }) {
   const list = useRef<HTMLDivElement>(null)
   const anchor = useRef<number | null>(null)
   const lastTravel = useRef(0)
@@ -28,8 +27,8 @@ export function DrawerLensCandidate({ items, activeId, onSelect }:
   }, [])
   useLayoutEffect(() => {
     const measure = () => {
-      const rows = Array.from(list.current?.querySelectorAll<HTMLButtonElement>('[data-popup-item]') ?? [])
-      const selected = rows.find(row => row.dataset.popupItem === activeId && !row.disabled)
+      const rows = Array.from(list.current?.querySelectorAll<HTMLElement>('[data-popup-item]') ?? [])
+      const selected = rows.find(row => row.dataset.popupItem === activeId && !row.matches(':disabled, [data-disabled], [aria-disabled="true"]'))
       slots.current = rows.flatMap(row => Array.from(row.querySelectorAll<HTMLElement>('[data-popup-label], [data-popup-icon]')).map(element => ({
         element, top: row.offsetTop + element.offsetTop, height: Math.max(1, element.offsetHeight),
         max: element.hasAttribute('data-popup-label') ? .043 : .022,
@@ -47,19 +46,13 @@ export function DrawerLensCandidate({ items, activeId, onSelect }:
     if (list.current) observer.observe(list.current)
     list.current?.querySelectorAll('[data-popup-item], [data-popup-label]').forEach(row => observer.observe(row))
     return () => observer.disconnect()
-  }, [activeId, items, frame])
-  return <div ref={list} className="fos-popup-rows fos-sidebar-nav__list" data-motion-candidate="fe11-v0.2-owner-open">
-    {geometry && <FosGlassMaterial aria-hidden="true" data-testid="sidebar-selected-lens"
+  }, [activeId, children, frame])
+  return <div {...props} ref={list} className={`fos-popup-rows ${className}`} data-motion-reference="FE11-v0.2">
+    {geometry && <FosGlassMaterial aria-hidden="true" data-testid={lensTestId}
       className="fos-popup-rows__lens" style={{ top: geometry.anchor, height: geometry.height }}
       radius={14} blur={1.5} strength={.1} shadow="reference" lighting="sidebar"
       tone="neutral" centerOpacity={.12} centerColor="var(--fos-neutral-glass-rgb, 248 248 248)"
       rimWidth={12} motion="travel" travelY={geometry.top - geometry.anchor} onTravelFrame={frame} />}
-    {items.map(item => <button key={item.id} type="button" className="fos-sidebar-nav__item"
-      data-popup-item={item.id} data-testid={'sidebar-nav-' + item.id}
-      aria-current={activeId === item.id ? 'page' : undefined} disabled={item.disabled}
-      onClick={() => onSelect(item.id)}>
-      {item.icon && <span className="fos-sidebar-nav__icon" data-popup-icon=""><SidebarNavIcon name={item.icon} /></span>}
-      <span className="fos-sidebar-nav__label" data-popup-label="">{item.label}</span>
-    </button>)}
+    {children}
   </div>
 }

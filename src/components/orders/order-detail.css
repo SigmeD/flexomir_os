@@ -10,10 +10,10 @@
 .fos-order-detail__dates:has(> :only-child) { grid-template-columns: minmax(0,720px); }
 .fos-order-detail__items { display: grid; gap: 24px; margin: 0; padding: 0; list-style: none; }
 .fos-order-item-summary { min-width: 0; min-height: 112px; padding: 16px; border: 1px solid #d8e0e9; border-radius: 13px; background: #fff; overflow-wrap: anywhere; }
-.fos-order-item-summary h3 { margin: 0; color: #253144; font-size: 16px; font-weight: 600; line-height: 22px; }
+.fos-order-item-summary h3 { margin: 0; color: #253144; font-size: var(--fos-type-card-size); font-weight: 600; line-height: var(--fos-type-card-line-height); }
 .fos-order-item-summary__specifications { margin: 12px 0 0; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: 13px; line-height: 18px; }
 .fos-order-item-summary__artwork { margin: 10px 0 0; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: 12px; line-height: 16px; }
-.fos-order-detail__empty { margin: 0; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: 14px; line-height: 20px; }
+.fos-order-detail__empty { margin: 0; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: var(--fos-type-body-size); line-height: var(--fos-type-body-line-height); }
 .fos-manager-intake { margin-top: 32px; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
 .fos-manager-intake p { margin: 0; color: #586d7c; font-size: 12px; line-height: 18px; }
 .fos-manager-intake .fos-action { min-width: 160px; }

@@ -1,7 +1,7 @@
 /*
  * CURRENT Figma FOS V2 / Navigation Drawer:
  * Client open overlay Tablet 1962:3834, Mobile 1962:3854.
- * Top = 72px header. Right inset = 20px.
+ * The popover aligns with the hamburger trigger directly below the mobile header.
  * Tablet 320x229, Mobile 296x229, radius20, padding16.
  * Scrim #000 16%. Material = translucent neutral-white 72%, blur20,
  * not a blue-tinted duplicate glass layer. One accepted SidebarNav lens inside.
@@ -51,6 +51,7 @@
   inset: 0;
   z-index: 1000;
   pointer-events: auto;
+  font-family: var(--fos-font-family);
 }
 .fos-nav-drawer__scrim {
   position: absolute;
@@ -62,29 +63,20 @@
 .fos-nav-drawer__panel {
   position: fixed;
   top: 72px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  left: 16px;
+  display: block;
   width: min(296px, calc(100vw - 40px));
   height: 229px;
   max-height: calc(100dvh - 88px);
   overflow-x: clip;
   overflow-y: auto;
+}
+.fos-nav-drawer__content {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 12px;
   padding: 16px;
-  /* Figma strokes do not consume layout width: preserve inner nav 264/288px. */
-  border: 0;
-  outline: 1px solid rgba(222,225,229,.66);
-  border-radius: 20px;
-  background: rgba(255,255,255,.72);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  box-shadow:
-    0 8px 24px rgba(38,41,45,.09),
-    inset 0 1px 2px rgba(255,255,255,.65);
-  font-family: Manrope, Onest, ui-sans-serif, system-ui, sans-serif;
-  animation: fos-drawer-panel-in 220ms cubic-bezier(.2,.85,.2,1) both;
-  isolation: isolate;
 }
 /*
  * CSS :focus-visible can remain active after programmatic focusing when the
@@ -126,40 +118,18 @@
 .fos-nav-drawer__layer[data-state="closing"] .fos-nav-drawer__scrim {
   animation: fos-drawer-scrim-out 180ms ease-in both;
 }
-.fos-nav-drawer__layer[data-state="closing"] .fos-nav-drawer__panel {
-  animation: fos-drawer-panel-out 180ms ease-in both;
-}
 @media (min-width: 600px) and (max-width: 1023px) {
   .fos-nav-drawer__panel { width: 320px; }
 }
-@supports not (backdrop-filter: blur(1px)) {
-  .fos-nav-drawer__panel { background: rgba(255,255,255,.97); }
-}
 @keyframes fos-drawer-scrim-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fos-drawer-scrim-out { from { opacity: 1; } to { opacity: 0; } }
-@keyframes fos-drawer-panel-in {
-  from { opacity: 0; transform: translate3d(0,-7px,0) scale(.985); }
-  to { opacity: 1; transform: translate3d(0,0,0) scale(1); }
-}
-@keyframes fos-drawer-panel-out {
-  from { opacity: 1; transform: translate3d(0,0,0) scale(1); }
-  to { opacity: 0; transform: translate3d(0,-5px,0) scale(.992); }
-}
 @media (prefers-reduced-motion: reduce) {
-  .fos-nav-drawer__scrim,.fos-nav-drawer__panel {
+  .fos-nav-drawer__scrim {
     animation-duration: 0.01ms !important;
     transition: none !important;
   }
 }
 @media (forced-colors: active) {
-  .fos-nav-drawer__panel {
-    background: Canvas;
-    color: CanvasText;
-    outline: 2px solid ButtonText;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    box-shadow: none;
-  }
   .fos-nav-drawer__scrim { background: rgba(0,0,0,.6); }
   .fos-nav-drawer__trigger { color: ButtonText; }
   .fos-nav-drawer__trigger:focus-visible { outline: 3px solid Highlight; }

@@ -8,6 +8,8 @@ import type { CabinetRole } from './CabinetPage'
 export const CabinetNavigation = createContext<{
   ready: readonly CabinetSection[]
   navigate: (section: CabinetSection) => void
+  /** Previous selected section, used to animate the shared sidebar lens across screen shells. */
+  motionFromSection?: CabinetSection | null
   identity?: DemoProfileIdentity
   photoPreview?: string | null
   openProfile?: () => void

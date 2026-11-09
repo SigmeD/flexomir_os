@@ -36,7 +36,7 @@
 .fos-order-composer__general > .fos-field + .fos-field { margin-top: 20px; }
 .fos-order-composer__date { max-width: 506px; }
 .fos-order-composer__products[data-empty] .fos-order-composer__section-heading { margin-bottom: 12px; }
-.fos-order-composer__products[data-empty] .fos-order-detail__empty { min-height: 44px; font-size: 15px; }
+.fos-order-composer__products[data-empty] .fos-order-detail__empty { min-height: 44px; font-size: var(--fos-type-body-size); line-height: var(--fos-type-body-line-height); }
 .fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: 63px; }
 @media(max-width:1023px) {
   .fos-order-composer__body { margin-top: 21px; }

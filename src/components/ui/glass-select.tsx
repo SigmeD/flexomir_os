@@ -2,6 +2,7 @@
 
 import {
   type ComponentProps,
+  type CSSProperties,
   type ReactNode,
   createContext,
   useCallback,
@@ -14,16 +15,12 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { FosGlassMaterial } from "@/components/ui/fos-glass-material";
+import { FosPopupSurface } from "@/components/ui/fos-popup-surface";
+import { FosPopupRows } from "@/components/ui/fos-popup-rows";
 import { cn } from "@/lib/utils";
 import "./glass-select.css";
 
 export type GlassSelectAppearance = "current" | "matte";
-const selectOptics = {
-  current: { strength: 0.62, blur: 3, dome: 0.08 },
-  matte: { strength: 0.08, blur: 10, dome: 0 },
-} as const;
-
 interface SelectCtx {
   appearance: GlassSelectAppearance;
   value?: string;
@@ -141,11 +138,17 @@ export function GlassSelectTrigger({
   );
 }
 
-export function GlassSelectContent({ tint = 0.6, className, children, onKeyDown, ...props }: ComponentProps<"div"> & { tint?: number }) {
-  const { appearance, open, setOpen, triggerRef, triggerId, contentId } = useSelect();
+export function GlassSelectContent({ className, children, onKeyDown, ...props }: ComponentProps<"div"> & { tint?: number }) {
+  const { appearance, value, open, setOpen, triggerRef, triggerId, contentId } = useSelect();
   const ref = useRef<HTMLDivElement | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [rect, setRect] = useState({ top: 0, left: 0, width: 224 });
+  const [rect, setRect] = useState({ top: 0, left: 0, width: 224, maxHeight: 256 });
+  const popupStyle: CSSProperties = {
+    '--fos-popup-color': 'var(--gs-foreground)',
+    '--fos-popup-hover-color': 'var(--gs-popup-hover)',
+    '--fos-popup-fill': 'var(--gs-popup-fill)',
+    '--fos-popup-max-height': `${rect.maxHeight}px`,
+  } as CSSProperties;
 
   useEffect(() => setMounted(true), []);
 
@@ -154,7 +157,14 @@ export function GlassSelectContent({ tint = 0.6, className, children, onKeyDown,
     const place = () => {
       const t = triggerRef.current?.getBoundingClientRect();
       if (!t) return;
-      setRect({ top: t.bottom + 6, left: t.left, width: t.width });
+      const desired = Math.min(ref.current?.scrollHeight ?? 256, 256);
+      const below = window.innerHeight - t.bottom - 22;
+      const above = t.top - 22;
+      const flip = below < desired && above > below;
+      const maxHeight = Math.max(40, Math.min(256, flip ? above : below));
+      const width = Math.min(t.width, window.innerWidth - 32);
+      setRect({ top: flip ? t.top - Math.min(desired, maxHeight) - 6 : t.bottom + 6,
+        left: Math.max(16, Math.min(t.left, window.innerWidth - width - 16)), width, maxHeight });
     };
     place();
     const selected = ref.current?.querySelector<HTMLButtonElement>('[role="option"][aria-selected="true"]:not(:disabled)')
@@ -225,27 +235,23 @@ export function GlassSelectContent({ tint = 0.6, className, children, onKeyDown,
         left: rect.left,
         width: rect.width,
         opacity: open ? 1 : 0,
-        transform: `scale(${open ? 1 : 0.97})`,
         pointerEvents: open ? "auto" : "none",
         zIndex: 1000,
-        transformOrigin: "top center",
-        transition: "opacity 0.16s, transform 0.18s cubic-bezier(0.22,1.15,0.36,1.06)",
+        transition: "opacity 0.19s ease",
         ...props.style,
       }}
       className={cn(className)}
     >
-      <FosGlassMaterial
-        radius={16}
-        {...selectOptics[appearance]}
-        centerOpacity={`clamp(0, calc(var(--gs-material-opacity) * ${Number.isFinite(tint) ? Math.max(0, tint) / .6 : 1}), 1)`}
-        centerColor="var(--gs-material-rgb)"
-        rimWidth="var(--gs-material-rim-width)"
-        shadow="menu"
+      <FosPopupSurface
+        hoverLens={false}
+        sidebarMaterial
+        data-state={open ? 'open' : 'closed'}
+        style={popupStyle}
         className="glass-select-material"
-        contentClassName="glass-select-viewport max-h-64 overflow-auto rounded-[inherit] py-1.5"
+        contentClassName="glass-select-viewport"
       >
-        {children}
-      </FosGlassMaterial>
+        <FosPopupRows selectedId={value}>{children}</FosPopupRows>
+      </FosPopupSurface>
     </div>,
     document.body,
   );
@@ -273,6 +279,7 @@ export function GlassSelectItem({
       aria-selected={selectedNow}
       tabIndex={-1}
       data-glass-select-item=""
+      data-popup-item={value}
       onClick={event => {
         onClick?.(event);
         if (!event.defaultPrevented) setValue(value);
@@ -282,7 +289,7 @@ export function GlassSelectItem({
         className,
       )}
     >
-      <span className="truncate">{children}</span>
+      <span className="truncate" data-popup-label="">{children}</span>
       {selectedNow && (
         <svg viewBox="0 0 16 16" fill="none" className="size-4 shrink-0" aria-hidden>
           <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

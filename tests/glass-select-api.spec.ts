@@ -24,6 +24,7 @@ test('placeholder has 4.5:1 contrast without a selected value', async ({ page },
   await page.goto('/tests/fixtures/glass-select.html')
   const trigger = page.getByTestId('filter-control').locator('button')
   await expect(trigger).toHaveText('Выберите статус')
+  await expect(page.locator('[data-glass-select-content]').first()).toBeAttached()
   await page.evaluate(() => Promise.all(document.getAnimations().map(a => a.finished)))
   const measure = await selectContrast(page)
   await testInfo.attach('placeholder-contrast', { body: JSON.stringify(measure), contentType: 'application/json' })

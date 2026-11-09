@@ -1,5 +1,15 @@
 {
   "version": "FE11-v0.2",
+  "reference_commit": "f527bcb",
+  "approved_frame_sha256": "74e9aa94a7df311690a9a797b00b3ffeb9a0824f7dd141465468e7bdc8eef309",
+  "approved_optics_jsx_sha256": "bd63cc035839ad29287305e75c2c9b2de56b13a7172ae88bdc0e41ea9bf71969",
+  "normalized_engine_sha256": {
+    "src/components/ui/fos-popup-rows.tsx": "B1D78F6756C01F820EDB5B59050A956BAED77787D314C97A84A57901B6732ECF",
+    "src/components/ui/fos-popup-rows.css": "FFEEBBA6F6B49D1D10A9536081FFDD0859FE7F4AA1AD697CB261344E273BDC24",
+    "src/components/ui/fos-glass-material.tsx": "F9C72AC1591BC30BE6F1C19D2949894F3DE2DF3FD70E738F115BACF3323BB2D2",
+    "src/components/ui/fos-glass-material.css": "85B0D2D5FFFD90DA4FAAAA238AB62EF2BF26A21765DE7109145E069B2E3C60D1",
+    "src/components/ui/glass-motion.ts": "CB76E61997FB73FE82E9768152F2244153E61755EF6C8F4D1504AFAEEF527F50"
+  },
   "status": "OWNER APPROVED / FROZEN",
   "approved_on": "2026-11-09",
   "approval": "Owner: да теперь все верно, подтверждаю",
@@ -19,5 +29,5 @@
     "No physics/material/interaction/optics change without separate Owner approval",
     "Each consumer requires adapter QA; approval is not automatic screen acceptance"
   ],
-  "consumer_rollout": "Controlled transfer and per-adapter QA pending; Order More excluded"
+  "consumer_rollout": "NavigationDrawer, AccountMenu and GlassSelect reuse FosPopupRows; adapter QA is separate from Owner reference approval. Native FOSSelect deferred, Order More excluded."
 }

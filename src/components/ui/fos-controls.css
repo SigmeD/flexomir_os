@@ -1,6 +1,6 @@
 @font-face { font-family: Manrope; src: url('../../assets/fonts/Manrope-variable.ttf') format('truetype'); font-weight: 200 800; font-style: normal; font-display: swap; }
-.fos-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; color: #1f2228; font: 400 14px/20px Manrope, system-ui, sans-serif; }
-.fos-field__label { font-size: 13px; line-height: 18px; font-weight: 600; }
+.fos-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; color: #1f2228; font: 400 var(--fos-type-body-size)/var(--fos-type-body-line-height) var(--fos-font-family); }
+.fos-field__label { font-size: var(--fos-type-label-size); line-height: var(--fos-type-label-line-height); font-weight: 600; }
 .fos-field__control { box-sizing: border-box; width: 100%; min-width: 0; height: 44px; margin: 0; padding: 11px 16px; border: 1px solid #d6d9e0; border-radius: 8px; background: #fff; color: #1f2228; font: inherit; scroll-margin-top: 96px; }
 .fos-field__control::placeholder { color: var(--fos-v2-semantic-color-text-secondary,#586d7c); opacity: 1; }
 .fos-field__control:focus { outline: none; border-color: #1f3861; box-shadow: inset 0 0 0 1px #1f3861; }
@@ -10,7 +10,7 @@ select.fos-field__control:disabled { background: #f6f7f9; color: var(--fos-v2-se
 .fos-field__control--note { height: 112px; min-height: 112px; padding: 12px 16px; resize: vertical; }
 .fos-field__control[type=number] { appearance: textfield; -moz-appearance: textfield; }
 .fos-field__control::-webkit-inner-spin-button, .fos-field__control::-webkit-outer-spin-button { appearance: none; margin: 0; }
-.fos-field__error, .fos-field__helper { margin: 0; font-size: 12px; line-height: 18px; }
+.fos-field__error, .fos-field__helper { margin: 0; font-size: var(--fos-type-secondary-size); line-height: var(--fos-type-secondary-line-height); }
 .fos-field__error { color: #a33a3a; }
 .fos-field__helper { color: var(--fos-v2-semantic-color-text-secondary,#586d7c); }
 .fos-field__select { position: relative; min-width: 0; }
@@ -32,7 +32,7 @@ select.fos-field__control:disabled { background: #f6f7f9; color: var(--fos-v2-se
   border-radius: 22px;
   background: transparent;
   color: #1f2228;
-  font: 600 14px/20px Manrope, system-ui, sans-serif;
+  font: 600 var(--fos-type-body-size)/var(--fos-type-body-line-height) var(--fos-font-family);
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;

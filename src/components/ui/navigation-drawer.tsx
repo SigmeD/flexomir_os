@@ -1,6 +1,10 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { createPortal } from 'react-dom'
-import { SidebarNav, type SidebarNavItem } from './sidebar-nav'
+import type { SidebarNavItem } from './sidebar-nav'
+import { SidebarNavIcon } from './sidebar-nav-icons'
+import { FosPopupRows } from './fos-popup-rows'
+import './sidebar-nav.css'
+import { FosPopupSurface } from './fos-popup-surface'
 import './navigation-drawer.css'
 
 export interface NavigationDrawerProps {
@@ -32,11 +36,11 @@ export interface NavigationDrawerProps {
  * GL-02B: shared floating Tablet/Mobile navigation drawer.
  *
  * Based on CURRENT Client V2 canonical overlays 1962:3834/1962:3854.
- * This is a 320/296px RIGHT-ALIGNED POPOVER below the 72px header,
+ * This is a 320/296px popover anchored below the hamburger trigger,
  * NOT a full-height off-canvas panel. Manager uses the same primitive,
  * but its specific opened overlay has not yet been approved in Figma.
  *
- * Reuses accepted SidebarNav as one navigation + one neutral GlassLens.
+ * Reuses Sidebar row geometry and the common popup visual list with one neutral lens.
  * Selection is controlled by the screen; this component never mutates routes.
  */
 export function NavigationDrawer({
@@ -50,6 +54,7 @@ export function NavigationDrawer({
   const [open, setOpen] = useState(false)
   const [rendered, setRendered] = useState(false)
   const [pendingId, setPendingId] = useState<string | null>(null)
+  const [panelPosition, setPanelPosition] = useState({ top: 72, left: 16, maxHeight: 'calc(100dvh - 88px)' })
   const pendingIdRef = useRef<string | null>(null)
   const pendingRequestRef = useRef(0)
   // Programmatic focus after pointer activation must not look like a keyboard
@@ -57,9 +62,27 @@ export function NavigationDrawer({
   const activationRef = useRef<'pointer' | 'keyboard'>('pointer')
   const [focusMode, setFocusMode] = useState<'pointer' | 'keyboard'>('pointer')
 
+  function measurePanelPosition() {
+    const trigger = triggerRef.current?.getBoundingClientRect()
+    if (!trigger) return panelPosition
+    const header = triggerRef.current?.closest('.fos-app-shell__mobile-header')?.getBoundingClientRect()
+    const panelWidth = window.innerWidth >= 600 ? 320 : Math.min(296, window.innerWidth - 40)
+    const maxLeft = Math.max(16, window.innerWidth - panelWidth - 16)
+    const below = Math.max(trigger.bottom, header?.bottom ?? 0)
+    const height = Math.min(229, window.innerHeight - 32)
+    const top = below + height <= window.innerHeight - 16 ? below
+      : trigger.top - height >= 16 ? trigger.top - height : 16
+    return {
+      top,
+      left: Math.min(maxLeft, Math.max(16, trigger.left)),
+      maxHeight: `${Math.max(32, window.innerHeight - top - 16)}px`,
+    }
+  }
+
   function openMenu() {
     if (exitTimer.current !== undefined) window.clearTimeout(exitTimer.current)
     exitTimer.current = undefined
+    setPanelPosition(measurePanelPosition())
     setFocusMode(activationRef.current)
     setRendered(true)
     setOpen(true)
@@ -80,6 +103,18 @@ export function NavigationDrawer({
   useEffect(() => () => {
     if (exitTimer.current !== undefined) window.clearTimeout(exitTimer.current)
   }, [])
+
+  useLayoutEffect(() => {
+    if (!open) return
+    const updatePosition = () => setPanelPosition(measurePanelPosition())
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    window.addEventListener('scroll', updatePosition, true)
+    return () => {
+      window.removeEventListener('resize', updatePosition)
+      window.removeEventListener('scroll', updatePosition, true)
+    }
+  }, [open])
 
   function requestSelection(id: string) {
     // Never interrupt an in-flight lens transition by closing on a duplicate tap.
@@ -195,6 +230,15 @@ export function NavigationDrawer({
       closeMenu()
       return
     }
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Home' || event.key === 'End') {
+      event.preventDefault()
+      const rows = Array.from(dialogRef.current?.querySelectorAll<HTMLButtonElement>('[data-popup-item]:not(:disabled)') ?? [])
+      const current = rows.indexOf(document.activeElement as HTMLButtonElement)
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? rows.length - 1
+        : (current + (event.key === 'ArrowDown' ? 1 : -1) + rows.length) % rows.length
+      rows[next]?.focus()
+      return
+    }
     if (event.key !== 'Tab') return
     const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLButtonElement>(
       'button:not(:disabled):not([tabindex="-1"])',
@@ -251,7 +295,9 @@ export function NavigationDrawer({
             aria-hidden="true"
             onClick={closeMenu}
           />
-          <div
+          <FosPopupSurface
+            hoverLens={false}
+            sidebarMaterial
             id={dialogId}
             ref={dialogRef}
             role="dialog"
@@ -259,18 +305,18 @@ export function NavigationDrawer({
             aria-label={ariaLabel}
             tabIndex={-1}
             data-focus-mode={focusMode}
+            data-state={open ? 'open' : 'closed'}
             onPointerDown={() => setFocusMode('pointer')}
             onKeyDown={onDialogKeyDown}
             className="fos-nav-drawer__panel"
+            contentClassName="fos-nav-drawer__content"
             data-testid="navigation-drawer-panel"
+            style={panelPosition}
           >
             <div
               className="fos-nav-drawer__items"
               onClick={event => {
-                // SidebarNav calls requestSelection for a NEW route.
-                // It intentionally does not dispatch onSelect on its already
-                // selected row; dismiss that row here without interrupting
-                // a pending spring transition.
+                // Dismiss the selected row without interrupting pending travel.
                 const target = event.target
                 if (!(target instanceof Element)) return
                 const button = target.closest<HTMLButtonElement>('button.fos-sidebar-nav__item:not([disabled])')
@@ -281,18 +327,21 @@ export function NavigationDrawer({
                 }
               }}
             >
-              <SidebarNav
-                items={items}
-                activeId={activeId}
-                ariaLabel={ariaLabel + ' — разделы'}
-                glassTone="neutral"
-                onSelect={requestSelection}
-                style={{ width: '100%' }}
-              />
+              <nav aria-label={ariaLabel + ' — разделы'} className="fos-sidebar-nav" data-testid="shared-sidebar-nav">
+                <FosPopupRows selectedId={activeId} lensTestId="sidebar-selected-lens" className="fos-sidebar-nav__list">
+                  {items.map(item => <button key={item.id} type="button" className="fos-sidebar-nav__item"
+                    data-popup-item={item.id} data-testid={'sidebar-nav-' + item.id}
+                    aria-current={activeId === item.id ? 'page' : undefined} disabled={item.disabled}
+                    onClick={() => requestSelection(item.id)}>
+                    {item.icon && <span className="fos-sidebar-nav__icon" data-popup-icon=""><SidebarNavIcon name={item.icon} /></span>}
+                    <span className="fos-sidebar-nav__label" data-popup-label="">{item.label}</span>
+                  </button>)}
+                </FosPopupRows>
+              </nav>
             </div>
             <div className="fos-nav-drawer__separator" role="presentation" />
             <div className="fos-nav-drawer__footer">{footerText}</div>
-          </div>
+          </FosPopupSurface>
         </div>,
         document.body,
       )}

@@ -24,13 +24,20 @@ test('Sidebar account footer reuses the shared Glass material without changing r
   await expect(trigger).toBeFocused()
 })
 
-test('More popup retains the CURRENT independent white surface and closes on Escape', async ({ page }) => {
+test('More popup uses the shared Liquid Glass surface and closes on Escape', async ({ page }) => {
   await page.goto('/?view=client-orders&demoTools=1')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByRole('button', { name: 'Ещё' }).click()
   const menu = page.getByRole('menu', { name: 'Ещё' })
   await expect(menu).toBeVisible()
-  await expect(menu).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+  await expect(menu).toHaveAttribute('data-fos-popup-surface', '')
+  await expect(menu).toHaveCSS('background-color', 'rgba(255, 255, 255, 0.72)')
+  await expect(menu).toHaveCSS('backdrop-filter', 'blur(20px)')
+  await expect(menu.getByTestId('popup-hover-lens')).toHaveCount(1)
+  const firstAction = menu.getByRole('menuitem').first()
+  await firstAction.hover()
+  await expect(firstAction).toHaveAttribute('data-lens-active', 'true')
+  await expect(menu.getByTestId('popup-hover-lens')).toHaveCSS('opacity', '1')
   await page.keyboard.press('Escape')
   await expect(menu).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Ещё' })).toBeFocused()
