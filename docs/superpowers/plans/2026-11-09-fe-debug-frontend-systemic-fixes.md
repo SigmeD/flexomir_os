@@ -77,7 +77,7 @@
 - [x] Run `npm run build`, changed Playwright suites and existing Orders/Profile/Manager/M7 regressions. Full configured run: 404 passed, 16 stale assumptions identified, 2 expected touch-only skips; corrected affected set: 88/88 passed across Chromium 1440/390. Firefox/WebKit are not configured. Screenshots remain in ignored `test-results/`.
 - [x] Capture and inspect the supplied references against CURRENT Figma plus desktop/mobile/short-height browser states; check a11y, keyboard/focus, reduced motion, navigation, 0/1/N and demo/production boundary. Owner visual acceptance remains OPEN.
 - [x] Update LIVE docs with FE-01…FE-11 status, causes, commands/results and open Owner/backend questions. SRS, Scope, API, Figma and product rules were not changed.
-- [x] Run `git diff --check` and review staged/unstaged status without touching user PNGs. PR creation, Owner acceptance and merge remain open.
+- [x] Run `git diff --check` and review staged/unstaged status without touching user PNGs. Create one Draft PR on `feat/fe-debug-2026-11-09`; PR #29 is open and unmerged. Owner acceptance and merge remain open.
 
 ## Popup audit disposition
 
