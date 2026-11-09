@@ -1,5 +1,11 @@
 # Flexomir OS — CURRENT источники
 
+## FE-PROFILE-01 / Account Menu + Profile — проверено 09.11.2026
+
+Task brief: `D:/downloads/FLEXOMIR_CODEX_01_PROFILE_INTEGRATION.md`. Read-only CURRENT Figma mapping: FOS V2 Account Menu `3038:2667`; DS V2 Sidebar Account Footer `3123:1214`; App Shell `637:180`; Profile Page Actions `3215:1357`; Profile Avatar `3177:1314`; WIP profile `2963:1169`; unsaved Confirm Dialog master `3098:1663`. These are WIP/reference nodes; Owner visual acceptance remains OPEN. The current Drive frontend plan and the user-supplied scope constrain implementation to React/frontend, with no backend/API/1C or ACL change.
+
+Technical references were fetched through Context7 for React effect cleanup (local object URL lifecycle) and Playwright projects/viewport/file chooser behavior. No Figma node, SRS, scope or product decision was modified. Role fixtures are synthetic and persistence is demo-session only.
+
 ## FE-DEBUG-02 / issue #25 — layout references checked 08.11.2026
 
 Read-only Figma verification: Primary DS V2 `634:60` → FOS App Shell `637:180` / content slot `637:119` → Client My Orders Desktop `634:6825` (and mobile `634:7714`), Support Mobile `634:8314`, Layouts Mobile `634:8277`; shared Page Header `2302:2138`, Order Row `685:195`. Figma confirms 72px desktop content inset for My Orders and 16px compact inset for Support/Layouts. The 1440px container limit is from the current React baseline and remains an Owner visual candidate, not a Figma token. No Figma file or master was changed.

@@ -1,5 +1,16 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT / 09.11.2026 — FE-PROFILE-01
+
+- Branch `feat/fe-profile-01-account-profile` from fresh `origin/main 806b9b5`; one working tree. Code/tests are at `d9e83b0`; [Draft PR #27](https://github.com/SigmeD/flexomir_os/pull/27) is open. No merge.
+- Shared Account Menu and Profile Settings are integrated inside the active Client/Manager AppShell. `OrderDemoWorkspace` owns role-isolated identity/draft/photo state and guards navigation while dirty. Save persists only for the current demo session; reload restores fixtures.
+- Unsaved navigation dialog follows Owner instruction: «Да» saves then continues; «Нет» resets the profile draft to the saved identity then continues. X/Escape/outside dismissal cancels navigation and keeps Profile open.
+- Build PASS; profile suite 37 passed / 3 expected skips on Chromium, Firefox, WebKit and touch Chromium, covering 1440/1024/768/390/320. Related shell regression 128/128 PASS; affected M7 companies/integration/layouts/support suite 105/105 across Chromium/Firefox/WebKit after a11y label fix. Screenshots ignored in `output/playwright/profile-settings/`.
+- Owner visual acceptance WIP OPEN; Company Settings / Logout / Profile More remain disabled. No backend/API/1C/ACL work. FE-ACTION-08NOV remains NOT STARTED.
+- Initial Actions on `026697a` found axe `label-content-name-mismatch` for the desktop footer trigger. Fixed: the footer now takes its accessible name from its visible display name; compact initials are decorative and the trigger has an explicit name. `Orders Core UI QA` and `FE-S03 M7 UI QA` both PASS on `d9e83b0`. Do not merge without Owner approval.
+
+Документация обновлена 09.11.2026; следующая ревизия 23.11.2026.
+
 ## CURRENT / 08.11.2026 — FE-DEBUG-02 / issue #25
 
 - Base `origin/main 25745e82e6b187b05642beb476f9d918cac71944`; branch `feat/fe-debug-02-client-workspace-centering`. Worktree was clean; four original stash entries preserved. Do not merge without Owner approval.

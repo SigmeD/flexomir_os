@@ -1,5 +1,16 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 09.11.2026 — FE-PROFILE-01 / Client + Manager Account Menu and Profile
+
+Ветка `feat/fe-profile-01-account-profile` создана от свежего `origin/main 806b9b5`. Реализован общий account menu и профильный экран внутри текущего AppShell для Client/Manager, с изоляцией fixture identity, локальным photo preview, редактированием имени, dirty guard и confirm dialog. Для перехода: «Да» сохраняет и продолжает, «Нет» отбрасывает черновик и продолжает; закрытие диалога оставляет пользователя в профиле. Сохранение — только в демосессии; перезагрузка возвращает fixture. Company Settings, Logout и Profile More остаются disabled; backend/API/1C/ACL не менялись. [Draft PR #27](https://github.com/SigmeD/flexomir_os/pull/27); code/test SHA `d9e83b0`.
+
+- Build PASS. Profile Playwright: 37 passed, 3 skipped (touch-only case на non-touch проектах); Chromium/Firefox/WebKit и touch Chromium, viewport 1440/1024/768/390/320. Связанный Client/Manager shell regression: 128/128 PASS в Chromium 1440/390. Скриншоты — ignored `output/playwright/profile-settings/`.
+- Первый CI M7 прогон на `026697a` нашёл axe `label-content-name-mismatch` у desktop account trigger. Исправлено: footer берёт доступное имя из видимого текста; повторная M7 companies/integration/layouts/support регрессия прошла 105/105 в Chromium/Firefox/WebKit. Final CI после fix-коммита ожидает перезапуска.
+- First CI attempt on `026697a` found and exposed the account trigger label issue; fixed. `Orders Core UI QA` and `FE-S03 M7 UI QA` both PASS on `d9e83b0`.
+- Owner visual acceptance WIP remains OPEN; React is not marked accepted/released. PR #27 remains Draft, not merged. Следующий отдельный инкремент: FE-ACTION-08NOV — NOT STARTED.
+
+Документация обновлена 09.11.2026; следующая ревизия 23.11.2026.
+
 ## CURRENT 08.11.2026 — FE-DEBUG-02 / issue #25
 
 Работа начата от свежего `origin/main 25745e82e6b187b05642beb476f9d918cac71944` в `feat/fe-debug-02-client-workspace-centering`; рабочее дерево до начала было чистым, четыре исходных stash сохранены. Код, проверка и LIVE-документация входят в одну ветку; открыт [Draft PR #26](https://github.com/SigmeD/flexomir_os/pull/26); актуальный head и CI видны в PR.

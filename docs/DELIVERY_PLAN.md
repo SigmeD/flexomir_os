@@ -1,5 +1,19 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 09.11.2026 — FE-PROFILE-01
+
+Один инкремент `feat/fe-profile-01-account-profile` основан на свежем `origin/main 806b9b5`. Реализован общий React Account Menu + Profile Settings для Client/Manager и проверены состояния демо-профиля. [Draft PR #27](https://github.com/SigmeD/flexomir_os/pull/27), code/test SHA `d9e83b0`.
+
+| Gate | Статус |
+| --- | --- |
+| CURRENT Figma / scope | PASS: Account Menu `3038:2667`, Sidebar Account Footer `3123:1214`, App Shell `637:180`, Profile Page Actions `3215:1357`, Profile Avatar `3177:1314`, Profile WIP `2963:1169`, unsaved Confirm Dialog `3098:1663`; продуктовые действия с OPEN семантикой выключены |
+| Shared React | PASS: общий `AccountMenu`, `ProfileSettingsScreen`, scoped `ConfirmDialog`; одна реализация для двух ролей |
+| Functional / responsive | PASS: profile suite 37 passed / 3 expected skips across Chromium/Firefox/WebKit/touch Chromium; five widths; account/save/photo/guard/error flows |
+| Regression / technical | PASS locally: build; 128/128 related Client/Manager shell tests in Chromium 1440/390; after desktop account trigger a11y fix, affected M7 tests 105/105 across Chromium/Firefox/WebKit |
+| PR CI / Owner visual acceptance / merge | Both `Orders Core UI QA` and `FE-S03 M7 UI QA` PASS on `d9e83b0` (initial axe label finding fixed). Owner visual OPEN; PR #27 Draft, no merge; FE-ACTION-08NOV NOT STARTED |
+
+WIP visual approval remains OPEN. No backend/API/1C/ACL or Figma master changes. Local visual evidence is ignored at `output/playwright/profile-settings/`; compare against the approved CURRENT WIP nodes before accepting.
+
 ## CURRENT 08.11.2026 — FE-DEBUG-02 / issue #25
 
 База: `origin/main 25745e82e6b187b05642beb476f9d918cac71944`; одна ветка `feat/fe-debug-02-client-workspace-centering`, один Draft PR планируется. `standard` main теперь центрируется в области после Sidebar. Desktop baseline: исходное смещение 120px/440px при 1920/2560; после исправления ошибка центра ≤2px. Текущие Figma compact gutters (Client Orders 20px; Support/Layouts 16px) сохранены. Не менять AccountMenu/UserProfile WIP, Figma masters, стекло или бизнес-логику.

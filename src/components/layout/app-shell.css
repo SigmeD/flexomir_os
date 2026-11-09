@@ -6,9 +6,17 @@
   min-height: 100vh;
 }
 .fos-app-shell__aside {
+  position: sticky;
+  top: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
   flex: 0 0 240px;
   width: 240px;
-  padding: 20px 16px;
+  height: 100vh;
+  min-height: 850px;
+  padding: 20px 16px 0;
   background: #f6f7f9;
   border-right: 1px solid #e1e6eb;
 }
@@ -19,13 +27,6 @@
   line-height: 28px;
   font-weight: 700;
 }
-.fos-app-shell__role {
-  margin: 6px 4px 24px;
-  color: #1f2228;
-  font-size: 13px;
-  line-height: 22px;
-}
-.fos-app-shell[data-variant=manager] .fos-app-shell__role { font-size: 16px; font-weight: 600; }
 .fos-app-shell__content { flex: 1; min-width: 0; }
 .fos-app-shell__mobile-header { display: none; }
 @media (max-width: 1023px) {
@@ -44,14 +45,14 @@
     background: #f6f7f9;
   }
   .fos-app-shell__identity {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    gap: 3px;
-    color: #506577;
-    font-size: 12px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    white-space: nowrap;
+    pointer-events: none;
   }
   .fos-app-shell__identity strong { color: #1f2228; font-size: 15px; line-height: 20px; font-weight: 600; }
-  .fos-app-shell__identity > span { display: none; }
 }
 @media(max-width:600px) { .fos-app-shell__identity strong { font-size: 14px; line-height: 18px; } }

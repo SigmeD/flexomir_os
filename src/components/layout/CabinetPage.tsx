@@ -4,6 +4,7 @@ import type { SidebarNavItem } from '@/components/ui/sidebar-nav'
 import '@/components/orders/orders-page.css'
 import './cabinet-page.css'
 import { useCabinetNavigation } from './CabinetNavigation'
+import { DEMO_PROFILE_IDENTITIES } from '@/demo/profile-model'
 
 export type CabinetRole = 'client' | 'manager'
 export type CabinetSection = 'orders' | 'clients' | 'artworks' | 'support'
@@ -22,7 +23,9 @@ export function CabinetPage({ role, section, children, onNavigate, ready = [sect
   return <div className="fos-orders-page fos-cabinet" data-testid={role + '-' + section + '-screen'}>
     <AppShell variant={role} items={cabinetItems(role, navigation?.ready ?? ready)} activeId={section} onSelect={id => (onNavigate ?? navigation?.navigate)?.(id as CabinetSection)}
       roleLabel={name} identityLabel={role === 'client' ? 'Компания 01' : name} navigationLabel={'Навигация ' + owner}
-      menuLabel={'Меню ' + owner} triggerLabel={'Открыть меню ' + owner} footerText={role === 'client' ? 'Компания 01' : name}>
+      menuLabel={'Меню ' + owner} triggerLabel={'Открыть меню ' + owner} footerText={role === 'client' ? 'Компания 01' : name}
+      accountIdentity={navigation?.identity ?? DEMO_PROFILE_IDENTITIES[role]} accountPhotoPreview={navigation?.photoPreview ?? null}
+      onOpenProfile={navigation?.openProfile ?? (() => undefined)}>
       <main className="fos-orders-page__main fos-cabinet__main" data-layout="standard" data-role={role} data-section={section}>{children}</main>
     </AppShell>
   </div>
