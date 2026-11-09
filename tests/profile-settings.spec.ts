@@ -11,6 +11,7 @@ test('Client account menu and profile use the same identity and canonical page a
 
   const footer = page.locator('[data-testid="account-menu-trigger"]:visible')
   await expect(footer).toContainText('Мария Иванова')
+  await expect(footer).toHaveAccessibleName('Мария Иванова')
   await footer.click()
   await expect(page.getByRole('menu')).toContainText('Мария Иванова')
   await expect(page.getByRole('menu')).toContainText('Компания 01')

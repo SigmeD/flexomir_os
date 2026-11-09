@@ -15,13 +15,14 @@ export function AccountMenu({
 }) {
   const initials = identity.displayName.trim().split(/\s+/u)[0]?.slice(0, 1).toLocaleUpperCase('ru-RU') || ''
   const secondary = identity.companyName || identity.email
+  const triggerLabel = `${identity.displayName} — открыть меню аккаунта`
   const trigger = placement === 'sidebar'
-    ? <button type="button" className="fos-account-footer" data-testid="account-menu-trigger" aria-label="Открыть меню аккаунта">
+    ? <button type="button" className="fos-account-footer" data-testid="account-menu-trigger">
         <span className="fos-account-avatar" aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
         <span className="fos-account-footer__name">{identity.displayName}</span>
       </button>
-    : <button type="button" className="fos-account-trigger" data-testid="account-menu-trigger" aria-label="Открыть меню аккаунта">
-        {photoPreview ? <img src={photoPreview} alt="" /> : initials}
+    : <button type="button" className="fos-account-trigger" data-testid="account-menu-trigger" aria-label={triggerLabel}>
+        <span aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
       </button>
 
   return <DropdownMenu.Root modal={false}>

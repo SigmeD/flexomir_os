@@ -9,8 +9,8 @@
 | CURRENT Figma / scope | PASS: Account Menu `3038:2667`, Sidebar Account Footer `3123:1214`, App Shell `637:180`, Profile Page Actions `3215:1357`, Profile Avatar `3177:1314`, Profile WIP `2963:1169`, unsaved Confirm Dialog `3098:1663`; продуктовые действия с OPEN семантикой выключены |
 | Shared React | PASS: общий `AccountMenu`, `ProfileSettingsScreen`, scoped `ConfirmDialog`; одна реализация для двух ролей |
 | Functional / responsive | PASS: profile suite 37 passed / 3 expected skips across Chromium/Firefox/WebKit/touch Chromium; five widths; account/save/photo/guard/error flows |
-| Regression / technical | PASS: `npm run build`; 128/128 related Client/Manager shell tests in Chromium 1440/390 |
-| Owner visual acceptance / merge | OPEN; PR #27 Draft, merge не выполнялся; FE-ACTION-08NOV remains NOT STARTED |
+| Regression / technical | PASS locally: build; 128/128 related Client/Manager shell tests in Chromium 1440/390; after desktop account trigger a11y fix, affected M7 tests 105/105 across Chromium/Firefox/WebKit |
+| PR CI / Owner visual acceptance / merge | Initial `FE-S03 M7 UI QA` failed on axe label-content-name-mismatch, fixed after `026697a`; rerun on follow-up commit pending. Owner visual OPEN; PR #27 Draft, no merge; FE-ACTION-08NOV NOT STARTED |
 
 WIP visual approval remains OPEN. No backend/API/1C/ACL or Figma master changes. Local visual evidence is ignored at `output/playwright/profile-settings/`; compare against the approved CURRENT WIP nodes before accepting.
 
