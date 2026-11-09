@@ -2,7 +2,7 @@
 
 # CURRENT / 09.11.2026 — FE-ACTION-08NOV
 
-Branch: `feat/fe-action-08nov`, created from `origin/main a9b2217` after PR #27 landed. [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28), head `f94f55bcbb3d7dad7cbfe32a08763f6dc145cf02`.
+Branch: `feat/fe-action-08nov`, created from `origin/main a9b2217` after PR #27 landed. [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28), latest head `b682bd9ba07781ef491e47908020a5adfd232dc8`.
 
 - Shared FOSAction retains Liquid Glass, has the 44px standard and 40px compact sizes, and uses shared directional press handling also used by HeaderAction. Paired Primary+More actions opt into the fixed responsive dock only for tablet/mobile; desktop remains inline. Consumers are listed in the [Component Registry](COMPONENT_REGISTRY_2026-11-06.md).
 - Profile audit: Account trigger/header alignment and photo-button vertical centering fixed; Save+More positions were already correct and remain unchanged. Measured D1440/L1024/T768/M390/M320.

@@ -2,7 +2,7 @@
 
 ## CURRENT 09.11.2026 — FE-ACTION-08NOV / implementation and QA checkpoint
 
-Ветка `feat/fe-action-08nov` основана на `origin/main a9b2217`. Реализована shared-правка `FOSAction` и responsive `Primary + More` placement. [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28), head `f94f55b`; merge не выполнялся.
+Ветка `feat/fe-action-08nov` основана на `origin/main a9b2217`. Реализована shared-правка `FOSAction` и responsive `Primary + More` placement. [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28), latest head `b682bd9`; merge не выполнялся.
 
 | Gate | Статус |
 | --- | --- |
