@@ -2,6 +2,8 @@
 
 ## CURRENT 09.11.2026 — FE11-v0.2 OWNER APPROVED / FROZEN
 
+Git checkpoints: reference `f527bcb`; shared implementation / adapter / typography delivery `2c303654906365d7cca255aaef5e28ce9ff4ca05`. Последующие документационные/whitespace правки не меняют frozen implementation. Единственный Draft PR #29; merge OPEN.
+
 Owner подтвердил v0.2; точный lab-source + manifest сохранены commit `f527bcb`. Контроллер перенесён в общий FosPopupRows без изменения frame/material/spring; временный кандидат и render-slot удалены. Drawer/Account/GlassSelect переиспользуют одну реализацию; Order More исключён, native FOSSelect не заменён автоматически. Account trigger-aware onInteractOutside исправляет re-open во время exit, подтверждён event trace; Select clamp/flip/scroll в адаптере. Build/freeze-contract PASS; cross-browser201passed/3Firefox teardown errors/8skips, serial recheck3/3PASS. Полный456-тестовый прогон444passed/8failed/4skip до финального Account fix хранится как фактический checkpoint; Account/M7 rechecks passed, More и FOSAction failures остаются отдельно. Все новые PNG/video/JSON прогонов ignored; root Owner PNG сохранены. [Детали и freeze policy](FE11_POPUP_PILOT_2026-11-09.md). Merge не разрешён.
 
 ## CURRENT 09.11.2026 — FE-11 v0.2, только стенд до Owner approval

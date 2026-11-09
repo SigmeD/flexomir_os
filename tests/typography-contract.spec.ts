@@ -82,4 +82,3 @@ test('Composer empty product copy uses the shared 14/20 body role', async ({ pag
   await expect(emptyCopy).toHaveCSS('font-size', '14px')
   await expect(emptyCopy).toHaveCSS('line-height', '20px')
 })
-

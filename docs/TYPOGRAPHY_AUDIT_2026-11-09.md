@@ -1,6 +1,6 @@
 # Typography audit — 09.11.2026
 
-**Status:** Typography implementation complete; technical checks completed with pre-existing menu/focus regressions still open. Owner visual acceptance remains open. No merge.  
+**Status:** Typography implementation complete; technical checks completed with pre-existing menu/focus regressions still open. Owner visual acceptance remains open. No merge.
 **Scope:** production-facing Client and Manager React UI; inspect legacy labs for shared-style regressions. No merge.
 
 ## Sources checked
@@ -72,4 +72,3 @@ The browser audit is a targeted set of representative components, not a claim th
 - Full Playwright regression: 427 passed, 9 failed, 2 expected skips. Failures are 5 unique menu/focus checks, repeated across viewport projects where applicable (More draft deletion, Account menu alignment, Order Compose focus after menu, popup focused outline, GlassSelect keyboard scroll); they are not failures in the typography contract tests. Investigate in FE-11/related flow before calling the branch regression-clean.
 - Screenshots reviewed at Profile D1440/M390/M320; the responsive contract suite covers Client and Manager headers at D1440/L1024/T768/M390/M320. Formal side-by-side Owner visual acceptance remains OPEN; 600px-short viewport and long-copy visual edge cases were not independently certified.
 - Delivery disposition: implementation complete, technical regression has OPEN failures, visual acceptance OPEN, PR #29 remains Draft/unmerged. TY-05 and TY-08 need Owner decisions. No API/backend/1C changes.
-

@@ -4,6 +4,8 @@
 
 Owner: «да теперь все верно, подтверждаю». Точный утверждённый исходник и реестр сохранены в Git commit `f527bcb`; [machine-readable freeze manifest](FE11_MOTION_FROZEN_V0_2.json) содержит исходные SHA-256, нормализованные LF fingerprints и hashes формулы/параметров.
 
+Shared implementation checkpoint: `2c303654906365d7cca255aaef5e28ce9ff4ca05`, Draft PR #29. Последующие metadata/whitespace коммиты не изменяют замороженный контроллер.
+
 Контроллер перенесён в `src/components/ui/fos-popup-rows.tsx`. Формула frame и JSX-параметры материала совпадают с эталоном; `FosGlassMaterial`, его CSS и `glass-motion` не изменены. Проверка `tests/fe11-frozen-contract.spec.ts` защищает также общий Rows/CSS от неутверждённых правок. Самостоятельного lab-контроллера больше нет: стенд и продуктовые адаптеры используют одну реализацию, временный render-slot удалён.
 
 | Потребитель | Реализация и семантика | Статус |

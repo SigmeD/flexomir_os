@@ -1,6 +1,7 @@
 {
   "version": "FE11-v0.2",
   "reference_commit": "f527bcb",
+  "shared_delivery_commit": "2c303654906365d7cca255aaef5e28ce9ff4ca05",
   "approved_frame_sha256": "74e9aa94a7df311690a9a797b00b3ffeb9a0824f7dd141465468e7bdc8eef309",
   "approved_optics_jsx_sha256": "bd63cc035839ad29287305e75c2c9b2de56b13a7172ae88bdc0e41ea9bf71969",
   "normalized_engine_sha256": {
