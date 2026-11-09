@@ -1,5 +1,11 @@
 # Flexomir OS — реестр решений и вопросов
 
+## OPEN 09.11.2026 — FE-PROFILE-01 visual acceptance and product actions
+
+- **Implemented candidate:** common Client/Manager Account Menu + Profile Settings, based on CURRENT Figma nodes recorded in [Component Registry](COMPONENT_REGISTRY_2026-11-06.md) and [SOURCES](SOURCES.md). Functional and responsive QA passes; this does not imply Owner visual acceptance.
+- **OPEN:** Owner acceptance of the WIP screen; approved semantics for Company Settings, Logout and Profile More; real profile persistence/API and authorization contracts remain outside frontend scope.
+- **Decision boundary:** leave those menu actions disabled and keep profile persistence demo-only until Owner/PO/backend contract confirms behavior. FE-ACTION-08NOV is NOT STARTED and remains a separate task.
+
 ## 08.11.2026 — FE-DEBUG-02 / issue #25: centered workspace
 
 - **APPROVED direction (Owner):** center the constrained page workspace within the area to the right of Sidebar; keep header, filters, list, and actions in one shared content container. See [issue #25](https://github.com/SigmeD/flexomir_os/issues/25).

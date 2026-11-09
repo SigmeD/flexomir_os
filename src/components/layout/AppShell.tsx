@@ -1,6 +1,10 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { NavigationDrawer } from '@/components/ui/navigation-drawer'
 import { SidebarNav, type SidebarNavItem } from '@/components/ui/sidebar-nav'
+import { AccountMenu } from './AccountMenu'
+import { DEMO_PROFILE_IDENTITIES, type DemoProfileIdentity } from '@/demo/profile-model'
+import { useCabinetNavigation } from './CabinetNavigation'
+import { ProfileSettingsScreen } from '@/screens/profile/ProfileSettingsScreen'
 import './app-shell.css'
 
 interface AppShellProps {
@@ -16,13 +20,23 @@ interface AppShellProps {
   menuLabel: string
   triggerLabel: string
   footerText: string
+  accountIdentity?: DemoProfileIdentity
+  accountPhotoPreview?: string | null
+  onOpenProfile?: () => void
 }
 
 /** Responsive composition only. Material, motion and modal lifecycle belong to shared primitives. */
 export function AppShell({
   children, items, activeId, onSelect,
   roleLabel, variant = 'client', identityLabel = roleLabel, navigationLabel, menuLabel, triggerLabel, footerText,
+  accountIdentity: suppliedIdentity, accountPhotoPreview: suppliedPhotoPreview, onOpenProfile: suppliedOpenProfile,
 }: AppShellProps) {
+  const navigation = useCabinetNavigation()
+  const contextMatchesRole = navigation?.role === variant
+  const accountIdentity = suppliedIdentity ?? (contextMatchesRole ? navigation?.identity : undefined) ?? DEMO_PROFILE_IDENTITIES[variant]
+  const accountPhotoPreview = suppliedPhotoPreview ?? (contextMatchesRole ? navigation?.photoPreview : undefined) ?? null
+  const onOpenProfile = suppliedOpenProfile ?? (contextMatchesRole ? navigation?.openProfile : undefined) ?? (() => undefined)
+  const showProfile = Boolean(navigation?.profileOpen && navigation.profileRole === variant && navigation.profileSection === activeId && navigation.profile)
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 1023px)').matches)
   const [drawerSelection, setDrawerSelection] = useState(activeId)
   useEffect(() => { setDrawerSelection(activeId) }, [activeId])
@@ -46,14 +60,13 @@ export function AppShell({
     }}>
       <aside className="fos-app-shell__aside" aria-label="Навигация">
         <div className="fos-app-shell__brand">FLEXOMIR OS</div>
-        <p className="fos-app-shell__role">{identityLabel}</p>
         <SidebarNav items={items} activeId={activeId} onSelect={onSelect} ariaLabel={navigationLabel} />
+        {!compact && <AccountMenu identity={accountIdentity} photoPreview={accountPhotoPreview} placement="sidebar" onOpenProfile={onOpenProfile} />}
       </aside>
       <div className="fos-app-shell__content">
         <header className="fos-app-shell__mobile-header" data-testid="app-shell-mobile-header">
           <div className="fos-app-shell__identity">
             <strong>FLEXOMIR OS</strong>
-            <span>{roleLabel}</span>
           </div>
           {compact && (
             <NavigationDrawer
@@ -66,8 +79,13 @@ export function AppShell({
               footerText={footerText}
             />
           )}
+          {compact && <AccountMenu identity={accountIdentity} photoPreview={accountPhotoPreview} placement="header" onOpenProfile={onOpenProfile} />}
         </header>
-        {children}
+        {showProfile && navigation?.profile
+          ? <main className="fos-orders-page__main fos-cabinet__main fos-profile-main" data-layout="standard" data-role={variant} data-section={activeId}>
+              <ProfileSettingsScreen {...navigation.profile} />
+            </main>
+          : children}
       </div>
     </div>
   )
