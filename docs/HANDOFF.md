@@ -2,11 +2,11 @@
 
 ## CURRENT / 09.11.2026 — FE-PROFILE-01
 
-- Branch `feat/fe-profile-01-account-profile` from fresh `origin/main 806b9b5`; one working tree. Code, tests and local docs are implemented; no commit, PR or merge recorded yet.
+- Branch `feat/fe-profile-01-account-profile` from fresh `origin/main 806b9b5`; one working tree. Code/tests are at `026697a`; [Draft PR #27](https://github.com/SigmeD/flexomir_os/pull/27) is open. No merge.
 - Shared Account Menu and Profile Settings are integrated inside the active Client/Manager AppShell. `OrderDemoWorkspace` owns role-isolated identity/draft/photo state and guards navigation while dirty. Save persists only for the current demo session; reload restores fixtures.
 - Build PASS; profile suite 37 passed / 3 expected skips on Chromium, Firefox, WebKit and touch Chromium, covering 1440/1024/768/390/320. Related shell regression 128/128 PASS across Chromium 1440/390. Screenshots ignored in `output/playwright/profile-settings/`.
 - Owner visual acceptance WIP OPEN; Company Settings / Logout / Profile More remain disabled. No backend/API/1C/ACL work. FE-ACTION-08NOV remains NOT STARTED.
-- Next: inspect diff, run `git diff --check`, commit code/tests/docs together, open one Draft PR for this increment, then report current PR CI. Do not merge without Owner approval.
+- GitHub Actions `Orders Core UI QA` and `FE-S03 M7 UI QA` are in progress on `026697a`; recheck current PR head after the docs-only follow-up commit. Do not merge without Owner approval.
 
 Документация обновлена 09.11.2026; следующая ревизия 23.11.2026.
 

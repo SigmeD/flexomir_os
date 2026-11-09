@@ -5,7 +5,7 @@
 Ветка `feat/fe-profile-01-account-profile` создана от свежего `origin/main 806b9b5`. Реализован общий account menu и профильный экран внутри текущего AppShell для Client/Manager, с изоляцией fixture identity, локальным photo preview, редактированием имени, dirty guard и confirm dialog. Сохранение — только в демосессии; перезагрузка возвращает fixture. Company Settings, Logout и Profile More остаются disabled; backend/API/1C/ACL не менялись.
 
 - Build PASS. Profile Playwright: 37 passed, 3 skipped (touch-only case на non-touch проектах); Chromium/Firefox/WebKit и touch Chromium, viewport 1440/1024/768/390/320. Связанный Client/Manager shell regression: 128/128 PASS в Chromium 1440/390. Скриншоты — ignored `output/playwright/profile-settings/`.
-- Owner visual acceptance WIP remains OPEN; React is not marked accepted/released. Fresh code/test SHA and CI/PR are pending.
+- Owner visual acceptance WIP remains OPEN; React is not marked accepted/released. [Draft PR #27](https://github.com/SigmeD/flexomir_os/pull/27), code/test SHA `026697a`; two GitHub workflows are in progress.
 - Следующий отдельный инкремент: FE-ACTION-08NOV — NOT STARTED.
 
 Документация обновлена 09.11.2026; следующая ревизия 23.11.2026.
