@@ -1,0 +1,23 @@
+{
+  "version": "FE11-v0.2",
+  "status": "OWNER APPROVED / FROZEN",
+  "approved_on": "2026-11-09",
+  "approval": "Owner: да теперь все верно, подтверждаю",
+  "reference": "NavigationDrawerLab v0.2, selection-only; output/playwright/fe11-scenario/v0.2-chromium-motion.webm",
+  "scenario": "D:/downloads/FLEXOMIR_FE11_NAVIGATION_DRAWER_LENS_SCENARIO_2026-11-09.md",
+  "approved_source": {
+    "src/lab/DrawerLensCandidate.tsx": "ED1E4A60C97DFF7F7CB2A3D42907AE500E83466720F17A5D7035F972F61D701B",
+    "src/components/ui/fos-glass-material.tsx": "77F91E9D26CA33347A7EE627C20F9995210883C2CEDA1165347742DCDAC99E12",
+    "src/components/ui/fos-glass-material.css": "03C3CF371D182C0C3426BA7F731408B27F71AE50DC479C5407E8EA9AE3314BE9",
+    "src/components/ui/glass-motion.ts": "CB76E61997FB73FE82E9768152F2244153E61755EF6C8F4D1504AFAEEF527F50"
+  },
+  "invariants": [
+    "Hover/focus do not retarget; activation commits selection",
+    "One persistent moving FosGlassMaterial; existing spring/Track only",
+    "Scale uses actual vertical overlap from onTravelFrame, never selected state or a delay",
+    "Label max scale 1.043; icon max scale 1.022",
+    "No physics/material/interaction/optics change without separate Owner approval",
+    "Each consumer requires adapter QA; approval is not automatic screen acceptance"
+  ],
+  "consumer_rollout": "Controlled transfer and per-adapter QA pending; Order More excluded"
+}
