@@ -1,5 +1,11 @@
 # Flexomir OS — handoff между сессиями Codex
 
+# CURRENT / 09.11.2026 — FE-DEBUG-2026-11-09 (active branch)
+
+Branch `feat/fe-debug-2026-11-09`, based on `origin/main 01721e1`; no PR or merge. Code work: dirty-item Yes/No navigation, shared Sidebar spacing/short-height footer, collapsed DEV demo overlay, session-draft delete, ID title on reopened drafts, and Account Footer Glass hover/focus/press. FE-09 Sidebar lens and FE-10 Manager mobile selection pass existing behavior; FE-10 is `NOT_REPRODUCED`, unchanged. FE-07 keeps `DEMO-001` read-only pending Owner/PO/API rules. FE-11 broad popup material consolidation is `BLOCKED_DECISION` because current Figma masters specify different Drawer and More treatments; see DECISIONS and Component Registry.
+
+Verification checkpoint: build PASS; full configured run 404 PASS / 16 stale-test failures. Updated role/utility, dirty artwork navigation and mobile Drawer test assumptions; final affected regression set 88/88 PASS across Chromium 1440/390. Feature + Composer role flow 5/5 PASS; `git diff --check` PASS. Playwright config has Chromium only; Firefox/WebKit and independent QA remain OPEN. Owner visual acceptance, PR and merge remain OPEN. FE-11 remains an Owner decision because Drawer/More masters differ. Do not touch untracked user `Screenshot_1.png`/`Screenshot_2.png`. No API/backend/1C/ACL changes.
+
 # CURRENT / 09.11.2026 — FE-ACTION-08NOV
 
 Branch: `feat/fe-action-08nov`, created from `origin/main a9b2217` after PR #27 landed. [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28); implementation/test checkpoint `f94f55b`.

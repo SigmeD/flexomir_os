@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
-import { backToOrders, chooseMore, commitItem, detailData, fillItem } from './helpers/orders'
+import { backToOrders, chooseMore, closeDemoControls, commitItem, detailData, fillItem, openDemoControls, setDemoRole } from './helpers/orders'
 
 test('A: Figma new→0/1/N→whole-row edit/save/cancel; stable IDs and retained order fields', async ({ page }) => {
   await page.goto('/?view=client-orders')
@@ -46,7 +46,7 @@ test('A: Figma new→0/1/N→whole-row edit/save/cancel; stable IDs and retained
   await expect(page.getByLabel('Комментарии', { exact: true })).toHaveValue('Общий комментарий DEMO')
 })
 
-test('A: exclusive artwork HELP/local file; More deletion unavailable and demo library available', async ({ page }) => {
+test('A: exclusive artwork HELP/local file; session draft deletion can be canceled and demo library available', async ({ page }) => {
   await page.goto('/?view=client-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
@@ -68,7 +68,13 @@ test('A: exclusive artwork HELP/local file; More deletion unavailable and demo l
   await commitItem(page)
   await expect(page.getByTestId('order-item-summary')).toContainText('replacement-demo.txt (не загружен)')
   await page.getByRole('button', { name: 'Ещё', exact: true }).click()
-  await expect(page.getByRole('menuitem', { name: /Удалить черновик/ })).toBeDisabled()
+  await expect(page.getByRole('menuitem', { name: /Удалить черновик/ })).toBeEnabled()
+  await page.getByRole('menuitem', { name: /Удалить черновик/ }).click()
+  await expect(page.getByRole('alertdialog', { name: 'Удалить черновик?' })).toBeVisible()
+  await page.getByRole('button', { name: 'Отмена', exact: true }).click()
+  await expect(page.getByTestId('order-composer')).toBeVisible()
+  await expect(page.getByTestId('order-item-summary')).toContainText('replacement-demo.txt (не загружен)')
+  await page.getByRole('button', { name: 'Ещё', exact: true }).click()
   await page.keyboard.press('Escape')
   await expect(page.getByRole('button', { name: 'Ещё', exact: true })).toBeFocused()
 })
@@ -114,22 +120,24 @@ test('C: private draft→submit→same Manager record; readonly contracts, role 
   await page.goto('/?view=client-orders&demoTools=1')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   const id = await page.getByTestId('order-composer').getAttribute('data-order-id')
+  await openDemoControls(page)
   await expect(page.getByRole('button', { name: 'Демо: менеджер', exact: true })).toBeDisabled()
+  await closeDemoControls(page)
   await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
   await fillItem(page)
   await commitItem(page)
   await page.getByLabel('Желаемый срок', { exact: true }).fill('2026-12-03')
   await page.getByLabel('Комментарии', { exact: true }).fill('Единый комментарий DEMO')
   await backToOrders(page)
-  await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+  await setDemoRole(page, 'manager')
   await expect(page.getByTestId('manager-order-' + id)).toHaveCount(0)
-  await page.getByRole('button', { name: 'Демо: клиент', exact: true }).click()
+  await setDemoRole(page, 'client')
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Заказ отправлен' })).toBeVisible()
   await expect(page.getByTestId('order-detail-status')).toHaveText('Передан менеджеру')
   const client = await detailData(page)
-  await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+  await setDemoRole(page, 'manager')
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   expect(await detailData(page)).toEqual(client)
   await expect(page.getByLabel('Желаемый срок')).toHaveValue('2026-12-03')
@@ -138,12 +146,13 @@ test('C: private draft→submit→same Manager record; readonly contracts, role 
   await expect(page.getByRole('button', { name: 'Создать заказ', exact: true })).toBeDisabled()
   await backToOrders(page)
   await page.getByTestId('glass-pill-work').click()
-  await page.getByRole('button', { name: 'Демо: клиент', exact: true }).click()
-  await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+  await setDemoRole(page, 'client')
+  await setDemoRole(page, 'manager')
   await expect(page.getByTestId('glass-pill-work')).toHaveAttribute('aria-pressed', 'true')
+  await openDemoControls(page)
   await page.getByRole('button', { name: 'Сбросить демо', exact: true }).click()
   await expect(page.getByTestId('manager-order-count')).toHaveText('6 из 6')
-  await page.getByRole('button', { name: 'Демо: клиент', exact: true }).click()
+  await setDemoRole(page, 'client')
   await expect(page.getByTestId('client-order-count')).toHaveText('3 из 3')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   expect(await page.getByTestId('order-composer').getAttribute('data-order-id')).toBe(id)
@@ -167,12 +176,19 @@ test('validation/dirty guard/error and keyboard escape; no fabricated upload suc
   await expect(page.getByLabel('Количество', { exact: true })).toHaveAttribute('aria-invalid', 'true')
   if ((page.viewportSize()?.width || 1440) >= 1024) {
     await expect(page.getByRole('navigation', { name: 'Навигация клиента', exact: true }).getByTestId('sidebar-nav-orders')).toBeEnabled()
-    await expect(page.getByRole('navigation', { name: 'Навигация клиента', exact: true }).getByTestId('sidebar-nav-support')).toBeDisabled()
+    await expect(page.getByRole('navigation', { name: 'Навигация клиента', exact: true }).getByTestId('sidebar-nav-support')).toBeEnabled()
     await expect(page.getByRole('navigation', { name: 'Хлебные крошки' }).getByRole('button', { name: 'Мои заказы' })).toBeDisabled()
   } else {
     await page.getByTestId('navigation-drawer-trigger').click()
     await expect(page.getByRole('dialog').getByTestId('sidebar-nav-orders')).toBeEnabled()
-    await expect(page.getByRole('dialog').getByTestId('sidebar-nav-support')).toBeDisabled()
+    await expect(page.getByRole('dialog').getByTestId('sidebar-nav-support')).toBeEnabled()
+    await page.getByRole('dialog').getByTestId('sidebar-nav-support').click()
+    await expect(page.getByRole('alertdialog', { name: 'Сохранить изменения?' })).toBeVisible()
+    await page.keyboard.press('Escape')
+  }
+  if ((page.viewportSize()?.width || 1440) >= 1024) {
+    await page.getByRole('navigation', { name: 'Навигация клиента', exact: true }).getByTestId('sidebar-nav-support').click()
+    await expect(page.getByRole('alertdialog', { name: 'Сохранить изменения?' })).toBeVisible()
     await page.keyboard.press('Escape')
   }
   await expect(page.getByLabel('Количество', { exact: true })).toHaveValue('0')
@@ -225,7 +241,7 @@ test('five-size reference flow, menus/outside/keyboard, fallback modes, no API r
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: testInfo.outputPath('fes02-repeat-' + width + '.png'), fullPage: true, animations: 'disabled' })
     await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
-    await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+    await setDemoRole(page, 'manager')
     await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
     await expect(page.getByTestId('order-item-summary')).toHaveCount(2)
     await expect(page.getByRole('button', { name: 'Создать заказ', exact: true })).toBeDisabled()

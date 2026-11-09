@@ -1,5 +1,13 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 09.11.2026 — FE-DEBUG-2026-11-09 / frontend fixes
+
+Branch `feat/fe-debug-2026-11-09`, based on verified `origin/main 01721e1`. FE-01/02/03/04/05/06/08 are implemented. FE-09 Sidebar motion and FE-10 Manager Drawer selection were verified without source changes; FE-10 remains `NOT_REPRODUCED`. FE-07 keeps base `DEMO-001` read-only pending the PO/Owner/API editability contract. FE-11 common popup treatment is `OWNER_OPEN`: current Figma prescribes distinct Drawer and More surfaces.
+
+QA: `npm run build` PASS; full configured Chromium run produced 404 PASS / 16 failures while exposing stale test assumptions (collapsed DEV utility, navigation out of dirty artwork selection, and desktop viewport in a mobile Drawer suite). After updating those assertions, the affected regression set passed 88/88 across Chromium 1440/390; focused feature + Composer role flows passed 5/5. `git diff --check` PASS. Playwright config has no Firefox/WebKit projects, so cross-browser is OPEN. Screenshots were inspected at desktop, mobile and short-height states; Owner visual acceptance and independent QA remain OPEN. No PR or merge yet. User `Screenshot_1.png`/`Screenshot_2.png` remain untracked and untouched. No backend/API/1C/ACL changes.
+
+Документация актуализирована 09.11.2026; следующая ревизия 23.11.2026.
+
 ## CURRENT 09.11.2026 — FE-ACTION-08NOV / shared actions and responsive work dock
 
 Branch `feat/fe-action-08nov` is based on `origin/main a9b2217`; code, responsive tests and docs are in [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28); implementation/test checkpoint `f94f55b`. One shared `FOSAction` now carries the existing FOS Liquid Glass material, standard 44px and compact 40px pill sizes, and shares directional press handling with `HeaderAction`. `PageHeader` has an opt-in `floatingWorkActions` variant for actual Primary+More pairs only: desktop/laptop stay in the header; tablet/mobile use a fixed 108×48 dock with safe-area clearance. Client/Manager Orders, details, compose/item forms, Layouts, Support and Companies pairs are covered. Singles and Profile Save+More remain in their existing families/positions.

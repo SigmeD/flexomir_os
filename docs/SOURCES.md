@@ -1,5 +1,9 @@
 # Flexomir OS — CURRENT источники
 
+## FE-DEBUG-2026-11-09 — checked 09.11.2026
+
+Task brief: `D:/downloads/FLEXOMIR_OS_CODEX_FRONTEND_FIXES_2026-11-09.md`; user evidence: six Bandicam recordings and numbered images `1.png`–`12.png` under `D:/Business_Profit/Syntecore/Флексомир/Фронт/Фиксы 09.11/` (read-only). Read current Drive frontend plan, UX/UI source index, SRS v0.5, Data & Integration, E2E, Liquid Glass contract, and Account/Profile 08.11 update before coding. Read-only Figma context: AppShell `637:180`, Sidebar Account Footer `3123:1214`, Adaptive GlassLens `1578:453/493`, Drawer `1962:3834/3854`, More `1914:655..676`, Profile Page Actions `3215:1357`. Figma was not edited. The CURRENT references explicitly use a frosted Drawer and white More menu; cross-menu material consolidation therefore remains an Owner visual decision. Context7 React docs were fetched for current effect/event cleanup patterns. All external screenshots/videos remain outside Git.
+
 ## FE-ACTION-08NOV / FOSAction and responsive work dock — checked 09.11.2026
 
 Read-only Figma mapping: Action `835:259`, Secondary Default/Hover/Pressed `835:243/245/247`; Work Action Dock `3143:1219`; adapter `3144:2851`; App Shell `637:180`; Account Trigger `3037:2656`; Avatar80 `3177:1314`; Profile Page Actions `3215:1357`; HeaderAction `1953:4168`; shared header `2302:2138`. Source task: `D:/downloads/Flexomir_Codex_Task_02.md`; user-provided existing-style references: `Screenshot_1.png` and `Screenshot_2.png` (kept untracked). Figma masters were not edited. Current Drive frontend plan was checked before implementation; it identified FE-ACTION-08NOV as next task after FE-PROFILE-01. Context7 Playwright v1.64.1 documentation was fetched for responsive viewport and bounding-box/screenshot verification. Owner visual acceptance is OPEN.

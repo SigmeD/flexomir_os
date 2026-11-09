@@ -1,0 +1,56 @@
+import { expect, test } from '@playwright/test'
+
+test('Sidebar account footer reuses the shared Glass material without changing row geometry', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/?view=client-orders')
+  const trigger = page.getByTestId('account-menu-trigger')
+  const material = trigger.locator('[data-fos-glass-material]')
+  const label = trigger.locator('.fos-account-footer__name')
+  const before = await trigger.boundingBox()
+  await expect(material).toHaveAttribute('data-strength', '0')
+  await expect(material).toHaveCSS('opacity', '0')
+
+  await trigger.hover()
+  await expect(material).toHaveCSS('opacity', '1')
+  await expect(label).toHaveCSS('transform', /matrix\(1\.043/)
+  expect(await trigger.boundingBox()).toEqual(before)
+  await page.screenshot({ path: testInfo.outputPath('account-footer-hover.png'), fullPage: true })
+
+  await trigger.focus()
+  await page.keyboard.press('Enter')
+  await expect(page.getByTestId('account-menu')).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(page.getByTestId('account-menu')).toHaveCount(0)
+  await expect(trigger).toBeFocused()
+})
+
+test('More popup retains the CURRENT independent white surface and closes on Escape', async ({ page }) => {
+  await page.goto('/?view=client-orders&demoTools=1')
+  await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+  await page.getByRole('button', { name: 'Ещё' }).click()
+  const menu = page.getByRole('menu', { name: 'Ещё' })
+  await expect(menu).toBeVisible()
+  await expect(menu).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+  await page.keyboard.press('Escape')
+  await expect(menu).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Ещё' })).toBeFocused()
+})
+
+test('account footer press and reduced-motion states stay readable and in place', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/?view=client-orders')
+  const trigger = page.getByTestId('account-menu-trigger')
+  const material = trigger.locator('[data-fos-glass-material]')
+  const label = trigger.locator('.fos-account-footer__name')
+  const before = await trigger.boundingBox()
+  await trigger.hover()
+  await page.mouse.down()
+  await expect(material).toHaveCSS('opacity', '1')
+  expect(await trigger.boundingBox()).toEqual(before)
+  await page.mouse.up()
+
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await trigger.hover()
+  await expect(label).toHaveCSS('transform', 'none')
+  expect(await trigger.boundingBox()).toEqual(before)
+})

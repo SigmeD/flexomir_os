@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/?view=navigation-drawer')
   // Keep previous navigation close-after-lens acceptance tests explicit.
   // The isolated preview defaults to the Owner's stay-open mode.

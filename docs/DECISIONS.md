@@ -1,5 +1,14 @@
 # Flexomir OS — реестр решений и вопросов
 
+## OPEN 09.11.2026 — FE-DEBUG-2026-11-09
+
+- **FE-07 / OPEN — PO + Owner + backend contract:** Should a base fixture such as `DEMO-001` become editable, and under which owner/company/transfer/version rules? Current FE-S01/FE-S02 contract says base fixtures are read-only; frontend keeps it disabled.
+- **FE-11 / OPEN — Owner visual direction:** Current Figma masters prescribe a neutral 72%/blur20 Drawer with one selected Sidebar lens, a white 248px More menu, and an existing GlassMaterial GlassSelect. Confirm whether to preserve these distinct masters or approve a new common popup visual master. Until then, no sweeping material/geometry migration.
+- **FE-10 / NOT_REPRODUCED:** On the current baseline, mobile Manager detail → select active `Заказы` returns to the list and closes Drawer; no route change made.
+- FE-01 saves/discards only current unsaved item changes in the local demo draft. Persistence, atomic failure, browser reload/back, idempotency and real server save remain OPEN under API/PO contracts.
+
+Source evidence: CURRENT Figma AppShell `637:180`, Sidebar Account Footer `3123:1214`, Drawer `1962:3834/3854`, Overflow `1914:655..676`; task brief `D:/downloads/FLEXOMIR_OS_CODEX_FRONTEND_FIXES_2026-11-09.md`. No SRS, scope, API, Figma or product behavior was modified.
+
 ## OPEN 09.11.2026 — FE-ACTION-08NOV visual acceptance
 
 - Implementation candidate follows current FOS V2 Action `835:259` and Work Dock `3143:1219` / adapter `3144:2851`, with existing Liquid Glass material and existing shared React controls. Figma is unchanged.

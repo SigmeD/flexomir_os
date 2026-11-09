@@ -1,5 +1,20 @@
 import { expect, type Page } from '@playwright/test'
 
+export async function openDemoControls(page: Page) {
+  const trigger = page.getByRole('button', { name: 'Демо — показать панель демонстрации' })
+  if (await trigger.isVisible()) await trigger.click()
+}
+
+export async function closeDemoControls(page: Page) {
+  const hide = page.getByRole('button', { name: 'Скрыть панель демонстрации' })
+  if (await hide.isVisible()) await hide.click()
+}
+
+export async function setDemoRole(page: Page, role: 'client' | 'manager') {
+  await openDemoControls(page)
+  await page.getByRole('button', { name: role === 'client' ? 'Демо: клиент' : 'Демо: менеджер', exact: true }).click()
+}
+
 export async function backToOrders(page: Page) {
   if ((page.viewportSize()?.width || 1440) >= 1024) {
     await page.getByRole('navigation', { name: /Навигация (клиента|менеджера)/ }).getByTestId('sidebar-nav-orders').click()

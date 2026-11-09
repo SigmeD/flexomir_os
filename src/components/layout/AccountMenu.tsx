@@ -1,5 +1,6 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import type { DemoProfileIdentity } from '@/demo/profile-model'
+import { FosGlassMaterial } from '@/components/ui/fos-glass-material'
 import './account-menu.css'
 
 export function AccountMenu({
@@ -18,6 +19,7 @@ export function AccountMenu({
   const triggerLabel = `${identity.displayName} — открыть меню аккаунта`
   const trigger = placement === 'sidebar'
     ? <button type="button" className="fos-account-footer" data-testid="account-menu-trigger">
+        <FosGlassMaterial aria-hidden="true" className="fos-account-footer__glass" radius={15} strength={0} blur={9} tone="neutral" shadow="none" centerOpacity={0.24} centerColor="255 255 255" />
         <span className="fos-account-avatar" aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
         <span className="fos-account-footer__name">{identity.displayName}</span>
       </button>

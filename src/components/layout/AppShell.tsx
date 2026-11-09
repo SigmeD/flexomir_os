@@ -23,6 +23,7 @@ interface AppShellProps {
   accountIdentity?: DemoProfileIdentity
   accountPhotoPreview?: string | null
   onOpenProfile?: () => void
+  drawerSelectionResetKey?: number
 }
 
 /** Responsive composition only. Material, motion and modal lifecycle belong to shared primitives. */
@@ -30,6 +31,7 @@ export function AppShell({
   children, items, activeId, onSelect,
   roleLabel, variant = 'client', identityLabel = roleLabel, navigationLabel, menuLabel, triggerLabel, footerText,
   accountIdentity: suppliedIdentity, accountPhotoPreview: suppliedPhotoPreview, onOpenProfile: suppliedOpenProfile,
+  drawerSelectionResetKey,
 }: AppShellProps) {
   const navigation = useCabinetNavigation()
   const contextMatchesRole = navigation?.role === variant
@@ -39,7 +41,7 @@ export function AppShell({
   const showProfile = Boolean(navigation?.profileOpen && navigation.profileRole === variant && navigation.profileSection === activeId && navigation.profile)
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 1023px)').matches)
   const [drawerSelection, setDrawerSelection] = useState(activeId)
-  useEffect(() => { setDrawerSelection(activeId) }, [activeId])
+  useEffect(() => { setDrawerSelection(activeId) }, [activeId, drawerSelectionResetKey])
 
   useEffect(() => {
     const media = window.matchMedia('(max-width: 1023px)')

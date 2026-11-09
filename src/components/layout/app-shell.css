@@ -15,7 +15,8 @@
   flex: 0 0 240px;
   width: 240px;
   height: 100vh;
-  min-height: 850px;
+  height: 100dvh;
+  min-height: 0;
   padding: 20px 16px 0;
   background: #f6f7f9;
   border-right: 1px solid #e1e6eb;
@@ -26,6 +27,14 @@
   font-size: 20px;
   line-height: 28px;
   font-weight: 700;
+}
+.fos-app-shell__aside > .fos-sidebar-nav {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 52px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .fos-app-shell__content { flex: 1; min-width: 0; }
 .fos-app-shell__mobile-header { display: none; }

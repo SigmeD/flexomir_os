@@ -16,11 +16,13 @@ import { ClientLayoutsScreen } from '@/screens/layouts/ClientLayoutsScreen'
 import { DEMO_COMPANIES } from './company-fixtures'
 import { DEMO_PROFILE_IDENTITIES, isProfileDraftDirty, useLocalPhotoPreview, type DemoProfileDraft, type DemoProfileIdentity, type ProfileRole } from './profile-model'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { FosGlassMaterial } from '@/components/ui/fos-glass-material'
 
 export interface OrderDemoController {
   drafts: readonly DemoDraft[]
   createDraft: (ownerRole?: 'client' | 'manager') => string
   saveDraft: (draft: DemoDraft) => void
+  deleteDraft: (id: string, ownerRole: 'client' | 'manager') => void
   sendDraft: (draft: DemoDraft) => void
   duplicateOrder: (sourceId: string) => string | undefined
   onEditorStateChange: (open: boolean) => void
@@ -50,6 +52,8 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
   const [profileSaveStatus, setProfileSaveStatus] = useState('')
   const [saveBeforeNavigation, setSaveBeforeNavigation] = useState(false)
   const [pendingProfileAction, setPendingProfileAction] = useState<(() => void) | null>(null)
+  const [presentationVisible, setPresentationVisible] = useState(false)
+  const presentationTrigger = useRef<HTMLButtonElement>(null)
   const nextOrder = useRef(100)
   const savedClientPhoto = useLocalPhotoPreview(profileIdentities.client.photoFile)
   const savedManagerPhoto = useLocalPhotoPreview(profileIdentities.manager.photoFile)
@@ -78,6 +82,9 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     saveDraft(draft) {
       setDrafts(current => current.map(saved => saved.id === draft.id && saved.stage === 'draft' && saved.ownerRole === draft.ownerRole
         ? { ...draft, stage: 'draft', items: draft.items.map(item => ({ ...item })) } : saved))
+    },
+    deleteDraft(id, ownerRole) {
+      setDrafts(current => current.filter(saved => !(saved.id === id && saved.ownerRole === ownerRole && saved.stage === 'draft')))
     },
     sendDraft(draft) {
       if (draft.ownerRole !== 'client' || !canSendDemo(draft)) return
@@ -181,21 +188,36 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     return <Activity key={slotRole + ':' + section + ':' + version} mode={currentRole === slotRole && activeSection === section ? 'visible' : 'hidden'}>{children}</Activity>
   }
   const demoTools = new URLSearchParams(window.location.search).get('demoTools') === '1'
+  const showPresentation = import.meta.env.DEV && presentationMode
+  const showDemoTools = import.meta.env.DEV && demoTools
   return <div className="fos-demo-workspace">
-    {presentationMode && <aside className="fos-demo-workspace__controls fos-demo-workspace__presentation" aria-label="Демонстрация кабинета" data-testid="demo-presentation-controls">
-      <div className="fos-demo-workspace__intro"><strong>Демонстрация кабинета</strong><span>Учебные данные · сохраняются только до перезагрузки страницы</span></div>
-      <div className="fos-demo-workspace__role" role="group" aria-label="Роль кабинета">
-        <FOSAction disabled={editorOpen} aria-pressed={currentRole === 'client'} onClick={() => switchRole('client')}>Демо: клиент</FOSAction>
-        <FOSAction disabled={editorOpen} aria-pressed={currentRole === 'manager'} onClick={() => switchRole('manager')}>Демо: менеджер</FOSAction>
+    {showPresentation && (presentationVisible ? <FosGlassMaterial className="fos-demo-workspace__controls fos-demo-workspace__presentation" role="region" aria-label="Демонстрация кабинета" data-testid="demo-presentation-controls" radius={18} tone="neutral" shadow="menu" centerOpacity={0.76} centerColor="248 250 252">
+      <div className="fos-demo-workspace__toolbar">
+        <div className="fos-demo-workspace__intro"><strong>Демонстрация кабинета</strong><span>Учебные данные · сохраняются только до перезагрузки страницы</span></div>
+        <div className="fos-demo-workspace__role" role="group" aria-label="Роль кабинета">
+          <FOSAction disabled={editorOpen} aria-pressed={currentRole === 'client'} onClick={() => {
+            switchRole('client')
+            setPresentationVisible(false)
+            requestAnimationFrame(() => presentationTrigger.current?.focus())
+          }}>Демо: клиент</FOSAction>
+          <FOSAction disabled={editorOpen} aria-pressed={currentRole === 'manager'} onClick={() => {
+            switchRole('manager')
+            setPresentationVisible(false)
+            requestAnimationFrame(() => presentationTrigger.current?.focus())
+          }}>Демо: менеджер</FOSAction>
+        </div>
+        <button type="button" className="fos-demo-workspace__hide" aria-label="Скрыть панель демонстрации" onClick={() => {
+          setPresentationVisible(false)
+          requestAnimationFrame(() => presentationTrigger.current?.focus())
+        }}>×</button>
       </div>
       {editorOpen && <p className="fos-demo-workspace__lock" role="status">Сохраните черновик и закройте редактор, чтобы переключить роль или сбросить демо.</p>}
       {diagnosticMessage && <p className="fos-demo-workspace__diagnostic" role="status" data-testid="demo-route-diagnostic">{diagnosticMessage}</p>}
-    </aside>}
-    {demoTools && <aside className="fos-demo-workspace__controls fos-demo-workspace__technical" aria-label="Техническая лаборатория" data-testid="demo-technical-controls">
-      <div className="fos-demo-workspace__intro"><strong>Технические инструменты QA</strong><span>Только для проверки демонстрационного состояния</span></div>
-      <div><FOSAction disabled={editorOpen} onClick={resetDemo}>Сбросить демо</FOSAction></div>
-      {editorOpen && <p className="fos-demo-workspace__lock" role="status">Закройте редактор, чтобы сбросить демо.</p>}
-    </aside>}
+      {showDemoTools && <div className="fos-demo-workspace__technical" role="group" aria-label="Технические инструменты QA" data-testid="demo-technical-controls">
+        <span>Инструменты только для проверки демо</span>
+        <FOSAction disabled={editorOpen} onClick={resetDemo}>Сбросить демо</FOSAction>
+      </div>}
+    </FosGlassMaterial> : <button ref={presentationTrigger} type="button" className="fos-demo-workspace__show" aria-label="Демо — показать панель демонстрации" onClick={() => setPresentationVisible(true)}>Демо</button>)}
     <CabinetNavigation.Provider value={{
       ready: currentRole === 'client' ? ['orders', 'artworks', 'support'] : ['orders', 'clients', 'support'],
       navigate: navigateSection,
@@ -218,7 +240,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
       },
     }}>
       {currentRole === 'client' && slot('client', 'orders', <ClientOrdersScreen orders={[...(empty ? [] : [...CLIENT_ORDERS_DEMO, COMPLETED_DEMO_ORDER]), ...drafts.filter(draft => draft.ownerRole === 'client').map(draftView)]} companyName={CLIENT_DEMO_COMPANY} demo={controller} processingStates={processingStates} initialFilterId={clientFilter} onFilterChange={setClientFilter} />)}
-      {currentRole === 'manager' && slot('manager', 'orders', <ManagerOrdersScreen orders={[...(empty ? [] : MANAGER_ORDERS_DEMO), ...(new URLSearchParams(window.location.search).get('fixture') === 'imported-1c' && !empty ? [DEMO_IMPORTED_1C_ORDER] : []), ...sent.map(draft => ({ ...draftView(draft), demoProcessingState: processingStates[draft.id] ?? 'pending' })), ...drafts.filter(draft => draft.ownerRole === 'manager').map(draftView)]} demoOrderIds={sent.map(draft => draft.id)} newOrderIds={sent.map(draft => draft.id)} managerDrafts={drafts.filter(draft => draft.ownerRole === 'manager')} managerCompanies={DEMO_COMPANIES} onCreateOrder={() => controller.createDraft('manager')} onSaveManagerDraft={controller.saveDraft} onEditorStateChange={controller.onEditorStateChange} processingStates={processingStates} onProcessingStateChange={(id, state) => setProcessingStates(current => ({ ...current, [id]: state }))} demoTools={demoTools} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />)}
+      {currentRole === 'manager' && slot('manager', 'orders', <ManagerOrdersScreen orders={[...(empty ? [] : MANAGER_ORDERS_DEMO), ...(new URLSearchParams(window.location.search).get('fixture') === 'imported-1c' && !empty ? [DEMO_IMPORTED_1C_ORDER] : []), ...sent.map(draft => ({ ...draftView(draft), demoProcessingState: processingStates[draft.id] ?? 'pending' })), ...drafts.filter(draft => draft.ownerRole === 'manager').map(draftView)]} demoOrderIds={sent.map(draft => draft.id)} newOrderIds={sent.map(draft => draft.id)} managerDrafts={drafts.filter(draft => draft.ownerRole === 'manager')} managerCompanies={DEMO_COMPANIES} onCreateOrder={() => controller.createDraft('manager')} onSaveManagerDraft={controller.saveDraft} onDeleteManagerDraft={id => controller.deleteDraft(id, 'manager')} onEditorStateChange={controller.onEditorStateChange} processingStates={processingStates} onProcessingStateChange={(id, state) => setProcessingStates(current => ({ ...current, [id]: state }))} demoTools={demoTools} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />)}
       {slot('manager', 'clients', <ManagerCompaniesScreen empty={empty} />)}
       {slot('client', 'artworks', <ClientLayoutsScreen empty={empty} errorFixture={errorFixture === 'layout-error'} />)}
       {slot('client', 'support', <SupportScreen role="client" empty={empty} errorFixture={errorFixture === 'support-error'} />)}

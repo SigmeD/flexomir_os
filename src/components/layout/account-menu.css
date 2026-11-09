@@ -10,6 +10,8 @@
   -webkit-tap-highlight-color: transparent;
 }
 .fos-account-footer {
+  position: relative;
+  isolation: isolate;
   margin: auto -16px 0;
   width: 240px;
   height: 72px;
@@ -19,7 +21,20 @@
   background: #f6f7f9;
   text-align: left;
 }
-.fos-account-footer:hover { background: rgba(255,255,255,.5); }
+.fos-account-footer__glass { position: absolute !important; z-index: 0; inset: 8px 10px; opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
+.fos-account-footer__glass > .fos-glass-optics { border-radius: inherit; }
+.fos-account-avatar, .fos-account-footer__name { position: relative; z-index: 1; }
+.fos-account-footer__name { transform-origin: left center; transition: transform 180ms ease; }
+@media (hover: hover) {
+  .fos-account-footer:hover .fos-account-footer__glass,
+  .fos-account-footer:focus-visible .fos-account-footer__glass { opacity: 1; }
+  .fos-account-footer:hover .fos-account-footer__name,
+  .fos-account-footer:focus-visible .fos-account-footer__name { transform: scale(1.043); }
+}
+.fos-account-footer:active .fos-account-footer__glass { opacity: 1; }
+.fos-account-footer:active .fos-account-footer__name { transform: scale(1.043); }
+.fos-account-footer:focus-visible .fos-account-footer__glass { opacity: 1; }
+.fos-account-footer:focus-visible .fos-account-footer__name { transform: scale(1.043); }
 .fos-account-footer:focus-visible,
 .fos-account-trigger:focus-visible {
   outline: 2px solid #1f3861;
@@ -124,4 +139,8 @@
   .fos-account-menu__separator { background: CanvasText; }
   .fos-account-menu__item[data-highlighted], .fos-account-footer, .fos-account-trigger { background: Canvas; color: CanvasText; }
   .fos-account-avatar { border: 1px solid ButtonText; background: Canvas; color: CanvasText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fos-account-footer__glass, .fos-account-footer__name { transition: none; }
+  .fos-account-footer__name { transform: none !important; }
 }

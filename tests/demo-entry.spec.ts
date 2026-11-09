@@ -6,7 +6,8 @@ test('root opens the real Client My Orders cabinet with no technical lab', async
   await expect(page.getByTestId('client-orders-screen')).toBeVisible()
   await expect(page.getByRole('heading', { name: 'Мои заказы' })).toBeVisible()
   await expect(page.locator('.filter-card')).toHaveCount(0)
-  await expect(page.getByTestId('demo-presentation-controls')).toBeVisible()
+  await expect(page.getByTestId('demo-presentation-controls')).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Демо — показать панель демонстрации' })).toBeVisible()
   await expect(page.getByTestId('demo-technical-controls')).toHaveCount(0)
 })
 
@@ -14,6 +15,7 @@ test('unknown view safely opens Client and explains the fallback', async ({ page
   await page.goto('/?view=not-a-real-screen')
 
   await expect(page.getByTestId('client-orders-screen')).toBeVisible()
+  await page.getByRole('button', { name: 'Демо — показать панель демонстрации' }).click()
   await expect(page.getByTestId('demo-route-diagnostic')).toContainText('not-a-real-screen')
   await expect(page.locator('.filter-card')).toHaveCount(0)
 })

@@ -1,5 +1,17 @@
 # Flexomir OS — React Component Registry
 
+## FE-DEBUG-2026-11-09 — existing components and consumers
+
+| Figma / source | React component | Change / consumer / status |
+| --- | --- | --- |
+| App Shell `637:180`, Desktop nav y=100 | REUSE `AppShell` + `SidebarNav` | Shared nav top spacing is 52px after the 28px brand; list is the only sidebar scroll region; footer stays pinned to viewport height. Client and Manager. |
+| FOS demo presentation | REUSE `OrderDemoWorkspace` + `FosGlassMaterial` | DEV-only fixed utility, collapsed by default; QA reset appears only inside the expanded panel. Does not enter AppShell geometry or intercept primary actions while collapsed. |
+| Client New/Existing draft | REUSE `ClientOrdersScreen`, `OrderComposer`, `OrderItemForm`, `ConfirmDialog` | Dirty item navigation confirms; Yes validates/commits to one session draft before leaving, No discards only unsaved item edits; list reopens existing draft with its ID title. Base fixtures remain read-only. |
+| Sidebar Account Footer `3123:1214` / GlassLens `1578:493` | EXTEND `AccountMenu` footer trigger with shared `FosGlassMaterial` | Existing 240×72 footer geometry; glass appears for hover/focus/press and text receives optical scale; mobile avatar trigger unchanged. Account popover remains independent. |
+| Drawer `1962:3834/3854`; More `1914:655..676`; GlassSelect | REUSE `NavigationDrawer`, `OverflowMenu`, `GlassSelect` | Drawer retains its approved neutral 72%/blur20 overlay + one moving Sidebar lens; More keeps CURRENT white 248px menu; GlassSelect already uses `FosGlassMaterial`. FE-11 visual consolidation awaits an Owner master because the sources prescribe distinct treatments. |
+
+QA additions: `tests/fe-debug-shell.spec.ts`, `tests/fe-debug-order-transitions.spec.ts`, `tests/fe-debug-overlays.spec.ts`. FE-10 Manager mobile selection passed existing implementation; no route code change. FE-07 `DEMO-001` remains read-only. Owner visual acceptance and FE-11 decision remain OPEN.
+
 ## FE-ACTION-08NOV — shared FOS actions and responsive action dock, 09.11.2026
 
 | Figma master / variant | React component | Props / states | Consumers / disposition |

@@ -16,6 +16,7 @@
   position: relative;
   width: 208px;
   max-width: 100%;
+  min-height: 0;
   font-family: var(--fos-sidebar-font);
 }
 .fos-sidebar-nav__list {

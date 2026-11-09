@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { setDemoRole } from './helpers/orders'
 
 const actionWidths = [
   { width: 1440, dock: false },
@@ -212,7 +213,7 @@ test('Account Trigger and menu stay aligned to the FOS shell at all five widths'
     await page.keyboard.press('Escape')
   }
   await page.goto('/?demoTools=1')
-  await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+  await setDemoRole(page, 'manager')
   for (const width of [768, 390, 320]) {
     await page.setViewportSize({ width, height: width === 320 ? 812 : width === 390 ? 844 : 900 })
     const trigger = page.locator('[data-testid="account-menu-trigger"]:visible')

@@ -1,5 +1,11 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 09.11.2026 — FE-DEBUG-2026-11-09
+
+One feature branch `feat/fe-debug-2026-11-09` from fresh `origin/main 01721e1`; no PR or merge yet. FE-01/02/03/04/05/06/08 are implemented; FE-09 and FE-10 are verified with no source changes. FE-07 base `DEMO-001` stays read-only pending ownership/editability contract. FE-11 broad popup surface unification is `OWNER_OPEN` because CURRENT Figma specifies distinct Drawer and More surfaces. Build PASS; configured full run 404 PASS / 16 stale test assumptions; corrected affected regression set 88/88 PASS across Chromium 1440/390; feature + Composer role flow 5/5 PASS; `git diff --check` PASS. Firefox/WebKit projects are not configured; cross-browser, independent QA, Owner visual acceptance, PR and merge remain OPEN. Details: `docs/HANDOFF.md` and `docs/superpowers/plans/2026-11-09-fe-debug-frontend-systemic-fixes.md`.
+
+Документация актуализирована 09.11.2026; следующая ревизия 23.11.2026.
+
 ## CURRENT 09.11.2026 — FE-ACTION-08NOV / implementation and QA checkpoint
 
 Ветка `feat/fe-action-08nov` основана на `origin/main a9b2217`. Реализована shared-правка `FOSAction` и responsive `Primary + More` placement. [Draft PR #28](https://github.com/SigmeD/flexomir_os/pull/28); implementation/test checkpoint `f94f55b`, merge не выполнялся.
