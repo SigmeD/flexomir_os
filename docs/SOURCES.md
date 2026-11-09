@@ -1,5 +1,9 @@
 # Flexomir OS — CURRENT источники
 
+## FE-ACTION-08NOV / FOSAction and responsive work dock — checked 09.11.2026
+
+Read-only Figma mapping: Action `835:259`, Secondary Default/Hover/Pressed `835:243/245/247`; Work Action Dock `3143:1219`; adapter `3144:2851`; App Shell `637:180`; Account Trigger `3037:2656`; Avatar80 `3177:1314`; Profile Page Actions `3215:1357`; HeaderAction `1953:4168`; shared header `2302:2138`. Source task: `D:/downloads/Flexomir_Codex_Task_02.md`; user-provided existing-style references: `Screenshot_1.png` and `Screenshot_2.png` (kept untracked). Figma masters were not edited. Current Drive frontend plan was checked before implementation; it identified FE-ACTION-08NOV as next task after FE-PROFILE-01. Context7 Playwright v1.64.1 documentation was fetched for responsive viewport and bounding-box/screenshot verification. Owner visual acceptance is OPEN.
+
 ## FE-PROFILE-01 / Account Menu + Profile — проверено 09.11.2026
 
 Task brief: `D:/downloads/FLEXOMIR_CODEX_01_PROFILE_INTEGRATION.md`. Read-only CURRENT Figma mapping: FOS V2 Account Menu `3038:2667`; DS V2 Sidebar Account Footer `3123:1214`; App Shell `637:180`; Profile Page Actions `3215:1357`; Profile Avatar `3177:1314`; WIP profile `2963:1169`; unsaved Confirm Dialog master `3098:1663`. These are WIP/reference nodes; Owner visual acceptance remains OPEN. The current Drive frontend plan and the user-supplied scope constrain implementation to React/frontend, with no backend/API/1C or ACL change.

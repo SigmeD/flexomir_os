@@ -45,7 +45,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
   }
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id}>
     {editing === null ? <>
-      <PageHeader title="Новый заказ" subtitle={value.ownerRole === 'manager' ? 'Черновик менеджера · приватно в демосессии' : 'Черновик'} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: 'Новый заказ' }]} actions={<>
+      <PageHeader title="Новый заказ" floatingWorkActions subtitle={value.ownerRole === 'manager' ? 'Черновик менеджера · приватно в демосессии' : 'Черновик'} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: 'Новый заказ' }]} actions={<>
         {value.ownerRole === 'manager'
           ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
           : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!canSendDemo(value)} onAction={() => onSend(value)} />}

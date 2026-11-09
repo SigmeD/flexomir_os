@@ -48,7 +48,7 @@ export function LayoutBrowser({ mode = 'library', onChoose, onExit, parentContex
   return <div className="fos-cabinet fos-layout-browser" data-testid={mode === 'library' ? 'layout-browser' : 'layout-picker'} data-mode={mode} data-state={layout ? 'detail' : uploading ? 'upload' : 'list'} onKeyDown={event => {
     if (event.key === 'Escape' && !event.defaultPrevented) { event.stopPropagation(); if (nav.path === 'list') nav.exit(); else nav.back() }
   }}>
-    <PageHeader title={title} autoFocus={mode !== 'library' || nav.path !== 'list'} subtitle={layout && mode === 'library' ? layout.meta : !layout && !uploading && mode !== 'library' ? mode === 'select' ? 'Выберите макет для нового заказа.' : 'Выберите другой макет для заказа.' : undefined}
+    <PageHeader title={title} floatingWorkActions autoFocus={mode !== 'library' || nav.path !== 'list'} subtitle={layout && mode === 'library' ? layout.meta : !layout && !uploading && mode !== 'library' ? mode === 'select' ? 'Выберите макет для нового заказа.' : 'Выберите другой макет для заказа.' : undefined}
       breadcrumbs={breadcrumbs}
       actions={<><HeaderAction action={layout ? mode === 'library' ? 'save' : 'choose' : uploading ? 'save' : 'add'}
         accessibleName={layout ? mode === 'library' ? 'Сохранить макет' : 'Выбрать макет' : uploading ? 'Сохранить макет в демосессии' : 'Добавить макет'} data-focus-key="layout-add"

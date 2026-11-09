@@ -1,5 +1,16 @@
 # Flexomir OS — React Component Registry
 
+## FE-ACTION-08NOV — shared FOS actions and responsive action dock, 09.11.2026
+
+| Figma master / variant | React component | Props / states | Consumers / disposition |
+| --- | --- | --- | --- |
+| Action `835:259` and Secondary Default/Hover/Pressed `835:243/245/247` | REUSE/EXTEND `FOSAction` | hierarchy primary/secondary/tertiary; `size=standard|compact`; shared focus/disabled/hover/pressed and directional press. Secondary retains existing `FosGlassMaterial`, no new material engine. Loading has no current FOSAction consumer and is not added. | Shared control consumers; ArtworkSource upload44 and library40; Profile photo40. |
+| Work Action Dock `3143:1219`; adapter `3144:2851`; Header `2302:2138` | EXTEND `PageHeader` with opt-in `floatingWorkActions` | one existing action group; desktop/laptop inline; T/M fixed 108×48, gap12, bottom24+safe-area, right24/20/16 | Only paired Primary+More: Client/Manager Orders list/detail/compose/item, Layouts list/detail/upload/picker, Support, Companies. Singles stay inline; no global AppShell dock. |
+| HeaderAction `1953:4168` and MoreAction | REUSE existing components | directional press now comes from shared `useDirectionalPress`; no visual variant added | Existing consumers, including Profile Save+More; dimensions/placement unchanged. |
+| App Shell `637:180`, Account `3037:2656`, Avatar `3177:1314`, Profile Page Actions `3215:1357` | EXTEND existing AppShell/Profile CSS | compact account trigger edge, photo action centered beside Avatar80 | Client and Manager profile: measured at five canonical widths; Save+More stays 148×68 with original positions. |
+
+**QA evidence:** `tests/m7-responsive-actions.spec.ts` (48/48 across Chromium/Firefox/WebKit), `tests/m7-layouts.spec.ts` (33/33 across same browsers), full Playwright 392 passed / 2 expected touch-only skips. Owner visual acceptance remains OPEN; Figma masters are read-only.
+
 ## FE-PROFILE-01 — shared Account Menu and Profile, 09.11.2026
 
 - **Figma mapping:** Account Menu `3038:2667` → `AccountMenu` (desktop Sidebar footer + compact header trigger); Sidebar Account Footer `3123:1214` and App Shell `637:180` → existing `AppShell`; Profile Page Actions `3215:1357` → existing `PageHeader` + shared `HeaderAction`/`MoreAction`; Profile Avatar `3177:1314` → profile avatar (80px); unsaved Confirm Dialog `3098:1663` → scoped shared `ConfirmDialog` adapter.

@@ -65,7 +65,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
               }} /> : undefined} />
           ) : (
             <>
-              <PageHeader title="Мои заказы" breadcrumbs={[{ label: 'Мои заказы' }]} actions={<><HeaderAction action="add" accessibleName="Добавить заказ" data-create-order disabled={!demo} onAction={() => {
+              <PageHeader title="Мои заказы" floatingWorkActions breadcrumbs={[{ label: 'Мои заказы' }]} actions={<><HeaderAction action="add" accessibleName="Добавить заказ" data-create-order disabled={!demo} onAction={() => {
                   if (!demo) return
                   const id = demo.createDraft()
                   setFilterId('all')

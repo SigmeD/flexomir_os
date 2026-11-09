@@ -42,7 +42,7 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
     // Portal events bubble through React parents; menu Escape must not also leave the form.
     if (event.key === 'Escape' && !event.defaultPrevented && event.currentTarget.contains(event.target as Node) && !dirty) { event.stopPropagation(); onClose() }
   }}>
-    <PageHeader title={title} autoFocus breadcrumbs={[
+    <PageHeader title={title} floatingWorkActions autoFocus breadcrumbs={[
       { label: 'Мои заказы', onSelect: onBackToList, disabled: dirty },
       { label: 'Новый заказ', onSelect: onClose, disabled: dirty }, { label: title },
     ]} actions={<>

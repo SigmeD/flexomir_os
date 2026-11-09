@@ -85,7 +85,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
             </>
           ) : (
             <>
-              <PageHeader title="Заказы" breadcrumbs={[{ label: 'Заказы' }]} actions={<><HeaderAction action="add" accessibleName="Добавить заказ" disabled={!onCreateOrder} onAction={() => { const id = onCreateOrder?.(); if (id) preview.openCreatedOrder(id) }} /><MoreAction disabled /></>} />
+              <PageHeader title="Заказы" floatingWorkActions breadcrumbs={[{ label: 'Заказы' }]} actions={<><HeaderAction action="add" accessibleName="Добавить заказ" disabled={!onCreateOrder} onAction={() => { const id = onCreateOrder?.(); if (id) preview.openCreatedOrder(id) }} /><MoreAction disabled /></>} />
               <p className="fos-sr-only">
                 Демонстрационные данные. Интеграция с 1С не подключена.
               </p>

@@ -1,5 +1,20 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 09.11.2026 — FE-ACTION-08NOV / implementation and QA checkpoint
+
+Ветка `feat/fe-action-08nov` основана на актуальном `origin/main` перед FE-PROFILE-01. Реализована shared-правка `FOSAction` и responsive `Primary + More` placement. PR ещё не создан; merge не выполнялся.
+
+| Gate | Статус |
+| --- | --- |
+| CURRENT Figma / mapping | PASS read-only: Action `835:259`; Work Dock `3143:1219`, adapter `3144:2851`; App Shell `637:180`; Account `3037:2656`; Avatar `3177:1314`; Profile Page Actions `3215:1357`. Masters unchanged. |
+| Shared React | PASS: `FOSAction` keeps existing Liquid Glass, standard44 / compact40; `PageHeader floatingWorkActions` is opt-in and one DOM group; `HeaderAction` reuses shared directional press behavior. |
+| Screen consumers | PASS: Client/Manager Orders list/detail, compose/item editor, Layouts list/detail/upload/picker, Support, Companies; only real Primary+More pairs dock. Profile Save+More remains separate. |
+| Responsive / profile audit | PASS measured at D1440/L1024/T768/M390/M320; dock 108×48 with right 24/20/16 and bottom24 on compact; account trigger/profile photo corrections; Profile Save+More unchanged. |
+| Technical QA | PASS: build; responsive actions 48/48 Chromium/Firefox/WebKit; M7 Layouts 33/33 Chromium/Firefox/WebKit; full E2E 392 passed / 2 expected touch-only skips; diff check. |
+| Owner / PR | OPEN: Owner visual acceptance; PR not opened yet; no merge/release. Screenshots only in ignored local `test-results/`. |
+
+No backend, API, 1C, ACL, status mapping, routes or business rules changed. Next: review diff, commit/push the single feature branch, open one Draft PR, synchronize Drive CURRENT, leave Owner gate open.
+
 ## CURRENT 09.11.2026 — FE-PROFILE-01
 
 Один инкремент `feat/fe-profile-01-account-profile` основан на свежем `origin/main 806b9b5`. Реализован общий React Account Menu + Profile Settings для Client/Manager и проверены состояния демо-профиля. [Draft PR #27](https://github.com/SigmeD/flexomir_os/pull/27), code/test SHA `d9e83b0`.

@@ -1,5 +1,7 @@
-import { useId, type ComponentProps, type ReactNode } from 'react'
+import { useId, useRef, type ComponentProps, type ReactNode } from 'react'
 import chevron from '@/assets/orders/chevron.svg'
+import { FosGlassMaterial } from './fos-glass-material'
+import { useDirectionalPress } from './use-directional-press'
 import './fos-controls.css'
 
 interface FieldOptions { label: string; error?: string; helper?: string; wrapperClassName?: string }
@@ -34,7 +36,29 @@ export function FOSSelect({ label, error, helper, wrapperClassName, id: supplied
     <div className="fos-field__select"><select {...props} id={id} data-empty={props.value === '' || undefined} className={'fos-field__control ' + className} aria-invalid={error ? true : undefined} aria-describedby={(error || helper) ? id + '-message' : props['aria-describedby']}>{children}</select><span className="fos-field__select-arrow" aria-hidden="true"><img src={chevron} alt="" /></span></div>
   </Field>
 }
-/** Action 835:259; secondary is outline, not a Glass primary. */
-export function FOSAction({ hierarchy = 'secondary', className = '', type = 'button', ...props }: ComponentProps<'button'> & { hierarchy?: 'primary' | 'secondary' | 'tertiary' }) {
-  return <button {...props} type={type} className={'fos-action fos-action--' + hierarchy + ' ' + className} />
+/** One FOS V2 Action family: hierarchy changes treatment, while the shared Glass material and press response stay common. */
+export function FOSAction({ hierarchy = 'secondary', size = 'standard', className = '', type = 'button', disabled = false, children, ...props }: ComponentProps<'button'> & { hierarchy?: 'primary' | 'secondary' | 'tertiary'; size?: 'standard' | 'compact' }) {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const motionRef = useRef<HTMLSpanElement>(null)
+  const press = useDirectionalPress(buttonRef, motionRef, disabled, 'fos-action')
+  const {
+    onPointerDown, onPointerUp, onPointerCancel, onLostPointerCapture,
+    onKeyDown, onKeyUp, onBlur, ...buttonProps
+  } = props
+
+  return <button {...buttonProps} ref={buttonRef} type={type} disabled={disabled}
+    data-pressed="false" data-hierarchy={hierarchy}
+    className={['fos-action', 'fos-action--' + hierarchy, size === 'compact' && 'fos-action--compact', className].filter(Boolean).join(' ')}
+    onPointerDown={event => { press.onPointerDown(event); onPointerDown?.(event) }}
+    onPointerUp={event => { press.onPointerUp(event); onPointerUp?.(event) }}
+    onPointerCancel={event => { press.onPointerCancel(event); onPointerCancel?.(event) }}
+    onLostPointerCapture={event => { press.onLostPointerCapture(); onLostPointerCapture?.(event) }}
+    onKeyDown={event => { press.onKeyDown(event); onKeyDown?.(event) }}
+    onKeyUp={event => { press.onKeyUp(event); onKeyUp?.(event) }}
+    onBlur={event => { press.onBlur(); onBlur?.(event) }}>
+    {hierarchy === 'secondary' && <FosGlassMaterial aria-hidden="true" className="fos-action__glass"
+      strength={0.1} radius={22} blur={1.5} lighting="sidebar" tone="neutral"
+      shadow="none" centerOpacity="var(--fos-action-tint, .24)" centerColor="240 248 255" rimWidth={1} />}
+    <span ref={motionRef} className="fos-action__motion"><span className="fos-action__content">{children}</span></span>
+  </button>
 }

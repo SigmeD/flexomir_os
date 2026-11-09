@@ -1,5 +1,12 @@
 # Flexomir OS — реестр решений и вопросов
 
+## OPEN 09.11.2026 — FE-ACTION-08NOV visual acceptance
+
+- Implementation candidate follows current FOS V2 Action `835:259` and Work Dock `3143:1219` / adapter `3144:2851`, with existing Liquid Glass material and existing shared React controls. Figma is unchanged.
+- Confirmed local behavior: only existing paired Primary+More groups opt into responsive docking; singles remain inline. Profile's separate Save+More family and measured geometry remain unchanged.
+- QA is technical only: build, full Playwright, responsive geometry and component behavior pass (see [PROJECT_STATE](PROJECT_STATE.md) and [HANDOFF](HANDOFF.md)).
+- **OPEN:** Owner visual acceptance of FOSAction treatment and responsive paired-action placement. Do not mark screen/component accepted or merge before the Owner gate.
+
 ## OPEN 09.11.2026 — FE-PROFILE-01 visual acceptance and product actions
 
 - **Implemented candidate:** common Client/Manager Account Menu + Profile Settings, based on CURRENT Figma nodes recorded in [Component Registry](COMPONENT_REGISTRY_2026-11-06.md) and [SOURCES](SOURCES.md). Functional and responsive QA passes; this does not imply Owner visual acceptance.
