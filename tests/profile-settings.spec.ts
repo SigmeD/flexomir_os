@@ -96,7 +96,7 @@ test('dirty profile guards navigation and saves before continuing', async ({ pag
   await expect(page.getByRole('alertdialog', { name: 'Сохранить изменения?' })).toBeVisible()
   await expect(page.getByTestId('client-layouts-screen')).toBeHidden()
 
-  await page.getByRole('button', { name: 'ОК' }).click()
+  await page.getByRole('button', { name: 'Да' }).click()
   await expect(page.getByRole('heading', { name: 'Мои макеты' })).toBeVisible()
   await page.locator('[data-testid="account-menu-trigger"]:visible').click()
   await expect(page.getByRole('menu')).toContainText('Мария Изменённая')
@@ -109,7 +109,7 @@ test('failed demo save leaves the draft and confirmation dialog open', async ({ 
   await page.getByLabel('Имя пользователя').fill('Мария Ошибка')
   await page.getByTestId('navigation-drawer-trigger').click()
   await page.getByTestId('navigation-drawer-panel').getByRole('button', { name: 'Макеты' }).click()
-  await page.getByRole('button', { name: 'ОК' }).click()
+  await page.getByRole('button', { name: 'Да' }).click()
 
   await expect(page.getByRole('alertdialog', { name: 'Сохранить изменения?' })).toBeVisible()
   await expect(page.getByRole('alert')).toContainText('Не удалось сохранить')
