@@ -1,5 +1,7 @@
 import { useEffect, useRef, type KeyboardEvent, type PointerEvent, type RefObject } from 'react'
 
+import { useActionSurface } from './use-action-surface'
+
 interface PressState {
   down: boolean
   pointerId: number | null
@@ -34,11 +36,14 @@ export function useDirectionalPress<T extends HTMLButtonElement>(
   surfaceRef: RefObject<HTMLElement | null>,
   disabled: boolean,
   prefix: 'ha' | 'fos-action',
+  materialMotion = false,
 ) {
   const motion = useRef<PressState>(freshState())
+  const material = useActionSurface(buttonRef, materialMotion, disabled)
 
   function reset() {
     const state = motion.current
+    if (materialMotion) material.reset()
     if (state.raf) cancelAnimationFrame(state.raf)
     if (state.resetTimer) window.clearTimeout(state.resetTimer)
     Object.assign(state, freshState())
@@ -55,6 +60,23 @@ export function useDirectionalPress<T extends HTMLButtonElement>(
     if (disabled) reset()
     return () => reset()
   }, [disabled])
+
+  useEffect(() => {
+    if (!materialMotion) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const forced = window.matchMedia('(forced-colors: active)')
+    const hide = () => { if (document.hidden) reset() }
+    window.addEventListener('blur', reset)
+    document.addEventListener('visibilitychange', hide)
+    reduce.addEventListener('change', reset)
+    forced.addEventListener('change', reset)
+    return () => {
+      window.removeEventListener('blur', reset)
+      document.removeEventListener('visibilitychange', hide)
+      reduce.removeEventListener('change', reset)
+      forced.removeEventListener('change', reset)
+    }
+  }, [materialMotion, disabled])
 
   function schedule() {
     const state = motion.current
@@ -107,16 +129,18 @@ export function useDirectionalPress<T extends HTMLButtonElement>(
     surface?.style.setProperty(`--${prefix}-light-x`, `${((state.sideX + 1) * 50).toFixed(1)}%`)
     surface?.style.setProperty(`--${prefix}-light-y`, `${((state.sideY + 1) * 50).toFixed(1)}%`)
     buttonRef.current?.setAttribute('data-pressed', 'true')
-    if (!motionUnavailable()) schedule()
+    if (materialMotion) material.press(state.sideX, state.sideY)
+    else if (!motionUnavailable()) schedule()
   }
 
-  function end() {
+  function end(cancel = false) {
     const state = motion.current
     if (!state.down) return
     state.down = false
     state.pointerId = null
     state.via = null
     buttonRef.current?.setAttribute('data-pressed', 'false')
+    if (materialMotion) { material.release(cancel); return }
     if (!motionUnavailable()) schedule()
     window.clearTimeout(state.resetTimer)
     state.resetTimer = window.setTimeout(() => {
@@ -130,15 +154,15 @@ export function useDirectionalPress<T extends HTMLButtonElement>(
 
   function onPointerDown(event: PointerEvent<T>) {
     if (disabled || (event.pointerType === 'mouse' && event.button !== 0)) return
-    const rect = surfaceRef.current?.getBoundingClientRect()
+    const rect = (materialMotion ? buttonRef.current : surfaceRef.current)?.getBoundingClientRect()
     if (!rect) return
     begin(((event.clientX - rect.left) / rect.width - 0.5) * 2, ((event.clientY - rect.top) / rect.height - 0.5) * 2, 'pointer')
     motion.current.pointerId = event.pointerId
     event.currentTarget.setPointerCapture?.(event.pointerId)
   }
   function onPointerUp(event: PointerEvent<T>) { if (motion.current.pointerId === event.pointerId) end() }
-  function onPointerCancel(event: PointerEvent<T>) { if (motion.current.pointerId === event.pointerId) end() }
-  function onLostPointerCapture() { if (motion.current.via === 'pointer') end() }
+  function onPointerCancel(event: PointerEvent<T>) { if (motion.current.pointerId === event.pointerId) end(true) }
+  function onLostPointerCapture() { if (motion.current.via === 'pointer') end(true) }
   function onKeyDown(event: KeyboardEvent<T>) {
     if (!disabled && !event.repeat && (event.key === ' ' || event.key === 'Enter')) begin(0, 0, 'keyboard')
   }
@@ -150,8 +174,11 @@ export function useDirectionalPress<T extends HTMLButtonElement>(
     // is still held; pointerup/cancel/lostcapture own that press lifecycle.
     const state = motion.current
     if (state.via === 'pointer' && state.pointerId !== null && buttonRef.current?.hasPointerCapture?.(state.pointerId)) return
-    end()
+    end(true)
   }
 
-  return { onPointerDown, onPointerUp, onPointerCancel, onLostPointerCapture, onKeyDown, onKeyUp, onBlur }
+  function onPointerMove(event: PointerEvent<T>) { material.hover(event.clientX, event.clientY, true, event.pointerType) }
+  function onPointerLeave(event: PointerEvent<T>) { material.hover(event.clientX, event.clientY, false, event.pointerType) }
+
+  return { onPointerEnter: onPointerMove, onPointerMove, onPointerLeave, onPointerDown, onPointerUp, onPointerCancel, onLostPointerCapture, onKeyDown, onKeyUp, onBlur }
 }

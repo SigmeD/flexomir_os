@@ -1,5 +1,9 @@
 # FOS08/09 — план нейтральных Action, волна B
 
+Текущее Owner-решение Screenshot_6: Plus повторяет анимацию выбранного Secondary через общий quiet preset. Отдельные поправки Plus отменены; [актуальные результаты](FOS08_09_REPORT_2026-11-10.md). Это DEV-пилот, не приёмка/rollout всех controls.
+
+Owner явно отклонил визуальный результат ac7e5dc: **FOS08/09 — OWNER VISUAL NOT ACCEPTED**. Текущий этап — только контрольный Plus с анимацией самой поверхности; [RCA, границы и план](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md). DEV `?view=plus-motion`; Client New требует DEV-флаг `actionPalette=neutral-pilot`. HeaderAction и остальные FOSAction сохраняют прежнюю реакцию до приёмки Plus. Motion использует существующие Track/spring и один FosGlassMaterial, frozen FE11/GlassLens не меняются. Предыдущие QA/CI ниже относятся к прежнему source и не означают визуальную приёмку.
+
 > Выполнение: superpowers:executing-plans, последовательно с проверяемыми этапами. Owner поручил продолжить очередь 03→08/09. Это DEV-пилот палитры, не разрешение менять frozen FE11 или распространять материал на все экраны.
 
 **Цель:** сравнить существующий и нейтральный Plus/HeaderAction/FOSAction при сохранении размеров, общего press helper, иерархии, доступности и обычных consumers.

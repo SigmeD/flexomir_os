@@ -20,6 +20,15 @@
 .fos-action[data-action-palette="neutral-pilot"][data-shape="round"] .fos-action__glass { inset: 5px; width: 34px; height: 34px; border-radius: 17px; }
 .fos-action[data-action-palette="neutral-pilot"][data-shape="round"] .fos-action__content { width: 24px; height: 24px; }
 
+/* Explicit DEV Plus opt-in; hover changes existing material light, never the target. */
+.fos-action[data-surface-motion="pressure-pilot"] .fos-action__glass { transform-origin: center; }
+.fos-action[data-surface-motion="pressure-pilot"][data-surface-deforming="true"] .fos-action__glass { will-change: transform; }
+.fos-action[data-surface-motion="pressure-pilot"]:not(:disabled):hover .fos-action__content { transform: none; }
+@media(prefers-reduced-motion:reduce) {
+  .fos-action[data-surface-motion="pressure-pilot"] .fos-action__glass { transform: none !important; will-change: auto; }
+  .fos-action[data-surface-motion="pressure-pilot"][data-pressed="true"] .fos-action__glass { outline: 1px solid var(--fos-neutral-focus); }
+}
+
 .fos-ha[data-action-palette="neutral-pilot"] { --ha-icon: var(--fos-neutral-ink); --ha-caption: var(--fos-neutral-ink); }
 .fos-ha[data-action-palette="neutral-pilot"] .fos-ha__circle { border: 0; background: transparent; box-shadow: none; color: var(--fos-neutral-ink); overflow: visible; }
 .fos-ha[data-action-palette="neutral-pilot"] .fos-ha__circle::before,

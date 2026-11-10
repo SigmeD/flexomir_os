@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { GlassMaterialLab } from './GlassMaterialLab'
 import { HeaderActionLab } from './HeaderActionLab'
 import { NeutralActionsLab } from './NeutralActionsLab'
+import { PlusMotionLab } from './PlusMotionLab'
 import { SidebarNavLab } from './SidebarNavLab'
 import { GlassPillTabsLab } from './GlassPillTabsLab'
 import { OrderDemoWorkspace } from './demo/OrderDemoWorkspace'
@@ -96,6 +97,7 @@ function AppViews() {
   if (view === 'orders-components') return <OrdersComponentsLab />
   if (view === 'header-action') return <HeaderActionLab />
   if (import.meta.env.DEV && view === 'neutral-actions') return <NeutralActionsLab />
+  if (import.meta.env.DEV && view === 'plus-motion') return <PlusMotionLab />
   if (view === 'sidebar-nav') return <SidebarNavLab />
   if (view === 'navigation-drawer') return <NavigationDrawerLab />
   if (view === 'glass-pill-tabs') return <GlassPillTabsLab />

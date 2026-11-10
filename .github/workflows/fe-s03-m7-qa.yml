@@ -8,6 +8,7 @@ on:
       - 'tests/order-compose.spec.ts'
       - 'tests/fos03-spacing.spec.ts'
       - 'tests/neutral-actions.spec.ts'
+      - 'tests/plus-surface-motion.spec.ts'
       - 'tests/popup-dismissal.spec.ts'
       - 'tests/typography-contract.spec.ts'
       - 'tests/fos-select-popup.spec.ts'
@@ -45,12 +46,15 @@ jobs:
         run: npx playwright test --config=playwright.fos03.config.ts --workers=2
       - name: FOS08/09 neutral action reference
         run: npx playwright test --config=playwright.neutral-actions.config.ts --workers=1
+      - name: FOS08 Plus actual surface motion (Owner gate remains open)
+        run: npx playwright test --config=playwright.plus-motion.config.ts --workers=1
       - name: Save M7 browser evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: fe-s03-m7-browser-evidence
           path: |
+            output/playwright/plus-motion/**
             output/fe-s03/results.json
             output/fe-s03/browser/**/fes03-*.png
             output/fe-s03/browser/**/error-context.md

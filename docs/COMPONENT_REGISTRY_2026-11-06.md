@@ -1,8 +1,12 @@
 # Flexomir OS — React Component Registry
 
-## FOS08/09 — DEV palette proposal
+## FOS08/09 — общий quiet action preset / DEV / Owner NOT ACCEPTED
 
-Figma SectionAdd1986:774→SectionAddItem EXTEND palette; neutral REUSE FOSAction round44/circle34 + canonical glyph24/14. HeaderAction1953:4168/2173:1425 EXTEND palette, REUSE FosGlassMaterial neutral + same local SVG/currentColor mask. Action835:259 EXTEND palette/shape, preserve hierarchy and standard44/compact40. One ActionPalette contract/scoped CSS, same useDirectionalPress: физика/константы unchanged, исправлен Safari captured-pointer blur lifecycle; frozen5 files unchanged. Consumers: DEV NeutralActionsLab and opt-in Client New Plus only; normal Client/Manager, Profile, LayoutBrowser and production reference remain. Palette/material OWNER OPEN, [source map and QA](FOS08_09_REPORT_2026-11-10.md).
+SectionAdd1986:774 → SectionAddItem EXTEND neutral DEV → FOSAction round44/glass34/glyph24/14 REUSE. Action835:259 → FOSAction EXTEND materialPreset=neutral-action-pilot. Оба используют один новый consumer FosActionMaterial (native lighting/shadow=none existing FosGlassMaterial/GlassLens), один border+outershadow на materialroot; target без вторых контуров/теней. Материал/геометрия reference variant сохранены в том же adapter.
+
+useDirectionalPress EXTEND optional material mode → useActionSurface CREATE input adapter двух существующих Track/spring pressure/hover. Legacy content RAF не запускается параллельно. По Screenshot_6 никакой shape-specific motion: одинаковые formulas surface1.012/content1.02/shadow/press/release у Plus и Secondary; Plus glyph14 сохранён. Frozen5/GlassLens read-only.
+
+Потребители: neutral Plus+Secondary на NeutralActionsLab, PlusMotionLab reference comparison, opt-in DEV Client Plus. HeaderAction1953:4168/2173:1425 сохранил прежний palette adapter/SVG mask и legacy motion, его rollout DEFER. Обычные Client/Manager, Profile, reference palette и production не мигрируют. Disabled — native boolean, не новый preset. Сокращённый public API предложен в [контракте](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md), массовая миграция до приёмки не выполнялась.
 
 ## Owner 10.11 — общий размер статуса заказа
 

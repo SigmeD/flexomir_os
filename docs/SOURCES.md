@@ -1,5 +1,11 @@
 # Flexomir OS — источники проекта
 
+Текущее Owner-решение Screenshot_6: Plus повторяет анимацию выбранного Secondary через общий quiet preset. Отдельные поправки Plus отменены; [актуальные результаты](FOS08_09_REPORT_2026-11-10.md). Это DEV-пилот, не приёмка/rollout всех controls.
+
+Последнее уточнение Owner по Screenshot_3: quiet neutral action preset, один внешний rim/одна тень, hover surface1.012/text1.02, мягкий press; без роликов. Новый consumer FosActionMaterial использует native lighting/no shadow существующего материала и не меняет frozen FE11. В DEV PlusMotionLab показаны Plus и контрольный Secondary; HeaderAction и глобальный rollout ожидают визуальной приёмки. [Контракт и предложение сокращённого API](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md).
+
+Новый source-of-change: явное Owner-требование в текущей сессии FOS08/09 **VISUAL NOT ACCEPTED**, actual surface response, один контрольный Plus и запрет rollout до визуальной приёмки. Оно уточняет прежний neutral-pilot; CURRENT Figma SectionAdd1986:774 задаёт geometry44/34/24, но motion не объявляется принятым Figma-эталоном. Новый DEV adapter — PROPOSED. [RCA/доказательства](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md).
+
 08/09: Drive CURRENT modified2026-11-10T14:09:37.549Z перечитан (WaveB/pilot gates); Figma read-only session60c656a0-46b4-4e51-bbdd-b5a771a70efe. High-fidelity contexts/screenshots1986:774,1941:673,835:243 и варианты1953:4168/2173:1425/835:259 проверены. Нейтральный candidate — по новому ТЗ, не pixel-copy существующей тёмной/цветной coat; masters не изменены. [Карта](FOS08_09_NEUTRAL_ACTION_PILOT_2026-11-10.md).
 
 Status-size follow-up10.11: перечитаны точные Figma styles S:7b49259b679208d3d45e87b615a9673723ad4dd9, Status Default /Manrope Regular400/14/AUTO/0% и S:ffe48f4dacd88f6906b8b1fbf3bac4deb59e84d8, Status Compact /Manrope Regular400/12/AUTO/0%. Body/SM12/18 — другая роль, не основание для desktop status12. Owner принял размер общим компонентом; Figma не менялась, line-height AUTO не объявляется реализованным.

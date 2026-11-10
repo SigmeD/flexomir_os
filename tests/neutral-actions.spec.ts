@@ -46,7 +46,8 @@ test('neutral commands share pointer/keyboard press and native disabled semantic
   await page.mouse.move(box.x + 12, box.y + 12)
   await page.mouse.down()
   await expect(plus).toHaveAttribute('data-pressed', 'true')
-  await expect.poll(() => plus.locator('.fos-action__motion').evaluate(node => parseFloat((node as HTMLElement).style.getPropertyValue('--fos-action-scale')))).toBeLessThan(1)
+  // Press shrinks relative to the slightly enlarged hover state.
+  await expect.poll(() => plus.locator('.fos-action__glass').evaluate(node => new DOMMatrixReadOnly(getComputedStyle(node).transform).m22)).toBeLessThan(.99)
   expect(await plus.boundingBox()).toEqual(box)
   await paper.screenshot({ path: info.outputPath('neutral-pressed.png') })
   await page.mouse.up()

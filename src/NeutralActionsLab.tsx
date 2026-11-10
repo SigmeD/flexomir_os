@@ -16,7 +16,7 @@ function Samples({ palette, surfaceLabel }: { palette: ActionPalette; surfaceLab
       <SectionAddItem palette={palette} onClick={activate} data-testid={`${prefix}-plus`} />
       <HeaderAction palette={palette} action="save" accessibleName={neutral ? 'Нейтральный Save' : 'Текущий Save'} onAction={activate} data-testid={`${prefix}-header`} />
       <FOSAction palette={palette} hierarchy="primary" onClick={activate} data-testid={`${prefix}-primary`}>Основное действие</FOSAction>
-      <FOSAction palette={palette} onClick={activate} data-testid={`${prefix}-secondary`}>Вторичное действие</FOSAction>
+      <FOSAction palette={palette} materialPreset={neutral ? 'neutral-action-pilot' : undefined} onClick={activate} data-testid={`${prefix}-secondary`}>Вторичное действие</FOSAction>
       <FOSAction palette={palette} hierarchy="primary" disabled onClick={activate} data-testid={`${prefix}-disabled`}>Недоступно</FOSAction>
       <HeaderAction palette={palette} action="save" accessibleName={neutral ? 'Нейтральный Save недоступен' : 'Текущий Save недоступен'} disabled />
       <SectionAddItem palette={palette} disabled />
@@ -31,6 +31,7 @@ export function NeutralActionsLab() {
     <header><p>FLEXOMIR OS · FOS08/09 · DEV PILOT</p><h1>Нейтральные Action</h1>
       <p>Сравнение общего Plus, HeaderAction и FOSAction. Нажатия меняют только счётчик стенда. Палитра и материалы ожидают визуальной приёмки.</p>
       <a href="/?view=client-orders&actionPalette=neutral-pilot">Client New: «Добавить заказ» → контрольный Plus</a>
+      <p><a href="/?view=plus-motion">Новый спокойный preset: Plus и Secondary · один контур / одна тень</a></p>
     </header>
     {(['paper', 'pattern'] as const).map(background => <section key={background} className={`neutral-lab__surface neutral-lab__surface--${background}`} data-testid={`neutral-${background}`} aria-label={background === 'paper' ? 'Светлый фон' : 'Контрастный фон'}>
       <h2>{background === 'paper' ? 'Светлый фон приложения' : 'Фон для проверки прозрачности'}</h2>

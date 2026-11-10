@@ -1,10 +1,12 @@
 # Flexomir OS — текущий план
 
+Итог quiet preset после Screenshot_6:42PASS+2 штатных skip,neutral36PASS,Header/frozen16PASS,buildPASS,production4/4/axe0,58PNG/source13/frozen5. Plus/Secondary используют одну motion-формулу; shape-specific hover отменён. Owner visual NOT ACCEPTED, Header/global rollout/merge OPEN. Подробные доказательства и ограничения — [отчёт](FOS08_09_REPORT_2026-11-10.md).
+
+FOS08/09: **OWNER VISUAL NOT ACCEPTED**. По последнему Screenshot_6 Plus использует ТОЧНО motion Secondary: один quiet material preset, одни pressure/hover Track/spring, scale поверхности1.012/содержимого1.02, общая тень/press/release; отдельных коэффициентов и роста штрихов14→16 нет. Дополнительный rim/shadow на target44 устранён. DEV: ?view=neutral-actions (neutral Plus+Secondary), ?view=plus-motion (сравнение), Client Plus с actionPalette=neutral-pilot. HeaderAction не мигрировал, frozen FE11/GlassLens неизменны; rollout/merge до визуальной приёмки закрыты. [RCA/план/API](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md), [текущий отчёт](FOS08_09_REPORT_2026-11-10.md).
+
 Проверено 10.11.2026 после merge [PR #31](https://github.com/SigmeD/flexomir_os/pull/31), main a400b9d. Каноническая очередь — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); здесь её короткая локальная сводка.
 
 ## Где мы находимся
-
-Следующий шаг волны B08/09 — [DEV neutral pilot](FOS08_09_NEUTRAL_ACTION_PILOT_2026-11-10.md): общий Plus/HeaderAction/FOSAction → cross-browser/shared/full QA → Owner palette/material gate → разрешённый rollout. Локальная проверка нового пилота завершена:36/36 focused,566 +4skip full,build/prod PASS; следующий шаг — Owner neutral palette gate. Работа в том же PR34, новых параллельных веток нет. На97de0bd CI2/2 SUCCESS; новый head CI сверять отдельно.
 
 Owner принял общий размер статуса14/12; PageHeader status-role применяется к черновику и деталям заказа обеих ролей. Это отдельное подтверждённое уточнение FOS03, не приёмка всего spacing-пилота. Размер проверяется новым typography-contract и регрессиями, гейт визуального положения подписи сохраняется.
 
