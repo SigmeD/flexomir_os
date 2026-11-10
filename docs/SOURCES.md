@@ -1,5 +1,15 @@
 # Flexomir OS — CURRENT источники
 
+## M8 final audit — 10.11.2026
+
+Проверены существующие Drive CURRENT frontend plan, UX/UI source index, SRS v0.5, E2E v0.2 и Glass contract. Поздние Owner решения/merged PR #29/#30 выше старых candidate notes. База fresh origin/main 9d1f5bc, четыре stash сохранены, активных PR на старте нет.
+
+Figma file7rvIYc6yj3OA7gxmf1xJbv, audit session 0afae8b2-6da2-4635-a892-97f2392f3d58:69 новых isolated renders по точным IDs/размерам из scripts/m8-screen-manifest.json. Node ancestry и CURRENT/PILOT/CANDIDATE проверены. Figma не изменялась. Для Support Detail 634:8137 получен design context с render; frame/master Breadcrumbs подтверждён на обеих ролях.
+
+Raw PNG output/m8-final/figma, реальные browser captures/pairs и index ignored/local. Script сохраняет исходные exports, crop вычислен из exact render bounds, картинки не растягиваются. Совпадение fixture copy/record count не требуется; Owner deltas и source conflicts отражены отдельно. [итоговый аудит M8](M8_FINAL_AUDIT_2026-11-10.md).
+
+## Предыдущие checkpoints (история)
+
 ## FE11 popup rollout — 10.11.2026
 
 Источник задания: `D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`. Более новые прямые решения Owner: сохранить 14/18/500; «да подтверждаю» принимает пилот/action behavior и открывает D/E. PR #29 MERGED03238af, эта поставка — PR #30 от main a9ffa8a.

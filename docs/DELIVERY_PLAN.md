@@ -1,5 +1,15 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 10.11.2026 — M8, финальный аудит перед Owner screen review
+
+PR #30 MERGED в 9d1f5bc. Текущая ветка feat/m8-final-screen-qa закрывает техническую часть оставшейся M8-проверки:69fresh Figma↔React pairs, проверка реальных сценариев, точечные source fixes и независимый review. [План исполнения](superpowers/plans/2026-11-10-m8-final-screen-qa.md), [итоговый аудит M8](M8_FINAL_AUDIT_2026-11-10.md).
+
+M7 final159/159 PASS и адресные проверки выполнены; full regression520 PASS/4 expected skips/0 FAIL; independent review PASS WITH RISKS. CI отправленного head сверяется по факту. M8 Owner visual acceptance отдельно, issue #21 не закрыт автоматически. Manager candidate fields/publication, Auth и реальные API/ACL/1С имеют свои OPEN.
+
+Следующий этап после закрытия утверждённых M8 gates — M9: подключение frontend к доступным согласованным API Алексея, загрузка/ошибки/данные/E2E. Новые backend-контракты не проектируются этим UI-инкрементом.
+
+## Предыдущие checkpoints (история)
+
 ## CURRENT 10.11.2026 — FE11, этапы D/E после приёмки пилота
 
 Этап C закрыт ответом Owner «да подтверждаю». Этап D реализован в том же PR #30: все согласованные popup/select consumers используют общий API, флаг пилота и legacy driver удалены, затронутые Figma masters синхронизированы. Роль 14/18/500 и frozen engine сохранены.

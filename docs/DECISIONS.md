@@ -1,5 +1,16 @@
 # Flexomir OS — реестр решений и вопросов
 
+## M8 / 10.11.2026 — проверка после merge FE11
+
+- Источник поручения — Owner «давай следующий этап», затем «продолжи»; объём — финальный M8 audit issue #21, не разрешение merge или расширение MVP.
+- Сохранены принятые 14/18/500, frozen f527bcb, shared Glass/GL03 и responsive action dock. Расхождения со старыми screen instances не повод откатывать их.
+- Support FOS Detail 634:8137 parent=Поддержка; Manager 2606:22577 parent=Мои обращения. Исправлен только Client detail label в существующем PageHeader, nav.back/focus сохранены. New Ticket candidate не переосмыслен.
+- Browser title приведён к текущему имени проекта Flexomir OS; история лаборатории остаётся в Git.
+- Manager draft2569:24648/24851/25041 содержит согласованный срок/Provide-to-Client в Figma-кандидате. Контракт agreed-date edit/private publication OPEN; async вопрос Owner не заменён согласием по умолчанию. Поле и публикация не добавлены. Новое решение требуется отдельно.
+- Auth design, названия Клиенты/Компании, production status/API/1С/ACL, реальный storage/Support async остаются OPEN по прежним владельцам. Технический аудит не означает полную pixel parity или приёмку продукта. [итоговый аудит M8](M8_FINAL_AUDIT_2026-11-10.md).
+
+## Предыдущие checkpoints (история)
+
 ## Owner decision 10.11.2026 — принятый FE11 popup pilot
 
 - **APPROVED:** Owner «да подтверждаю» принял показанный пилот и action-adapter, разрешив этапы D/E в одном PR #30. Это заменяет прежний OPEN этого пилота; merge отдельно.

@@ -1,5 +1,19 @@
 # Flexomir OS — React Component Registry
 
+## M8 / 10.11.2026 — адресная проверка существующих компонентов
+
+| Figma/master → React | Решение | Consumers / проверка |
+| --- | --- | --- |
+| Client Support Detail 634:8137 → existing SupportScreen/PageHeader | EXTEND label variant | Client parent Поддержка; Manager 2606:22577 parent Мои обращения; nav.back/focus opener прежние, regression6/6 |
+| AppShell/Orders/Composer/Item/Companies/Support/Layouts masters → existing shared React | REUSE |69fresh pairs/23 families; screenshot script не создаёт отдельные UI-компоненты |
+| Title приложения → index.html | CORRECT text | Все cabinet routes Flexomir OS, browser проверка 6/6 |
+| Frozen FE11/GL03/14-18-500 | KEEP | Без изменения источников и manifest |
+| Manager agreed-date/private publication/Auth | OPEN | Не добавлять неподтверждённые props/state/API; [итоговый аудит M8](M8_FINAL_AUDIT_2026-11-10.md) |
+
+Автоматические технические проверки и авторское сравнение не заменяют независимый screen review и Owner visual acceptance.
+
+## Предыдущие checkpoints (история)
+
 ## FE11 popup rollout / 10.11.2026 — пилот OWNER ACCEPTED
 
 | Источник / вариант | React / решение | Контракт и consumers |
