@@ -1,5 +1,11 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## CURRENT 10.11.2026 — FE11 popup re-audit pilot
+
+Итоговая локальная QA: build PASS;80/80 cross-browser,4/4 frame evidence;500 passed/4 expected skips/0 failed в полном прогоне. Два old first-Tab tests исправлены ожиданием реального trigger, первоначальные FAIL сохранены. Static adversarial review PASS; final source frozen5/5 MATCH. Полный отчёт ниже содержит все команды/логи и Owner gates. Продолжать rollout только после явной визуальной приёмки.
+
+Рабочая ветка `feat/fe11-popup-unification-reaudit` от `a9ffa8a`; PR #29 уже MERGED. Новый source `D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`, но Owner отдельно подтвердил14/18/500. Пилот открывается с `popupPilot=1` в dev: Account без separators/fake selection, More через FosPopup, Shape/Material через FOSGlassSelect. Остальные поля/Drawer/GlassSelect и default routes сохраняют approved adapters до Owner gate. Значение Select commit сразу; popup закрывается по реальному rest/geometry, Escape/outside не отменяют уже принятое значение. Frozen manifest/5 engine files не менять. [План](superpowers/plans/2026-11-10-fe11-popup-reaudit.md), [QA/evidence/gates](FE11_POPUP_REAUDIT_2026-11-10.md). Следующий обязательный шаг после окончательной QA — Owner visual/action acceptance, не автоматический rollout или merge.
+
 ## CURRENT 10.11.2026 — shared item typography
 
 Продолжение: build и 24/24 адресных typography/lifecycle/freeze/adapter проверок PASS; все шесть CI jobs на `0312b3b` SUCCESS. После исправления test-readiness — typography 24/24 PASS в четырёх browser/input проектах. Подготовлены восемь свежих desktop/mobile снимков Client/Manager меню, ссылки в [аудите](TYPOGRAPHY_AUDIT_2026-11-09.md). Независимое ревью — PASS WITH RISKS, без конкретных дефектов. Исправлен только immediate-count в typography test: ожидание видимого первого пункта перед перечислением; UI/frozen files не менялись. Исходные diagnostic logs сохранены, старое неподтверждённое упоминание final-regression.json исправлено. Далее Owner visual review по готовым снимкам; Figma/merge только после соответствующих разрешений.

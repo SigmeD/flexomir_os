@@ -1,5 +1,11 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## CURRENT 10.11.2026 — FE11 re-audit, этап B → C
+
+Этап B локально QA VERIFIED: build/freeze PASS,80/80 cross-browser,4/4 frames, полная regression500 PASS/4 expected skips/0 FAIL. Этап C — Owner visual/action acceptance OPEN; public API migration остальных потребителей и cleanup ещё не разрешены.
+
+По новому поручению Owner реализуется изолированный dev-пилот public FosPopup + Account/More + Shape/Material на существующем frozen FE11-v0.2. Типографика14/18/500 сохранена по повторному подтверждению. Массовая миграция, Figma sync и merge не входят автоматически; после QA требуется отдельная приёмка пилота/действий. [Текущая ветка, inventory, результаты и следующий gate](FE11_POPUP_REAUDIT_2026-11-10.md).
+
 ## CURRENT 10.11.2026 — shared navigation/popup item role
 
 Продолжение QA: build, 24/24 адресных Chromium checks и шесть CI jobs на `0312b3b` PASS; свежие снимки обоих кабинетов и независимый read-only review (PASS WITH RISKS) готовы. Исправлено только ожидание видимых пунктов в typography test после одного WebKit immediate-count FAIL; полный typography suite после fix — 24/24 PASS в четырёх browser/input проектах. UI и frozen reference сохранены. Результаты повторов и материалы Owner review — [аудит](TYPOGRAPHY_AUDIT_2026-11-09.md). Следующий продуктовый gate — Owner visual acceptance, затем Figma sync; merge отдельно.

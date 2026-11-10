@@ -1,5 +1,11 @@
 # Flexomir OS — CURRENT источники
 
+## FE11 re-audit pilot — 10.11.2026
+
+Новое поручение: `D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`. База в файле устарела: PR #29 MERGED03238af, новая ветка от main a9ffa8a. Owner в текущем чате явно сохранил14/18/500 вместо13/18/600. Drive frontend CURRENT и Glass contract перечитаны; Figma read-only `3038:2667`, `634:511`, `1148:311` через session `22e569f5-2dee-46de-92de-c4b03269602b`, renders сохранены в ignored evidence. Пять упомянутых Owner attachments не приложены к сообщению, не выдаются за просмотренные.
+
+Context7 `/radix-ui/primitives`: DropdownMenu Item onSelect/default close, Content asChild/focus lifecycle. Installed implementation сверена read-only reviewer. Никаких новых зависимостей/Figma edits. [Inventory, baseline и pilot QA](FE11_POPUP_REAUDIT_2026-11-10.md).
+
 ## Navigation/popup typography — 10.11.2026
 
 Источник новой роли — прямое решение Owner в чате: `navigation/item` и `popup/item` → Manrope 14/18 Medium 500, единая база/алиасы, сохранение profile roles и frozen motion, окончательный стандарт после визуальной приёмки. Read-only Figma: `634:511` и `3038:2667`; мастера пока содержат прежнюю типографику, не изменены. Drive frontend CURRENT проверен (modified 09.11.2026); GitHub PR #29 open/Draft на baseline 785696e. Context7 Playwright: computed CSS assertions и screenshot comparison для регрессии. [Карта и evidence](TYPOGRAPHY_AUDIT_2026-11-09.md).

@@ -65,6 +65,7 @@ test('explicit light theme survives a dark OS preference in the body portal', as
 test('keyboard focus is visible and closed options cannot receive focus', async ({ page, browserName }) => {
   await page.goto('/?view=glass-filter-lab')
   const trigger = page.getByTestId('filter-control').locator('button')
+  await expect(trigger).toBeVisible()
   await page.keyboard.press('Tab')
   // WebKit's platform preference can skip buttons in the page-wide Tab order.
   // Test component focus visibility and keyboard activation independently of it.

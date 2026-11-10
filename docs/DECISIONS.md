@@ -1,5 +1,13 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner clarification 10.11.2026 — FE11 повторный аудит
+
+- Поручено выполнить `FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`: public popup API, Account без separators/fake selection, включение More в pilot scope и отдельный form-select adapter. Предыдущее исключение More не запрещает этот явно порученный пилот.
+- **CONFIRMED:** сохранить14/18/500; ответ Owner «Сохранить14/18/500», затем «сохраняй». Пункт13/18/600 в исходном файле не применяется.
+- **OWNER OPEN:** first-action feedback без фиктивного selected/origin и немедленный callback; навигация может размонтировать host. Не выдавать это за принятую travelling action animation.
+- **PILOT CONTRACT:** Select change сразу, закрытие по actual rest/geometry; Escape/outside закрывают presentation, сохраняя committed value. Readonly сохраняет FormData value и пропускает required validation; disabled не отправляется. Эти технические контракты проверяются в пилоте, не меняют бизнес-валидацию Shape/Material.
+- **GATES OPEN:** visual/action acceptance → согласованный rollout/cleanup → Figma; merge отдельно. Frozen engine/manifest неизменны. [Результаты](FE11_POPUP_REAUDIT_2026-11-10.md).
+
 ## Owner decision 10.11.2026 — navigation/item и popup/item
 
 Принято к реализации: Manrope 14/18 Medium 500, одна базовая роль и два алиаса без локальных размеров/весов. Это закрывает прежний выбор TY-05 в пользу новой общей роли, но визуальная приёмка реализации и окончательная фиксация DS-стандарта остаются OPEN. Заголовки/подписи/profile data — отдельные роли. GlassLens/Motion Engine и их optical scale не меняются. Figma пока содержит прежние роли; обновление после visual gate. [Реализация и доказательства](TYPOGRAPHY_AUDIT_2026-11-09.md).

@@ -1,5 +1,17 @@
 # Flexomir OS — React Component Registry
 
+## FE11 re-audit pilot / 10.11.2026 — OWNER OPEN
+
+| Источник | Компонент / решение | Контракт и consumers |
+| --- | --- | --- |
+| Frozen FE11-v0.2; Owner re-audit | CREATE `FosPopup` поверх существующих Surface/Rows | modes actions/navigation/listbox, items/onSelect/header/layout; actions selectedId запрещён типом; material/hover flags не публичные |
+| Account `3038:2667` + Owner delta | EXTEND `AccountMenu`, dev opt-in | identity unchanged; no separators/fake selected; Client/Manager; Radix lifecycle unchanged |
+| More `1914:650/655` + явный новый scope | EXTEND `OverflowMenu`, dev opt-in | те же команды/disabled/reason/focusAfter; все More usages только с popupPilot flag |
+| Select `1148:311`, 44px | CREATE `FOSGlassSelect` / `FOSSelectPopup` | single string value; real select change/form validation/reset; visible button focus/key events; только OrderItemForm Shape/Material |
+| Existing native FOSSelect / GlassSelect / Drawer | KEEP / DEFER rollout | исходный FOSSelect контракт сохранён; остальные поля и принятый Drawer не мигрируются до Owner gate |
+
+Общая роль14/18/500 подтверждена повторно. Пять frozen sources + manifest без изменений. [План, риски, screenshot evidence](FE11_POPUP_REAUDIT_2026-11-10.md).
+
 ## Navigation / popup item typography — Owner decision 10.11.2026
 
 К реализации: базовая роль `--fos-type-menu-item` = Manrope 14/18 Medium 500; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item` ссылаются на неё. Визуальная приёмка и синхронизация Figma OPEN.

@@ -1,5 +1,11 @@
 # Flexomir OS — текущее состояние проекта
 
+## CURRENT 10.11.2026 — FE11 re-audit / изолированный пилот
+
+QA VERIFIED для пилота: build PASS, cross-browser80/80, motion frames4/4, полная регрессия500 PASS/4 expected skips/0 FAIL; frozen5/5 MATCH. Независимый adversarial static review PASS после исправлений. Остаётся Owner visual/action gate; CI PR проверяется отдельно.
+
+PR #29 MERGED в `03238af`; README обновлён в `a9ffa8a`. Новое поручение Owner — повторный аудит popup. Ветка `feat/fe11-popup-unification-reaudit` от свежей main, без worktree. Owner подтвердил сохранение14/18/500. Реализованы public `FosPopup`, pilot Account/More и узкий `FOSGlassSelect` для Shape/Material; включение только в dev через `popupPilot=1`. Ordinary routes и frozen sources сохранены. Пилот, команды проверок, snapshots и оставшиеся gates — [отчёт](FE11_POPUP_REAUDIT_2026-11-10.md). Action-adapter first activation, Owner visual acceptance, массовый rollout/Figma и merge OPEN; текущий этап — окончательная QA, не продуктовая приёмка.
+
 ## CURRENT 10.11.2026 — navigation/popup typography
 
 Продолжение QA: на `0312b3b` локальный build и адресная typography/lifecycle/freeze/adapter регрессия 24/24 PASS; шесть GitHub CI jobs SUCCESS. После исправления только test-readiness — typography 24/24 PASS в Chromium/Firefox/WebKit/touch Chromium. Свежие desktop/mobile материалы Client/Manager сняты и просмотрены. Независимый read-only review — PASS WITH RISKS, конкретных дефектов нет. Диагностика и доказательства — в [аудите](TYPOGRAPHY_AUDIT_2026-11-09.md). Owner visual gate, Figma update и merge OPEN.
