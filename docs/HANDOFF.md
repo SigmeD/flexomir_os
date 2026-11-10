@@ -1,21 +1,15 @@
 # Flexomir OS — передача работы
 
-По поручению Owner от 11.11 все кнопки React проходят через FosButtonRoot. На экранах Client и Manager семейство действий использует нейтральную палитру и общую поверхность. Быстрый клик даёт заметный отклик через единый профиль. У «Сохранить» движутся круг и иконка, подпись остаётся на месте. Строки, навигация, меню и поля сохраняют свои контроллеры. 11.11.2026 Owner визуально принял унификацию кнопок на версии 6007e60 в [PR #34](https://github.com/SigmeD/flexomir_os/pull/34). 11.11.2026 Owner также принял положение «Черновика» и отступы в DEV-варианте нового заказа менеджера. [Отчёт](FOS08_09_REPORT_2026-11-10.md).
+11.11.2026 владелец проекта принял кнопки FOS08/09 и DEV-вариант FOS03 для нового заказа менеджера. Принята версия интерфейса 6007e60. Для проверки FOS03 открыть пилот и нажать «Добавить заказ». [Отчёт по кнопкам](FOS08_09_REPORT_2026-11-10.md), [аудит отступов](FOS03_HEADER_AUDIT_2026-11-10.md), [DEV-пилот](http://127.0.0.1:5173/?view=manager-orders&composeSpacing=pilot)
 
-Последний follow-up Owner: «принимай общим компонентом» относится к размеру статуса14/12. Реализованы PageHeader.subtitleRole=status и --fos-type-order-status-size; OrderComposer/OrderDetail Client+Manager используют роль во всех режимах. Secondary/context и menu14/18/500 не меняются. Placement остаётся DEV pilot. Проверено отдельно: typography32/32, focused48/48, shared86/86, build/production PASS,30 captures, source7/7, frozen5/5. Первые параллельные прогоны имели test selector error и browser crashes; selector исправлен, итоговые последовательные suites PASS, продуктовый source не менялся. Доказательства/ограничения — в аудите. Новый CI сверять в PR #34; старый QA его не подменяет.
+Следующий шаг по PR #34 — сверить CI по текущему коммиту. Объединение следует после отдельного разрешения владельца проекта. Распространение отступов FOS03 за пределы DEV-варианта — отдельный шаг. [PR #34](https://github.com/SigmeD/flexomir_os/pull/34), [CI](https://github.com/SigmeD/flexomir_os/pull/34/checks)
 
-Уточнение после просмотра: Owner поручил подпись «Черновик»; изменён только текст, существующий Manager test обновлён, 2/2 и build PASS. Полные тесты исходного пилота относятся к 2d8a45b; новый head CI сверять в PR #34. После второго просмотра Owner поручил поднять подпись: подготовлен PageHeader below-title только в DEV pilot, desktop Y128→108, Company151; новые QA48/48 и82/82, build/production PASS, 30 PNG, review READY. Подробности и оставшиеся gates — в [аудите](FOS03_HEADER_AUDIT_2026-11-10.md). Положение подписи и отступы приняты 11.11.2026. CI проверяется в PR #34.
-
-FOS03, 10.11: `feat/fos03-manager-spacing-pilot`, база 7b17db6; [план](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md), [отчёт](FOS03_REPORT_2026-11-10.md). Изменены OrderComposer/order-compose.css: DEV + Manager opt-in. Итог: focused 48/48, full 544 PASS + 4 skip, build PASS, 30 PNG и production probe PASS, frozen 5/5. Во время browser QA не менять tracked files: WS trace подтвердил Vite full-reload от review script. Сравнение `/output/playwright/fos03/index.html`, пилот `/?view=manager-orders&composeSpacing=pilot` → «Добавить заказ». Следующее действие — сверить CI в Draft PR. Приёмка DEV-варианта получена. PR #33 остаётся отдельным Draft, четыре CI успешны; ветка и четыре stash сохранены. При разрешённой интеграции объединить LIVE docs без потери A.
-
-Обновлено 10.11.2026 после merge [PR #31](https://github.com/SigmeD/flexomir_os/pull/31).
+PR #33 остаётся отдельным черновиком. При разрешённой интеграции нужно сохранить записи об обеих поставках в общей документации. Очередь работ ведётся в Google Drive. [PR #33](https://github.com/SigmeD/flexomir_os/pull/33), [CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit)
 
 ## База для следующей задачи
 
-- Рабочая папка: D:\Projects\flexomir_os. Продуктовый main/origin/main: a400b9dc73ad77b01b37932fa4c5abbd57d134e0.
-- Проверенный PR head: f991bd77d16f0552f10e1cb8e0014d7d95a84850. После squash дерево файлов совпало с main, сборка на main прошла.
-- Remote feat/m8-final-screen-qa удалена автоматически. Local feature branch и четыре старых stash сохранены; не удалять их без отдельного поручения.
-- Документальные исправления после merge готовятся отдельно в docs/post-merge-current-2026-11-10. Фактические branch/status/PR перед продолжением сверять в Git и GitHub.
+- Рабочая папка — D:\Projects\flexomir_os. Текущий main — 7b17db6 после документационного PR #32. Продуктовая база PR #31 — a400b9d, сборка после объединения прошла.
+- Рабочая ветка PR #34 — `feat/fos03-manager-spacing-pilot`. Перед продолжением сверить ветку, рабочее дерево и статус PR.
 
 ## Что уже сделано
 
