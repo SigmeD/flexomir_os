@@ -82,6 +82,7 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
         <section className="fos-order-composer__general" aria-labelledby="compose-general-title"><h2 id="compose-general-title">Общие данные заказа</h2>
           <OrderDateFields className="fos-order-composer__dates">
             <FOSDateField label="Желаемый срок" value={value.requestedDate} error={!validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onChange={event => save({ ...value, requestedDate: event.target.value })} />
+            {value.ownerRole === 'client' && <FOSDateField label="Согласованный срок" value="" readOnly />}
           </OrderDateFields>
           <FOSTextarea label="Комментарии" placeholder="Необязательно" value={value.comment} onChange={event => save({ ...value, comment: event.target.value })} />
         </section>

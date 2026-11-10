@@ -2,7 +2,9 @@
 
 ## Уточнение10.11 — размеры полей заказа
 
-В том же PR #31 общая композиция OrderDateFields подключена к OrderComposer/OrderDetail Client/Manager. Убраны разные локальные правила ширины: desktop до506px на поле, tablet адаптивно по числу полей, mobile одна колонка. FOSDateField/FOSInput и данные/права/статусы не менялись. Согласованный срок у клиента и фиксация менеджером обсуждаются отдельно, не реализованы этой правкой.
+В том же PR #31 общая композиция OrderDateFields подключена к OrderComposer/OrderDetail Client/Manager. Убраны разные локальные правила ширины: desktop до506px на поле, tablet адаптивно по числу полей, mobile одна колонка. После уточнения Owner добавлено отсутствовавшее поле «Согласованный срок» клиента: в новом заказе пустое/readOnly, в просмотре существующее detail.agreedDate либо пустое/readOnly. Желаемый срок не подставляется вместо согласованного; новая дата и переход статуса не генерируются. Фиксация менеджером и production status mapping остаются OPEN.
+
+Последняя проверка отображения клиенту: RED2 отсутствующих поля → GREEN40/40 Chromium +8/8 Firefox/WebKit, buildPASS;30 новых измеренных состояний без overflow/page errors, screenshots отдельно в output/m8-client-agreed-date. Предыдущие64/4 и полный520 относятся к своим checkpoints, не к этому последнему diff.
 
 Свежая проверка:30 состояний на1440/1024/768/390/320, без overflow/page errors; все обычные контроли44px. BuildPASS, Orders64/64 Chromium, Firefox/WebKit4/4 existing flow tests. Независимый review без code/layout findings; уточнения формулировок размеров исправлены. [Доказательства и границы](M8_FINAL_AUDIT_2026-11-10.md). Merge не выполнен.
 

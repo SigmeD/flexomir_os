@@ -2,6 +2,8 @@
 
 ## Проверка размеров и смены статуса —10.11.2026
 
+Последующее уточнение Owner об отсутствующем поле клиенту закрывает только отображение: исходный screenshot Client New с местом справа и screenshot Manager pair → прежний FOS Date Readonly1169:433 в общей строке. Теперь поле видно в Client New/Detail, readOnly. Источник отображаемого значения — уже существующее detail.agreedDate; в новом черновике значения нет. Figma не менялась, действие фиксации менеджера и status mapping не считаются решёнными этим UI-изменением.
+
 Figma read-only session88ca34e1-ac28-461b-ac35-576d4803d425: FOS Date Field1169:437 (Default1169:383 / Readonly1169:433, control44px); Client New1810:12510/1837:6359/1810:12545 (506/728/350px); Client Detail1838:6565/1838:6810/1838:7031 (старый desktop720px); Manager draft2569:24648/24851/25041 (506/350/350px). Новое прямое указание Owner о едином размере выше старой readonly ширины.
 
 Заново прочитаны существующие CURRENT frontend plan и E2E v0.2. E2E различает сохранение договорённостей, «Создать заказ» в1С и последующий sync; точный production status mapping остаётся OPEN. Поля/textarea остальных форм проверены в коде; Figma Support Description2412:10665 подтверждает отдельный textarea146px с label (control120px), не базовое однострочное поле44px. Raw refs прошлого M8 использовались как изображения для сравнения; свежие измерения узлов и browser captures отдельно в [аудите](M8_FINAL_AUDIT_2026-11-10.md).

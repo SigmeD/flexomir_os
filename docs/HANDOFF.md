@@ -2,11 +2,13 @@
 
 ## Уточнение10.11 — общие размеры полей
 
-Продолжен существующий PR #31, без новой ветки/worktree. OrderDateFields задаёт общую responsive строку дат для OrderComposer/OrderDetail обеих ролей. Старый readonly720px в Figma Client Detail заменён новым прямым указанием Owner использовать ширину Client New (до506px desktop). Figma не редактировалась; дополнительные даты, права и статусные события не добавлены.
+Продолжен существующий PR #31, без новой ветки/worktree. OrderDateFields задаёт общую responsive строку дат для OrderComposer/OrderDetail обеих ролей. Старый readonly720px в Figma Client Detail заменён прямым указанием Owner использовать ширину Client New (до506px desktop). После уточнения Owner «Согласованный срок» добавлен клиенту в создание/просмотр: New пустой/readOnly, Detail берёт существующее detail.agreedDate/readOnly. Manager composer/edit, API и статусные события не изменены; Figma не редактировалась.
+
+Последний diff: buildPASS, Chromium40/40 и Firefox/WebKit8/8; RED2 missing-fieldFAIL сохранены в output/m8-fields/client-date-red.log.30 новых измерений/18 screenshots в output/m8-client-agreed-date,0overflow/0pageerrors, даты44px. На tablet Client теперь пара350px вместо прежнего одиночного728px; на mobile поля друг под другом. Предыдущие результаты размеров ниже — checkpoint342ac12.
 
 QA: buildPASS, Orders64/64 Chromium и Firefox/WebKit4/4;30 измеренных состояний/5ширин,0overflow/0pageerrors/все обычные контроли44px;18 новых screenshots в output/m8-fields. Независимый reviewer просмотрел9 новых screenshots и2 Figma refs, code/layout findings нет; его уточнения текста реестра исправлены. Полный старый520PASS не выдавать за повторный прогон после этой правки. Подробности — [аудит M8](M8_FINAL_AUDIT_2026-11-10.md).
 
-Вопрос Owner о смене статуса: CURRENT E2E предусматривает сохранение согласованных данных → Manager «Создать заказ» → 1С pending/result → sync. Точный event→«В работе» mapping остаётся за Owner/PO/Алексеем; frontend не меняет статус при простом сохранении даты. Production-команда сейчас disabled, API/1С не подключены. Новое предложение показывать клиенту readonly согласованную дату требует отдельного завершения согласования поведения.
+Вопрос Owner о смене статуса: CURRENT E2E предусматривает сохранение согласованных данных → Manager «Создать заказ» → 1С pending/result → sync. Точный event→«В работе» mapping остаётся за Owner/PO/Алексеем; frontend не меняет статус при простом сохранении даты. Production-команда сейчас disabled, API/1С не подключены. Отображение даты клиенту выполнено; сценарий её фиксации менеджером ещё не реализован.
 
 ## CURRENT 10.11.2026 — M8 final screen QA
 

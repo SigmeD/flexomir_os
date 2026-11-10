@@ -2,7 +2,7 @@
 
 ## Уточнение10.11 — унификация размеров в текущем M8 / PR #31
 
-По прямому поручению Owner унифицирована строка дат создания/просмотра Client/Manager: один OrderDateFields, desktop до506px на колонку вместо разных506/720 и ширины половины1056px Manager detail. Проверены соседние формы, shared44px input/select, пять ширин; buildPASS, Orders64/64 + Firefox/WebKit4/4, независимое review без code/layout findings. Подробности в [итоговом аудите](M8_FINAL_AUDIT_2026-11-10.md). Новый agreed-date workflow и status mapping пока обсуждаются; это не автоматическое разрешение их реализации или merge PR31.
+По прямому поручению Owner унифицирована строка дат создания/просмотра Client/Manager: один OrderDateFields, desktop до506px на колонку вместо разных506/720 и ширины половины1056px Manager detail. Затем устранён пропуск поля клиента: «Согласованный срок» виден в New/Detail, всегда readOnly; новый заказ показывает пустое значение, существующий — сохранённое agreedDate. Проверки последнего diff: buildPASS, Chromium40/40 + Firefox/WebKit8/8, пять ширин. Предыдущий этап размеров отдельно проверен64/4 и independent review. Подробности в [итоговом аудите](M8_FINAL_AUDIT_2026-11-10.md). Редактирование/фиксация менеджером, status mapping и merge PR31 остаются отдельными gates.
 
 ## CURRENT 10.11.2026 — M8, финальный аудит перед Owner screen review
 

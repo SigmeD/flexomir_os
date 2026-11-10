@@ -1,6 +1,16 @@
 # M8 — заключительная проверка экранов
 
-## Дополнение10.11 — размеры существующих полей по поручению Owner
+## Последующее уточнение10.11 — поле согласованного срока клиенту
+
+В предыдущей правке размеров поле клиенту не было добавлено. После прямого уточнения Owner пропуск устранён в существующих OrderComposer/OrderDetail: Client New всегда показывает пустой readOnly FOSDateField, Client Detail показывает существующее detail.agreedDate либо пустое значение. Используется прежний OrderDateFields, без копии контрола/нового чернового значения. Желаемая дата не подменяет согласованную; повторный/новый заказ её не наследует. Manager edit, согласование, статусы, API/1С и frozen sources не изменены.
+
+**Проверки этого diff:** сначала2 теста воспроизвели отсутствие поля (Client New и work Detail), затем40/40 Chromium в order-compose/order-detail/orders-figma-parity,8/8 Firefox/WebKit в New/Submit/Client+Manager readonly detail; buildPASS. Detail проверяется на5ширинах, обе роли получают исходную fixture дату2026-11-20; новый и отправленный Client draft сохраняют пустое readonly поле при заполненной requestedDate. Полный520 и предыдущий64/4 — результаты предыдущих checkpoints, не этой правки.
+
+Новые измерения30 состояний и18 screenshots: output/m8-client-agreed-date/measure.json и {client,manager}-{new,detail,item}-{1440,768,390}.png.0overflow/0pageerrors. Client New/Detail даты506×44px на1440,315.5×44px на1024,350×44px на768/390,280×44px на320. На desktop/tablet оба поля рядом, на mobile последовательно; agreed всегда readonly. Автор просмотрел свежие Client New Desktop и Detail Mobile: состав пары соответствует поручению Owner; Header/Sidebar/action dock остаются прежними. Старая Client Figma с одним полем не отменяет новое указание. Предыдущие доказательства размеров сохранены отдельно в output/m8-fields.
+
+Независимое read-only review последней правки: PASS, findings нет. Reviewer проверил diff и4 реальных desktop/tablet/mobile screenshots с пользовательскими references; собственный runtime не запускал.
+
+## Checkpoint342ac12 — размеры существующих полей по поручению Owner
 
 **Реализовано:** общий OrderDateFields использует существующий FOSDateField в OrderComposer/OrderDetail обеих ролей. Desktop grid max1038px, gap26px, две колонки до506px; одиночное поле сохраняет ту же колонку. Ниже1024px одиночное поле занимает доступную ширину, пара делится поровну с gap28px; ниже601px поля идут друг под другом. Старое отдельное readonly720px правило удалено. Manager detail body1056px ранее давал по516px на дату; теперь даты до506px, как в форме создания. Разница ширины родительских контейнеров ролей на1024px остаётся адаптивной композицией, а не отдельным размером контрола.
 
