@@ -2,6 +2,7 @@ import { useId, useRef, type ComponentProps, type ReactNode } from 'react'
 import chevron from '@/assets/orders/chevron.svg'
 import { FosGlassMaterial } from './fos-glass-material'
 import { useDirectionalPress } from './use-directional-press'
+import { FOSSelectPopup, type FOSSelectPopupProps } from './fos-select-popup'
 import './fos-controls.css'
 
 interface FieldOptions { label: string; error?: string; helper?: string; wrapperClassName?: string }
@@ -29,11 +30,13 @@ export function FOSTextarea({ label, error, helper, wrapperClassName, id: suppli
     <textarea {...props} id={id} className={'fos-field__control fos-field__control--note ' + className} aria-invalid={error ? true : undefined} aria-describedby={[props['aria-describedby'], (error || helper) && id + '-message'].filter(Boolean).join(' ') || undefined} />
   </Field>
 }
-/** Select Field 1148:311, intentionally separate from optical GlassSelect. */
-export function FOSSelect({ label, error, helper, wrapperClassName, id: suppliedId, className = '', children, ...props }: ComponentProps<'select'> & FieldOptions) {
+/** Canonical single-select field; native form plumbing, shared popup, visible trigger events. */
+export function FOSSelect({ label, error, helper, wrapperClassName, id: suppliedId, className = '', children, ...props }: Omit<FOSSelectPopupProps, 'id' | 'label'> & FieldOptions & { id?: string }) {
   const generatedId = useId(), id = suppliedId || generatedId
   return <Field {...{ label, error, helper, id }} className={wrapperClassName}>
-    <div className="fos-field__select"><select {...props} id={id} data-empty={props.value === '' || undefined} className={'fos-field__control ' + className} aria-invalid={error ? true : undefined} aria-describedby={(error || helper) ? id + '-message' : props['aria-describedby']}>{children}</select><span className="fos-field__select-arrow" aria-hidden="true"><img src={chevron} alt="" /></span></div>
+    <div className="fos-field__select"><FOSSelectPopup {...props} {...{ id, label }} className={className} aria-invalid={error ? true : undefined}
+      aria-describedby={[props['aria-describedby'], (error || helper) && id + '-message'].filter(Boolean).join(' ') || undefined}>{children}</FOSSelectPopup>
+      <span className="fos-field__select-arrow" aria-hidden="true"><img src={chevron} alt="" /></span></div>
   </Field>
 }
 /** One FOS V2 Action family: hierarchy changes treatment, while the shared Glass material and press response stay common. */

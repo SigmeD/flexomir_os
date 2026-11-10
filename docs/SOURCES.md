@@ -1,8 +1,16 @@
 # Flexomir OS — CURRENT источники
 
-## Navigation/popup typography — 10.11.2026
+## FE11 popup rollout — 10.11.2026
 
-Источник новой роли — прямое решение Owner в чате: `navigation/item` и `popup/item` → Manrope 14/18 Medium 500, единая база/алиасы, сохранение profile roles и frozen motion, окончательный стандарт после визуальной приёмки. Read-only Figma: `634:511` и `3038:2667`; мастера пока содержат прежнюю типографику, не изменены. Drive frontend CURRENT проверен (modified 09.11.2026); GitHub PR #29 open/Draft на baseline 785696e. Context7 Playwright: computed CSS assertions и screenshot comparison для регрессии. [Карта и evidence](TYPOGRAPHY_AUDIT_2026-11-09.md).
+Источник задания: `D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`. Более новые прямые решения Owner: сохранить 14/18/500; «да подтверждаю» принимает пилот/action behavior и открывает D/E. PR #29 MERGED03238af, эта поставка — PR #30 от main a9ffa8a.
+
+Drive frontend CURRENT и Glass contract проверены; existing CURRENT план синхронизируется со статусом PR, не заменяется новым документом. Context7 `/radix-ui/primitives`: onSelect/default close, asChild/focus; implementation отдельно проверена read-only reviewer.
+
+Figma file `7rvIYc6yj3OA7gxmf1xJbv`, session `22e569f5-2dee-46de-92de-c4b03269602b`: адресный sync Navigation634:511, Account3042:2806, Header Overflow1914:655…676/2015:6085/2016:898/2033:1145 и Select1148:311 description. Новый shared Menu/Item style14/18/500;10Account dividers скрыты, identity/field text не менялись. Реиспользованы Drawer shell effects; motion reference f527bcb не заменяется Figma effects. До/после renders и ledger `output/design-system-state-fe11-2026-11-10.json` ignored.
+
+Старое native-like соглашение не переписано: на мастерах добавлен датированный Owner delta, исходные descriptions сохранены ниже. Утверждённые SRS/Scope/Governance не редактировались; новый opening contract прослеживается через [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md). Пять attachments исходного задания не выдаются за просмотренные; собственные baseline и 43fresh rollout screenshots сняты отдельно.
+
+## История предыдущих сверок
 
 ## Post-FE11 lifecycle QA — 09.11.2026
 

@@ -7,6 +7,9 @@ function Fixture() {
   const [value, setValue] = useState<string>()
   const [cancel, setCancel] = useState(true)
   const [clicks, setClicks] = useState(0)
+  const [pendingValue, setPendingValue] = useState('1')
+  const [changes, setChanges] = useState(0)
+  const reject = new URLSearchParams(location.search).has('reject')
   return <main>
     <h1>Проверка API Select</h1>
     <label><input type="checkbox" checked={cancel} onChange={e => setCancel(e.target.checked)} /> Отменить выбор</label>
@@ -29,6 +32,16 @@ function Fixture() {
         </GlassSelectContent>
       </GlassSelect>
     </div>
+    <div data-testid="pending-select">
+      <GlassSelect value={pendingValue} onValueChange={next => { setChanges(n => n + 1); if (!reject) setPendingValue(next) }}>
+        <GlassSelectTrigger aria-label="Проверка завершения выбора" />
+        <GlassSelectContent>
+          {Array.from({ length: 6 }, (_, i) => <GlassSelectItem key={i} value={String(i + 1)}>{`Вариант ${i + 1}`}</GlassSelectItem>)}
+        </GlassSelectContent>
+      </GlassSelect>
+    </div>
+    <output data-testid="pending-changes">{changes}</output>
+    <input aria-label="Следующее поле" />
   </main>
 }
 

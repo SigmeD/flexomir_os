@@ -8,6 +8,10 @@ on:
       - 'tests/order-compose.spec.ts'
       - 'tests/popup-dismissal.spec.ts'
       - 'tests/typography-contract.spec.ts'
+      - 'tests/fos-select-popup.spec.ts'
+      - 'tests/fixtures/fos-select.*'
+      - 'tests/glass-select-api.spec.ts'
+      - 'tests/fixtures/glass-select.*'
       - 'tests/fe11-*.spec.ts'
       - 'docs/FE11_MOTION_FROZEN_V0_2.json'
       - 'playwright*.ts'
@@ -33,6 +37,8 @@ jobs:
         run: npx playwright test --config=playwright.popup-qa.config.ts --workers=1
       - name: Shared navigation and popup typography contract
         run: npx playwright test --config=playwright.profile.config.ts tests/typography-contract.spec.ts --workers=1 --output=output/playwright/navigation-typography/ci
+      - name: FE11 popup rollout and form contracts
+        run: npx playwright test --config=playwright.reaudit.config.ts --workers=1
       - name: Save M7 browser evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,6 +52,9 @@ jobs:
             output/playwright/post-fe11/cross-browser.json
             output/playwright/post-fe11/cross-browser/**/error-context.md
             output/playwright/profile-settings/results.json
+            output/playwright/fe11-reaudit/cross-browser.json
+            output/playwright/fe11-reaudit/cross-browser/**/error-context.md
+            output/playwright/fe11-reaudit/cross-browser/**/trace.zip
             output/playwright/navigation-typography/ci/**/error-context.md
           if-no-files-found: warn
           retention-days: 7

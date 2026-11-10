@@ -1,8 +1,16 @@
 # Flexomir OS — реестр решений и вопросов
 
-## Owner decision 10.11.2026 — navigation/item и popup/item
+## Owner decision 10.11.2026 — принятый FE11 popup pilot
 
-Принято к реализации: Manrope 14/18 Medium 500, одна базовая роль и два алиаса без локальных размеров/весов. Это закрывает прежний выбор TY-05 в пользу новой общей роли, но визуальная приёмка реализации и окончательная фиксация DS-стандарта остаются OPEN. Заголовки/подписи/profile data — отдельные роли. GlassLens/Motion Engine и их optical scale не меняются. Figma пока содержит прежние роли; обновление после visual gate. [Реализация и доказательства](TYPOGRAPHY_AUDIT_2026-11-09.md).
+- **APPROVED:** Owner «да подтверждаю» принял показанный пилот и action-adapter, разрешив этапы D/E в одном PR #30. Это заменяет прежний OPEN этого пилота; merge отдельно.
+- **APPROVED:** общая Manrope14/18/500, не 13/18/600 из исходного задания; один token с navigation/popup aliases. Identity, field labels/body и trigger roles отдельные.
+- **ACTION CONTRACT:** нет фиктивного selected/origin. Callback сразу, первая линза даёт feedback в активированной строке; переход может размонтировать host. Hover/focus не выбирают строку.
+- **SELECT CONTRACT:** native change сразу и один раз, popup закрывается по actual rest/geometry. Escape/outside не откатывают committed value. Readonly сохраняет FormData и пропускает required validation; disabled не отправляется.
+- **ROLLOUT:** один public FosPopup; Drawer получает данные/nav wrapper, GlassSelect сохраняет compound semantic rows через listbox-only slot. Все реальные form consumers перешли на канонический single-string FOSSelect; historical native multiple/size API не обещается совместимым.
+- **FIGMA:** адресно синхронизированы menu style, Navigation/Account/More masters и Select opening contract с датированным supersession; старая история не переписана. Полная динамическая оптика определяется frozen runtime, не эффектом Figma.
+- **UNCHANGED:** reference `f527bcb`,5 frozen files+manifest, API/backend/ACL/1С. Приёмка всех экранов, merge и release отдельно. [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md).
+
+## Предыдущие решения (заменённые формулировки не задают текущую очередь)
 
 ## Owner scope 09.11.2026 — post-freeze QA fixes
 

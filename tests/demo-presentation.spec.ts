@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
-import { closeDemoControls, commitItem, fillItem, openDemoControls, setDemoRole } from './helpers/orders'
+import { chooseFormOption, closeDemoControls, commitItem, fillItem, openDemoControls, setDemoRole } from './helpers/orders'
 
 test('presentation role switch keeps one workspace and preserves the complete Client→Manager→Client flow', async ({ page }) => {
   await page.goto('/?demoTools=1')
@@ -68,7 +68,7 @@ test('role switching and reset stay locked while a Manager private draft editor 
   await page.goto('/?demoTools=1')
   await setDemoRole(page, 'manager')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
-  await page.getByLabel('Компания', { exact: true }).selectOption('company-01')
+  await chooseFormOption(page, 'Компания', 'Компания 01')
 
   await openDemoControls(page)
 

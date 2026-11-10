@@ -1,10 +1,10 @@
 # Flexomir OS — правила работы Codex
 
-## CURRENT / 10.11.2026 — Owner typography decision / VISUAL OPEN
+## CURRENT / 10.11.2026 — Owner popup pilot accepted / rollout
 
 - `navigation/item` и `popup/item` используют одну базовую роль Manrope 14px/18px Medium 500. React source: `--fos-type-menu-item`; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item`. Не дублировать font-size/line-height/font-weight в CSS потребителей и не создавать локальные исключения.
 - Это разрешение на базовую типографику пунктов Sidebar/Drawer/Account/More/GlassSelect, не на изменение утверждённых GlassLens/Motion Engine, optical scale или материалов. Заголовки, подписи, профильные identity/data и trigger typography имеют отдельные роли.
-- Решение Owner принято к реализации. Визуальная приёмка новой роли и синхронизация Figma остаются OPEN; не объявлять её окончательно утверждённым DS-стандартом до приёмки. [Токены, влияние и QA](docs/TYPOGRAPHY_AUDIT_2026-11-09.md).
+- Owner принял пилот и action-adapter ответом «да подтверждаю»; разрешены rollout/cleanup и синхронизация затронутых Figma masters в PR #30. Все popup consumers подключаются через `FosPopup`, form fields — через канонический `FOSSelect`. Figma menu role14/18/500 синхронизирована; закрытые field/identity roles сохранены. Это не приёмка всех экранов и не разрешение merge. [Охват, QA и оставшиеся gates](docs/FE11_POPUP_REAUDIT_2026-11-10.md).
 
 ## CURRENT / 09.11.2026 — FE-11 Motion approval and freeze (Owner instruction)
 

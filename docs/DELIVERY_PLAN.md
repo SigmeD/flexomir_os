@@ -1,10 +1,14 @@
 # Flexomir OS — план frontend и Liquid Glass
 
-## CURRENT 10.11.2026 — shared navigation/popup item role
+## CURRENT 10.11.2026 — FE11, этапы D/E после приёмки пилота
 
-Продолжение QA: build, 24/24 адресных Chromium checks и шесть CI jobs на `0312b3b` PASS; свежие снимки обоих кабинетов и независимый read-only review (PASS WITH RISKS) готовы. Исправлено только ожидание видимых пунктов в typography test после одного WebKit immediate-count FAIL; полный typography suite после fix — 24/24 PASS в четырёх browser/input проектах. UI и frozen reference сохранены. Результаты повторов и материалы Owner review — [аудит](TYPOGRAPHY_AUDIT_2026-11-09.md). Следующий продуктовый gate — Owner visual acceptance, затем Figma sync; merge отдельно.
+Этап C закрыт ответом Owner «да подтверждаю». Этап D реализован в том же PR #30: все согласованные popup/select consumers используют общий API, флаг пилота и legacy driver удалены, затронутые Figma masters синхронизированы. Роль 14/18/500 и frozen engine сохранены.
 
-Owner typography delta в текущем PR #29: одна роль 14/18 Medium 500 → два алиаса → существующие Sidebar/Drawer/Account/More/GlassSelect. Код реализован, обе роли/пять ширин проверены в четырёх browser/input проектах (24/24). Motion unchanged; далее итоговый regression/CI → Owner visual gate → Figma/утверждённый DS standard. Последние два шага пока OPEN. [Контракт и QA](TYPOGRAPHY_AUDIT_2026-11-09.md).
+Этап E: build PASS, adapters82/82, cross-browser 124/124 и независимое static review без найденных дефектов. Полная regression 516 PASS / 4 expected skips / 0 FAIL; актуальный CI отправленного head сверять по PR checks в [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md). Затем — отдельное решение о merge. Массовая экранная/релизная приёмка остаётся отдельным gate.
+
+Общий frontend roadmap: закрыть M8 UX/UI и связанные Owner gates; M9 — интеграционная готовность к согласованному API Алексея. Backend/ACL/1С остаются в его потоке.
+
+## История предыдущих этапов (актуальный порядок выше и в Drive)
 
 ## CURRENT 09.11.2026 — close remaining popup QA
 

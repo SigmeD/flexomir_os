@@ -1,10 +1,18 @@
 # Flexomir OS — handoff между сессиями Codex
 
-## CURRENT 10.11.2026 — shared item typography
+## CURRENT 10.11.2026 — FE11 rollout после Owner acceptance
 
-Продолжение: build и 24/24 адресных typography/lifecycle/freeze/adapter проверок PASS; все шесть CI jobs на `0312b3b` SUCCESS. После исправления test-readiness — typography 24/24 PASS в четырёх browser/input проектах. Подготовлены восемь свежих desktop/mobile снимков Client/Manager меню, ссылки в [аудите](TYPOGRAPHY_AUDIT_2026-11-09.md). Независимое ревью — PASS WITH RISKS, без конкретных дефектов. Исправлен только immediate-count в typography test: ожидание видимого первого пункта перед перечислением; UI/frozen files не менялись. Исходные diagnostic logs сохранены, старое неподтверждённое упоминание final-regression.json исправлено. Далее Owner visual review по готовым снимкам; Figma/merge только после соответствующих разрешений.
+Пилот принят: «да подтверждаю». Рабочая ветка `feat/fe11-popup-unification-reaudit`, один [PR #30](https://github.com/SigmeD/flexomir_os/pull/30). Merge отдельно; не создавать второй PR.
 
-Owner разрешил Manrope 14/18 Medium 500: `--fos-type-menu-item` → navigation/popup aliases в `src/styles.css`. Sidebar/Drawer/Account/More/GlassSelect переиспользуют роль; локальных размеров/весов пунктов нет, Select сохраняет прежнюю 36px строку. Profile data/headings/captions и frozen implementation не редактировались. Build и cross-browser typography 24/24 PASS; новый контракт включён в M7 CI. Продолжается прежняя ветка/PR #29; [QA](TYPOGRAPHY_AUDIT_2026-11-09.md). Следующий gate — Owner visual acceptance; только затем Figma + статус утверждённого DS-стандарта. Merge OPEN.
+Rollout реализован в обычных маршрутах: Account/More/Drawer/GlassSelect → FosPopup; все FOSSelect → form listbox adapter. Surface больше не содержит legacy hover physics. Общий observer ждёт реальный rest линзы, но change исполняется сразу и ровно один раз. Escape/outside сохраняют committed value, инвалидируют pending completion и возвращают фокус по семантике адаптера. GlassSelect сохраняет compound Item API, отмену onClick и theme variants.
+
+Build PASS, adapters82/82, cross-browser 124/124. Первые 2 Firefox failures были Browser.removeBrowserContext protocol teardown; полный serial recheck124/124 PASS. Review coverage gap закрыт отдельными GlassSelect controlled rejection/Escape/outside/reopen/retarget tests. Полная regression: 516 PASS / 4 expected skips / 0 FAIL. GitHub CI отправленного head сверять по PR checks в [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md). Fresh evidence: `output/playwright/fe11-rollout/`.
+
+Figma синхронизирована адресно: menu style14/18/500, Navigation/Account/More masters и Select opening contract. Frozen5+manifest неизменны; не менять их для исправления адаптера. Не возвращать popupPilot flag, FOSGlassSelect alias или native visible option popup.
+
+Следующий шаг: проверить CI отправленного head, обновить SHA в существующем Drive CURRENT. Owner pilot gate закрыт; all-screen acceptance, merge и release не следуют автоматически. [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md) содержит inventory, тесты, причины и ограничения.
+
+## История предыдущих handoff (не текущие задания)
 
 ## CURRENT 09.11.2026 — post-FE11 focus/dismissal fixes
 

@@ -2,9 +2,8 @@ import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent
 import { createPortal } from 'react-dom'
 import type { SidebarNavItem } from './sidebar-nav'
 import { SidebarNavIcon } from './sidebar-nav-icons'
-import { FosPopupRows } from './fos-popup-rows'
 import './sidebar-nav.css'
-import { FosPopupSurface } from './fos-popup-surface'
+import { FosPopup } from './fos-popup'
 import './navigation-drawer.css'
 
 export interface NavigationDrawerProps {
@@ -295,9 +294,7 @@ export function NavigationDrawer({
             aria-hidden="true"
             onClick={closeMenu}
           />
-          <FosPopupSurface
-            hoverLens={false}
-            sidebarMaterial
+          <FosPopup
             id={dialogId}
             ref={dialogRef}
             role="dialog"
@@ -312,36 +309,13 @@ export function NavigationDrawer({
             contentClassName="fos-nav-drawer__content"
             data-testid="navigation-drawer-panel"
             style={panelPosition}
-          >
-            <div
-              className="fos-nav-drawer__items"
-              onClick={event => {
-                // Dismiss the selected row without interrupting pending travel.
-                const target = event.target
-                if (!(target instanceof Element)) return
-                const button = target.closest<HTMLButtonElement>('button.fos-sidebar-nav__item:not([disabled])')
-                if (closeOnSelection &&
-                  button?.getAttribute('aria-current') === 'page' &&
-                  pendingIdRef.current === null) {
-                  closeMenu()
-                }
-              }}
-            >
-              <nav aria-label={ariaLabel + ' — разделы'} className="fos-sidebar-nav" data-testid="shared-sidebar-nav">
-                <FosPopupRows selectedId={activeId} lensTestId="sidebar-selected-lens" className="fos-sidebar-nav__list">
-                  {items.map(item => <button key={item.id} type="button" className="fos-sidebar-nav__item"
-                    data-popup-item={item.id} data-testid={'sidebar-nav-' + item.id}
-                    aria-current={activeId === item.id ? 'page' : undefined} disabled={item.disabled}
-                    onClick={() => requestSelection(item.id)}>
-                    {item.icon && <span className="fos-sidebar-nav__icon" data-popup-icon=""><SidebarNavIcon name={item.icon} /></span>}
-                    <span className="fos-sidebar-nav__label" data-popup-label="">{item.label}</span>
-                  </button>)}
-                </FosPopupRows>
-              </nav>
-            </div>
-            <div className="fos-nav-drawer__separator" role="presentation" />
-            <div className="fos-nav-drawer__footer">{footerText}</div>
-          </FosPopupSurface>
+            mode="navigation" selectedId={activeId} onSelect={requestSelection}
+            items={items.map(item => ({ ...item, icon: item.icon ? <SidebarNavIcon name={item.icon} /> : undefined, testId: 'sidebar-nav-' + item.id }))}
+            rowClassName="fos-sidebar-nav__item" labelClassName="fos-sidebar-nav__label" iconClassName="fos-sidebar-nav__icon"
+            rowsClassName="fos-sidebar-nav__list" lensTestId="sidebar-selected-lens"
+            wrapRows={rows => <div className="fos-nav-drawer__items"><nav aria-label={ariaLabel + ' — разделы'} className="fos-sidebar-nav" data-testid="shared-sidebar-nav">{rows}</nav></div>}
+            footer={<><div className="fos-nav-drawer__separator" role="presentation" /><div className="fos-nav-drawer__footer">{footerText}</div></>}
+          />
         </div>,
         document.body,
       )}

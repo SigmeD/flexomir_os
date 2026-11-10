@@ -53,6 +53,7 @@ test('Escape and outside click dismiss without changing the selection', async ({
 test('keyboard can open, navigate and select a status', async ({ page }) => {
   await page.goto('/?view=glass-filter-lab')
   const trigger = page.getByTestId('filter-control').locator('button')
+  await expect(trigger).toBeVisible()
   await page.keyboard.press('Tab')
   await expect(trigger).toBeFocused()
   await page.keyboard.press('Enter')

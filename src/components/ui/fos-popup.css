@@ -1,0 +1,30 @@
+.fos-popup__item {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  gap: 12px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.fos-popup__item:disabled, .fos-popup__item[data-disabled] { opacity: .55; cursor: default; }
+.fos-popup__item[data-highlighted] { background: transparent; }
+.fos-popup__item [data-popup-label] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fos-popup--account.fos-account-menu { min-height: 0; }
+.fos-popup--account .fos-account-menu__content { min-height: 0; padding-bottom: 12px; }
+.fos-popup--account .fos-account-menu__item { height: 56px; }
+.fos-popup--select { position: fixed; z-index: 1000; }
+.fos-popup--select > .fos-popup-surface__content { padding: 8px 6px; max-height: inherit; overflow-y: auto; overscroll-behavior: contain; }
+.fos-field__select-button { display: block; text-align: left; padding-right: 44px; cursor: pointer; }
+.fos-field__select-label { display: block; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.fos-field__select-button[data-empty] { color: var(--fos-v2-semantic-color-text-secondary, #586d7c); }
+.fos-field__select-button[aria-readonly="true"] { background: #f6f7f9; color: var(--fos-v2-semantic-color-text-secondary, #586d7c); cursor: default; }
+.fos-field__native-proxy { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (forced-colors: active) {
+  .fos-popup__item { color: CanvasText; }
+  .fos-popup__item:disabled, .fos-popup__item[data-disabled] { color: GrayText; opacity: 1; }
+}

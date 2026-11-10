@@ -15,8 +15,8 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { FosPopupSurface } from "@/components/ui/fos-popup-surface";
-import { FosPopupRows } from "@/components/ui/fos-popup-rows";
+import { FosPopup } from "@/components/ui/fos-popup";
+import { usePopupSelectionRest } from './use-popup-selection-rest';
 import { cn } from "@/lib/utils";
 import "./glass-select.css";
 
@@ -27,6 +27,8 @@ interface SelectCtx {
   setValue: (v: string) => void;
   open: boolean;
   setOpen: (v: boolean) => void;
+  pendingValue: string | null;
+  generation: React.RefObject<number>;
   triggerRef: React.RefObject<HTMLButtonElement | null>;
   triggerId: string;
   contentId: string;
@@ -61,7 +63,13 @@ export function GlassSelect({
 }) {
   const [internal, setInternal] = useState(defaultValue);
   const value = controlled !== undefined ? controlled : internal;
-  const [open, setOpen] = useState(false);
+  const [open, setOpenState] = useState(false);
+  const [pendingValue, setPendingValue] = useState<string | null>(null);
+  const generation = useRef(0);
+  const setOpen = useCallback((next: boolean) => {
+    if (!next) { generation.current += 1; setPendingValue(null); }
+    setOpenState(next);
+  }, []);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const selectId = useId();
   const triggerId = `${selectId}-trigger`;
@@ -74,10 +82,15 @@ export function GlassSelect({
     (v: string) => {
       if (controlled === undefined) setInternal(v);
       onValueChange?.(v);
-      setOpen(false);
-      triggerRef.current?.focus({ preventScroll: true });
+      if (v === value) {
+        setOpen(false);
+        triggerRef.current?.focus({ preventScroll: true });
+      } else {
+        generation.current += 1;
+        setPendingValue(v);
+      }
     },
-    [controlled, onValueChange],
+    [controlled, onValueChange, value, setOpen],
   );
 
   const register = useCallback((v: string, label: string) => {
@@ -86,8 +99,8 @@ export function GlassSelect({
   const labelOf = useCallback((v?: string) => (v ? labels[v] : undefined), [labels]);
 
   const ctx = useMemo(
-    () => ({ appearance, value, setValue, open, setOpen, triggerRef, triggerId, contentId, valueId, register, labelOf }),
-    [appearance, value, setValue, open, triggerId, contentId, valueId, register, labelOf],
+    () => ({ appearance, value, setValue, open, setOpen, pendingValue, generation, triggerRef, triggerId, contentId, valueId, register, labelOf }),
+    [appearance, value, setValue, open, setOpen, pendingValue, triggerId, contentId, valueId, register, labelOf],
   );
   return <SelectContext.Provider value={ctx}>{children}</SelectContext.Provider>;
 }
@@ -116,7 +129,7 @@ export function GlassSelectTrigger({
       data-placeholder={!label ? "" : undefined}
       onClick={event => {
         onClick?.(event);
-        if (!event.defaultPrevented) setOpen(!open);
+        if (!event.defaultPrevented) { setOpen(!open); if (open) triggerRef.current?.focus({ preventScroll: true }); }
       }}
       onKeyDown={event => {
         onKeyDown?.(event);
@@ -139,10 +152,14 @@ export function GlassSelectTrigger({
 }
 
 export function GlassSelectContent({ className, children, onKeyDown, ...props }: ComponentProps<"div"> & { tint?: number }) {
-  const { appearance, value, open, setOpen, triggerRef, triggerId, contentId } = useSelect();
+  const { appearance, value, open, setOpen, pendingValue, generation, triggerRef, triggerId, contentId } = useSelect();
   const ref = useRef<HTMLDivElement | null>(null);
   const [mounted, setMounted] = useState(false);
   const [rect, setRect] = useState({ top: 0, left: 0, width: 224, maxHeight: 256 });
+  usePopupSelectionRest({ open, target: pendingValue, value, generation, surfaceRef: ref, onComplete: restore => {
+    setOpen(false);
+    if (restore) triggerRef.current?.focus({ preventScroll: true });
+  } });
   const popupStyle: CSSProperties = {
     '--fos-popup-color': 'var(--gs-foreground)',
     '--fos-popup-hover-color': 'var(--gs-popup-hover)',
@@ -242,16 +259,13 @@ export function GlassSelectContent({ className, children, onKeyDown, ...props }:
       }}
       className={cn(className)}
     >
-      <FosPopupSurface
-        hoverLens={false}
-        sidebarMaterial
+      <FosPopup
+        mode="listbox" role="presentation" selectedId={value} semanticRows={children}
         data-state={open ? 'open' : 'closed'}
         style={popupStyle}
         className="glass-select-material"
         contentClassName="glass-select-viewport"
-      >
-        <FosPopupRows selectedId={value}>{children}</FosPopupRows>
-      </FosPopupSurface>
+      />
     </div>,
     document.body,
   );
