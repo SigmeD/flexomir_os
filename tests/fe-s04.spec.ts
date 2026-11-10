@@ -15,7 +15,7 @@ test('B: manager creates a private draft using an existing company and it is abs
   await page.goto('/?view=manager-orders&demoTools=1')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await expect(page.getByTestId('order-composer')).toBeVisible()
-  await expect(page.getByText('Черновик менеджера · приватно в демосессии')).toBeVisible()
+  await expect(page.getByText('Черновик', { exact: true })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Сохранить черновик менеджера' })).toBeDisabled()
   await chooseFormOption(page, 'Компания', 'Компания 01')
   await page.getByRole('button', { name: 'Сохранить черновик менеджера' }).click()

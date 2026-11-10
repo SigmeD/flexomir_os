@@ -1,5 +1,7 @@
 # Flexomir OS — состояние проекта
 
+Owner 10.11 после просмотра поручил подпись «Черновик»; применено в общем OrderComposer. Локально 2/2 и build PASS; полный QA исходного пилота указан отдельно.
+
 FOS03, 10.11: подготовлен DEV-пилот Manager New Order в `feat/fos03-manager-spacing-pilot` от main 7b17db6; [план](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md), [результаты](FOS03_REPORT_2026-11-10.md). Между разделами 32 px, внутри General 24 px; включение — `?view=manager-orders&composeSpacing=pilot`. Обычные Manager/Client и production сохраняют прежнюю композицию. Focused 48/48, full 544 PASS + 4 skip, build PASS. Owner visual acceptance и rollout OPEN. Предыдущая поставка A — отдельный [Draft PR #33](https://github.com/SigmeD/flexomir_os/pull/33), четыре CI успешны, merge не выполнялся. Опубликованная продуктовая база описана ниже отдельно.
 
 Проверено 10.11.2026. Продуктовая база — main a400b9dc73ad77b01b37932fa4c5abbd57d134e0, [PR #31](https://github.com/SigmeD/flexomir_os/pull/31) слит. Это техническая поставка M8; полная визуальная приёмка экранов остаётся открытой.

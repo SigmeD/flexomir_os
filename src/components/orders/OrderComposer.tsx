@@ -60,7 +60,7 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
     && new URLSearchParams(window.location.search).get('composeSpacing') === 'pilot'
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id} data-compose-spacing={spacingPilot ? 'pilot' : undefined}>
     {editing === null ? <>
-      <PageHeader title={title} floatingWorkActions subtitle={value.ownerRole === 'manager' ? 'Черновик менеджера · приватно в демосессии' : 'Черновик'} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
+      <PageHeader title={title} floatingWorkActions subtitle="Черновик" breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
         {value.ownerRole === 'manager'
           ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
           : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!canSendDemo(value)} onAction={() => onSend(value)} />}
