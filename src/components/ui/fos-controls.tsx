@@ -4,6 +4,8 @@ import { FosGlassMaterial } from './fos-glass-material'
 import { useDirectionalPress } from './use-directional-press'
 import { FOSSelectPopup, type FOSSelectPopupProps } from './fos-select-popup'
 import './fos-controls.css'
+import './action-palette.css'
+import type { ActionPalette } from './action-palette'
 
 interface FieldOptions { label: string; error?: string; helper?: string; wrapperClassName?: string }
 function Field({ label, error, helper, id, className = '', children }: FieldOptions & { id: string; className?: string; children: ReactNode }) {
@@ -40,7 +42,9 @@ export function FOSSelect({ label, error, helper, wrapperClassName, id: supplied
   </Field>
 }
 /** One FOS V2 Action family: hierarchy changes treatment, while the shared Glass material and press response stay common. */
-export function FOSAction({ hierarchy = 'secondary', size = 'standard', className = '', type = 'button', disabled = false, children, ...props }: ComponentProps<'button'> & { hierarchy?: 'primary' | 'secondary' | 'tertiary'; size?: 'standard' | 'compact' }) {
+export function FOSAction({ hierarchy = 'secondary', size = 'standard', palette = 'reference', shape = 'pill', className = '', type = 'button', disabled = false, children, ...props }: ComponentProps<'button'> & { hierarchy?: 'primary' | 'secondary' | 'tertiary'; size?: 'standard' | 'compact'; palette?: ActionPalette; shape?: 'pill' | 'round' }) {
+  const neutral = import.meta.env.DEV && palette === 'neutral-pilot'
+  const round = neutral && shape === 'round'
   const buttonRef = useRef<HTMLButtonElement>(null)
   const motionRef = useRef<HTMLSpanElement>(null)
   const press = useDirectionalPress(buttonRef, motionRef, disabled, 'fos-action')
@@ -50,7 +54,7 @@ export function FOSAction({ hierarchy = 'secondary', size = 'standard', classNam
   } = props
 
   return <button {...buttonProps} ref={buttonRef} type={type} disabled={disabled}
-    data-pressed="false" data-hierarchy={hierarchy}
+    data-pressed="false" data-hierarchy={hierarchy} data-action-palette={neutral ? 'neutral-pilot' : undefined} data-shape={round ? 'round' : undefined}
     className={['fos-action', 'fos-action--' + hierarchy, size === 'compact' && 'fos-action--compact', className].filter(Boolean).join(' ')}
     onPointerDown={event => { press.onPointerDown(event); onPointerDown?.(event) }}
     onPointerUp={event => { press.onPointerUp(event); onPointerUp?.(event) }}
@@ -60,8 +64,8 @@ export function FOSAction({ hierarchy = 'secondary', size = 'standard', classNam
     onKeyUp={event => { press.onKeyUp(event); onKeyUp?.(event) }}
     onBlur={event => { press.onBlur(); onBlur?.(event) }}>
     {hierarchy === 'secondary' && <FosGlassMaterial aria-hidden="true" className="fos-action__glass"
-      strength={0.1} radius={22} blur={1.5} lighting="sidebar" tone="neutral"
-      shadow="none" centerOpacity="var(--fos-action-tint, .24)" centerColor="240 248 255" rimWidth={1} />}
+      strength={0.1} radius={round ? 17 : 22} blur={1.5} lighting="sidebar" tone="neutral"
+      shadow="none" centerOpacity="var(--fos-action-tint, .24)" centerColor={neutral ? 'var(--fos-neutral-center)' : '240 248 255'} rimWidth={1} />}
     <span ref={motionRef} className="fos-action__motion"><span className="fos-action__content">{children}</span></span>
   </button>
 }

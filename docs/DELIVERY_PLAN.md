@@ -4,6 +4,8 @@
 
 ## Где мы находимся
 
+Следующий шаг волны B08/09 — [DEV neutral pilot](FOS08_09_NEUTRAL_ACTION_PILOT_2026-11-10.md): общий Plus/HeaderAction/FOSAction → cross-browser/shared/full QA → Owner palette/material gate → разрешённый rollout. Локальная проверка нового пилота завершена:36/36 focused,566 +4skip full,build/prod PASS; следующий шаг — Owner neutral palette gate. Работа в том же PR34, новых параллельных веток нет. На97de0bd CI2/2 SUCCESS; новый head CI сверять отдельно.
+
 Owner принял общий размер статуса14/12; PageHeader status-role применяется к черновику и деталям заказа обеих ролей. Это отдельное подтверждённое уточнение FOS03, не приёмка всего spacing-пилота. Размер проверяется новым typography-contract и регрессиями, гейт визуального положения подписи сохраняется.
 
 FOS03 после второго просмотра Owner: подпись приближена к H1 в DEV Manager pilot, Company Y сохранён. Новый focused 48/48, shared regression 82/82, build/production PASS; [аудит и остающиеся gates](FOS03_HEADER_AUDIT_2026-11-10.md). Следующий гейт — визуальная приёмка исправленного эталона перед распространением; actual-head CI проверяется в PR #34.

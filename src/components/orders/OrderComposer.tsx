@@ -58,6 +58,8 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
   // FOS03 Owner reference only. The ordinary UI keeps its accepted composition.
   const spacingPilot = import.meta.env.DEV && value.ownerRole === 'manager'
     && new URLSearchParams(window.location.search).get('composeSpacing') === 'pilot'
+  const neutralPlus = import.meta.env.DEV && value.ownerRole === 'client'
+    && new URLSearchParams(window.location.search).get('actionPalette') === 'neutral-pilot'
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id} data-compose-spacing={spacingPilot ? 'pilot' : undefined}>
     {editing === null ? <>
       <PageHeader title={title} floatingWorkActions subtitle="Черновик" subtitleRole="status" subtitlePlacement={spacingPilot ? 'below-title' : undefined} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
@@ -77,7 +79,7 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
           <option value="">Выберите компанию</option>{managerCompanies.map(company => <option key={company.id} value={company.id}>{company.name}</option>)}
         </FOSSelect>}
         <section className="fos-order-composer__products" data-empty={value.items.length === 0 || undefined} aria-labelledby="compose-products-title">
-          <div className="fos-order-composer__section-heading"><h2 id="compose-products-title">Продукция</h2><SectionAddItem onClick={addItem} /></div>
+          <div className="fos-order-composer__section-heading"><h2 id="compose-products-title">Продукция</h2><SectionAddItem palette={neutralPlus ? 'neutral-pilot' : undefined} onClick={addItem} /></div>
           {value.items.length ? <ul className="fos-order-detail__items">{value.items.map((item, index) => <li key={item.id} data-item-id={item.id}>
             <OrderItemRow item={itemSummary(item)} position={index + 1} onOpen={() => { returnFocus.current = '[data-item-id="' + item.id + '"] button'; setEditing(item.id) }} />
           </li>)}</ul> : <p className="fos-order-detail__empty">Позиция ещё не добавлена. Добавьте первую позицию.</p>}

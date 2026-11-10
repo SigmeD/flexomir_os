@@ -1,5 +1,9 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner continue — FOS08/09 DEV palette pilot
+
+Поручение продолжить после статуса ведёт к следующему пункту согласованной волны B. Выбран изолированный DEV reference общих controls, не глобальная перекраска. PROPOSED: neutral color tokens и адаптеры existing FosGlassMaterial; новая палитра требует отдельной Owner visual acceptance по G-05. Ни frozen engine, ни physics/formulas, ни DS masters не меняются. Один текущий PR34 волны B, без новой параллельной ветки/worktree/merge.
+
 ## Owner 10.11 — принять размер статуса общим компонентом
 
 После сверки DS Status Default14 / Status Compact12 Owner поручил «давай принимай общим компонентом». Принято: общая роль status в PageHeader и один responsive size token, применённые к OrderComposer/OrderDetail обеих ролей. Secondary/context не меняются. Это принятие размера общего компонента, не всего экрана/spacing rollout и не merge. Line-height18 сохранён: исходный вопрос и решение касались размера; Figma AUTO остаётся отдельным расхождением.

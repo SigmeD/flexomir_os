@@ -145,7 +145,13 @@ export function useDirectionalPress<T extends HTMLButtonElement>(
   function onKeyUp(event: KeyboardEvent<T>) {
     if ((event.key === ' ' || event.key === 'Enter') && motion.current.via === 'keyboard') end()
   }
-  function onBlur() { end() }
+  function onBlur() {
+    // Safari blurs a keyboard-focused button on mousedown. The captured pointer
+    // is still held; pointerup/cancel/lostcapture own that press lifecycle.
+    const state = motion.current
+    if (state.via === 'pointer' && state.pointerId !== null && buttonRef.current?.hasPointerCapture?.(state.pointerId)) return
+    end()
+  }
 
   return { onPointerDown, onPointerUp, onPointerCancel, onLostPointerCapture, onKeyDown, onKeyUp, onBlur }
 }

@@ -7,6 +7,7 @@ on:
       - 'tests/m7-*.spec.ts'
       - 'tests/order-compose.spec.ts'
       - 'tests/fos03-spacing.spec.ts'
+      - 'tests/neutral-actions.spec.ts'
       - 'tests/popup-dismissal.spec.ts'
       - 'tests/typography-contract.spec.ts'
       - 'tests/fos-select-popup.spec.ts'
@@ -42,6 +43,8 @@ jobs:
         run: npx playwright test --config=playwright.reaudit.config.ts --workers=1
       - name: FOS03 opt-in composition pilot and legacy consumers
         run: npx playwright test --config=playwright.fos03.config.ts --workers=2
+      - name: FOS08/09 neutral action reference
+        run: npx playwright test --config=playwright.neutral-actions.config.ts --workers=1
       - name: Save M7 browser evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -62,5 +65,9 @@ jobs:
             output/playwright/fos03/green/results.json
             output/playwright/fos03/green/artifacts/**/*.png
             output/playwright/fos03/green/artifacts/**/trace.zip
+            output/playwright/fos08-09/results.json
+            output/playwright/fos08-09/browser/**/*.png
+            output/playwright/fos08-09/browser/**/trace.zip
+            output/playwright/fos08-09/browser/**/error-context.md
           if-no-files-found: warn
           retention-days: 7

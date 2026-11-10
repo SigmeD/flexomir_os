@@ -1,5 +1,9 @@
 # Flexomir OS — React Component Registry
 
+## FOS08/09 — DEV palette proposal
+
+Figma SectionAdd1986:774→SectionAddItem EXTEND palette; neutral REUSE FOSAction round44/circle34 + canonical glyph24/14. HeaderAction1953:4168/2173:1425 EXTEND palette, REUSE FosGlassMaterial neutral + same local SVG/currentColor mask. Action835:259 EXTEND palette/shape, preserve hierarchy and standard44/compact40. One ActionPalette contract/scoped CSS, same useDirectionalPress: физика/константы unchanged, исправлен Safari captured-pointer blur lifecycle; frozen5 files unchanged. Consumers: DEV NeutralActionsLab and opt-in Client New Plus only; normal Client/Manager, Profile, LayoutBrowser and production reference remain. Palette/material OWNER OPEN, [source map and QA](FOS08_09_REPORT_2026-11-10.md).
+
 ## Owner 10.11 — общий размер статуса заказа
 
 Figma text styles Status Default S:7b49259b679208d3d45e87b615a9673723ad4dd9, (14px) / Status Compact S:ffe48f4dacd88f6906b8b1fbf3bac4deb59e84d8, (12px) → EXTEND PageHeader.subtitleRole=secondary|status. Default secondary сохраняет Body/SM12/18; status использует единый --fos-type-order-status-size из src/styles.css:14px desktop≥1024,12px compact≤1023. Consumers REUSE: OrderComposer и OrderDetail, Client+Manager, включая обычный UI и production. LayoutBrowser/context остаются secondary. Owner принял общий размер; line-height18 сохранён, Figma AUTO не объявляется полностью перенесённым. Placement below-title остаётся отдельным DEV pilot, полный экран/merge OPEN.

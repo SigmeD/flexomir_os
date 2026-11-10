@@ -1,5 +1,7 @@
 # Flexomir OS — источники проекта
 
+08/09: Drive CURRENT modified2026-11-10T14:09:37.549Z перечитан (WaveB/pilot gates); Figma read-only session60c656a0-46b4-4e51-bbdd-b5a771a70efe. High-fidelity contexts/screenshots1986:774,1941:673,835:243 и варианты1953:4168/2173:1425/835:259 проверены. Нейтральный candidate — по новому ТЗ, не pixel-copy существующей тёмной/цветной coat; masters не изменены. [Карта](FOS08_09_NEUTRAL_ACTION_PILOT_2026-11-10.md).
+
 Status-size follow-up10.11: перечитаны точные Figma styles S:7b49259b679208d3d45e87b615a9673723ad4dd9, Status Default /Manrope Regular400/14/AUTO/0% и S:ffe48f4dacd88f6906b8b1fbf3bac4deb59e84d8, Status Compact /Manrope Regular400/12/AUTO/0%. Body/SM12/18 — другая роль, не основание для desktop status12. Owner принял размер общим компонентом; Figma не менялась, line-height AUTO не объявляется реализованным.
 
 Уточнение FOS03 после второго просмотра Owner: [аудит Header](FOS03_HEADER_AUDIT_2026-11-10.md). CURRENT Manager D/T/M и вложенные Title в AppShell перечитаны; lifecycle label в экране расположен отдельно, master Subtitle скрыт. Положение подписи теперь проверяется отдельным opt-in контрактом общего PageHeader. Figma не менялась; различия типографики и compact координат остаются OPEN.
