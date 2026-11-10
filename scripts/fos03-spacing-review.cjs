@@ -39,8 +39,11 @@ async function metrics(page) {
     const company = box('.fos-order-composer__company'), products = box('.fos-order-composer__products')
     const general = box('.fos-order-composer__general'), title = box('.fos-order-composer__general > h2')
     const dates = box('.fos-order-composer__dates'), note = box('.fos-order-composer__general > .fos-field')
+    const heading = box('.fos-page-header h1'), subtitle = box('.fos-page-header__subtitle')
     return { companyGap: products.y-company.bottom, sectionGap:general.y-products.bottom,
       headingGap:dates.y-title.bottom, noteGap:note.y-dates.bottom, commentBottom:note.bottom,
+      subtitleTop:subtitle.y, subtitleGap:subtitle.y-heading.bottom,
+      companyTop:company.y, subtitleToCompany:company.y-subtitle.bottom,
       dateHeight: root.querySelector('input[type=date]').getBoundingClientRect().height,
       dateWidth: root.querySelector('input[type=date]').getBoundingClientRect().width,
       overflow: document.documentElement.scrollWidth-innerWidth, pilot:root.dataset.composeSpacing??null }
@@ -52,7 +55,7 @@ function gallery(rows) {
     const before = rows.find(row=>row.width===width&&row.count===count&&row.mode==='baseline')
     const after = rows.find(row=>row.width===width&&row.count===count&&row.mode==='pilot')
     const ref = width===1440?'reference/manager-d.png':width===768?'reference/manager-t.png':width===390?'reference/manager-m.png':null
-    return `<section><h2>${width}px · ${count} позиций</h2><p>Промежутки Company / General / heading / comment: ${before.companyGap}/${before.sectionGap}/${before.headingGap}/${before.noteGap} → ${after.companyGap}/${after.sectionGap}/${after.headingGap}/${after.noteGap}px</p><div class="columns"><figure><figcaption>Текущий React</figcaption><img loading="lazy" src="${before.file}" alt="Текущая композиция ${width}px, ${count} позиций"></figure><figure><figcaption>DEV pilot · OWNER OPEN</figcaption><img loading="lazy" src="${after.file}" alt="Пилот композиции ${width}px, ${count} позиций"></figure>${ref&&count===0?`<figure><figcaption>Figma CURRENT · export с внешними полями, без resize</figcaption><img loading="lazy" src="${ref}" alt="Figma Manager New"></figure>`:''}</div></section>`
+    return `<section><h2>${width}px · ${count} позиций</h2><p>Промежутки Company / General / heading / comment: ${before.companyGap}/${before.sectionGap}/${before.headingGap}/${before.noteGap} → ${after.companyGap}/${after.sectionGap}/${after.headingGap}/${after.noteGap}px</p><p>H1 box → Черновик: ${before.subtitleGap} → ${after.subtitleGap}px; Черновик → Компания: ${before.subtitleToCompany} → ${after.subtitleToCompany}px; Company Y: ${before.companyTop} → ${after.companyTop}px.</p><div class="columns"><figure><figcaption>Текущий React</figcaption><img loading="lazy" src="${before.file}" alt="Текущая композиция ${width}px, ${count} позиций"></figure><figure><figcaption>DEV pilot · OWNER OPEN</figcaption><img loading="lazy" src="${after.file}" alt="Пилот композиции ${width}px, ${count} позиций"></figure>${ref&&count===0?`<figure><figcaption>Figma CURRENT · export с внешними полями, без resize</figcaption><img loading="lazy" src="${ref}" alt="Figma Manager New"></figure>`:''}</div></section>`
   }).join('')).join('')
   return `<!doctype html><html lang="ru"><meta charset="utf-8"><title>FOS03 — сравнение композиции</title><style>body{font:16px/1.5 system-ui;margin:24px;color:#20252c;background:#f4f5f7}h1{font-size:26px}.columns{display:flex;gap:20px;overflow:auto;align-items:flex-start}figure{margin:0;flex:none}figcaption{margin-bottom:8px;font-weight:600}img{display:block;max-width:none}section{padding:20px;margin:24px 0;background:white;border:1px solid #d6d9e0}nav a{margin-right:16px}</style><h1>FOS03 — Manager New Order</h1><p>Один opt-in reference. Owner visual acceptance OPEN. Figma содержит другие утверждённые/открытые состояния: agreed date и публикация здесь не добавлены. Исходные PNG показаны в собственных размерах; горизонтальная прокрутка сравнения не относится к приложению.</p><nav><a href="${baseURL}/?view=manager-orders&amp;composeSpacing=pilot">Открыть пилот · нажать «Добавить заказ»</a><a href="${baseURL}/?view=manager-orders">Текущая композиция</a><a href="observations.json">Измерения и source hashes</a></nav>${cards}</html>`
 }
@@ -92,7 +95,7 @@ async function main() {
       production={status:'PASS',url:productionURL,...measured}
     }
     if(errors.length)fail('Browser errors '+JSON.stringify(errors))
-    const sourceFiles=['src/components/orders/OrderComposer.tsx','src/components/orders/order-compose.css','src/components/orders/order-date-fields.css']
+    const sourceFiles=['src/components/orders/OrderComposer.tsx','src/components/orders/order-compose.css','src/components/orders/order-date-fields.css','src/components/ui/page-header.tsx','src/components/ui/page-header.css']
     const sourceHashes=Object.fromEntries(sourceFiles.map(file=>[file,sha256(fs.readFileSync(file,'utf8').replaceAll('\r\n','\n'))]))
     const result={headAtCapture:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),sourceHashes,rows,production,errors}
     fs.writeFileSync(path.join(output,'observations.json'),JSON.stringify(result,null,2))

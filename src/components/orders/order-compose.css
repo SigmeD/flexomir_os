@@ -28,6 +28,8 @@
   --fos-compose-general-offset: 0px;
   --fos-compose-heading-gap: var(--fos-v2-semantic-space-block-md);
   --fos-compose-note-gap: var(--fos-v2-semantic-space-block-md);
+  /* Moving the subtitle off the 68px action row frees 20px. Preserve Company Y. */
+  --fos-compose-body-offset: 25px;
 }
 .fos-order-composer[data-compose-spacing=pilot] .fos-order-composer__body {
   display: grid;
@@ -43,7 +45,7 @@
 @media(max-width:1023px) {
   .fos-demo-workspace__show { top: auto; right: auto; bottom: calc(24px + env(safe-area-inset-bottom)); left: 12px; }
 }
-.fos-order-composer__body { max-width: 1050px; margin-top: 5px; }
+.fos-order-composer__body { max-width: 1050px; margin-top: var(--fos-compose-body-offset, 5px); }
 .fos-order-composer__section-heading { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 23px; }
 .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { margin: 0; color: #273343; font-size: 20px; font-weight: 600; line-height: 28px; }
 .fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 38px); }

@@ -17,10 +17,12 @@ async function geometry(page: Page) {
       return { x: box.x, y: box.y, width: box.width, height: box.height, bottom: box.bottom }
     }
     const company = root.querySelector('.fos-order-composer__company') ? rect('.fos-order-composer__company') : null
+    const heading = rect('.fos-page-header h1'), subtitle = rect('.fos-page-header__subtitle')
     const products = rect('.fos-order-composer__products'), general = rect('.fos-order-composer__general')
     const title = rect('.fos-order-composer__general > h2'), dates = rect('.fos-order-composer__dates'), note = rect('.fos-order-composer__general > .fos-field')
     const controls = [...root.querySelectorAll('.fos-field__control')].map(node => node.getBoundingClientRect().height)
-    return { company, products, general, title, dates, note, controls,
+    return { company, products, general, title, dates, note, controls, heading, subtitle,
+      subtitleGap: subtitle.y - heading.bottom,
       companyGap: company ? products.y - company.bottom : null,
       sectionGap: general.y - products.bottom, headingGap: dates.y - title.bottom,
       noteGap: note.y - dates.bottom, overflow: document.documentElement.scrollWidth - innerWidth }
@@ -50,6 +52,9 @@ for (const width of widths) {
       expect(layout.sectionGap).toBe(32)
       expect(layout.headingGap).toBe(24)
       expect(layout.noteGap).toBe(24)
+      expect(layout.subtitleGap).toBe(8)
+      expect(layout.company!.y).toBe(width >= 1024 ? 151 : 193)
+      expect(layout.subtitle.y).toBe(width >= 1024 ? 108 : 154)
       expect(layout.overflow).toBe(0)
       await expect(page.getByLabel('Желаемый срок', { exact: true })).toHaveCSS('height', '44px')
       await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveCount(0)
@@ -67,6 +72,8 @@ for (const width of widths) {
     const current = await geometry(page)
     expect(current.companyGap).toBe(0)
     expect(current.sectionGap).toBe(width >= 1024 ? 63 : 68)
+    expect(current.subtitleGap).toBe(width >= 1024 ? 28 : 8)
+    expect(current.company!.y).toBe(width >= 1024 ? 151 : 193)
     await page.screenshot({ path: info.outputPath(`manager-default-${width}.png`), fullPage: true })
     await newOrder(page, 'client', false)
     const client = await geometry(page)

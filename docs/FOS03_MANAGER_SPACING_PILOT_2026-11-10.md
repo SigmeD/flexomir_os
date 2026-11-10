@@ -51,3 +51,9 @@ Variant задаёт grid row-gap32 на существующем body; componen
 FUNCTIONAL/TECHNICAL/visual observation/Owner acceptance/merge — отдельные статусы. До явного Owner visual approval новый spacing доступен только как DEV reference. После принятия — отдельный шаг распространения на согласованных consumers, подтверждение shared regression и синхронизация Figma/Drive по разрешённой поставке. Другие пункты NEXT_SCOPE не объявляются закрытыми этим пилотом.
 
 Итог на 10.11: focused 48/48, full 544 PASS + 4 штатных skip, build PASS; 30 raw PNG, production PASS, page errors 0. Frozen fingerprints 5/5. Независимый read-only QA: PASS WITH RISKS для DEV reference. Owner visual acceptance, rollout и merge OPEN. Фактический CI head — в Draft PR этой ветки. [Подробности и ранние запуски](FOS03_REPORT_2026-11-10.md).
+
+## Уточнение после визуального просмотра
+
+Owner поручил приблизить «Черновик» к «Новый заказ». [Аудит Header](FOS03_HEADER_AUDIT_2026-11-10.md). Один opt-in контракт PageHeader below-title; desktop subtitle Y128→108 (CURRENT Figma109), Company Y151 сохраняется, compact без перемещения. Новая проверка: RED28≠8 → focused cross-browser48, общие Header/forms/layout regression, build, production probe и 30 raw captures. Результаты исходного пилота выше — отдельный checkpoint, не доказательство нового head. Owner screen acceptance/rollout OPEN.
+
+Итог Header follow-up: RED28≠8 зафиксирован; focused48/48, shared82/82, build/production1440/320 PASS,30 PNG, source/frozen hashes совпали. Независимый review READY с указанными в аудите рисками. Owner visual gate и CI нового head проверяются отдельно.
