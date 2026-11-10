@@ -24,7 +24,7 @@ Figma text styles Status Default S:7b49259b679208d3d45e87b615a9673723ad4dd9, (14
 
 CURRENT Manager D2569:24648/24539 lifecycle label Y109 и PageHeader master 2302:2138 → EXTEND существующий PageHeader: subtitlePlacement below-row (default) / below-title (opt-in). Во втором варианте H1/subtitle/context собраны в независимую текстовую колонку; 68px actions, motion и focus не меняются. Consumer: только DEV Manager OrderComposer spacing pilot; OrderDetail/LayoutBrowser/Client/production сохраняют default. Company Y сохраняется производным desktop gap 25 = прежние 5 + освобождённые 20 px; compact gap 21 не меняется. [Аудит/гейты](FOS03_HEADER_AUDIT_2026-11-10.md).
 
-## FOS03 /10.11 — DEV spacing reference, OWNER OPEN
+## FOS03 — DEV-эталон отступов менеджера, принят Owner 11.11
 
 | Figma → React | Решение / контракт | Consumers |
 | --- | --- | --- |
