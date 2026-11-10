@@ -55,6 +55,7 @@ for (const width of widths) {
       expect(layout.subtitleGap).toBe(8)
       expect(layout.company!.y).toBe(width >= 1024 ? 151 : 193)
       expect(layout.subtitle.y).toBe(width >= 1024 ? 108 : 154)
+      await expect(page.locator('.fos-page-header__subtitle')).toHaveCSS('font-size', width >= 1024 ? '14px' : '12px')
       expect(layout.overflow).toBe(0)
       await expect(page.getByLabel('Желаемый срок', { exact: true })).toHaveCSS('height', '44px')
       await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveCount(0)

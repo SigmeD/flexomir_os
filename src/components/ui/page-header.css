@@ -6,6 +6,7 @@
 .fos-page-header__actions { display: flex; align-items: flex-start; gap: 12px; flex: none; }
 .fos-page-header__actions--floating { justify-content: flex-start; }
 .fos-page-header__subtitle, .fos-page-header__context { margin: 8px 0 0; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: 12px; line-height: 18px; }
+.fos-page-header__subtitle--status { font-size: var(--fos-type-order-status-size); }
 .fos-breadcrumbs { position: absolute; left: 0; bottom: calc(100% + 10px); font-size: 13px; line-height: 20px; }
 .fos-breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0; }
 .fos-breadcrumbs li { display: inline-flex; gap: 6px; align-items: center; }

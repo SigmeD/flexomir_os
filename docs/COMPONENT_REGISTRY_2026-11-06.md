@@ -1,5 +1,9 @@
 # Flexomir OS — React Component Registry
 
+## Owner 10.11 — общий размер статуса заказа
+
+Figma text styles Status Default S:7b49259b679208d3d45e87b615a9673723ad4dd9, (14px) / Status Compact S:ffe48f4dacd88f6906b8b1fbf3bac4deb59e84d8, (12px) → EXTEND PageHeader.subtitleRole=secondary|status. Default secondary сохраняет Body/SM12/18; status использует единый --fos-type-order-status-size из src/styles.css:14px desktop≥1024,12px compact≤1023. Consumers REUSE: OrderComposer и OrderDetail, Client+Manager, включая обычный UI и production. LayoutBrowser/context остаются secondary. Owner принял общий размер; line-height18 сохранён, Figma AUTO не объявляется полностью перенесённым. Placement below-title остаётся отдельным DEV pilot, полный экран/merge OPEN.
+
 ## FOS03 Header — уточнение Owner после второго просмотра
 
 CURRENT Manager D2569:24648/24539 lifecycle label Y109 и PageHeader master 2302:2138 → EXTEND существующий PageHeader: subtitlePlacement below-row (default) / below-title (opt-in). Во втором варианте H1/subtitle/context собраны в независимую текстовую колонку; 68px actions, motion и focus не меняются. Consumer: только DEV Manager OrderComposer spacing pilot; OrderDetail/LayoutBrowser/Client/production сохраняют default. Company Y сохраняется производным desktop gap 25 = прежние 5 + освобождённые 20 px; compact gap 21 не меняется. [Аудит/гейты](FOS03_HEADER_AUDIT_2026-11-10.md).

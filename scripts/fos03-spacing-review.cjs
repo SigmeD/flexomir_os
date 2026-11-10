@@ -44,6 +44,7 @@ async function metrics(page) {
       headingGap:dates.y-title.bottom, noteGap:note.y-dates.bottom, commentBottom:note.bottom,
       subtitleTop:subtitle.y, subtitleGap:subtitle.y-heading.bottom,
       companyTop:company.y, subtitleToCompany:company.y-subtitle.bottom,
+      statusFontSize:getComputedStyle(root.querySelector('.fos-page-header__subtitle')).fontSize,
       dateHeight: root.querySelector('input[type=date]').getBoundingClientRect().height,
       dateWidth: root.querySelector('input[type=date]').getBoundingClientRect().width,
       overflow: document.documentElement.scrollWidth-innerWidth, pilot:root.dataset.composeSpacing??null }
@@ -95,7 +96,7 @@ async function main() {
       production={status:'PASS',url:productionURL,...measured}
     }
     if(errors.length)fail('Browser errors '+JSON.stringify(errors))
-    const sourceFiles=['src/components/orders/OrderComposer.tsx','src/components/orders/order-compose.css','src/components/orders/order-date-fields.css','src/components/ui/page-header.tsx','src/components/ui/page-header.css']
+    const sourceFiles=['src/components/orders/OrderComposer.tsx','src/components/orders/order-compose.css','src/components/orders/order-date-fields.css','src/components/ui/page-header.tsx','src/components/ui/page-header.css','src/components/orders/OrderDetail.tsx','src/styles.css']
     const sourceHashes=Object.fromEntries(sourceFiles.map(file=>[file,sha256(fs.readFileSync(file,'utf8').replaceAll('\r\n','\n'))]))
     const result={headAtCapture:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),sourceHashes,rows,production,errors}
     fs.writeFileSync(path.join(output,'observations.json'),JSON.stringify(result,null,2))
@@ -103,9 +104,17 @@ async function main() {
     await page.context().tracing.stop()
     console.log(JSON.stringify({screenshots:rows.length,production,errors,sourceHashes}))
   } catch(error) {
-    await page.screenshot({path:path.join(output,'capture-error.png'),fullPage:true})
-    fs.writeFileSync(path.join(output,'capture-error.json'),JSON.stringify({currentCapture,url:page.url(),text:await page.locator('body').innerText(),error:String(error)},null,2))
-    await page.context().tracing.stop({path:path.join(output,'capture-error-trace.zip')})
+    const failure = {currentCapture,url:page.url(),error:String(error)}
+    const saveFailure = () => fs.writeFileSync(path.join(output,'capture-error.json'),JSON.stringify(failure,null,2))
+    // Save the primary failure before collecting evidence from a possibly crashed page.
+    saveFailure()
+    try { await page.screenshot({path:path.join(output,'capture-error.png'),fullPage:true,timeout:5000}) }
+    catch(screenshotError) { failure.screenshotError=String(screenshotError) }
+    try { failure.text=await page.locator('body').innerText({timeout:5000}) }
+    catch(textError) { failure.textError=String(textError) }
+    try { await page.context().tracing.stop({path:path.join(output,'capture-error-trace.zip')}) }
+    catch(traceError) { failure.traceError=String(traceError) }
+    saveFailure()
     throw error
   } finally { await browser.close() }
 }

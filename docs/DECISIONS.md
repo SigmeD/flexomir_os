@@ -1,5 +1,9 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner 10.11 — принять размер статуса общим компонентом
+
+После сверки DS Status Default14 / Status Compact12 Owner поручил «давай принимай общим компонентом». Принято: общая роль status в PageHeader и один responsive size token, применённые к OrderComposer/OrderDetail обеих ролей. Secondary/context не меняются. Это принятие размера общего компонента, не всего экрана/spacing rollout и не merge. Line-height18 сохранён: исходный вопрос и решение касались размера; Figma AUTO остаётся отдельным расхождением.
+
 ## Owner 10.11 — приблизить подпись к заголовку
 
 По второму screenshot Owner поручил поднять «Черновик» к «Новый заказ». Реализация — opt-in вариант общего PageHeader в текущем DEV Manager pilot, без подъёма Company и без локального translate/negative margin. Приёмка всего пилота и распространение остаются OPEN; desktop 14px Figma vs 12px React зафиксировано отдельно, переопределения типографики этим перемещением не делаются.

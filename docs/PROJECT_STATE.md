@@ -1,5 +1,7 @@
 # Flexomir OS — состояние проекта
 
+Последнее решение Owner: размер статуса принят общей ролью PageHeader — 14px desktop /12px compact, один token; OrderComposer и OrderDetail обеих ролей подключены в обычном UI и production. Размер больше не зависит от DEV pilot. Secondary/context остаются12/18. Высота строки18 сохраняется; spacing placement below-title и весь экран всё ещё требуют отдельной визуальной приёмки. Новые локальные QA:32/32 +48/48 +86/86, build/production PASS,30 PNG; source hashes7/7, frozen5/5. Независимый review READY после исправления test locator. Новый CI — в PR #34.
+
 Owner после второго просмотра поручил поднять «Черновик» ближе к H1. [Аудит Header и текущая проверка](FOS03_HEADER_AUDIT_2026-11-10.md): opt-in вариант PageHeader, desktop −20 px, Company сохраняется. Новый QA: 48/48 + 82/82, build/production PASS, 30 PNG, независимый review READY. Owner visual gate OPEN; actual-head CI — в PR #34.
 
 Owner 10.11 после просмотра поручил подпись «Черновик»; применено в общем OrderComposer. Локально 2/2 и build PASS; полный QA исходного пилота указан отдельно.
