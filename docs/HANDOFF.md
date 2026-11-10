@@ -1,5 +1,9 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## Поручение Owner — merge PR31
+
+Merge явно разрешён. Перед выполнением разобраны оба failed CI на79d0529: один popup-dismissal сценарий нажимал центр textarea, перекрытый открытым More после второй даты. Test-only fix нажимает видимый левый край без force; исходные строгие inert/focus/unmount assertions и таймауты сохранены. Локальный RED2/2 → GREEN12/12 across Chromium/Firefox/WebKit/touch, buildPASS. Отправить этот fix в тот же PR31 и дождаться успешного CI фактического head; затем squash merge, проверить совпадение local main/origin/main с merge SHA, удалить только remote merged head и синхронизировать существующий Drive CURRENT. Корневую рабочую папку, local feature branch, чужие файлы/stash не удалять. Результаты/первичные CI FAIL — [аудит](M8_FINAL_AUDIT_2026-11-10.md).
+
 ## Уточнение10.11 — общие размеры полей
 
 Продолжен существующий PR #31, без новой ветки/worktree. OrderDateFields задаёт общую responsive строку дат для OrderComposer/OrderDetail обеих ролей. Старый readonly720px в Figma Client Detail заменён прямым указанием Owner использовать ширину Client New (до506px desktop). После уточнения Owner «Согласованный срок» добавлен клиенту в создание/просмотр: New пустой/readOnly, Detail берёт существующее detail.agreedDate/readOnly. Manager composer/edit, API и статусные события не изменены; Figma не редактировалась.
