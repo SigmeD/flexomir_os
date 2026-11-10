@@ -1,12 +1,6 @@
 # Flexomir OS — источники проекта
 
-Owner уточнил SectionAddItem: вместо ::before/::after один текстовый «+» в Manrope Medium500,28px/24px, контейнер24px; старые CSS-полоски удалены. Последние уточнения: сам «+» тоже увеличивается и анимация должна переиспользоваться. Поэтому используется штатный FOSAction/Secondary content scale1.02; отдельных font-size-анимаций, fixed-content props и новых каналов нет. FOSAction/useActionSurface/Frozen Engine не меняются. Стекло сохраняет один neutral GlassMaterial и прежний press/release. Общая замена glyph применяется к обоим вариантам SectionAddItem; material rollout остаётся DEV-only. Визуальная приёмка Owner OPEN.
-
-Текущее Owner-решение Screenshot_6: Plus повторяет анимацию выбранного Secondary через общий quiet preset. Отдельные поправки Plus отменены; [актуальные результаты](FOS08_09_REPORT_2026-11-10.md). Это DEV-пилот, не приёмка/rollout всех controls.
-
-Последнее уточнение Owner по Screenshot_3: quiet neutral action preset, один внешний rim/одна тень, hover surface1.012/text1.02, мягкий press; без роликов. Новый consumer FosActionMaterial использует native lighting/no shadow существующего материала и не меняет frozen FE11. В DEV PlusMotionLab показаны Plus и контрольный Secondary; HeaderAction и глобальный rollout ожидают визуальной приёмки. [Контракт и предложение сокращённого API](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md).
-
-Новый source-of-change: явное Owner-требование в текущей сессии FOS08/09 **VISUAL NOT ACCEPTED**, actual surface response, один контрольный Plus и запрет rollout до визуальной приёмки. Оно уточняет прежний neutral-pilot; CURRENT Figma SectionAdd1986:774 задаёт geometry44/34/24, но motion не объявляется принятым Figma-эталоном. Новый DEV adapter — PROPOSED. [RCA/доказательства](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md).
+Для унификации кнопок действует поручение Owner от 11.11 в этой сессии. Геометрия берётся из ранее сверенных CURRENT мастеров Figma SectionAdd 1986:774, Action 835:259, HeaderAction 1953:4168 / 2173:1425 и More 1914:650. Нейтральная палитра и усиленный отклик относятся к этому поручению. Файлы мастеров хранят прежнюю редакцию. Источник замороженного движения — [FE11-v0.2](FE11_MOTION_FROZEN_V0_2.json). [Карта компонентов](COMPONENT_REGISTRY_2026-11-06.md).
 
 08/09: Drive CURRENT modified2026-11-10T14:09:37.549Z перечитан (WaveB/pilot gates); Figma read-only session60c656a0-46b4-4e51-bbdd-b5a771a70efe. High-fidelity contexts/screenshots1986:774,1941:673,835:243 и варианты1953:4168/2173:1425/835:259 проверены. Нейтральный candidate — по новому ТЗ, не pixel-copy существующей тёмной/цветной coat; masters не изменены. [Карта](FOS08_09_NEUTRAL_ACTION_PILOT_2026-11-10.md).
 

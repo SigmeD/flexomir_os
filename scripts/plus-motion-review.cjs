@@ -12,11 +12,17 @@ async function launch(engine) {
   return browser
 }
 const hash = file => createHash('sha256').update(fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n')).digest('hex')
-const sources = ['src/components/ui/use-action-surface.ts', 'src/components/ui/use-directional-press.ts', 'src/components/ui/fos-controls.tsx', 'src/components/ui/fos-action-material.tsx', 'src/components/ui/fos-action-material.css', 'src/components/ui/action-palette.css', 'src/components/orders/SectionAddItem.tsx', 'src/components/orders/section-add-item.css', 'src/components/orders/OrderComposer.tsx', 'src/PlusMotionLab.tsx', 'src/PlusMotionLab.css', 'src/NeutralActionsLab.tsx', 'src/App.tsx']
+function sourceFiles(directory) {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+    const file = path.posix.join(directory, entry.name)
+    return entry.isDirectory() ? sourceFiles(file) : /\.(tsx?|css)$/.test(file) ? [file] : []
+  })
+}
+const sources = sourceFiles('src').sort()
 async function capture(engine, { touch = false, native = false, zoom = false } = {}) {
   const name = `${engine}-${native ? 'native' : touch ? 'touch' : zoom ? 'inspect4' : 'actual1'}`
   const browser = await launch(engine)
-  const context = await browser.newContext({ viewport: touch ? { width: 390, height: 844 } : { width: 1000, height: 800 }, hasTouch: touch, isMobile: touch, reducedMotion: 'no-preference', ...(native ? { userAgent: devices['Desktop Chrome'].userAgent } : {}) })
+  const context = await browser.newContext({ viewport: touch ? { width: 390, height: 844 } : { width: 1440, height: 900 }, hasTouch: touch, isMobile: touch, reducedMotion: 'no-preference', ...(native ? { userAgent: devices['Desktop Chrome'].userAgent } : {}) })
   const page = await context.newPage(), states = [], errors = []
   page.on('pageerror', error => errors.push(error.message))
   await page.addInitScript(() => {
@@ -31,7 +37,11 @@ async function capture(engine, { touch = false, native = false, zoom = false } =
   await page.waitForSelector('[data-testid="surface-plus"] [data-material-ready="true"]')
   await button.evaluate(node => node.removeAttribute('title'))
   async function snapshot(label, target = material) {
-    const state = await target.evaluate(node => ({ mode: node.dataset.opticsMode, transform: getComputedStyle(node).transform, shadow: getComputedStyle(node).boxShadow, box: node.getBoundingClientRect().toJSON(), border: getComputedStyle(node).borderTopWidth }))
+    const state = await target.evaluate(node => {
+      const caption = node.closest('.fos-ha')?.querySelector('.fos-ha__caption')
+      return { mode: node.dataset.opticsMode || node.dataset.actionSurface || 'content', transform: getComputedStyle(node).transform, shadow: getComputedStyle(node).boxShadow, box: node.getBoundingClientRect().toJSON(), border: getComputedStyle(node).borderTopWidth,
+        ...(caption ? { caption: { box: caption.getBoundingClientRect().toJSON(), transform: getComputedStyle(caption).transform, font: getComputedStyle(caption).font, color: getComputedStyle(caption).color } } : {}) }
+    })
     const filename = `${name}-${label}.png`
     await page.screenshot({ path: path.join(out, filename), fullPage: true })
     states.push({ label, filename, ...state })
@@ -109,6 +119,22 @@ async function capture(engine, { touch = false, native = false, zoom = false } =
     const filename = `${name}-current-plus-hover.png`
     await page.screenshot({ path: path.join(out, filename), fullPage: true })
     states.push({ label: 'current-plus-hover', filename, mode: await current.locator('[data-fos-glass-material]').getAttribute('data-optics-mode'), targetShadow: shadow })
+    for (const role of ['header', 'primary', 'icon']) {
+      const action = page.getByTestId('neutral-paper').getByTestId('neutral-' + role)
+      const surface = action.locator(role === 'icon' ? '[data-action-content]' : '[data-action-surface]')
+      await action.scrollIntoViewIfNeeded(); await page.mouse.move(0, 0)
+      await snapshot(role + '-default', surface)
+      await action.hover()
+      await page.waitForFunction(role => document.querySelector('[data-testid="neutral-paper"] [data-testid="neutral-' + role + '"]').dataset.surfaceActive === 'false', role)
+      await snapshot(role + '-hover', surface)
+      const hit = await (role === 'header' ? action.locator('.fos-ha__circle') : action).boundingBox()
+      await page.mouse.move(hit.x + hit.width / 2, hit.y + hit.height / 2); await page.mouse.down()
+      await page.waitForTimeout(250)
+      await snapshot(role + '-pressed', surface)
+      await page.mouse.up(); await page.mouse.move(0, 0)
+      await page.waitForFunction(role => document.querySelector('[data-testid="neutral-paper"] [data-testid="neutral-' + role + '"]').dataset.surfaceActive === 'false', role)
+      await snapshot(role + '-released', surface)
+    }
   }
   const result = { name, engine, nativeUA: native, userAgent: await page.evaluate(() => navigator.userAgent), touch, zoom, states, metrics, samples, errors }
   await browser.close()
@@ -128,17 +154,22 @@ async function main() {
   const serious = accessibility.violations.filter(row => ['serious', 'critical'].includes(row.impact))
   if (serious.length) throw new Error(JSON.stringify(serious))
   const production = [], prod = process.env.PLUS_PRODUCTION_URL || 'http://127.0.0.1:5185'
-  for (const query of ['?view=plus-motion', '?view=neutral-actions', '?view=client-orders&actionPalette=neutral-pilot', '?view=manager-orders&actionPalette=neutral-pilot']) {
+  for (const query of ['?view=plus-motion', '?view=neutral-actions', '?view=client-orders', '?view=manager-orders']) {
     await page.goto(`${prod}/${query}`)
-    if (/client-orders|manager-orders/.test(query)) await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
-    const count = await page.locator('[data-action-material], [data-surface-motion], [data-testid="plus-motion-lab"], [data-testid="neutral-actions-lab"]').count()
-    if (count) throw new Error(`DEV pilot leaked into production: ${query}`)
-    production.push({ query, pilotNodes: count })
+    const isOrder = /client-orders|manager-orders/.test(query)
+    if (isOrder) await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    const labNodes = await page.locator('[data-testid="plus-motion-lab"], [data-testid="neutral-actions-lab"]').count()
+    const unrooted = await page.locator('button:not([data-fos-button])').count()
+    const neutralActions = await page.locator('button[data-fos-button="action"][data-action-palette="neutral"]').count()
+    if (labNodes || unrooted || isOrder && neutralActions < 2) throw new Error(JSON.stringify({ query, labNodes, unrooted, neutralActions }))
+    const filename = isOrder ? 'built-' + (query.includes('client') ? 'client' : 'manager') + '-new.png' : undefined
+    if (filename) await page.screenshot({ path: path.join(out, filename), fullPage: true })
+    production.push({ query, labNodes, unrooted, neutralActions, filename })
   }
   await browser.close()
   for (const [file, expected] of Object.entries(source)) if (hash(file) !== expected) throw new Error(`Source changed: ${file}`)
   fs.writeFileSync(path.join(out, 'observations.json'), JSON.stringify({ source, frozen, cases, production, accessibility: { violations: accessibility.violations.map(row => ({ id: row.id, impact: row.impact })), serious: serious.length } }, null, 2))
-  fs.writeFileSync(path.join(out, 'index.html'), `<!doctype html><meta charset="utf-8"><title>Quiet Action preset · Owner OPEN</title><style>body{font:15px/1.5 system-ui;background:#f5f5f5;margin:24px;color:#222}img{max-width:100%;height:auto}details{margin-block:20px}</style><h1>Plus + Secondary · спокойный material preset</h1><p>OWNER VISUAL NOT ACCEPTED. Один внешний контур / одна мягкая тень. Только DEV. Без роликов по уточнению Owner.</p><p><a href="${base}/?view=plus-motion">Живой стенд 1:1</a> · <a href="${base}/?view=plus-motion&inspect=4">Живой DOM ×4</a>. Статичные PNG без resize. inspect4 явно использует CSS scale живого компонента.</p><p>native — Chromium с явным desktop-UA fixture: существующий GlassLens SVG filter. Обычный HeadlessChrome, Firefox и WebKit — frosted; исходный UA classifier не изменён. Long Tasks оцениваются только при longTaskSupported=true; frame timing относится к этой машине.</p>${cases.map(item => `<details open><summary>${item.name} · ${item.states[0].mode} · p95 ${item.metrics.p95FrameMs.toFixed(2)} ms · idle RAF ${item.metrics.idlePending}</summary>${item.states.map(state => `<figure><figcaption>${state.label} · ${state.mode}</figcaption><img loading="lazy" src="${state.filename}" alt="${item.name} ${state.label}"></figure>`).join('')}</details>`).join('')}`)
-  console.log(JSON.stringify(cases.map(item => ({ name: item.name, mode: item.states[0].mode, metrics: item.metrics })), null, 2))
+  fs.writeFileSync(path.join(out, 'index.html'), `<!doctype html><meta charset="utf-8"><title>Quiet Action preset · Owner OPEN</title><style>body{font:15px/1.5 system-ui;background:#f5f5f5;margin:24px;color:#222}img{max-width:100%;height:auto}details{margin-block:20px}</style><h1>Plus + Secondary + Header · единая ActionSurface</h1><p>Единое семейство в обеих ролях. Визуальная приёмка Owner OPEN. Стенд только DEV; обычный build использует общий preset. Без роликов.</p><p><a href="${base}/?view=plus-motion">Живой стенд 1:1</a> · <a href="${base}/?view=plus-motion&inspect=4">Живой DOM ×4</a>. Статичные PNG без resize. inspect4 явно использует CSS scale живого компонента.</p><p>${production.filter(row => row.filename).map(row => `<a href="${row.filename}">${row.query.includes('client') ? 'Client' : 'Manager'} · кадр сборки</a>`).join(' · ')}</p><p>native — Chromium с явным desktop-UA fixture: существующий GlassLens SVG filter. Обычный HeadlessChrome, Firefox и WebKit — frosted; исходный UA classifier не изменён. Long Tasks оцениваются только при longTaskSupported=true; frame timing относится к этой машине.</p>${cases.map(item => `<details open><summary>${item.name} · ${item.states[0].mode} · p95 ${item.metrics.p95FrameMs.toFixed(2)} ms · idle RAF ${item.metrics.idlePending}</summary>${item.states.map(state => `<figure><figcaption>${state.label} · ${state.mode}</figcaption><img loading="lazy" src="${state.filename}" alt="${item.name} ${state.label}"></figure>`).join('')}</details>`).join('')}`)
+  console.log(JSON.stringify({ cases: cases.map(item => ({ name: item.name, mode: item.states[0].mode, metrics: item.metrics })), production, sourceCount: sources.length }, null, 2))
 }
 main().catch(async error => { console.error(error); await Promise.allSettled([...owned].map(browser => browser.close())); process.exitCode = 1 })

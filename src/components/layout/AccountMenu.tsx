@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useRef } from 'react'
 import type { DemoProfileIdentity } from '@/demo/profile-model'
@@ -22,14 +23,14 @@ export function AccountMenu({
   const secondary = identity.companyName || identity.email
   const triggerLabel = `${identity.displayName} — открыть меню аккаунта`
   const trigger = placement === 'sidebar'
-    ? <button ref={triggerRef} type="button" className="fos-account-footer" data-testid="account-menu-trigger">
+    ? <FosButtonRoot family="navigation" ref={triggerRef} type="button" className="fos-account-footer" data-testid="account-menu-trigger">
         <FosGlassMaterial aria-hidden="true" className="fos-account-footer__glass" radius={15} strength={0} blur={9} tone="neutral" shadow="none" centerOpacity={0.24} centerColor="255 255 255" />
         <span className="fos-account-avatar" aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
         <span className="fos-account-footer__name">{identity.displayName}</span>
-      </button>
-    : <button ref={triggerRef} type="button" className="fos-account-trigger" data-testid="account-menu-trigger" aria-label={triggerLabel}>
+      </FosButtonRoot>
+    : <FosButtonRoot family="navigation" ref={triggerRef} type="button" className="fos-account-trigger" data-testid="account-menu-trigger" aria-label={triggerLabel}>
         <span aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
-      </button>
+      </FosButtonRoot>
 
   return <DropdownMenu.Root modal={false}>
     <DropdownMenu.Trigger asChild>{trigger}</DropdownMenu.Trigger>

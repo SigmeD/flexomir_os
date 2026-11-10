@@ -1,10 +1,11 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { useLayoutEffect, useRef, type ReactNode } from 'react'
 import './page-header.css'
 
 export interface Breadcrumb { label: string; onSelect?: () => void; disabled?: boolean }
 /** Desktop breadcrumbs 2330:2346. Compact navigation is supplied by the approved shell. */
 export function Breadcrumbs({ items }: { items: readonly Breadcrumb[] }) {
-  return <nav className="fos-breadcrumbs" aria-label="Хлебные крошки"><ol>{items.map((item, index) => <li key={index}>{item.onSelect ? <button type="button" disabled={item.disabled} onClick={item.onSelect}>{item.label}</button> : <span aria-current={index === items.length - 1 ? 'page' : undefined}>{item.label}</span>}</li>)}</ol></nav>
+  return <nav className="fos-breadcrumbs" aria-label="Хлебные крошки"><ol>{items.map((item, index) => <li key={index}>{item.onSelect ? <FosButtonRoot family="navigation" type="button" disabled={item.disabled} onClick={item.onSelect}>{item.label}</FosButtonRoot> : <span aria-current={index === items.length - 1 ? 'page' : undefined}>{item.label}</span>}</li>)}</ol></nav>
 }
 /** V3 2302:2138: 48px first-title line aligns with icons, desktop caption extends below. */
 export function PageHeader({ title, subtitle, context, actions, breadcrumbs, autoFocus = false, floatingWorkActions = false, subtitlePlacement = 'below-row', subtitleRole = 'secondary' }: { title: string; subtitle?: ReactNode; context?: ReactNode; actions?: ReactNode; breadcrumbs?: readonly Breadcrumb[]; autoFocus?: boolean; floatingWorkActions?: boolean; subtitlePlacement?: 'below-row' | 'below-title'; subtitleRole?: 'secondary' | 'status' }) {

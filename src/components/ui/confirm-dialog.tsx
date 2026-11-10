@@ -63,7 +63,7 @@ export function ConfirmDialog({
   return createPortal(
     <div className="fos-confirm-overlay" onMouseDown={event => { if (event.target === event.currentTarget && !busy) (onDismiss ?? onCancel)() }}>
       <div ref={dialogRef} className="fos-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="fos-confirm-title" aria-describedby={body ? 'fos-confirm-body' : undefined}>
-      <button className="fos-confirm-dialog__close" type="button" aria-label="Закрыть" onClick={onDismiss ?? onCancel} disabled={busy}><span aria-hidden="true">×</span></button>
+      <FOSAction hierarchy="tertiary" shape="icon" size="compact" className="fos-confirm-dialog__close" aria-label="Закрыть" onClick={onDismiss ?? onCancel} disabled={busy}><span aria-hidden="true">×</span></FOSAction>
         <h2 id="fos-confirm-title">{title}</h2>
         {body && <p id="fos-confirm-body">{body}</p>}
         <div className="fos-confirm-dialog__actions">

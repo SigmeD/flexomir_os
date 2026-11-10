@@ -1,20 +1,8 @@
 # Flexomir OS — реестр решений и вопросов
 
-Owner уточнил SectionAddItem: вместо ::before/::after один текстовый «+» в Manrope Medium500,28px/24px, контейнер24px; старые CSS-полоски удалены. Последние уточнения: сам «+» тоже увеличивается и анимация должна переиспользоваться. Поэтому используется штатный FOSAction/Secondary content scale1.02; отдельных font-size-анимаций, fixed-content props и новых каналов нет. FOSAction/useActionSurface/Frozen Engine не меняются. Стекло сохраняет один neutral GlassMaterial и прежний press/release. Общая замена glyph применяется к обоим вариантам SectionAddItem; material rollout остаётся DEV-only. Визуальная приёмка Owner OPEN.
+## Owner 11.11 — единое семейство кнопок
 
-Последнее решение Owner по Screenshot_6: откатить отдельные настройки Plus и использовать ТОЧНО анимацию показанного Secondary. Специальный hover без scale и рост штрихов14→16 отменены. Plus и Secondary используют один preset и одну формулу pressure/hover: material scale1.012, content scale1.02, та же тень, press/release. Без shape-specific коэффициентов. Дополнительный внешний rim/shadow на target44 остаётся убран. Отдельный тест сравнивает реальные hover matrices/content/shadow двух controls.
-
-Owner Screenshot_4: дополнительный hover-ободок воспроизведён RED-тестом. Причина — outer shadow 0/3/2.5px на target44, отдельно от glass34. Neutral SectionAddItem теперь по умолчанию использует quiet preset; legacy оставлен только для сравнения. Тот же preset установлен на DEV neutral Secondary. Обычный palette=reference и production не мигрируют. Никакой второй тени/обводки на target44; клавиатурный focus-visible сохраняется.
-
-Последнее уточнение Owner по Screenshot_3: quiet neutral action preset, один внешний rim/одна тень, hover surface1.012/text1.02, мягкий press; без роликов. Новый consumer FosActionMaterial использует native lighting/no shadow существующего материала и не меняет frozen FE11. В DEV PlusMotionLab показаны Plus и контрольный Secondary; HeaderAction и глобальный rollout ожидают визуальной приёмки. [Контракт и предложение сокращённого API](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md).
-
-## Owner 10.11 — FOS08/09: поверхность, сначала Plus
-
-Палитра и base components не приняты визуально. Требуются default neutral clear glass, hover light от pointer без движения hit target, упругая деформация поверхности/света на press и плавный release, эквивалент touch/keyboard. Сначала RCA useDirectionalPress → один Plus → cross-engine/touch/reduced-motion/performance → Owner gate. Более позднее уточнение Owner «давай без роликов» отменяет необходимость записи; для приёмки — живой стенд и статичные состояния. До явной приёмки перенос на HeaderAction/FOSAction запрещён. Существующие optical primitives переиспользовать, frozen FE11-v0.2 и GlassLens не менять; второй интегратор/линза запрещены. [Контракт](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md).
-
-## Owner continue — FOS08/09 DEV palette pilot
-
-Поручение продолжить после статуса ведёт к следующему пункту согласованной волны B. Выбран изолированный DEV reference общих controls, не глобальная перекраска. PROPOSED: neutral color tokens и адаптеры existing FosGlassMaterial; новая палитра требует отдельной Owner visual acceptance по G-05. Ни frozen engine, ни physics/formulas, ни DS masters не меняются. Один текущий PR34 волны B, без новой параллельной ветки/worktree/merge.
+Owner поручил унифицировать все кнопки системы и усилить обратную связь короткого клика. Нейтральная палитра из пилота применяется по умолчанию к кнопкам действий обеих ролей в ветке PR #34. Primary остаётся сплошным, Secondary стеклянным. Текстовый «+» в Manrope сохраняет общую анимацию Secondary. «Сохранить» использует ту же отрисовку и анимацию для круга и иконки, подпись остаётся неподвижной. Для строк, навигации, полей и меню используется общий семантический корень с их собственными контроллерами. Ограничения Frozen FE11-v0.2 действуют. Owner просил показать статичные состояния и живой стенд. Визуальная приёмка и merge открыты. [План](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md).
 
 ## Owner 10.11 — принять размер статуса общим компонентом
 

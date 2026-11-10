@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { useCallback, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { FosGlassMaterial } from './fos-glass-material'
 import { SidebarNavIcon, type SidebarNavIconName } from './sidebar-nav-icons'
@@ -111,7 +112,7 @@ export function SidebarNav({
           />
         )}
         {items.map((item, index) => (
-          <button
+          <FosButtonRoot family="navigation"
             type="button"
             key={item.id}
             className="fos-sidebar-nav__item"
@@ -150,7 +151,7 @@ export function SidebarNav({
               className="fos-sidebar-nav__label"
               ref={node => { labelRefs.current[index] = node }}
             >{item.label}</span>
-          </button>
+          </FosButtonRoot>
         ))}
       </div>
     </nav>

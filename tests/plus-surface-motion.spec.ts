@@ -161,15 +161,16 @@ test('Cancellation, focus loss, media change and disabled clear surface drivers'
   await expect(button).toHaveAttribute('data-surface-active', 'false')
 })
 
-test('Plus-only opt-in leaves legacy controls and default Client untouched', async ({ page }) => {
+test('Reference stays explicit; default Client uses the unified surface', async ({ page }) => {
   const { button } = await open(page)
   await expect(button.locator('[data-fos-glass-material]')).toHaveCount(1)
   await expect(page.getByTestId('legacy-plus')).not.toHaveAttribute('data-surface-motion')
   await page.goto('/?view=neutral-actions')
-  await expect(page.locator('.fos-ha[data-surface-motion], .fos-action--primary[data-surface-motion]')).toHaveCount(0)
-  await page.goto('/?view=client-orders&plusMotion=pressure-pilot')
+  await expect(page.getByTestId('neutral-paper').getByTestId('neutral-header')).toHaveAttribute('data-surface-motion', 'pressure')
+  await expect(page.locator('.fos-ha:not([data-action-palette])[data-surface-motion]')).toHaveCount(0)
+  await page.goto('/?view=client-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
-  await expect(page.locator('[data-surface-motion]')).toHaveCount(0)
+  await expect(page.getByRole('button', { name: 'Добавить позицию', exact: true })).toHaveAttribute('data-surface-motion', 'pressure')
 })
 
 test('Neutral preset has one contour and one shadow, without the sidebar optical coat', async ({ page }) => {
@@ -177,7 +178,7 @@ test('Neutral preset has one contour and one shadow, without the sidebar optical
   for (const id of ['surface-plus', 'surface-secondary']) {
     const button = page.getByTestId(id)
     const material = button.locator('[data-fos-glass-material]')
-    await expect(material).toHaveAttribute('data-action-material', 'neutral-action-pilot')
+    await expect(material).toHaveAttribute('data-action-material', 'neutral-action')
     await expect(material).toHaveAttribute('data-lighting', 'native')
     await expect(button).toHaveCSS('border-top-width', '0px')
     await expect(button).toHaveCSS('box-shadow', 'none')
@@ -245,7 +246,7 @@ test('Current neutral Plus hover has no second rim or shadow on the 44px target'
   await expect(plus).toHaveCSS('border-top-width', '0px')
   await expect(plus).toHaveCSS('outline-style', 'none')
   const material = plus.locator('[data-fos-glass-material]')
-  await expect(material).toHaveAttribute('data-action-material', 'neutral-action-pilot')
+  await expect(material).toHaveAttribute('data-action-material', 'neutral-action')
   await expect(material).toHaveCSS('border-top-width', '1px')
 })
 
@@ -307,4 +308,91 @@ test('Manrope text Plus replaces both CSS strokes and keeps its centered box', a
   await page.mouse.up(); await page.mouse.move(0, 0)
   await expect(button).toHaveAttribute('data-surface-active', 'false')
   await capture('release')
+})
+
+test('Fast native clicks remain visible across the action family', async ({ page }, info) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.goto('/?view=neutral-actions')
+  const paper = page.getByTestId('neutral-paper')
+  const observations = []
+  for (const [id, selector, surface] of [
+    ['neutral-plus', '.fos-glass-material', true], ['neutral-secondary', '.fos-glass-material', true],
+    ['neutral-header', '.fos-glass-material', true], ['neutral-primary', '.fos-action__solid', true],
+    ['neutral-icon', '[data-action-content]', false],
+    ['reference-header', '.fos-ha__glyph', false], ['reference-primary', '.fos-action__motion', false],
+    ['reference-secondary', '.fos-action__motion', false], ['reference-plus', '.fos-section-add__glyph', false],
+  ] as const) {
+    const button = paper.getByTestId(id), target = button.locator(selector)
+    await button.hover()
+    await expect.poll(() => target.isVisible()).toBe(true)
+    if (await button.getAttribute('data-surface-motion') === 'pressure') await expect(button).toHaveAttribute('data-surface-active', 'false')
+    const baseline = await scaleY(target)
+    const sampling = target.evaluate(async node => {
+      const start = performance.now(), rows: { time: number; scale: number }[] = []
+      await new Promise<void>(resolve => {
+        const frame = (stamp: number) => {
+          const transform = getComputedStyle(node).transform
+          rows.push({ time: stamp - start, scale: transform === 'none' ? 1 : new DOMMatrixReadOnly(transform).m22 })
+          if (stamp - start < 500) requestAnimationFrame(frame); else resolve()
+        }
+        requestAnimationFrame(frame)
+      })
+      return rows
+    })
+    await button.click({ delay: 0 })
+    const rows = await sampling
+    const minimum = Math.min(...rows.map(row => row.scale))
+    expect(baseline - minimum, id).toBeGreaterThan(surface ? .02 : .01)
+    observations.push({ id, baseline, minimum, rows })
+  }
+  await info.attach('quick-click-response', { body: JSON.stringify(observations), contentType: 'application/json' })
+})
+
+test('Header reuses Secondary material motion without moving its Save caption', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/?view=neutral-actions')
+  await page.evaluate(() => document.fonts.ready)
+  const button = page.getByTestId('neutral-paper').getByTestId('neutral-header')
+  const caption = button.locator('.fos-ha__caption'), circle = button.locator('.fos-ha__circle')
+  const originalCaption = await caption.boundingBox(), originalStyle = await caption.evaluate(node => ({ font: getComputedStyle(node).font, transform: getComputedStyle(node).transform, color: getComputedStyle(node).color }))
+  const captionPixels = await caption.screenshot()
+  await expect(button).toHaveAttribute('data-surface-motion', 'pressure')
+  const material = button.locator('[data-action-surface]')
+  await expect(material).toHaveCount(1)
+  await expect(button.locator('.fos-action__motion > .fos-action__content')).toHaveCount(1)
+  await expect(button.locator('[data-action-content] .fos-ha__caption')).toHaveCount(0)
+  await expect(material).toHaveCSS('border-radius', '24px')
+  const treatment = (node: Element) => ({ border: getComputedStyle(node).border, background: getComputedStyle(node).backgroundColor, shadow: getComputedStyle(node).boxShadow, overflow: getComputedStyle(node).overflow, position: getComputedStyle(node).position, zIndex: getComputedStyle(node).zIndex, lighting: node.getAttribute('data-lighting'), strength: node.getAttribute('data-strength') })
+  const secondaryMaterial = page.getByTestId('neutral-paper').getByTestId('neutral-secondary').locator('[data-action-surface]')
+  expect(await material.evaluate(treatment)).toEqual(await secondaryMaterial.evaluate(treatment))
+  const plusMaterial = page.getByTestId('neutral-paper').getByTestId('neutral-plus').locator('[data-action-surface]')
+  expect(await material.evaluate(treatment)).toEqual(await plusMaterial.evaluate(treatment))
+  await button.hover()
+  await expect(button).toHaveAttribute('data-surface-active', 'false')
+  expect(await scaleY(material)).toBeCloseTo(1.012, 4)
+  const hit = (await circle.boundingBox())!
+  await page.mouse.move(hit.x + 24, hit.y + 24); await page.mouse.down()
+  await expect.poll(() => scaleY(material)).toBeLessThan(.98)
+  expect(await caption.boundingBox()).toEqual(originalCaption)
+  expect(await caption.evaluate(node => ({ font: getComputedStyle(node).font, transform: getComputedStyle(node).transform, color: getComputedStyle(node).color }))).toEqual(originalStyle)
+  const captionInk = (bytes: Buffer) => {
+    const png = PNG.sync.read(bytes), ink: number[] = []
+    for (let i = 0; i < png.data.length; i += 4) ink.push((png.data[i] + png.data[i + 1] + png.data[i + 2]) / 3 < 140 ? 1 : 0)
+    return ink
+  }
+  // The circle's moving shadow changes the transparent background under the
+  // caption. Compare the text foreground, not all background PNG bytes.
+  const beforeInk = captionInk(captionPixels), pressedInk = captionInk(await caption.screenshot())
+  const inkCount = beforeInk.reduce((sum, pixel) => sum + pixel, 0)
+  expect(inkCount).toBeGreaterThan(20)
+  expect(beforeInk.filter((pixel, i) => pixel !== pressedInk[i]).length / inkCount).toBeLessThan(.03)
+  await page.mouse.up(); await page.mouse.move(0, 0)
+  await expect(button).toHaveAttribute('data-surface-active', 'false')
+  expect(await caption.boundingBox()).toEqual(originalCaption)
+  await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' })
+  await button.focus(); await page.keyboard.down(' ')
+  await expect(material).toBeHidden()
+  await expect(circle).toHaveCSS('border-top-width', '1px')
+  await expect(circle).toHaveCSS('border-top-style', 'solid')
+  await page.keyboard.up(' ')
 })

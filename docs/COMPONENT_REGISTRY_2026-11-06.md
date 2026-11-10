@@ -1,12 +1,20 @@
 # Flexomir OS — React Component Registry
 
-## FOS08/09 — общий quiet action preset / DEV / Owner NOT ACCEPTED
+## FOS08/09 · Кнопки системы
 
-SectionAdd1986:774 → SectionAddItem EXTEND neutral DEV → FOSAction round44/glass34/glyph24 REUSE; glyph теперь один текстовый + Manrope50028/24, вместо двух CSS-полосок. Action835:259 → FOSAction EXTEND materialPreset=neutral-action-pilot. Оба используют один новый consumer FosActionMaterial (native lighting/shadow=none existing FosGlassMaterial/GlassLens), один border+outershadow на materialroot; target без вторых контуров/теней. Материал/геометрия reference variant сохранены в том же adapter.
+FosButtonRoot — единственное место создания native button в JSX. Через него проходят действия, строки, навигация, поля, элементы меню, сегменты и служебные кнопки. Root передаёт ref, события, ARIA и нативные атрибуты формы. Варианты сохраняют свой визуальный и интерактивный контракт.
 
-useDirectionalPress EXTEND optional material mode → useActionSurface CREATE input adapter двух существующих Track/spring pressure/hover. Legacy content RAF не запускается параллельно. По Screenshot_6 никакой shape-specific motion: одинаковые formulas surface1.012/content1.02/shadow/press/release у Plus и Secondary; Plus text glyph использует существующий content scale1.02, отдельной анимации нет. Frozen5/GlassLens read-only.
+| Роль | Мастер / вариант | Компонент |
+| --- | --- | --- |
+| Primary | Action 835:259, сплошная заливка | FOSAction → FosActionSurface |
+| Secondary | Action 835:259, нейтральное стекло | FOSAction → FosActionSurface → FosGlassMaterial |
+| Plus | SectionAdd 1986:774, hit 44, стекло 34, текст «+» Manrope 28/24 Medium | SectionAddItem → FOSAction |
+| Header | 1953:4168 / 2173:1425, desktop 68, compact 48, круг 48 | HeaderAction → FosActionSurface. Подпись отдельным элементом |
+| Закрытие диалога | Плоская иконка, compact 40 | FOSAction, tertiary / icon |
+| More | 1914:650, прозрачный триггер меню | MoreAction → FosButtonRoot, lifecycle Radix |
+| Поля, строки, сегменты и навигация | Семантические варианты соответствующих мастеров | FosButtonRoot и существующие контроллеры выбора |
 
-Потребители: neutral Plus+Secondary на NeutralActionsLab, PlusMotionLab reference comparison, opt-in DEV Client Plus. HeaderAction1953:4168/2173:1425 сохранил прежний palette adapter/SVG mask и legacy motion, его rollout DEFER. Обычные Client/Manager, Profile, reference palette и production не мигрируют. Disabled — native boolean, не новый preset. Сокращённый public API предложен в [контракте](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md), массовая миграция до приёмки не выполнялась.
+Общие focus и disabled для вариантов действий. useDirectionalPress передаёт давление в один useActionSurface, который использует существующие Track/spring. Профиль удерживает короткий импульс 180 мс. FOSAction сохраняет hierarchy, size и shape. Reference-палитра доступна в сравнении на DEV-стенде. Frozen FE11-v0.2 сохраняет свои контракты. [План и проверка](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md).
 
 ## Owner 10.11 — общий размер статуса заказа
 

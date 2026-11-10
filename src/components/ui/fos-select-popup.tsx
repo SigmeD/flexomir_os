@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { useEffect, useLayoutEffect, useRef, useState, type ComponentProps, type CSSProperties, type KeyboardEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { FosPopup, type FosPopupItem } from './fos-popup'
@@ -124,7 +125,7 @@ export function FOSSelectPopup({ id, label, readOnly, children, onChange, onInva
       onChange={event => { onChange?.(event); if (controlled.current === undefined) refresh() }} onInvalid={event => { onInvalid?.(event); event.preventDefault(); setInvalid(true); close(true) }}>
       {children}
     </select>
-    <button ref={trigger} id={id} type="button" role="combobox" aria-label={label} aria-haspopup="listbox"
+    <FosButtonRoot family="field" ref={trigger} id={id} type="button" role="combobox" aria-label={label} aria-haspopup="listbox"
       aria-controls={listId} aria-expanded={open} aria-required={(props.required && !readOnly) || undefined} aria-readonly={readOnly || undefined}
       aria-invalid={invalid || props['aria-invalid']} aria-describedby={props['aria-describedby']} disabled={props.disabled}
       title={props.title} data-empty={(emptyIsPlaceholder && value === '') || undefined} className={'fos-field__control fos-field__select-button ' + (props.className ?? '')}
@@ -132,7 +133,7 @@ export function FOSSelectPopup({ id, label, readOnly, children, onChange, onInva
       onClick={() => { if (!readOnly) { if (open) close(true); else setOpen(true) } }}
       onKeyDown={event => { onKeyDown?.(event); if (!event.defaultPrevented && !readOnly && ['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) { event.preventDefault(); setOpen(true) } }}>
       <span className="fos-field__select-label">{items.find(item => item.id === value)?.label ?? ''}</span>
-    </button>
+    </FosButtonRoot>
     {open && createPortal(<FosPopup ref={popup} mode="listbox" id={listId} aria-label={label} selectedId={value}
       items={items} onSelect={choose} className="fos-popup--select" style={position} onKeyDown={onKeys} />, document.body)}
   </>

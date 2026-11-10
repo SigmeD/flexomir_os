@@ -16,7 +16,8 @@ test('shared FOS masters: stateful fields, segmented, overflow and all primary g
   for (const action of ['Сохранить', 'Отправить', 'Изменить']) {
     const button = page.getByRole('button', { name: action, exact: true })
     await expect(button.locator('.fos-ha__circle')).toHaveCount(1)
-    await expect(button.locator('img')).toHaveCount(1)
+    await expect(button.locator('.fos-ha__glyph-mask')).toHaveCount(1)
+    await expect(button.locator('[data-fos-glass-material]')).toHaveCount(1)
   }
   await expect(page.locator('input[type=file]')).toBeHidden()
   for (const width of [1440, 1024, 768, 390, 320]) {

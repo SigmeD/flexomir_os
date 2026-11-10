@@ -19,7 +19,8 @@ for (const width of [1440, 1024, 768, 390, 320]) {
     await expect(header.locator('.fos-ha__circle')).toHaveCSS('width', '48px')
     await expect(header.locator('.fos-glass-material')).toHaveCount(1)
     await expect(header.locator('.fos-ha__glyph-mask')).toHaveCSS('mask-image', /url\(/)
-    await expect(paper.getByTestId('neutral-primary')).toHaveCSS('background-color', 'rgb(44, 44, 44)')
+    await expect(paper.getByTestId('neutral-primary').locator('.fos-action__solid')).toHaveCSS('background-color', 'rgb(44, 44, 44)')
+    await expect(paper.getByTestId('neutral-primary').locator('[data-fos-glass-material]')).toHaveCount(0)
     await expect(paper.getByTestId('neutral-secondary').locator('.fos-glass-material')).toHaveCount(1)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: info.outputPath(`neutral-${width}.png`), fullPage: true })
@@ -113,13 +114,13 @@ test('shared press ends on keyboard blur, pointer cancel and lost capture', asyn
   }
 })
 
-test('only opted-in Client New uses glass Plus; Manager and ordinary Client retain reference', async ({ page }) => {
-  for (const [role, pilot, glass] of [['client', false, false], ['client', true, true], ['manager', true, false]] as const) {
-    await page.goto(`/?view=${role}-orders${pilot ? '&actionPalette=neutral-pilot' : ''}`)
+test('Client and Manager use the same Plus and open the item editor immediately', async ({ page }) => {
+  for (const role of ['client', 'manager']) {
+    await page.goto(`/?view=${role}-orders`)
     await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
     const plus = page.getByRole('button', { name: 'Добавить позицию', exact: true })
-    await expect(plus.locator('.fos-glass-material')).toHaveCount(glass ? 1 : 0)
-    await expect(plus.locator('img')).toHaveCount(glass ? 0 : 1)
+    await expect(plus.locator('.fos-glass-material')).toHaveCount(1)
+    await expect(plus.locator('img')).toHaveCount(0)
     await plus.click()
     await expect(page.getByTestId('order-item-form')).toBeVisible()
   }

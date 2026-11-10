@@ -29,9 +29,10 @@ test('one shared HeaderAction, 48px circle and breakpoint-specific caption', asy
   }
 })
 
-test('pointer press from all sides, transient light and native click', async ({ page }) => {
+test('shared surface presses from all sides and restores after one native click', async ({ page }) => {
   const button = page.getByTestId('header-action-add')
   const circle = button.locator('.fos-ha__circle')
+  const material = button.locator('[data-action-surface]')
   const b = await circle.boundingBox()
   expect(b).toBeTruthy()
   const points = [[.5, .5], [.14, .5], [.86, .5], [.5, .14], [.5, .86]]
@@ -40,13 +41,13 @@ test('pointer press from all sides, transient light and native click', async ({ 
     await page.mouse.move(b!.x + b!.width * x, b!.y + b!.height * y)
     await page.mouse.down()
     await expect(button).toHaveAttribute('data-pressed', 'true')
-    await page.waitForTimeout(150)
+    await expect.poll(() => material.evaluate(node => new DOMMatrixReadOnly(getComputedStyle(node).transform).m22)).toBeLessThan(.99)
     await page.mouse.up()
     await expect(button).toHaveAttribute('data-pressed', 'false')
     await expect(page.getByTestId('header-action-count')).toHaveText('Нажатий: ' + (i + 1))
-    await page.waitForTimeout(850)
-    await expect.poll(async () => circle.evaluate(el => (el as HTMLElement).style.getPropertyValue('--ha-shift-x'))).toBe('0px')
-    expect(await circle.evaluate(el => (el as HTMLElement).style.getPropertyValue('--ha-light-x'))).toBe('')
+    await page.mouse.move(0, 0)
+    await expect(button).toHaveAttribute('data-surface-active', 'false')
+    await expect(material).toHaveCSS('transform', 'none')
   }
 })
 
