@@ -1,5 +1,33 @@
 # Flexomir OS — handoff между сессиями Codex
 
+## Поручение Owner — merge PR31
+
+Merge явно разрешён. Перед выполнением разобраны оба failed CI на79d0529: один popup-dismissal сценарий нажимал центр textarea, перекрытый открытым More после второй даты. Test-only fix нажимает видимый левый край без force; исходные строгие inert/focus/unmount assertions и таймауты сохранены. Локальный RED2/2 → GREEN12/12 across Chromium/Firefox/WebKit/touch, buildPASS. Отправить этот fix в тот же PR31 и дождаться успешного CI фактического head; затем squash merge, проверить совпадение local main/origin/main с merge SHA, удалить только remote merged head и синхронизировать существующий Drive CURRENT. Корневую рабочую папку, local feature branch, чужие файлы/stash не удалять. Результаты/первичные CI FAIL — [аудит](M8_FINAL_AUDIT_2026-11-10.md).
+
+## Уточнение10.11 — общие размеры полей
+
+Продолжен существующий PR #31, без новой ветки/worktree. OrderDateFields задаёт общую responsive строку дат для OrderComposer/OrderDetail обеих ролей. Старый readonly720px в Figma Client Detail заменён прямым указанием Owner использовать ширину Client New (до506px desktop). После уточнения Owner «Согласованный срок» добавлен клиенту в создание/просмотр: New пустой/readOnly, Detail берёт существующее detail.agreedDate/readOnly. Manager composer/edit, API и статусные события не изменены; Figma не редактировалась.
+
+Последний diff: buildPASS, Chromium40/40 и Firefox/WebKit8/8; RED2 missing-fieldFAIL сохранены в output/m8-fields/client-date-red.log.30 новых измерений/18 screenshots в output/m8-client-agreed-date,0overflow/0pageerrors, даты44px. На tablet Client теперь пара350px вместо прежнего одиночного728px; на mobile поля друг под другом. Предыдущие результаты размеров ниже — checkpoint342ac12.
+
+QA: buildPASS, Orders64/64 Chromium и Firefox/WebKit4/4;30 измеренных состояний/5ширин,0overflow/0pageerrors/все обычные контроли44px;18 новых screenshots в output/m8-fields. Независимый reviewer просмотрел9 новых screenshots и2 Figma refs, code/layout findings нет; его уточнения текста реестра исправлены. Полный старый520PASS не выдавать за повторный прогон после этой правки. Подробности — [аудит M8](M8_FINAL_AUDIT_2026-11-10.md).
+
+Вопрос Owner о смене статуса: CURRENT E2E предусматривает сохранение согласованных данных → Manager «Создать заказ» → 1С pending/result → sync. Точный event→«В работе» mapping остаётся за Owner/PO/Алексеем; frontend не меняет статус при простом сохранении даты. Production-команда сейчас disabled, API/1С не подключены. Отображение даты клиенту выполнено; сценарий её фиксации менеджером ещё не реализован.
+
+## CURRENT 10.11.2026 — M8 final screen QA
+
+Base 9d1f5bc; ветка feat/m8-final-screen-qa. PR #30 уже MERGED; не продолжать старую feature branch. Новая поставка — screen audit и только подтверждённые исправления, без merge.
+
+Fresh sources: Figma session 0afae8b2-6da2-4635-a892-97f2392f3d58,69 frames/23 families, manifest scripts/m8-screen-manifest.json. Локальный обзор output/m8-final/chromium-index.html. Raw exports сохранены; crop из exact absoluteBoundingBox/renderBounds, без resize. Renderer scripts/m8-screen-review.cjs использует существующие React routes и формирует REVIEW_REQUIRED, а не автоматический VISUAL PASS.
+
+Source fix: index.html title Flexomir OS; SupportScreen client ticket parent Поддержка, Manager Мои обращения. Regression breadcrumb→own list→focus opener RED1/2→GREEN6/6. Test-only openDemoControls теперь ждёт trigger OR panel перед isVisible; исходный WebKit case3 FAIL→3 PASS. M7 final159 PASS, buildPASS. Итоговая full regression520 PASS/4 expected skips/0 FAIL, независимый review PASS WITH RISKS(12 пар); CI отправленного head — [итоговый аудит M8](M8_FINAL_AUDIT_2026-11-10.md).
+
+Пять frozen sources+manifest и роль 14/18/500 не менять. Согласованный срок Manager draft в Figma-кандидате отсутствует в React; async Owner вопрос пока без конкретного решения, оставить OPEN. Auth/manager business candidates/backend/1С не реализуются. Не закрывать #21 и не объявлять Owner acceptance по pipeline.
+
+Четыре исходных stash сохранены. Артефакты ignored/local. Следующая ревизия документации 24.11.2026.
+
+## Предыдущие checkpoints (история)
+
 ## CURRENT 10.11.2026 — FE11 rollout после Owner acceptance
 
 Пилот принят: «да подтверждаю». Рабочая ветка `feat/fe11-popup-unification-reaudit`, один [PR #30](https://github.com/SigmeD/flexomir_os/pull/30). Merge отдельно; не создавать второй PR.

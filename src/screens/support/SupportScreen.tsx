@@ -33,8 +33,9 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
     nav.replace('ticket/' + id)
   }
   const title = ticket?.subject ?? (creating ? 'Новое обращение' : 'Мои обращения')
+  const parentBreadcrumb = ticket && role === 'client' ? 'Поддержка' : 'Мои обращения'
   return <CabinetPage role={role} section="support" onNavigate={onNavigate}>
-    <PageHeader title={title} floatingWorkActions autoFocus={creating || Boolean(ticket)} breadcrumbs={nav.path === 'list' ? [{ label: 'Мои обращения' }] : [{ label: 'Мои обращения', onSelect: nav.back }, { label: title }]}
+    <PageHeader title={title} floatingWorkActions autoFocus={creating || Boolean(ticket)} breadcrumbs={nav.path === 'list' ? [{ label: 'Мои обращения' }] : [{ label: parentBreadcrumb, onSelect: nav.back }, { label: title }]}
       actions={<><HeaderAction action={nav.path === 'list' ? 'add' : 'send'} accessibleName={nav.path === 'list' ? 'Добавить обращение' : 'Отправить обращение'} data-focus-key="support-add"
         disabled={nav.path === 'list' ? false : !creating || !valid || Boolean(error)} onAction={nav.path === 'list' ? () => nav.open('new') : send} /><MoreAction disabled /></>} />
     {ticket ? <SupportTicketDetail ticket={ticket} submitted={submitted.current.has(ticket.id)} /> : creating ? <SupportTicketForm value={input} onChange={setInput} descriptionLabel={role === 'client' ? 'Описание' : 'Сообщение'} touched={touched} onBlur={field => setTouched(current => ({ ...current, [field]: true }))} error={error} onSubmit={send} /> : <>

@@ -1,5 +1,25 @@
 # Flexomir OS — текущее состояние проекта
 
+## Уточнение10.11 — размеры полей заказа
+
+В том же PR #31 общая композиция OrderDateFields подключена к OrderComposer/OrderDetail Client/Manager. Убраны разные локальные правила ширины: desktop до506px на поле, tablet адаптивно по числу полей, mobile одна колонка. После уточнения Owner добавлено отсутствовавшее поле «Согласованный срок» клиента: в новом заказе пустое/readOnly, в просмотре существующее detail.agreedDate либо пустое/readOnly. Желаемый срок не подставляется вместо согласованного; новая дата и переход статуса не генерируются. Фиксация менеджером и production status mapping остаются OPEN.
+
+Последняя проверка отображения клиенту: RED2 отсутствующих поля → GREEN40/40 Chromium +8/8 Firefox/WebKit, buildPASS;30 новых измеренных состояний без overflow/page errors, screenshots отдельно в output/m8-client-agreed-date. Предыдущие64/4 и полный520 относятся к своим checkpoints, не к этому последнему diff.
+
+Свежая проверка:30 состояний на1440/1024/768/390/320, без overflow/page errors; все обычные контроли44px. BuildPASS, Orders64/64 Chromium, Firefox/WebKit4/4 existing flow tests. Независимый review без code/layout findings; уточнения формулировок размеров исправлены. [Доказательства и границы](M8_FINAL_AUDIT_2026-11-10.md). Merge не выполнен.
+
+## CURRENT 10.11.2026 — заключительная проверка M8
+
+PR #30 MERGED: main/origin/main 9d1f5bc, дерево соответствует проверенному head 039381c; remote head branch удалена. Новый этап — issue #21 в одной ветке feat/m8-final-screen-qa, без worktree.
+
+Сняты 69 свежих пар Figma↔React по 23 семействам D1440/T768/M390. Переполнение по горизонтали, page errors и незагруженные изображения не обнаружены. Сравнение учитывает Owner delta14/18/500, frozenFE11, общий Glass/GL03 и compact action dock; старые screen instances не отменяют принятые решения.
+
+Исправлены browser title и Client Support Detail breadcrumb по FOS; label Manager сохранён. M7 final159/159 PASS, breadcrumb regression6/6, исходный WebKit helper race после исправления 3/3 PASS, buildPASS. Итоговая полная regression520 PASS/4 expected skips/0 FAIL; независимый review PASS WITH RISKS(12 реальных пар). CI отправленного head сверяется в [итоговый аудит M8](M8_FINAL_AUDIT_2026-11-10.md). Первый полный checkpoint519 PASS/1fixture-loadFAIL/4 expected skips; исходный тест отдельно 6/6 PASS.
+
+Manager agreed-date/private publication/search semantics, Auth design и Owner screen acceptance остаются OPEN; поле согласованного срока без явного решения не добавлено. Следующий gate — завершить доказательства и CI этого PR, затем Owner review; M9 по готовым API Алексея.
+
+## Предыдущие checkpoints (история)
+
 ## CURRENT 10.11.2026 — FE11: пилот принят, общий popup включён
 
 Owner принял пилот ответом «да подтверждаю». Продолжение идёт в одной ветке `feat/fe11-popup-unification-reaudit` и [PR #30](https://github.com/SigmeD/flexomir_os/pull/30), без merge.

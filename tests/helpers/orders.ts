@@ -2,6 +2,7 @@ import { expect, type Page } from '@playwright/test'
 
 export async function openDemoControls(page: Page) {
   const trigger = page.getByRole('button', { name: 'Демо — показать панель демонстрации' })
+  await expect(trigger.or(page.getByTestId('demo-presentation-controls'))).toBeVisible()
   if (await trigger.isVisible()) await trigger.click()
 }
 

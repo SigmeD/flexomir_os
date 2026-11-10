@@ -6,8 +6,7 @@
 .fos-order-detail__company { margin-bottom: 30px; }
 .fos-order-detail__general { margin-top: 36px; }
 .fos-order-detail__general > h2 { margin-bottom: 10px; }
-.fos-order-detail__dates { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; margin-bottom: 20px; }
-.fos-order-detail__dates:has(> :only-child) { grid-template-columns: minmax(0,720px); }
+.fos-order-detail__dates { margin-bottom: 20px; }
 .fos-order-detail__items { display: grid; gap: 24px; margin: 0; padding: 0; list-style: none; }
 .fos-order-item-summary { min-width: 0; min-height: 112px; padding: 16px; border: 1px solid #d8e0e9; border-radius: 13px; background: #fff; overflow-wrap: anywhere; }
 .fos-order-item-summary h3 { margin: 0; color: #253144; font-size: var(--fos-type-card-size); font-weight: 600; line-height: var(--fos-type-card-line-height); }
@@ -40,9 +39,8 @@
   .fos-order-detail__products > h2,.fos-order-detail__general > h2 { font-size: 16px; line-height: 24px; }
   .fos-order-detail__general > h2 { margin-bottom: 14px; }
   .fos-order-detail__products > h2 { margin-bottom: 47px; }
-  .fos-order-detail__dates { grid-template-columns: minmax(0,1fr); }
   .fos-order-detail[data-role=manager] .fos-order-detail__products > h2 { margin-bottom: 19px; }
   .fos-order-detail[data-role=manager] .fos-order-detail__general > h2 { margin-bottom: 26px; }
-  .fos-order-detail[data-role=manager] .fos-order-detail__dates { row-gap: 26px; margin-bottom: 23px; }
+  .fos-order-detail[data-role=manager] .fos-order-detail__dates { margin-bottom: 23px; }
 }
 @media(forced-colors:active) { .fos-order-item-summary { background: Canvas; color: CanvasText; border-color: ButtonText; } }

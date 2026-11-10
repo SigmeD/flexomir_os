@@ -6,6 +6,7 @@ import { OverflowMenu } from '@/components/ui/overflow-menu'
 import { FOSDateField, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
 import { OrderItemForm } from './OrderItemForm'
 import { OrderItemRow } from './OrderItemRow'
+import { OrderDateFields } from './OrderDateFields'
 import { SectionAddItem } from './SectionAddItem'
 import type { OrderItemExitActions } from './OrderItemForm'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
@@ -79,7 +80,10 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
           </li>)}</ul> : <p className="fos-order-detail__empty">Позиция ещё не добавлена. Добавьте первую позицию.</p>}
         </section>
         <section className="fos-order-composer__general" aria-labelledby="compose-general-title"><h2 id="compose-general-title">Общие данные заказа</h2>
-          <FOSDateField wrapperClassName="fos-order-composer__date" label="Желаемый срок" value={value.requestedDate} error={!validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onChange={event => save({ ...value, requestedDate: event.target.value })} />
+          <OrderDateFields className="fos-order-composer__dates">
+            <FOSDateField label="Желаемый срок" value={value.requestedDate} error={!validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onChange={event => save({ ...value, requestedDate: event.target.value })} />
+            {value.ownerRole === 'client' && <FOSDateField label="Согласованный срок" value="" readOnly />}
+          </OrderDateFields>
           <FOSTextarea label="Комментарии" placeholder="Необязательно" value={value.comment} onChange={event => save({ ...value, comment: event.target.value })} />
         </section>
       </div>

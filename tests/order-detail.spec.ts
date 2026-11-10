@@ -24,7 +24,7 @@ for (const role of roles) {
       await expect(detail).toContainText('Демонстрационный заказ 03')
       await expect(detail).toContainText('Компания 01')
       await expect(detail.getByTestId('order-item-summary')).toHaveCount(2)
-      await expect(detail.getByLabel('Согласованный срок', { exact: true })).toHaveCount(role === 'manager' ? 1 : 0)
+      await expect(detail.getByLabel('Согласованный срок', { exact: true })).toHaveValue('2026-11-20')
       for (const field of await detail.locator('input,textarea').all()) await expect(field).toHaveAttribute('readonly', '')
       for (const action of await detail.getByRole('button', { name: /Создать|Отправить|Подтвердить|Повторить|Редактировать/ }).all()) await expect(action).toBeDisabled()
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)

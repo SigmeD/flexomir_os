@@ -1,5 +1,23 @@
 # Flexomir OS — CURRENT источники
 
+## Проверка размеров и смены статуса —10.11.2026
+
+Последующее уточнение Owner об отсутствующем поле клиенту закрывает только отображение: исходный screenshot Client New с местом справа и screenshot Manager pair → прежний FOS Date Readonly1169:433 в общей строке. Теперь поле видно в Client New/Detail, readOnly. Источник отображаемого значения — уже существующее detail.agreedDate; в новом черновике значения нет. Figma не менялась, действие фиксации менеджера и status mapping не считаются решёнными этим UI-изменением.
+
+Figma read-only session88ca34e1-ac28-461b-ac35-576d4803d425: FOS Date Field1169:437 (Default1169:383 / Readonly1169:433, control44px); Client New1810:12510/1837:6359/1810:12545 (506/728/350px); Client Detail1838:6565/1838:6810/1838:7031 (старый desktop720px); Manager draft2569:24648/24851/25041 (506/350/350px). Новое прямое указание Owner о едином размере выше старой readonly ширины.
+
+Заново прочитаны существующие CURRENT frontend plan и E2E v0.2. E2E различает сохранение договорённостей, «Создать заказ» в1С и последующий sync; точный production status mapping остаётся OPEN. Поля/textarea остальных форм проверены в коде; Figma Support Description2412:10665 подтверждает отдельный textarea146px с label (control120px), не базовое однострочное поле44px. Raw refs прошлого M8 использовались как изображения для сравнения; свежие измерения узлов и browser captures отдельно в [аудите](M8_FINAL_AUDIT_2026-11-10.md).
+
+## M8 final audit — 10.11.2026
+
+Проверены существующие Drive CURRENT frontend plan, UX/UI source index, SRS v0.5, E2E v0.2 и Glass contract. Поздние Owner решения/merged PR #29/#30 выше старых candidate notes. База fresh origin/main 9d1f5bc, четыре stash сохранены, активных PR на старте нет.
+
+Figma file7rvIYc6yj3OA7gxmf1xJbv, audit session 0afae8b2-6da2-4635-a892-97f2392f3d58:69 новых isolated renders по точным IDs/размерам из scripts/m8-screen-manifest.json. Node ancestry и CURRENT/PILOT/CANDIDATE проверены. Figma не изменялась. Для Support Detail 634:8137 получен design context с render; frame/master Breadcrumbs подтверждён на обеих ролях.
+
+Raw PNG output/m8-final/figma, реальные browser captures/pairs и index ignored/local. Script сохраняет исходные exports, crop вычислен из exact render bounds, картинки не растягиваются. Совпадение fixture copy/record count не требуется; Owner deltas и source conflicts отражены отдельно. [итоговый аудит M8](M8_FINAL_AUDIT_2026-11-10.md).
+
+## Предыдущие checkpoints (история)
+
 ## FE11 popup rollout — 10.11.2026
 
 Источник задания: `D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`. Более новые прямые решения Owner: сохранить 14/18/500; «да подтверждаю» принимает пилот/action behavior и открывает D/E. PR #29 MERGED03238af, эта поставка — PR #30 от main a9ffa8a.

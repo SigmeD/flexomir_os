@@ -1,6 +1,18 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
+for (const role of ['client', 'manager']) test(`${role} support detail breadcrumb returns to the own list and restores its opener`, async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 960 })
+  await page.goto(`/?view=${role}-support`)
+  const row = page.getByTestId('ticket-row-' + role + '-01')
+  await row.click()
+  const breadcrumbs = page.getByRole('navigation', { name: 'Хлебные крошки' })
+  await breadcrumbs.getByRole('button', { name: role === 'client' ? 'Поддержка' : 'Мои обращения', exact: true }).click()
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Мои обращения')
+  await expect(row).toBeFocused()
+  await expect(page.getByTestId('support-ticket-detail')).toHaveCount(0)
+})
+
 for (const role of ['client', 'manager']) for (const width of [1440, 1024, 768, 390, 320]) {
   test(`B ${role} own support create/read/back ${width}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 960 })
