@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { commitItem, fillItem, setDemoRole } from './helpers/orders'
+import { chooseFormOption, commitItem, fillItem, setDemoRole } from './helpers/orders'
 
 test('A: Manager queue New contains client submissions; All includes labeled synthetic imported fixture', async ({ page }) => {
   await page.goto('/?view=manager-orders&demoTools=1&fixture=imported-1c')
@@ -17,7 +17,7 @@ test('B: manager creates a private draft using an existing company and it is abs
   await expect(page.getByTestId('order-composer')).toBeVisible()
   await expect(page.getByText('Черновик менеджера · приватно в демосессии')).toBeVisible()
   await expect(page.getByRole('button', { name: 'Сохранить черновик менеджера' })).toBeDisabled()
-  await page.getByLabel('Компания', { exact: true }).selectOption('company-01')
+  await chooseFormOption(page, 'Компания', 'Компания 01')
   await page.getByRole('button', { name: 'Сохранить черновик менеджера' }).click()
   await setDemoRole(page, 'client')
   await expect(page.getByRole('button', { name: /Открыть заказ DEMO-NEW-/ })).toHaveCount(0)

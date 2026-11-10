@@ -10,6 +10,8 @@ on:
       - 'tests/typography-contract.spec.ts'
       - 'tests/fos-select-popup.spec.ts'
       - 'tests/fixtures/fos-select.*'
+      - 'tests/glass-select-api.spec.ts'
+      - 'tests/fixtures/glass-select.*'
       - 'tests/fe11-*.spec.ts'
       - 'docs/FE11_MOTION_FROZEN_V0_2.json'
       - 'playwright*.ts'
@@ -35,7 +37,7 @@ jobs:
         run: npx playwright test --config=playwright.popup-qa.config.ts --workers=1
       - name: Shared navigation and popup typography contract
         run: npx playwright test --config=playwright.profile.config.ts tests/typography-contract.spec.ts --workers=1 --output=output/playwright/navigation-typography/ci
-      - name: FE11 popup re-audit pilot and form contract
+      - name: FE11 popup rollout and form contracts
         run: npx playwright test --config=playwright.reaudit.config.ts --workers=1
       - name: Save M7 browser evidence
         if: always()

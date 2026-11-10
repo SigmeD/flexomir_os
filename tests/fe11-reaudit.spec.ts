@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { commitItem } from './helpers/orders'
 
-const pilot = '/?view=client-orders&popupPilot=1'
+const pilot = '/?view=client-orders'
 async function openItem(page: import('@playwright/test').Page) {
   await page.goto(pilot)
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
@@ -11,7 +11,7 @@ async function openItem(page: import('@playwright/test').Page) {
 
 test('pilot Account is a flat action list without fabricated selection; identity and dismissal survive', async ({ page }) => {
   for (const role of ['client', 'manager']) {
-    await page.goto('/?view=' + role + '-orders&popupPilot=1')
+    await page.goto('/?view=' + role + '-orders')
     const trigger = page.getByTestId('account-menu-trigger')
     await trigger.click()
     const menu = page.getByTestId('account-menu')
@@ -78,15 +78,15 @@ test('pilot Shape and Material use shared listbox, keyboard commit and real nati
   expect((await new AxeBuilder({ page }).disableRules(['color-contrast']).analyze()).violations).toEqual([])
 })
 
-test('ordinary routes retain approved adapters until the rollout gate', async ({ page }) => {
+test('ordinary routes use the accepted adapters after the Owner rollout gate', async ({ page }) => {
   await page.goto('/?view=client-orders')
   await page.getByTestId('account-menu-trigger').click()
-  await expect(page.getByTestId('account-menu').locator('[data-fos-popup]')).toHaveCount(0)
-  await expect(page.getByTestId('account-menu').getByRole('separator')).toHaveCount(3)
+  await expect(page.getByTestId('account-menu')).toHaveAttribute('data-fos-popup', 'actions')
+  await expect(page.getByTestId('account-menu').getByRole('separator')).toHaveCount(0)
   await page.keyboard.press('Escape')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
-  await expect(page.getByLabel('Форма', { exact: true })).toHaveJSProperty('tagName', 'SELECT')
+  await expect(page.getByLabel('Форма', { exact: true })).toHaveJSProperty('tagName', 'BUTTON')
 })
 
 test('pilot works at five widths in both roles and keeps popup bounds inside the viewport', async ({ page }) => {
@@ -94,7 +94,7 @@ test('pilot works at five widths in both roles and keeps popup bounds inside the
   for (const width of [1440, 1024, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 })
     for (const role of ['client', 'manager']) {
-      await page.goto('/?view=' + role + '-orders&popupPilot=1')
+      await page.goto('/?view=' + role + '-orders')
       await page.getByTestId('account-menu-trigger').click()
       const menu = page.getByTestId('account-menu')
       await menu.evaluate(element => Promise.all(element.getAnimations().map(animation => animation.finished)))

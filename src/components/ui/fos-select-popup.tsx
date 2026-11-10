@@ -1,17 +1,18 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ComponentProps, type CSSProperties, type KeyboardEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { FosPopup, type FosPopupItem } from './fos-popup'
+import { usePopupSelectionRest } from './use-popup-selection-rest'
 
 export type FOSSelectPopupProps = Pick<ComponentProps<'select'>, 'onChange' | 'onInvalid' | 'disabled' | 'required' | 'name' | 'form' | 'children' | 'className' | 'title' | 'aria-invalid' | 'aria-describedby'> & {
   value?: string; defaultValue?: string
-  id: string; label: string; readOnly?: boolean; autoFocus?: boolean
+  id: string; label: string; readOnly?: boolean; autoFocus?: boolean; emptyIsPlaceholder?: boolean
   onFocus?: ComponentProps<'button'>['onFocus']
   onBlur?: ComponentProps<'button'>['onBlur']
   onKeyDown?: ComponentProps<'button'>['onKeyDown']
 }
 
 /** Single-select pilot: the real select owns form values/events/validity; the popup owns presentation. */
-export function FOSSelectPopup({ id, label, readOnly, children, onChange, onInvalid, onFocus, onBlur, onKeyDown, autoFocus, ...props }: FOSSelectPopupProps) {
+export function FOSSelectPopup({ id, label, readOnly, children, onChange, onInvalid, onFocus, onBlur, onKeyDown, autoFocus, emptyIsPlaceholder = true, ...props }: FOSSelectPopupProps) {
   const native = useRef<HTMLSelectElement>(null), trigger = useRef<HTMLButtonElement>(null), popup = useRef<HTMLDivElement>(null)
   const [items, setItems] = useState<FosPopupItem[]>([])
   const [value, setValue] = useState('')
@@ -58,33 +59,7 @@ export function FOSSelectPopup({ id, label, readOnly, children, onChange, onInva
   }
   const options = () => Array.from(popup.current?.querySelectorAll<HTMLButtonElement>('[role="option"]:not(:disabled)') ?? [])
   const close = (restore: boolean) => { activation.current += 1; setSettling(null); setOpen(false); if (restore) trigger.current?.focus({ preventScroll: true }) }
-  useLayoutEffect(() => {
-    if (!open || settling === null || !popup.current) return
-    const surface = popup.current, generation = activation.current
-    let stopped = false, seenLens = false
-    const finish = () => {
-      if (stopped || generation !== activation.current) return
-      stopped = true
-      close(surface.contains(document.activeElement))
-    }
-    const check = () => {
-      if (stopped || generation !== activation.current) return
-      const row = Array.from(surface.querySelectorAll<HTMLElement>('[data-popup-item]')).find(item => item.dataset.popupItem === settling)
-      const committed = controlled.current ?? native.current?.value
-      if (committed !== settling || !row || row.matches(':disabled, [data-disabled]')) { finish(); return }
-      const lens = surface.querySelector<HTMLElement>('[data-motion="travel"]')
-      if (!lens) { if (seenLens) finish(); return }
-      seenLens = true
-      if (lens.dataset.motionState !== 'settled' && lens.dataset.motionState !== 'off') return
-      const rowBox = row.getBoundingClientRect(), lensBox = lens.getBoundingClientRect()
-      if (Math.abs(rowBox.top - lensBox.top) > .75 || Math.abs(rowBox.height - lensBox.height) > .75) return
-      finish()
-    }
-    const observer = new MutationObserver(check)
-    observer.observe(surface, { subtree: true, childList: true, attributes: true, attributeFilter: ['style', 'data-motion-state', 'data-travel-target', 'disabled', 'data-disabled'] })
-    check()
-    return () => { stopped = true; observer.disconnect() }
-  }, [open, settling, value, items])
+  usePopupSelectionRest({ open, target: settling, value: controlled.current ?? value, generation: activation, surfaceRef: popup, onComplete: close })
   useLayoutEffect(() => {
     if (!open) return
     const place = () => {
@@ -152,7 +127,7 @@ export function FOSSelectPopup({ id, label, readOnly, children, onChange, onInva
     <button ref={trigger} id={id} type="button" role="combobox" aria-label={label} aria-haspopup="listbox"
       aria-controls={listId} aria-expanded={open} aria-required={(props.required && !readOnly) || undefined} aria-readonly={readOnly || undefined}
       aria-invalid={invalid || props['aria-invalid']} aria-describedby={props['aria-describedby']} disabled={props.disabled}
-      data-empty={value === '' || undefined} className={'fos-field__control fos-field__select-button ' + (props.className ?? '')}
+      title={props.title} data-empty={(emptyIsPlaceholder && value === '') || undefined} className={'fos-field__control fos-field__select-button ' + (props.className ?? '')}
       autoFocus={autoFocus} onFocus={onFocus} onBlur={onBlur} value={value}
       onClick={() => { if (!readOnly) { if (open) close(true); else setOpen(true) } }}
       onKeyDown={event => { onKeyDown?.(event); if (!event.defaultPrevented && !readOnly && ['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) { event.preventDefault(); setOpen(true) } }}>

@@ -1,16 +1,14 @@
 # Flexomir OS — план frontend и Liquid Glass
 
-## CURRENT 10.11.2026 — FE11 re-audit, этап B → C
+## CURRENT 10.11.2026 — FE11, этапы D/E после приёмки пилота
 
-Этап B локально QA VERIFIED: build/freeze PASS,80/80 cross-browser,4/4 frames, полная regression500 PASS/4 expected skips/0 FAIL. Этап C — Owner visual/action acceptance OPEN; public API migration остальных потребителей и cleanup ещё не разрешены.
+Этап C закрыт ответом Owner «да подтверждаю». Этап D реализован в том же PR #30: все согласованные popup/select consumers используют общий API, флаг пилота и legacy driver удалены, затронутые Figma masters синхронизированы. Роль 14/18/500 и frozen engine сохранены.
 
-По новому поручению Owner реализуется изолированный dev-пилот public FosPopup + Account/More + Shape/Material на существующем frozen FE11-v0.2. Типографика14/18/500 сохранена по повторному подтверждению. Массовая миграция, Figma sync и merge не входят автоматически; после QA требуется отдельная приёмка пилота/действий. [Текущая ветка, inventory, результаты и следующий gate](FE11_POPUP_REAUDIT_2026-11-10.md).
+Этап E: build PASS, adapters82/82, cross-browser 124/124 и независимое static review без найденных дефектов. Полная regression 516 PASS / 4 expected skips / 0 FAIL; актуальный CI отправленного head сверять по PR checks в [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md). Затем — отдельное решение о merge. Массовая экранная/релизная приёмка остаётся отдельным gate.
 
-## CURRENT 10.11.2026 — shared navigation/popup item role
+Общий frontend roadmap: закрыть M8 UX/UI и связанные Owner gates; M9 — интеграционная готовность к согласованному API Алексея. Backend/ACL/1С остаются в его потоке.
 
-Продолжение QA: build, 24/24 адресных Chromium checks и шесть CI jobs на `0312b3b` PASS; свежие снимки обоих кабинетов и независимый read-only review (PASS WITH RISKS) готовы. Исправлено только ожидание видимых пунктов в typography test после одного WebKit immediate-count FAIL; полный typography suite после fix — 24/24 PASS в четырёх browser/input проектах. UI и frozen reference сохранены. Результаты повторов и материалы Owner review — [аудит](TYPOGRAPHY_AUDIT_2026-11-09.md). Следующий продуктовый gate — Owner visual acceptance, затем Figma sync; merge отдельно.
-
-Owner typography delta в текущем PR #29: одна роль 14/18 Medium 500 → два алиаса → существующие Sidebar/Drawer/Account/More/GlassSelect. Код реализован, обе роли/пять ширин проверены в четырёх browser/input проектах (24/24). Motion unchanged; далее итоговый regression/CI → Owner visual gate → Figma/утверждённый DS standard. Последние два шага пока OPEN. [Контракт и QA](TYPOGRAPHY_AUDIT_2026-11-09.md).
+## История предыдущих этапов (актуальный порядок выше и в Drive)
 
 ## CURRENT 09.11.2026 — close remaining popup QA
 

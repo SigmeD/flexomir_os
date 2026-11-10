@@ -29,11 +29,19 @@ export async function fillItem(page: Page, name = 'Этикетка DEMO') {
   await page.getByLabel('Наименование продукции', { exact: true }).fill(name)
   await page.getByLabel('Количество', { exact: true }).fill('500')
   await page.getByLabel('Флексопечать', { exact: true }).check()
-  await page.getByLabel('Форма', { exact: true }).selectOption('Прямоугольная')
+  await chooseFormOption(page, 'Форма', 'Прямоугольная')
   await page.getByLabel('Ширина, мм', { exact: true }).fill('100')
   await page.getByLabel('Высота, мм', { exact: true }).fill('150')
-  await page.getByLabel('Материал', { exact: true }).selectOption('Бумага')
+  await chooseFormOption(page, 'Материал', 'Бумага')
   await page.getByLabel('Нужна помощь с макетом', { exact: true }).check()
+}
+
+export async function chooseFormOption(page: Page, label: string, option: string) {
+  const trigger = page.getByRole('combobox', { name: label, exact: true })
+  await trigger.click()
+  await page.getByRole('option', { name: option, exact: true }).click()
+  await expect(trigger).toContainText(option)
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false')
 }
 
 export async function commitItem(page: Page) {

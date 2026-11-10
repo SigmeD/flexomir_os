@@ -37,7 +37,7 @@ test('navigation popup opens below and aligned to the hamburger trigger', async 
   expect(panelBox?.y).toBeCloseTo((headerBox?.y ?? 0) + (headerBox?.height ?? 0), 1)
 })
 
-test('approved Drawer, Account and Select share one Liquid Glass surface; Order More remains excluded', async ({ page }) => {
+test('Drawer, Account, Select and More share one Liquid Glass surface', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/?view=manager-orders')
   await page.getByTestId('navigation-drawer-trigger').click()
@@ -59,8 +59,9 @@ test('approved Drawer, Account and Select share one Liquid Glass surface; Order 
   await page.getByRole('button', { name: 'Ещё' }).click()
   const moreSurface = page.locator('.fos-overflow')
   await expect(moreSurface).toBeVisible()
-  await expect(moreSurface.locator('[data-motion-reference]')).toHaveCount(0)
-  await expect(moreSurface).not.toHaveAttribute('data-sidebar-material', 'true')
+  await expect(moreSurface.locator('[data-motion-reference]')).toHaveCount(1)
+  await expect(moreSurface).toHaveAttribute('data-sidebar-material', 'true')
+  expect(await signature(moreSurface)).toEqual(expected)
 
   await page.goto('/?view=glass-filter-lab')
   await page.getByTestId('filter-control').getByRole('button').click()

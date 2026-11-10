@@ -1,28 +1,22 @@
 # Flexomir OS — React Component Registry
 
-## FE11 re-audit pilot / 10.11.2026 — OWNER OPEN
+## FE11 popup rollout / 10.11.2026 — пилот OWNER ACCEPTED
 
-| Источник | Компонент / решение | Контракт и consumers |
+| Источник / вариант | React / решение | Контракт и consumers |
 | --- | --- | --- |
-| Frozen FE11-v0.2; Owner re-audit | CREATE `FosPopup` поверх существующих Surface/Rows | modes actions/navigation/listbox, items/onSelect/header/layout; actions selectedId запрещён типом; material/hover flags не публичные |
-| Account `3038:2667` + Owner delta | EXTEND `AccountMenu`, dev opt-in | identity unchanged; no separators/fake selected; Client/Manager; Radix lifecycle unchanged |
-| More `1914:650/655` + явный новый scope | EXTEND `OverflowMenu`, dev opt-in | те же команды/disabled/reason/focusAfter; все More usages только с popupPilot flag |
-| Select `1148:311`, 44px | CREATE `FOSGlassSelect` / `FOSSelectPopup` | single string value; real select change/form validation/reset; visible button focus/key events; только OrderItemForm Shape/Material |
-| Existing native FOSSelect / GlassSelect / Drawer | KEEP / DEFER rollout | исходный FOSSelect контракт сохранён; остальные поля и принятый Drawer не мигрируются до Owner gate |
+| Frozen FE11-v0.2 + Owner accepted pilot | CREATE FosPopup, единственная композиция Surface/Rows | actions/navigation/listbox; actions не допускает selectedId; material/hover flags закрыты; wrappers/classes только для layout |
+| Account set3042:2806,4 variants | EXTEND AccountMenu | все Client/Manager routes; identity сохранён, separators/fake selected удалены; Radix focus/dismissal |
+| Header Overflow1914:655…676,2015:6085,2016:898,2033:1145 | EXTEND OverflowMenu | все реальные More consumers/CompletedOrderMenu; прежние действия, disabled/reason/confirm/focus |
+| Navigation634:511 + Drawer1368:499/1384:26491 | EXTEND NavigationDrawer public composition | dialog/nav/focus trap/inert/scroll lock/real route selection; frozen physics не менялась |
+| Select Field1148:311 Default/Focus/Error/Readonly,44px | EXTEND canonical FOSSelect → FOSSelectPopup | Shape/Material, Manager company, CompanyOrders filter/disabled sorting, lab; real select events/FormData/validation/reset; visible button focus |
+| Existing GlassSelect | EXTEND via listbox semanticRows slot | compound Item API, onClick cancellation, theme/current/matte/dark, existing lab/status consumers |
+| Adapter lifecycle, не motion engine | CREATE usePopupSelectionRest | reuse form + compound select; actual state/geometry + generation cancellation; no physics, timer or replayed callback |
+| Owner14/18/500 + Figma style Menu/Item | REUSE shared type token/aliases | Navigation/Account/More/GlassSelect/Select options; identity/header/field roles сохранены |
+| ConfirmDialog | KEEP | самостоятельный dialog, не popup menu |
 
-Общая роль14/18/500 подтверждена повторно. Пять frozen sources + manifest без изменений. [План, риски, screenshot evidence](FE11_POPUP_REAUDIT_2026-11-10.md).
+Флаг popupPilot, FOSGlassSelect alias и legacy Surface hover driver удалены. Figma style `S:7b1a1bc5246031d4323a720db87c4aea89cc52e2,`; closed field labels/body неизменны. Пять frozen sources+manifest сохранены. [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md).
 
-## Navigation / popup item typography — Owner decision 10.11.2026
-
-К реализации: базовая роль `--fos-type-menu-item` = Manrope 14/18 Medium 500; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item` ссылаются на неё. Визуальная приёмка и синхронизация Figma OPEN.
-
-| Figma master / Owner delta | React component / disposition | Props/states and consumers |
-| --- | --- | --- |
-| Navigation Item `634:511`, Default/Selected; новая Owner роль вместо прежней 13/18/600 | EXTEND typography token in existing `SidebarNav` CSS | Все состояния; Client/Manager Sidebar и NavigationDrawer; строки 44px, прежние иконки и motion |
-| Account Menu `3038:2667`; item role вместо прежней 15/20/500 | REUSE `FosPopupSurface` typography selector | AccountMenu, GlassSelect portal, OverflowMenu; disabled/focus/hover/selected; строки 56/36/48px |
-| Profile identity/header/caption roles | KEEP | Имя/компания/аватар, page titles и подписи не являются navigation/item или popup/item |
-
-Frozen `FosPopupRows`, GlassLens, material/physics/optical scaling не редактируются. More получает только новую общую типографику, без визуальной миграции движка.
+## История до public popup rollout
 
 ## Post-FE11 lifecycle / 09.11.2026
 

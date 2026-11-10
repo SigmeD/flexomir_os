@@ -111,7 +111,6 @@
 .fos-account-menu__copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fos-account-menu__copy strong { color: #253144; font-size: 16px; line-height: 20px; font-weight: 600; }
 .fos-account-menu__copy small { color: #61798b; font-size: 12px; line-height: 16px; }
-.fos-account-menu__separator { height: 1px; background: #e7eef4; }
 .fos-account-menu__item {
   display: flex;
   height: 56px;

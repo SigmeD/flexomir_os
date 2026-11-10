@@ -1,10 +1,8 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useRef } from 'react'
 import type { DemoProfileIdentity } from '@/demo/profile-model'
-import { FosPopupSurface } from '@/components/ui/fos-popup-surface'
-import { FosPopupRows } from '@/components/ui/fos-popup-rows'
 import { FosGlassMaterial } from '@/components/ui/fos-glass-material'
-import { FosPopup, isFosPopupPilot } from '@/components/ui/fos-popup'
+import { FosPopup } from '@/components/ui/fos-popup'
 import './account-menu.css'
 
 export function AccountMenu({
@@ -58,30 +56,13 @@ export function AccountMenu({
           if (target instanceof Node && triggerRef.current?.contains(target)) event.preventDefault()
         }}
       >
-        {isFosPopupPilot() ? <FosPopup mode="actions" className="fos-account-menu fos-popup--account" contentClassName="fos-account-menu__content"
+        <FosPopup mode="actions" className="fos-account-menu fos-popup--account" contentClassName="fos-account-menu__content"
           items={[{ id: 'profile', label: 'Настройки профиля' }, { id: 'company', label: 'Настройки компании', disabled: true }, { id: 'logout', label: 'Выйти', disabled: true }]}
           rowClassName="fos-account-menu__item" onSelect={id => { if (id === 'profile') { consumerFocus.current = true; onOpenProfile() } }}
           header={<div className="fos-account-menu__identity">
             <span className="fos-account-avatar" aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
             <span className="fos-account-menu__copy"><strong>{identity.displayName}</strong><small>{secondary}</small></span>
-          </div>} /> :
-        <FosPopupSurface hoverLens={false} sidebarMaterial className="fos-account-menu" contentClassName="fos-account-menu__content">
-          <div className="fos-account-menu__identity">
-            <span className="fos-account-avatar" aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
-            <span className="fos-account-menu__copy">
-              <strong>{identity.displayName}</strong>
-              <small>{secondary}</small>
-            </span>
-          </div>
-          <DropdownMenu.Separator className="fos-account-menu__separator" />
-          <FosPopupRows selectedId="profile">
-          <DropdownMenu.Item data-popup-item="profile" className="fos-account-menu__item" onSelect={() => { consumerFocus.current = true; onOpenProfile() }}><span data-popup-label="">Настройки профиля</span></DropdownMenu.Item>
-          <DropdownMenu.Separator className="fos-account-menu__separator" />
-          <DropdownMenu.Item data-popup-item="company" className="fos-account-menu__item" disabled><span data-popup-label="">Настройки компании</span></DropdownMenu.Item>
-          <DropdownMenu.Separator className="fos-account-menu__separator" />
-          <DropdownMenu.Item data-popup-item="logout" className="fos-account-menu__item fos-account-menu__item--logout" disabled><span data-popup-label="">Выйти</span></DropdownMenu.Item>
-          </FosPopupRows>
-        </FosPopupSurface>}
+          </div>} />
       </DropdownMenu.Content>
     </DropdownMenu.Portal>
   </DropdownMenu.Root>

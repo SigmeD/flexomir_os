@@ -1,23 +1,29 @@
-# FE11 popup re-audit — план пилота
+# FE11 popup re-audit — план и выполнение rollout
 
 **Источник:** поручение Owner `D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`.
 **База:** свежий `origin/main a9ffa8a`, PR #29 уже MERGED в `03238af`.
 **Ветка:** `feat/fe11-popup-unification-reaudit`; одна поставка, без merge.
 **Уточнение Owner 10.11:** сохранить общую роль **14/18/500**, несмотря на 13/18/600 в исходном задании.
 
+**Owner gate C закрыт:** ответ «да подтверждаю» на показанный пилот и action-adapter behavior. Разрешены этапы D/E в той же ветке/PR #30; merge отдельно. CI пилотного head ef8d439 — m7/screen SUCCESS.
+
+**Ruling для rollout:** общий FosPopup допускает только listbox semantic-row slot для сохранения существующего compound API GlassSelect (consumer не собирает Surface/Rows). Drawer передаёт данные/семантическую nav-обёртку; physics/controller неизменны. Form fields используют один канонический FOSSelect с узким string single-select контрактом; существующие реальные consumers не используют multiple/size/native focus callbacks. Общий observer actual rest переиспользуется обоими select adapters. Исторический native API не выдаётся за автоматически совместимый.
+
 Применяются навыки architecture-impact-analysis, systematic-debugging, vision-first-ui, writing-plans и verification-before-completion. Исполнение — последовательно в основной папке; независимый reviewer работает read-only.
 
 ## Границы и решения
 
 - Пять frozen sources + manifest, spring, overlap/scale formula не меняются.
-- Пилот включается только в dev через `popupPilot=1`; обычные маршруты сохраняют прежнее поведение до Owner rollout gate.
+- На этапе B пилот включался только в dev через `popupPilot=1`. После приёмки C флаг удалён; D распространяет общий API на обычные маршруты.
 - Один публичный `FosPopup` компонует существующие Surface + Rows; material и hover driver не являются props потребителя. Semantic mode отделяет действия от настоящего выбора.
-- В action-menu нет initial selectedId и aria-selected. Активация — временный feedback, callback выполняется штатно, без таймеров и фиктивного ожидания анимации. Первая линза появляется в нажатой строке без придуманной начальной позиции. Навигация может размонтировать popup; это ограничение кандидатного action-adapter требуется показать Owner.
-- Узкий FOSGlassSelect adapter сохраняет реальный native select для value/change/required/FormData/reset, а видимый trigger открывает React listbox. Нативный FOSSelect API не меняется; focus/key события нового адаптера относятся к видимой кнопке. Нативный popup не вызывается. Не подделывать React ChangeEvent.
-- Только «Форма» и «Материал» включают form pilot. Компания/фильтры/disabled sorting остаются native до отдельной проверки/rollout.
-- Drawer — визуальный и motion эталон, не переписывается ради пилота. Его переход на публичный API и cleanup старого API — после приёмки, не массово заранее.
+- В action-menu нет initial selectedId и aria-selected. Активация — временный feedback, callback штатный, без таймера. Первая линза в нажатой строке без придуманного origin; навигация может размонтировать popup. Owner принял этот контракт в C.
+- Пилотный FOSGlassSelect после проверки реальных consumers стал каноническим FOSSelect; временный alias удалён. Реальный native select сохраняет value/change/required/FormData/reset, visible button открывает React listbox и получает focus/key. Multiple/size не обещаются совместимыми. React ChangeEvent не подделывается.
+- В D мигрированы Shape/Material, Manager company, CompanyOrders filter/disabled sorting и lab. Статус «Все статусы» не placeholder, reason disabled sorting сохранён.
+- Drawer перешёл на public composition после C; его physics/controller, семантика и route lifecycle сохранены. GlassSelect сохранил compound Item API через listbox-only semanticRows slot. Старый Surface hover driver/CSS удалён.
 
-## Карта компонентов и влияние
+## Карта компонентов пилота B (история)
+
+Итоговая карта после D — [реестр компонентов](../../COMPONENT_REGISTRY_2026-11-06.md).
 
 | Источник / вариант | React / решение | Состояния / потребители |
 | --- | --- | --- |
@@ -45,18 +51,20 @@
 ## C — приёмка пилота
 
 - [x] Независимый adversarial review итогового diff и новых сценариев; найденные контракты исправлены и получили тесты.
-- [ ] Показать Drawer reference, Account D/M, More, Shape/Material D/T/M; отдельное описание first-action behavior.
-- [ ] Явная Owner visual acceptance. До неё массовая migration, Figma sync и версия APPROVED запрещены.
+- [x] Показать Drawer reference, Account D/M, More, Shape/Material D/T/M; описать first-action behavior.
+- [x] Явная Owner visual/action acceptance пилота10.11. Разрешён следующий rollout; frozen engine approval не меняется и merge не разрешён автоматически.
 
-## D/E — после приёмки (не разрешены автоматически)
+## D/E — разрешены после приёмки10.11
 
-- [ ] Миграция всех согласованных потребителей через public API и удаление legacy drivers/CSS.
-- [ ] Полный Playwright + cross-browser, a11y, screen-by-screen regression; все FAIL и skips отражены отдельно.
-- [ ] Релевантные LIVE docs и один PR; merge только по отдельному поручению.
+- [x] Миграция всех согласованных потребителей через public API и удаление legacy drivers/CSS.
+- [x] Адресный sync Figma style/Navigation/Account/More; датированный Select opening contract, сохранение identity/field roles и исторических descriptions.
+- [x] Build PASS, adapters82/82, cross-browser124/124, независимый read-only review PASS после закрытия coverage gap GlassSelect.
+- [x] Полный Playwright516 PASS/4expected skips/0FAIL, cross-browser124/124, frames4/4; доступность/экранная regression, независимый review PASS. Диагностические FAIL/skips отражены в отчёте.
+- [x] Релевантные LIVE docs в одном PR #30; merge только по отдельному поручению. Статус CI фактического head и Drive синхронизируются после отправки.
 
-## Инвентаризация текущих потребителей
+## Baseline до задачи и объём пилота B (история)
 
-| Потребитель | Trigger / semantic contract | Visual / selection | Lifecycle / layout | Пилот |
+| Потребитель | Trigger / semantic contract | Visual / selection до задачи | Lifecycle / layout | Пилот B |
 | --- | --- | --- | --- | --- |
 | AccountMenu | avatar/footer; Radix nonmodal menu | Surface sidebar + Rows fake profile; separators; shared14/18/500 | Radix portal z100; top/bottom, collision16; Escape/outside, consumer focus | opt-in real Client/Manager |
 | OverflowMenu / CompletedOrderMenu | MoreAction; Radix menu | legacy hoverLens=true, no Rows; shared type | portal z50, end/collision16; Escape/outside/consumer focus | opt-in all real More consumers for review only |

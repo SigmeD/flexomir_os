@@ -1,10 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { emptyDemoItem, validDemoItem, type DemoItem } from '@/demo/order-compose-model'
-import { FOSInput, FOSQuantity, FOSSelect, FOSGlassSelect, FOSTextarea } from '@/components/ui/fos-controls'
+import { FOSInput, FOSQuantity, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
-import { isFosPopupPilot } from '@/components/ui/fos-popup'
 import { ArtworkSource } from './ArtworkSource'
 import { PrintingMethodControl } from './PrintingMethodControl'
 import { LayoutBrowser } from '@/components/layouts/LayoutBrowser'
@@ -23,7 +22,6 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
   onNavigationSectionChange?: (section: CabinetSection) => void
   onExitActionsChange?: (actions: OrderItemExitActions | null) => void
 }) {
-  const ItemSelect = isFosPopupPilot() ? FOSGlassSelect : FOSSelect
   const [initial] = useState(() => ({ ...emptyDemoItem(), ...item }))
   const [value, setValue] = useState(initial)
   const [touched, setTouched] = useState<Record<string, boolean>>({})
@@ -87,14 +85,14 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
         <FOSInput wrapperClassName="fos-item-form__name" label="Наименование продукции" placeholder="Введите наименование" value={value.name} onChange={event => update({ name: event.target.value })} required />
         <FOSQuantity wrapperClassName="fos-item-form__quantity" label="Количество" min="1" value={value.quantity} error={error('quantity')} onBlur={blur('quantity')} onChange={event => update({ quantity: event.target.value })} required />
         <div className="fos-item-form__printing"><PrintingMethodControl value={value.printMethod} onChange={printMethod => update({ printMethod })} /></div>
-        <div className="fos-item-form__dimensions"><ItemSelect wrapperClassName="fos-item-form__shape" label="Форма" value={value.shape} onChange={event => update({ shape: event.target.value })} required>
+        <div className="fos-item-form__dimensions"><FOSSelect wrapperClassName="fos-item-form__shape" label="Форма" value={value.shape} onChange={event => update({ shape: event.target.value })} required>
           <option value="">Выберите форму</option><option>Прямоугольная</option><option>Круглая</option>
-        </ItemSelect>
+        </FOSSelect>
         <FOSInput wrapperClassName="fos-item-form__width" label="Ширина, мм" placeholder="Введите ширину" type="number" min="0" step="any" value={value.width} error={error('width')} onBlur={blur('width')} onChange={event => update({ width: event.target.value })} required />
         <FOSInput wrapperClassName="fos-item-form__height" label="Высота, мм" placeholder="Введите высоту" type="number" min="0" step="any" value={value.height} error={error('height')} onBlur={blur('height')} onChange={event => update({ height: event.target.value })} required /></div>
-        <ItemSelect wrapperClassName="fos-item-form__material" label="Материал" value={value.material} onChange={event => update({ material: event.target.value })} required>
+        <FOSSelect wrapperClassName="fos-item-form__material" label="Материал" value={value.material} onChange={event => update({ material: event.target.value })} required>
           <option value="">Выберите материал</option><option>Бумага</option><option>Плёнка</option>
-        </ItemSelect>
+        </FOSSelect>
       </div>
       <div className="fos-item-form__artwork"><ArtworkSource value={value} onChange={update} onOpenLibrary={() => { pickerScroll.current = window.scrollY; setPickerOpen(true) }} /></div>
       <FOSTextarea wrapperClassName="fos-item-form__note" label="Комментарии" placeholder="Необязательно" value={value.comment || ''} onChange={event => update({ comment: event.target.value })} />

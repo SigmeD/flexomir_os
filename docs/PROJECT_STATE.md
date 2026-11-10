@@ -1,18 +1,16 @@
 # Flexomir OS — текущее состояние проекта
 
-## CURRENT 10.11.2026 — FE11 re-audit / изолированный пилот
+## CURRENT 10.11.2026 — FE11: пилот принят, общий popup включён
 
-[Draft PR #30](https://github.com/SigmeD/flexomir_os/pull/30), code/test checkpoint `4bc4a5d`; CI/merge отдельно, Owner acceptance OPEN.
+Owner принял пилот ответом «да подтверждаю». Продолжение идёт в одной ветке `feat/fe11-popup-unification-reaudit` и [PR #30](https://github.com/SigmeD/flexomir_os/pull/30), без merge.
 
-QA VERIFIED для пилота: build PASS, cross-browser80/80, motion frames4/4, полная регрессия500 PASS/4 expected skips/0 FAIL; frozen5/5 MATCH. Независимый adversarial static review PASS после исправлений. Остаётся Owner visual/action gate; CI PR проверяется отдельно.
+Account, More, Drawer и GlassSelect используют один `FosPopup`. Все реальные FOSSelect (Shape/Material, компания заказа менеджера, фильтр компаний и disabled sorting) переведены на общий listbox с настоящим native form proxy. Флаг пилота и legacy hover driver удалены. Роль Manrope14/18/500 и frozen reference `f527bcb` сохранены; API/backend/1С не менялись.
 
-PR #29 MERGED в `03238af`; README обновлён в `a9ffa8a`. Новое поручение Owner — повторный аудит popup. Ветка `feat/fe11-popup-unification-reaudit` от свежей main, без worktree. Owner подтвердил сохранение14/18/500. Реализованы public `FosPopup`, pilot Account/More и узкий `FOSGlassSelect` для Shape/Material; включение только в dev через `popupPilot=1`. Ordinary routes и frozen sources сохранены. Пилот, команды проверок, snapshots и оставшиеся gates — [отчёт](FE11_POPUP_REAUDIT_2026-11-10.md). Action-adapter first activation, Owner visual acceptance, массовый rollout/Figma и merge OPEN; текущий этап — окончательная QA, не продуктовая приёмка.
+Build PASS; адресная регрессия 82/82, Chromium/Firefox/WebKit/touch124/124. Независимый review не нашёл дефектов; отмеченный пробел GlassSelect закрыт новыми controlled/lifecycle tests. Сняты 43 свежих screenshots обычных маршрутов на 1440/1024/768/390/320. Затронутые Figma masters синхронизированы; motion остаётся runtime-эталоном. Полная регрессия 516 PASS / 4 expected skips / 0 FAIL; CI отправленного head сверять по PR checks — [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md).
 
-## CURRENT 10.11.2026 — navigation/popup typography
+Далее: проверить CI отправленного head PR #30, затем отдельное решение о merge. Приёмка пилота не означает приёмку всех экранов или готовность backend. Канонический roadmap остаётся в Drive: M8, затем M9 по готовым контрактам Алексея.
 
-Продолжение QA: на `0312b3b` локальный build и адресная typography/lifecycle/freeze/adapter регрессия 24/24 PASS; шесть GitHub CI jobs SUCCESS. После исправления только test-readiness — typography 24/24 PASS в Chromium/Firefox/WebKit/touch Chromium. Свежие desktop/mobile материалы Client/Manager сняты и просмотрены. Независимый read-only review — PASS WITH RISKS, конкретных дефектов нет. Диагностика и доказательства — в [аудите](TYPOGRAPHY_AUDIT_2026-11-09.md). Owner visual gate, Figma update и merge OPEN.
-
-По новому решению Owner Sidebar/Drawer и popup commands используют общую базовую роль Manrope 14/18 Medium 500 через два алиаса. Код — продолжение PR #29; высоты строк 44/56/48/36px сохранены, profile identity/title/caption roles и frozen engine не менялись. Build, typography/surface/freeze 9/9 и cross-browser typography 24/24 PASS. Полный QA и CI на новом head — [PR checks](https://github.com/SigmeD/flexomir_os/pull/29/checks). **Owner visual acceptance / Figma update / final DS standard OPEN**, merge не разрешён. [Детали](TYPOGRAPHY_AUDIT_2026-11-09.md).
+## История до принятого пилота (не текущие задания)
 
 ## CURRENT 09.11.2026 — post-FE11 QA closure
 

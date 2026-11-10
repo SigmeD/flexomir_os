@@ -1,73 +1,105 @@
-# FE11 — повторный аудит popup и пилот общего API
+# FE11 — единые меню и списки выбора
 
-**Статус:** PILOT IMPLEMENTED / QA VERIFIED; Owner visual/action acceptance и массовый rollout OPEN. Merge не разрешён.
-**База:** `a9ffa8a`, ветка `feat/fe11-popup-unification-reaudit`. Предыдущий PR #29 уже слит в `03238af`.
-**Поставка:** [Draft PR #30](https://github.com/SigmeD/flexomir_os/pull/30), code/test checkpoint `4bc4a5d1e6174e2f5f7c51784ecbbfded07ef8c9`. CI проверяется на фактическом PR head; merge не выполнен.
-**Задание:** `D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`.
-**План и полный список потребителей:** [план пилота](superpowers/plans/2026-11-10-fe11-popup-reaudit.md).
+**Статус 10.11.2026:** пилот принят Owner ответом «да подтверждаю». Распространение реализовано и локально QA VERIFIED. Полная регрессия: 516 PASS / 4 expected skips / 0 FAIL. CI отправленного head сверяется по PR checks. Merge отдельно.
 
-## Решения и границы
+**Поставка:** [PR #30](https://github.com/SigmeD/flexomir_os/pull/30), ветка feat/fe11-popup-unification-reaudit от a9ffa8a. PR #29 ранее слит в 03238af. Пилотный code/test checkpoint 4bc4a5d, CI пилотного head ef8d439 SUCCESS; это не CI нового rollout head.
 
-Owner повторно подтвердил **14/18/500** в этой сессии. Значение 13/18/600 в исходном файле не применяется. Общие typography tokens и profile identity roles сохранены.
+**Задание:** D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md. [План и этапы](superpowers/plans/2026-11-10-fe11-popup-reaudit.md).
 
-Проверены Drive frontend CURRENT и Glass contract; Figma read-only: Navigation Item `634:511`, Account Menu `3038:2667`, Select Field `1148:311`. Старые Account separators/type и native-like field visuals в Figma расходятся с новым Owner-направлением; Figma не менялась. Render references сохранены локально в `output/playwright/fe11-reaudit/figma-*.png`. Пять Owner screenshots, упомянутых в задании, не были приложены к этому сообщению; они не выдаются за просмотренные. Вместо них сняты свежие baseline состояния текущего кода.
+## 1. Что изменилось
 
-В обычных маршрутах прежние адаптеры остаются до приёмки. Пилот включён **только в dev** через `popupPilot=1`. Компания в заказе менеджера, фильтры компаний, disabled sorting, существующий GlassSelect и Drawer не мигрируются автоматически. Backend/API/1С/ACL не менялись.
+Account, Drawer, More и GlassSelect подключаются через один FosPopup. Все реальные FOSSelect открывают общий React listbox. Флаг popupPilot, временный FOSGlassSelect и legacy hover driver удалены.
 
-## Воспроизведение и причины
+Owner отдельно подтвердил **Manrope 14/18/500**. Устаревший пункт 13/18/600 исходного задания не применяется. Профильный блок, заголовки, подписи и типографика закрытых полей сохранены.
 
-| ID | Проверка на новой базе | Исправление / состояние |
+В действиях нет фиктивной выбранной строки: hover/focus не двигают линзу, callback выполняется сразу, первая активация даёт feedback в нажатой строке без выдуманной стартовой позиции. Переход может размонтировать меню раньше окончания feedback. Этот контракт принят в пилоте.
+
+В списках выбора данные меняются сразу и один раз, popup закрывается после фактической остановки существующей линзы. Escape/outside закрывают его сразу и сохраняют уже принятое значение. Новая физика, таймер закрытия и повторный callback не добавлялись.
+
+Frozen reference f527bcb, пять engine sources и manifest сохранены. Backend, API, ACL,1С и бизнес-статусы не менялись.
+
+## 2. Какие задачи решены
+
+| ID / потребитель | Воспроизведённая причина | Итог / общий компонент | Что осталось адаптерным |
+| --- | --- | --- | --- |
+| R1 / пункты | Старые 15/20 уже отсутствовали: до задачи общая 14/18/500 | Сохранён один menu-item token с navigation/popup aliases | Identity, field labels/body, triggers отдельные |
+| R2–R3 / Account | Три separators и hardcoded profile selection | FosPopup actions, свободный список без initial lens | Radix dismiss/focus; прежний профиль/disabled |
+| R4 / Shape, Material | Native SELECT рисует OS popup | Канонический FOSSelect → FOSSelectPopup → FosPopup | Настоящий select proxy: change/value/required/FormData/reset |
+| R5 / More | Legacy Surface hover driver без Rows | FosPopup actions, та же нейтральная оболочка | MoreAction, команды, disabled/reason/confirm/cancel/focus |
+| R6 / Drawer | Consumer вручную компонует Surface/Rows | FosPopup navigation, прежний Rows | Dialog/nav wrapper, trap/scroll lock, route commit/close lifecycle |
+| R7 / GlassSelect | Другой compound API и lifecycle | FosPopup listbox с semantic-row slot | Item/onClick cancellation, labels, theme/current/matte/dark |
+| Manager company | Native select обновляет draft company | Канонический FOSSelect | Прежний draft callback, single-string value |
+| CompanyOrders | Native status filter и disabled sorting | Канонический FOSSelect | Empty string = «Все статусы», не placeholder; disabled reason |
+| OrdersComponentsLab | Native demo select | Канонический FOSSelect | Controlled demo value |
+| ConfirmDialog | Отдельный confirmation dialog | Сохранён | Не превращается в меню |
+
+FosPopup — единственное место композиции Surface + Rows. Actions type запрещает selectedId; semanticRows доступен только listbox. Layout slots сохраняют Drawer nav/classes без копирования материала. Surface содержит только оболочку; её Track/spring/hoverLens и legacy lens CSS удалены.
+
+Общий usePopupSelectionRest наблюдает существующую линзу: settled/off, реальные top/height с точностью 0.75px и generation. Повторный выбор, Escape/outside, reset, замена value, disabled/unmount отменяют устаревшее завершение. Hook не рассчитывает движение и не исполняет бизнес-действия.
+
+Form adapter поддерживает только single string value. Multiple/size и native select focus API не обещаются совместимыми; реальные consumers их не используют. onChange получает настоящий select event; focus/blur/key/autofocus относятся к видимой кнопке. Readonly сохраняет submitted value и пропускает required validation; disabled исключается из FormData. Controlled rejection сохраняет значение/ошибку родителя.
+
+### Figma и требования
+
+Адресный sync после Owner approval выполнен в [FOS Technical Masters](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv?node-id=1688-532):
+
+- Создан shared text style FOS V2 / Menu / Item: Manrope Medium14/18/500, ID S:7b1a1bc5246031d4323a720db87c4aea89cc52e2,. Label MD не менялся.
+- Navigation Item634:511 Default/Selected использует новую роль.
+- Account set3042:2806,4 варианта: новая роль действий, скрыты 10 divider nodes с сохранением IDs; avatar/name/company сохранены.
+- Header Overflow1914:655/658/663/668/673/676,2015:6085,2016:898,2033:1145: новая роль и нейтральная оболочка по Drawer shell, radius20. Команды не менялись, PROPOSED/CANDIDATE masters не затронуты.
+- Select1148:311: датированный opening contract про общий React popup. Девять field text nodes, height44 и Default/Focus/Error/Readonly не менялись.
+
+На мастерах записан датированный Owner delta; прежние descriptions сохранены ниже как история. SRS/Scope/Governance не переписаны. Static Figma effects описывают материал; spring/coverage/scale определяет frozen runtime. Sync мастеров не означает pixel parity всех экранов или release approval.
+
+Ledger: output/design-system-state-fe11-2026-11-10.json. [Account](../output/playwright/fe11-reaudit/figma-synced-account.png), [More](../output/playwright/fe11-reaudit/figma-synced-more.png), [Navigation](../output/playwright/fe11-reaudit/figma-synced-navigation.png) после sync получены заново и просмотрены.
+
+### Визуальные доказательства
+
+Baseline снят до изменений; пять attachments исходного задания не выдаются за просмотренные. После rollout сняты 43 свежих screenshot обычных маршрутов без флага на 1440/1024/768/390/320. Профильный блок и закрытые поля сохранены; Account без полос/fake selection, More без hover lens, списки выбора в общей оболочке.
+
+| Состояние | Baseline | После rollout |
 | --- | --- | --- |
-| R1 | Старые 15/20/500 уже отсутствуют: до этой задачи пункты используют общую14/18/500 | Сохраняем подтверждённую роль; не воспроизводим устаревшее описание как новый дефект |
-| R2 | Account содержит три Radix separators; видны на baseline | В пилоте список без separators; legacy остаётся только в default режиме до rollout |
-| R3 | Account hardcoded profile lens присутствует при первом открытии | Actions mode не принимает selectedId; до действия нет линзы/aria-selected |
-| R4 | Shape/Material — native SELECT высотой44px. Отдельный OS popup не захвачен | Пилот открывает React listbox; синий OS popup не вызывается. Form state остаётся у настоящего select |
-| R5 | More использует default Surface с hover driver, без Rows | Пилот использует FosPopup actions с нейтральной Surface и Rows, прежними callback/focus/confirm |
-| R6 | Drawer уже использует принятые Surface + Rows | Эталон без изменений; перенос на public API после приёмки |
-| R7 | GlassSelect и FOSSelect имеют разные семантические контракты | Новый узкий FOSGlassSelect; старый FOSSelect и остальные поля не заменены |
+| Account | [Desktop](../output/playwright/fe11-reaudit/before-account-1440.png) | [Client1440](../output/playwright/fe11-rollout/screens/after-client-account-1440.png), [Manager320](../output/playwright/fe11-rollout/screens/after-manager-account-320.png) |
+| More | [Mobile](../output/playwright/fe11-reaudit/before-more-390.png) | [1440](../output/playwright/fe11-rollout/screens/after-more-1440.png), [390](../output/playwright/fe11-rollout/screens/after-more-390.png) |
+| Shape/Material | [Native closed field](../output/playwright/fe11-reaudit/before-item-390.png) | [Shape390](../output/playwright/fe11-rollout/screens/after-shape-390.png), [Material320](../output/playwright/fe11-rollout/screens/after-material-320.png) |
+| Drawer | [Baseline](../output/playwright/fe11-reaudit/before-drawer.png) | [390](../output/playwright/fe11-rollout/screens/after-reference-drawer-390.png) |
+| Остальные | Проверен исходный native/compound контракт | [Manager company320](../output/playwright/fe11-rollout/screens/company-320.png), [status768](../output/playwright/fe11-rollout/screens/status-768.png), [GlassSelect390](../output/playwright/fe11-rollout/screens/glass-select-390.png) |
 
-## Компоненты и контракты
+Файлы ignored/local, недоступны через GitHub checkout. Это browser review и доказательства размеров/состояний, отдельные от Owner all-screen acceptance.
 
-- `FosPopup` — публичная композиция Surface + Rows, modes actions/listbox/navigation; данные пунктов, заголовок, размеры и callbacks. Consumer не выбирает hover driver/material. Actions не допускает selectedId в TypeScript.
-- `AccountMenu` — в пилоте тот же identity block, команда профиля и disabled company/logout; без линий и постоянной активной строки. Radix владеет dismiss/focus.
-- `OverflowMenu` — тот же MoreAction и массив команд; прежние delete/confirm/cancel/duplicate callbacks. Меняется открытая поверхность.
-- `FOSGlassSelect` — тот же Field/44px trigger, native proxy для value/onChange/required/FormData/reset. `onChange` получает настоящий select event. Focus/blur/key events типизированы для видимой кнопки, autofocus также относится к ней. Контракт только single string value; native multiple/size API не объявляется поддержанным.
-- Controlled value и ошибки читаются из принятого родителем значения, а не временного значения proxy во время change. Readonly не открывается, сохраняет submitted value и пропускает required validation как readonly input. Disabled не участвует в FormData.
+### Проверки и независимый QA
 
-**Action-adapter candidate / OWNER OPEN:** действие выполняется штатно, без искусственной задержки. Линза не имеет выдуманной начальной позиции: первая активация создаёт feedback в нажатой строке, travel origin отсутствует. Навигационный callback может размонтировать host раньше видимого завершения feedback. Политику требуется принять отдельно; её нельзя представить как already-approved travelling action animation.
-
-Для Select есть настоящее предыдущее значение. Реализовано закрытие после фактической остановки существующей линзы: commit данных сразу, удержание только popup, без таймеров и повторного исполнения callbacks. Observer сверяет `settled/off` и реальные top/height с точностью0.75px; generation отменяет stale completion при повторном выборе, Escape/outside/reset/disable/unmount. Escape/outside сохраняют уже принятое значение и закрывают popup. Same-value/rejected selection не создают искусственного ожидания.
-
-## Визуальные материалы
-
-Свежие screenshots сняты и просмотрены. Имена содержат роль/ширину; файлы локальные/ignored.
-
-| Состояние | До | Пилот |
+| Проверка | Команда / результат | Доказательство |
 | --- | --- | --- |
-| Account Desktop | [baseline](../output/playwright/fe11-reaudit/before-account-1440.png) | [Client1440](../output/playwright/fe11-reaudit/after-client-account-1440.png), [Manager1440](../output/playwright/fe11-reaudit/after-manager-account-1440.png) |
-| Account Mobile | [baseline](../output/playwright/fe11-reaudit/before-account-390.png) | [Client390](../output/playwright/fe11-reaudit/after-client-account-390.png), [Manager320](../output/playwright/fe11-reaudit/after-manager-account-320.png) |
-| More | [baseline390](../output/playwright/fe11-reaudit/before-more-390.png) | [Desktop](../output/playwright/fe11-reaudit/after-more-1440.png), [Mobile](../output/playwright/fe11-reaudit/after-more-390.png) |
-| Поля | [закрытый native baseline](../output/playwright/fe11-reaudit/before-item-390.png) | [Shape390](../output/playwright/fe11-reaudit/after-shape-390.png), [Material320](../output/playwright/fe11-reaudit/after-material-320.png) |
-| Drawer reference | [baseline](../output/playwright/fe11-reaudit/before-drawer.png) | [без изменения engine](../output/playwright/fe11-reaudit/after-reference-drawer-390.png) |
+| Build | npm run build — PASS | output/fe11-rollout-build.log |
+| Adapters | playwright rollout/Drawer/GlassSelect API/overlays/surface/reaudit, workers1 —82/82 PASS | output/fe11-rollout-adapters.log |
+| Chromium/Firefox/WebKit/touch | npx playwright test --config=playwright.reaudit.config.ts --workers=1 --reporter=line —124/124 PASS | output/fe11-rollout-cross-browser-verified.log; CLI line reporter не обновляет config JSON |
+| Полная regression | npx playwright test --workers=2 --output=output/playwright/fe11-rollout/full --reporter=line,json — 516 PASS / 4 expected skips / 0 FAIL (8.7m) | output/fe11-rollout-full.log; output/playwright/fe11-rollout/full-results.json |
+| Frozen | normalized SHA256/frame/optics signatures PASS в cross-browser suite; diff5 sources+manifest пуст | [Manifest](FE11_MOTION_FROZEN_V0_2.json) |
+| Motion frames | Свежий rollout4/4 PASS, тот же lens node, реальное уменьшение old scale/увеличение new scale | output/playwright/fe11-rollout/motion-evidence/*-frames.json; fresh motion-results.json, 79/113/87/79 samples |
+| A11y | Axe form flow без color-contrast rule; keyboard/focus/required/readonly/disabled/forced-colors/reduced-motion, GlassSelect contrast | Scoped/full suites; полный screen reader audit не заявляется |
+| Independent review | Итоговый whole-diff read-only review PASS, конкретных дефектов нет | Reviewer typography_review; runtime выполнял основной агент |
+| GitHub CI | Результаты отправленного head — по ссылке; pilot ef8d439 m7/screen SUCCESS является историческим checkpoint | [PR checks](https://github.com/SigmeD/flexomir_os/pull/30/checks) |
 
-Сравнение по регионам: identity/trigger/header/body layout сохранены; в Account исчезли линии и фиктивная активная карточка. More получил общий rim/material, hover lens удалён. Закрытые поля сохраняют44px, label/body роли и chevron; открытые списки используют ту же нейтральную оболочку. Снимки есть на1440/1024/768/390/320. Это browser review кандидата, не Owner acceptance и не pixel parity с устаревшим Figma.
+Reviewer отметил отсутствие GlassSelect adapter-specific controlled rejection/pending lifecycle tests. Добавлены 3 сценария: controlled reject, Escape/outside→reopen, rapid retarget. Все проходят в 4 browser/input проектах; reviewer повторно проверил coverage и закрыл замечание. Acceptance/cancel/theme tests сохранены.
 
-## Проверки и независимый review
+Диагностические FAIL сохранены:
 
-- Baseline RED: три pilot cases FAIL, обычный маршрут PASS (`output/fe11-reaudit-red.log`).
-- Исправлены найденные в процессе reset sync, длинный label overflow, видимые focus/blur callbacks, controlled rejection error и readonly validity. Исходные FAIL сохранены в diagnostic logs.
-- До дополнительной проверки close-after-rest: cross-browser **64/64 PASS**, обе роли/пять ширин, keyboard/typeahead/Escape/outside/Tab, readonly/disabled, required/error, FormData/reset, controlled accept/reject, save/reopen Item и axe без color-contrast rule (`output/fe11-reaudit-verified.log`). Контраст отдельно не объявляется проверенным.
-- Build PASS; normalized frozen fingerprints **5/5 MATCH** (`output/playwright/fe11-reaudit/fingerprints.json`); `git diff` пяти engine sources + manifest пуст.
-- Независимый read-only adversarial reviewer нашёл два контрактных дефекта и два edge cases; они получили отдельные тесты и исправления. Последняя static review исправлений PASS; runtime выполнял основной агент.
-- Итоговая cross-browser проверка: **80/80 PASS (1.8m)**, включая same lens identity, настоящий travel/rest, Escape/outside/reopen, rapid retarget, reduced-motion/forced-colors (`output/fe11-reaudit-final.log`). Отдельное покадровое доказательство — **4/4 PASS** с JSON attachments `popup-motion-frames` (`output/playwright/fe11-reaudit/motion-evidence/`). Сэмплы подтверждают уменьшение old label и увеличение new label по мере прохождения линзы.
-- Первый полный прогон до окончательного motion adapter: **491 PASS / 1 FAIL / 4 expected skips** (`output/fe11-reaudit-full.log`). Единственный FAIL — старый filter keyboard first-Tab до ожидания React trigger. Изолированно исходный тест5/5 PASS; добавлено web-first ожидание видимого trigger перед Tab, логика UI не менялась.
-- Второй полный checkpoint:499 PASS /1 FAIL /4 expected skips (`output/fe11-reaudit-full-final.log`); второй старый GlassSelect theme test также отправлял первый Tab до появления React trigger. Исправлены оба web-first ожидания; оба теста затем10/10 PASS в пяти повторениях (`output/fe11-reaudit-readiness-fixed.log`). Проверки фокуса не ослаблены, UI код GlassSelect не менялся.
-- **Итоговый полный прогон:500 PASS /4 expected skips /0 FAIL (6.2m)**, `output/fe11-reaudit-full-verified.log`, artifacts `output/playwright/fe11-reaudit/full-verified/`. Это результат актуального source; ранние диагностические FAIL не скрываются.
-- Покадровые JSON сохранены отдельно: `motion-evidence/{chromium-fe11,firefox-fe11,webkit-fe11,touch-fe11}-frames.json` —79/142/95/78 сэмплов соответственно. Адаптер не меняет engine и не исполняет change повторно при закрытии.
-- Проверены локальные ссылки отчёта/плана, `git diff --check`; новый re-audit config добавлен в существующий M7 CI job. Статус GitHub CI на отправленном head проверяется отдельно; локальный PASS не выдаётся за завершённый CI.
+- Пилот: baseline RED, затем исправлены reset sync, long label, visible focus callbacks, controlled rejection/error, readonly validity. Итог 80/80 cross-browser,4/4 frames,500 PASS/4 expected skips/0 FAIL. Два старых first-Tab tests получили ожидание видимого trigger; первоначальные FAIL и rechecks в output/fe11-reaudit-*.log.
+- Rollout: baseline tests RED на legacy composition; первый прогон 34 PASS/2 FAIL из-за общего menu locator во время exit Account. Locator уточнён именем More; UI из-за этой проверки не менялся.
+- Первый cross-browser rollout98 PASS/2 Firefox teardown errors: Browser.removeBrowserContext / _maybeDontRestoreTabs. Полный serial recheck с новыми GlassSelect cases124/124 PASS. Ошибки не скрыты retry-настройкой.
 
-## Следующий gate
+## 3. Что в процессе
 
-Показать пилот Owner на реальных Client/Manager экранах: `http://127.0.0.1:5173/?view=client-orders&popupPilot=1` и `?view=manager-orders&popupPilot=1`. Проверить Account/More, добавить заказ → позицию → Shape/Material. Для чистого эталона открыть тот же маршрут без флага.
+- Полная regression завершена: 516 PASS / 4 expected skips / 0 FAIL; flaky 0. CI отправленного head — Codex проверяет до сдачи, текущий результат по PR checks. Локальный PASS не заменяет GitHub CI.
+- Приёмка всех экранов и решение о merge — Owner, после просмотра PR/доказательств; дата не назначена. Пилот принят, production-ready не заявляется.
+- Динамическая Figma/runtime pixel parity всех экранов и ручной screen reader audit — не выполнены в этом инкременте; отдельный объём при необходимости, исполнитель/дата не назначены.
+- API/backend/ACL/1С — Алексей, по общему CURRENT roadmap; в поставку не входят.
 
-Только после явной приёмки — миграция остальных согласованных потребителей, cleanup legacy API/CSS, Figma sync и отдельный merge gate. Новая версия не помечается APPROVED автоматически.
+## 4. Договорённости и следующий шаг
+
+1. Codex отправляет проверенные код/tests/LIVE docs в тот же PR #30 и обновляет существующий Drive CURRENT; проверяет CI фактического head. Новый PR не нужен.
+2. Owner отдельно решает merge. Поручение не разрешает слияние или изменение frozen engine.
+3. Следующий frontend этап — оставшиеся M8 UX/UI gates, затем M9 к согласованным доступным API Алексея, по Drive CURRENT.
+
+Документация по задаче проверена 10.11.2026; следующая плановая ревизия 24.11.2026.

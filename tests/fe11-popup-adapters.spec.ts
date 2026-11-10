@@ -22,7 +22,7 @@ test('Account adapter preserves role, identity, disabled actions, anchor and foc
     const menu = page.getByTestId('account-menu')
     await expect(menu).toHaveAttribute('role', 'menu')
     await expect(menu.locator('[data-motion-reference="FE11-v0.2"]')).toHaveCount(1)
-    await expect(menu.locator('[data-motion="travel"]')).toHaveCount(1)
+    await expect(menu.locator('[data-motion="travel"]')).toHaveCount(0)
     await expect(menu.getByRole('menuitem', { name: 'Настройки компании' })).toHaveAttribute('aria-disabled', 'true')
     await menu.evaluate(el => Promise.all(el.getAnimations().map(animation => animation.finished)))
     const box = (await menu.boundingBox())!
@@ -32,7 +32,7 @@ test('Account adapter preserves role, identity, disabled actions, anchor and foc
     expect(box.y + box.height).toBeLessThanOrEqual(585)
     if (info.project.use.hasTouch !== true) {
       await menu.getByRole('menuitem', { name: 'Настройки компании' }).hover()
-      await expect(menu.locator('[data-motion="travel"]')).toHaveAttribute('data-travel-target', '0')
+      await expect(menu.locator('[data-motion="travel"]')).toHaveCount(0)
     }
     if (width === 390) await page.screenshot({ path: `output/playwright/fe11-rollout/${info.project.name}-${role}-account.png` })
     await page.keyboard.press('Escape')

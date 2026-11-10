@@ -1,18 +1,18 @@
 # Flexomir OS — handoff между сессиями Codex
 
-## CURRENT 10.11.2026 — FE11 popup re-audit pilot
+## CURRENT 10.11.2026 — FE11 rollout после Owner acceptance
 
-Один [Draft PR #30](https://github.com/SigmeD/flexomir_os/pull/30), code/test checkpoint `4bc4a5d`; последующие правки этой поставки — ссылки/статусы документации. CI на текущем head проверять в GitHub. Merge не выполнен.
+Пилот принят: «да подтверждаю». Рабочая ветка `feat/fe11-popup-unification-reaudit`, один [PR #30](https://github.com/SigmeD/flexomir_os/pull/30). Merge отдельно; не создавать второй PR.
 
-Итоговая локальная QA: build PASS;80/80 cross-browser,4/4 frame evidence;500 passed/4 expected skips/0 failed в полном прогоне. Два old first-Tab tests исправлены ожиданием реального trigger, первоначальные FAIL сохранены. Static adversarial review PASS; final source frozen5/5 MATCH. Полный отчёт ниже содержит все команды/логи и Owner gates. Продолжать rollout только после явной визуальной приёмки.
+Rollout реализован в обычных маршрутах: Account/More/Drawer/GlassSelect → FosPopup; все FOSSelect → form listbox adapter. Surface больше не содержит legacy hover physics. Общий observer ждёт реальный rest линзы, но change исполняется сразу и ровно один раз. Escape/outside сохраняют committed value, инвалидируют pending completion и возвращают фокус по семантике адаптера. GlassSelect сохраняет compound Item API, отмену onClick и theme variants.
 
-Рабочая ветка `feat/fe11-popup-unification-reaudit` от `a9ffa8a`; PR #29 уже MERGED. Новый source `D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`, но Owner отдельно подтвердил14/18/500. Пилот открывается с `popupPilot=1` в dev: Account без separators/fake selection, More через FosPopup, Shape/Material через FOSGlassSelect. Остальные поля/Drawer/GlassSelect и default routes сохраняют approved adapters до Owner gate. Значение Select commit сразу; popup закрывается по реальному rest/geometry, Escape/outside не отменяют уже принятое значение. Frozen manifest/5 engine files не менять. [План](superpowers/plans/2026-11-10-fe11-popup-reaudit.md), [QA/evidence/gates](FE11_POPUP_REAUDIT_2026-11-10.md). Следующий обязательный шаг после окончательной QA — Owner visual/action acceptance, не автоматический rollout или merge.
+Build PASS, adapters82/82, cross-browser 124/124. Первые 2 Firefox failures были Browser.removeBrowserContext protocol teardown; полный serial recheck124/124 PASS. Review coverage gap закрыт отдельными GlassSelect controlled rejection/Escape/outside/reopen/retarget tests. Полная regression: 516 PASS / 4 expected skips / 0 FAIL. GitHub CI отправленного head сверять по PR checks в [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md). Fresh evidence: `output/playwright/fe11-rollout/`.
 
-## CURRENT 10.11.2026 — shared item typography
+Figma синхронизирована адресно: menu style14/18/500, Navigation/Account/More masters и Select opening contract. Frozen5+manifest неизменны; не менять их для исправления адаптера. Не возвращать popupPilot flag, FOSGlassSelect alias или native visible option popup.
 
-Продолжение: build и 24/24 адресных typography/lifecycle/freeze/adapter проверок PASS; все шесть CI jobs на `0312b3b` SUCCESS. После исправления test-readiness — typography 24/24 PASS в четырёх browser/input проектах. Подготовлены восемь свежих desktop/mobile снимков Client/Manager меню, ссылки в [аудите](TYPOGRAPHY_AUDIT_2026-11-09.md). Независимое ревью — PASS WITH RISKS, без конкретных дефектов. Исправлен только immediate-count в typography test: ожидание видимого первого пункта перед перечислением; UI/frozen files не менялись. Исходные diagnostic logs сохранены, старое неподтверждённое упоминание final-regression.json исправлено. Далее Owner visual review по готовым снимкам; Figma/merge только после соответствующих разрешений.
+Следующий шаг: проверить CI отправленного head, обновить SHA в существующем Drive CURRENT. Owner pilot gate закрыт; all-screen acceptance, merge и release не следуют автоматически. [отчёт FE11](FE11_POPUP_REAUDIT_2026-11-10.md) содержит inventory, тесты, причины и ограничения.
 
-Owner разрешил Manrope 14/18 Medium 500: `--fos-type-menu-item` → navigation/popup aliases в `src/styles.css`. Sidebar/Drawer/Account/More/GlassSelect переиспользуют роль; локальных размеров/весов пунктов нет, Select сохраняет прежнюю 36px строку. Profile data/headings/captions и frozen implementation не редактировались. Build и cross-browser typography 24/24 PASS; новый контракт включён в M7 CI. Продолжается прежняя ветка/PR #29; [QA](TYPOGRAPHY_AUDIT_2026-11-09.md). Следующий gate — Owner visual acceptance; только затем Figma + статус утверждённого DS-стандарта. Merge OPEN.
+## История предыдущих handoff (не текущие задания)
 
 ## CURRENT 09.11.2026 — post-FE11 focus/dismissal fixes
 

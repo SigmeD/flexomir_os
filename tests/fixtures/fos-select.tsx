@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createRoot } from 'react-dom/client'
-import { FOSGlassSelect } from '../../src/components/ui/fos-controls'
+import { FOSSelect } from '../../src/components/ui/fos-controls'
 import '../../src/styles.css'
 
 function Fixture() {
@@ -11,14 +11,14 @@ function Fixture() {
   const long = params.has('long'), controlled = params.has('controlled'), reject = params.has('reject')
   return <div style={{ padding: 20, maxWidth: 360, marginTop: long ? 100 : 0 }}>
     <form onSubmit={event => { event.preventDefault(); setData(JSON.stringify([...new FormData(event.currentTarget)])) }}>
-      <FOSGlassSelect name="choice" label="Выбор" helper="Подсказка" aria-describedby="extra-note" value={controlled ? value : undefined} defaultValue={controlled ? undefined : ''} required disabled={disabled} readOnly={readOnly}
+      <FOSSelect name="choice" label="Выбор" helper="Подсказка" aria-describedby="extra-note" value={controlled ? value : undefined} defaultValue={controlled ? undefined : ''} required disabled={disabled} readOnly={readOnly}
         autoFocus={params.has('autofocus')} onFocus={event => setFocusEvent('focus:' + event.currentTarget.tagName)} onBlur={event => setFocusEvent('blur:' + event.currentTarget.tagName)}
         onChange={event => { setEvent(event.target.tagName + ':' + event.target.value); setChanges(count => count + 1); if (controlled && !reject) setValue(event.target.value) }}>
         <option value="">Выберите значение</option><option value="a">Альфа</option><option disabled value="b">Бета</option><option>Гамма</option>
         <optgroup label="Недоступная группа" disabled><option value="d">Дельта</option></optgroup>
         {params.has('label') && <option value="long">Очень длинное название материала для проверки поля на узком экране без переноса текста за его границы</option>}
         {long && Array.from({ length: 50 }, (_, index) => <option key={index} value={'item-' + index}>Вариант {index}</option>)}
-      </FOSGlassSelect>
+      </FOSSelect>
       <p id="extra-note">Описание поля</p>
       <button type="submit">Отправить</button><button type="reset">Сбросить</button>
     </form>
