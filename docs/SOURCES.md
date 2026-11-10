@@ -4,6 +4,8 @@
 
 ## Как выбирать источник
 
+10.11, scope01–13: перечитаны Drive Frontend CURRENT (modified14:09:37.549Z, POST-M8 addendum), SRS (modified06.11 12:54:47.366Z), E2E (modified02.11 10:25:14.515Z). Owner указал локальный `D:/downloads/FLEXOMIR_OS_NEXT_SCOPE_13_CODEX_SDLC_TZ_2026-11-10.md`; [разбор и план](NEXT_SCOPE_13_2026-11-10.md) фиксируют его исполнение и OPEN gates. Figma Select1148:311/292 проверен через metadata/screenshot/design context:44px field и approved open-popup contract; новые визуальные макеты/мастера не изменены. Локальный исходный файл существует только на машине Owner, не обещается доступным на другом checkout.
+
 Требования и подтверждённые решения определяют логику, права и данные. Утверждённые Figma DS/FOS masters — внешний вид и поведение компонентов. Новое решение Owner важнее старого кадра; CURRENT-кандидат не означает автоматическое согласование объёма. Реализацию, CI и merge сверяем в GitHub, очередность — в существующем Drive CURRENT.
 
 Figma file7rvIYc6yj3OA7gxmf1xJbv проверялся в сессиях 0afae8b2-6da2-4635-a892-97f2392f3d58 (экраны) и 88ca34e1-ac28-461b-ac35-576d4803d425 (поля). Date Field1169:437: Default1169:383 и Readonly1169:433, контроль44px. Новое указание Owner о ширине до506px и видимости agreed-date клиенту выше старого Client Detail с одним полем720px. Figma этой документационной правкой не менялась.

@@ -1,5 +1,7 @@
 # Flexomir OS — передача работы
 
+Активный инкремент10.11: `fix/next-scope-a-correctness`, base `7b17db6`, [план13 пунктов](NEXT_SCOPE_13_2026-11-10.md) и [отчёт wave A](NEXT_SCOPE_A_REPORT_2026-11-10.md). Старые ветки/stash сохранены. Source-level исправления Profile/Select/Local artwork: build PASS, targeted124/124, full582 PASS/4 SKIP, repeated focus24/24 и integration3/3; independent review PASS/READY WITH RISKS, один собственный runtime390. Исходные RED и финальные evidence — `output/playwright/next-scope-a/`, логи `output/next-scope-a-*.log`; прежние результаты ниже не заменяют новый прогон. Доставка — один Draft PR этой ветки; фактический head/CI сверять в GitHub, следующий gate Owner; merge не выполнялся. Save UX G-02, новые визуальные пилоты и реальные файлы/API остаются OPEN.
+
 Обновлено 10.11.2026 после merge [PR #31](https://github.com/SigmeD/flexomir_os/pull/31).
 
 ## База для следующей задачи

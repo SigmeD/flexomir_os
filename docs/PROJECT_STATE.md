@@ -1,5 +1,7 @@
 # Flexomir OS — состояние проекта
 
+Активный инкремент10.11: [scope01–13, декомпозиция и wave A](NEXT_SCOPE_13_2026-11-10.md), ветка `fix/next-scope-a-correctness` от `7b17db6` (PR32 уже в main). Исправлены Profile navigation/guard/focus, required Select placeholder и устаревшее сообщение artwork после Local replacement. Build PASS, targeted124/124, full582 PASS/4 expected SKIP, focus24/24. [Отчёт и ограничения](NEXT_SCOPE_A_REPORT_2026-11-10.md). Это рабочая ветка для Draft PR, не новая поставка main. Save Item остаётся `dirty && valid`; приёмка визуальных пилотов и API-гейты открыты.
+
 Проверено 10.11.2026. Продуктовая база — main a400b9dc73ad77b01b37932fa4c5abbd57d134e0, [PR #31](https://github.com/SigmeD/flexomir_os/pull/31) слит. Это техническая поставка M8; полная визуальная приёмка экранов остаётся открытой.
 
 ## Что работает сейчас

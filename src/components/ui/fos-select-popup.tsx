@@ -34,9 +34,11 @@ export function FOSSelectPopup({ id, label, readOnly, children, onChange, onInva
     setValue(committed)
     const invalidNow = select.willValidate && ((select.required && committed === '') || select.validity.customError)
     setInvalid(previous => previous && invalidNow)
-    setItems(Array.from(select.options).map(option => ({ id: option.value, label: option.text, disabled: option.disabled || option.parentElement?.matches('optgroup:disabled') })))
+    setItems(Array.from(select.options).map(option => ({ id: option.value, label: option.text,
+      disabled: option.disabled || option.parentElement?.matches('optgroup:disabled') || Boolean(props.required && emptyIsPlaceholder && option.value === ''),
+    })))
   }
-  useLayoutEffect(refresh, [children, props.value, props.defaultValue])
+  useLayoutEffect(refresh, [children, props.value, props.defaultValue, props.required, emptyIsPlaceholder])
   useEffect(() => {
     const form = native.current?.form
     let resetFrame = 0

@@ -4,6 +4,7 @@ import { SidebarNav, type SidebarNavItem } from '@/components/ui/sidebar-nav'
 import { AccountMenu } from './AccountMenu'
 import { DEMO_PROFILE_IDENTITIES, type DemoProfileIdentity } from '@/demo/profile-model'
 import { useCabinetNavigation } from './CabinetNavigation'
+import type { CabinetSection } from './CabinetPage'
 import { ProfileSettingsScreen } from '@/screens/profile/ProfileSettingsScreen'
 import './app-shell.css'
 
@@ -13,6 +14,8 @@ interface AppShellProps {
   activeId: string
   /** Selected UI only. Real route commits require a separate navigation contract. */
   onSelect: (id: string) => void
+  /** Reset the section's nested view after leaving Profile through its active nav item. */
+  onProfileReturnToRoot?: () => void
   roleLabel: string
   variant?: 'client' | 'manager'
   identityLabel?: string
@@ -28,7 +31,7 @@ interface AppShellProps {
 
 /** Responsive composition only. Material, motion and modal lifecycle belong to shared primitives. */
 export function AppShell({
-  children, items, activeId, onSelect,
+  children, items, activeId, onSelect, onProfileReturnToRoot,
   roleLabel, variant = 'client', identityLabel = roleLabel, navigationLabel, menuLabel, triggerLabel, footerText,
   accountIdentity: suppliedIdentity, accountPhotoPreview: suppliedPhotoPreview, onOpenProfile: suppliedOpenProfile,
   drawerSelectionResetKey,
@@ -39,6 +42,10 @@ export function AppShell({
   const accountPhotoPreview = suppliedPhotoPreview ?? (contextMatchesRole ? navigation?.photoPreview : undefined) ?? null
   const onOpenProfile = suppliedOpenProfile ?? (contextMatchesRole ? navigation?.openProfile : undefined) ?? (() => undefined)
   const showProfile = Boolean(navigation?.profileOpen && navigation.profileRole === variant && navigation.profileSection === activeId && navigation.profile)
+  const selectSection = (id: string) => {
+    if (showProfile && navigation) navigation.navigate(id as CabinetSection, id === activeId ? onProfileReturnToRoot : undefined)
+    else onSelect(id)
+  }
   const [compact, setCompact] = useState(() => window.matchMedia('(max-width: 1023px)').matches)
   const [drawerSelection, setDrawerSelection] = useState(activeId)
   useEffect(() => { setDrawerSelection(activeId) }, [activeId, drawerSelectionResetKey])
@@ -52,17 +59,10 @@ export function AppShell({
   }, [])
 
   return (
-    <div className="fos-app-shell" data-variant={variant} onClick={event => {
-      // Sidebar/Drawer intentionally skip selecting an already active section.
-      // The shell host still owns its root route (e.g. detail → Orders list).
-      const target = event.target
-      if (!(target instanceof Element)) return
-      const current = target.closest<HTMLButtonElement>('button.fos-sidebar-nav__item[aria-current="page"]:not([disabled])')
-      if (current) onSelect(activeId)
-    }}>
+    <div className="fos-app-shell" data-variant={variant}>
       <aside className="fos-app-shell__aside" aria-label="Навигация">
         <div className="fos-app-shell__brand">FLEXOMIR OS</div>
-        <SidebarNav items={items} activeId={activeId} motionFromId={navigation?.motionFromSection} onSelect={onSelect} ariaLabel={navigationLabel} />
+        <SidebarNav items={items} activeId={activeId} motionFromId={navigation?.motionFromSection} onSelect={selectSection} ariaLabel={navigationLabel} />
         {!compact && <AccountMenu identity={accountIdentity} photoPreview={accountPhotoPreview} placement="sidebar" onOpenProfile={onOpenProfile} />}
       </aside>
       <div className="fos-app-shell__content">
@@ -75,7 +75,7 @@ export function AppShell({
               items={items}
               activeId={drawerSelection}
               onSelect={setDrawerSelection}
-              onSelectionSettled={onSelect}
+              onSelectionSettled={selectSection}
               ariaLabel={menuLabel}
               triggerLabel={triggerLabel}
               footerText={footerText}

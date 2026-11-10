@@ -99,7 +99,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   return (
     <div className="fos-orders-page" data-testid="client-orders-screen" ref={preview.surfaceRef}>
       <AppShell
-        items={navigation ? cabinetItems('client', navigation.ready) : clientNav} activeId={navigationSection} onSelect={navigateFromShell} drawerSelectionResetKey={drawerResetKey}
+        items={navigation ? cabinetItems('client', navigation.ready) : clientNav} activeId={navigationSection} onSelect={navigateFromShell} drawerSelectionResetKey={drawerResetKey} onProfileReturnToRoot={preview.backToList}
         roleLabel="Клиент" identityLabel={companyName} variant="client" navigationLabel="Навигация клиента" menuLabel="Меню клиента"
         triggerLabel="Открыть меню клиента" footerText={companyName}
       >

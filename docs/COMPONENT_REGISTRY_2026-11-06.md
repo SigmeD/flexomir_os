@@ -1,5 +1,16 @@
 # Flexomir OS — React Component Registry
 
+## Scope01–13 / wave A, рабочая ветка10.11
+
+Карта до реализации и весь план — [NEXT_SCOPE_13](NEXT_SCOPE_13_2026-11-10.md). Статус: local QA verified (targeted124/full582+4SKIP); Owner acceptance/merge отдельно. [Доказательства и review](NEXT_SCOPE_A_REPORT_2026-11-10.md).
+
+| Figma/source → React | Решение / контракт | Consumers |
+| --- | --- | --- |
+| Shell637:180, Profile3215:1357 → AppShell/CabinetNavigation/OrderDemoWorkspace | EXTEND: Profile route проходит guard ровно один раз; optional navigate onCommit сбрасывает вложенный root у владельца экрана; Close/Escape не равны Discard. Без DOM-bubble interception | Client/Manager Orders и CabinetPage в Layouts/Companies/Support |
+| Nav1578:493 + Drawer1962:3834/3854 → SidebarNav/NavigationDrawer | EXTEND activation callback для текущего раздела; Drawer route после фактического rest, включая same-id; фокус нового modal guard приоритетнее возврата на trigger. Материал/физика/Rows не меняются | Оба кабинета, navigation labs |
+| Select1148:311/292 → FOSSelect/FOSSelectPopup | EXTEND adapter: required + emptyIsPlaceholder запрещают выбор пустого placeholder; optional semantic empty фильтра остаётся доступен. Native events/validation/reset/FormData сохраняются | Item shape/material, Manager company, CompanyOrders filters, lab |
+| Artwork634:445 → ArtworkSource | EXTEND source transition: Local/HELP очищают устаревший unavailableArtwork. Save validation сохранена; новый Library/Local visual pilot12 DEFER | Client/Manager New/Edit/Repeat Item |
+
 Актуальная продуктовая база: main a400b9d, PR #31 MERGED 10.11.2026. Последние изменения — общий OrderDateFields и клиентское readonly-отображение согласованного срока; основные контракты ниже сохранены. Предыдущие checkpoints фиксируют происхождение компонентов и не задают текущую очередь. Проверки и их границы — в [итоговом аудите M8](M8_FINAL_AUDIT_2026-11-10.md).
 
 ## Уточнение Owner10.11 — согласованный срок клиента
