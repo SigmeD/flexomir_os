@@ -4,6 +4,8 @@
 
 ## Как выбирать источник
 
+FOS03 /10.11: [источники/план](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md). Drive CURRENT modified14:09:37.549Z перечитан; gates прежние. Figma read-only session`bb9a0704-e302-499e-b2bc-b52f01338d24`: Manager0/1 D/T/M, instance→master/context/raw screenshots; section-gap633:148→633:80=32, block/md633:122→633:79=24. Canvas не менялась. Локальные reference PNG/JSON — `output/playwright/fos03/reference`; прежняя13-point/A поставка — [PR33](https://github.com/SigmeD/flexomir_os/pull/33), не принятая main.
+
 Требования и подтверждённые решения определяют логику, права и данные. Утверждённые Figma DS/FOS masters — внешний вид и поведение компонентов. Новое решение Owner важнее старого кадра; CURRENT-кандидат не означает автоматическое согласование объёма. Реализацию, CI и merge сверяем в GitHub, очередность — в существующем Drive CURRENT.
 
 Figma file7rvIYc6yj3OA7gxmf1xJbv проверялся в сессиях 0afae8b2-6da2-4635-a892-97f2392f3d58 (экраны) и 88ca34e1-ac28-461b-ac35-576d4803d425 (поля). Date Field1169:437: Default1169:383 и Readonly1169:433, контроль44px. Новое указание Owner о ширине до506px и видимости agreed-date клиенту выше старого Client Detail с одним полем720px. Figma этой документационной правкой не менялась.

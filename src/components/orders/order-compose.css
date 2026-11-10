@@ -18,6 +18,21 @@
 .fos-demo-workspace__hide:focus-visible,.fos-demo-workspace__show:focus-visible { outline: 2px solid #1f3861; outline-offset: 2px; }
 .fos-demo-workspace__show { position: fixed; z-index: 120; top: 60px; left: 8px; padding: 8px 14px; border: 1px solid rgba(230,238,244,.82); border-radius: 20px; background: rgba(248,250,252,.82); color: #263542; font: 600 13px/20px Manrope,system-ui,sans-serif; backdrop-filter: blur(9px); cursor: pointer; }
 .fos-order-composer { min-width: 0; overflow-wrap: anywhere; }
+/* FOS03 DEV reference: DS V2 633:148 -> space/32, 633:122 -> space/24.
+   One shared composition variant; ordinary Client/Manager keep legacy fallbacks. */
+.fos-order-composer[data-compose-spacing=pilot] {
+  --fos-v2-primitive-space-24: 24px;
+  --fos-v2-primitive-space-32: 32px;
+  --fos-v2-semantic-space-block-md: var(--fos-v2-primitive-space-24);
+  --fos-v2-semantic-space-section-gap: var(--fos-v2-primitive-space-32);
+  --fos-compose-general-offset: 0px;
+  --fos-compose-heading-gap: var(--fos-v2-semantic-space-block-md);
+  --fos-compose-note-gap: var(--fos-v2-semantic-space-block-md);
+}
+.fos-order-composer[data-compose-spacing=pilot] .fos-order-composer__body {
+  display: grid;
+  gap: var(--fos-v2-semantic-space-section-gap);
+}
 @media(max-width:600px) {
   .fos-demo-workspace__controls { top: 80px; right: 8px; width: min(360px, calc(100vw - 16px)); }
   .fos-demo-workspace__intro { min-width: 0; }
@@ -31,22 +46,22 @@
 .fos-order-composer__body { max-width: 1050px; margin-top: 5px; }
 .fos-order-composer__section-heading { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 23px; }
 .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { margin: 0; color: #273343; font-size: 20px; font-weight: 600; line-height: 28px; }
-.fos-order-composer__general { margin-top: 38px; }
-.fos-order-composer__general > h2 { margin-bottom: 10px; }
-.fos-order-composer__dates + .fos-field { margin-top: 20px; }
+.fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 38px); }
+.fos-order-composer__general > h2 { margin-bottom: var(--fos-compose-heading-gap, 10px); }
+.fos-order-composer__dates + .fos-field { margin-top: var(--fos-compose-note-gap, 20px); }
 .fos-order-composer__products[data-empty] .fos-order-composer__section-heading { margin-bottom: 12px; }
 .fos-order-composer__products[data-empty] .fos-order-detail__empty { min-height: 44px; font-size: var(--fos-type-body-size); line-height: var(--fos-type-body-line-height); }
-.fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: 63px; }
+.fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 63px); }
 @media(max-width:1023px) {
   .fos-order-composer__body { margin-top: 21px; }
   .fos-order-composer__section-heading { margin-bottom: 36px; }
   .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { font-size: 18px; line-height: 26px; }
-  .fos-order-composer__general { margin-top: 36px; }
-  .fos-order-composer__general > h2 { margin-bottom: 12px; }
+  .fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 36px); }
+  .fos-order-composer__general > h2 { margin-bottom: var(--fos-compose-heading-gap, 12px); }
   .fos-order-composer__products[data-empty] .fos-order-composer__section-heading { margin-bottom: 8px; }
-  .fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: 68px; }
+  .fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 68px); }
 }
 @media(max-width:600px) {
   .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { font-size: 16px; line-height: 24px; }
-  .fos-order-composer__general > h2 { margin-bottom: 14px; }
+  .fos-order-composer__general > h2 { margin-bottom: var(--fos-compose-heading-gap, 14px); }
 }

@@ -1,5 +1,15 @@
 # Flexomir OS — React Component Registry
 
+## FOS03 /10.11 — DEV spacing reference, OWNER OPEN
+
+| Figma → React | Решение / контракт | Consumers |
+| --- | --- | --- |
+| Manager0/1 D2569:24648/24539,T24851/24757,M25041/24945 → OrderComposer | EXTEND existing composition; DEV query composeSpacing=pilot + ownerRole manager | Opted-in Manager drafts; ordinary Client/Manager/production без rollout |
+| DS V2 section-gap32/block-md24 → order-compose.css | Scoped primitive→semantic→composition vars; grid32, General offsets0/internal24, legacy fallbacks | Один reference0/1/N, five widths |
+| Select1148:292,Date1169:383,Note681:164,SectionAdd1986:774,HeaderAction/PageHeader | REUSE geometry/data/validation/IDs/private Save; frozen unchanged | Existing shared form, без новых primitives/действий |
+
+[План/мастера](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md), [QA/ограничения](FOS03_REPORT_2026-11-10.md). Owner visual gate до распространения; manual screen Y не объявляются новым DS contract.
+
 Актуальная продуктовая база: main a400b9d, PR #31 MERGED 10.11.2026. Последние изменения — общий OrderDateFields и клиентское readonly-отображение согласованного срока; основные контракты ниже сохранены. Предыдущие checkpoints фиксируют происхождение компонентов и не задают текущую очередь. Проверки и их границы — в [итоговом аудите M8](M8_FINAL_AUDIT_2026-11-10.md).
 
 ## Уточнение Owner10.11 — согласованный срок клиента

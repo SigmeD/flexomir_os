@@ -1,5 +1,9 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner10.11 — FOS03 контрольная композиция
+
+Owner «приступай к следующему этапу» разрешил reference03 и QA после представленной очереди; это не merge PR33. [Source map/альтернативы](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md): реальные DS V2 section-gap32/block-md24, существующие shared controls. **OWNER VISUAL OPEN:** нормализация gap перед rollout. Save05, hover02, calendar07, palette08/09, manager agreed-date/publication и API этим поручением не утверждены.
+
 ## Действующий статус — 10.11.2026
 
 PR #29, #30 и #31 уже слиты; последняя продуктовая база — main a400b9d, проверенный head PR #31 — f991bd77. Owner отдельно разрешил merge PR #31. Датированные записи ниже сохраняют основания решений, а упомянутые в них ветки, PR и результаты относятся к указанному моменту. Текущая очередь — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).

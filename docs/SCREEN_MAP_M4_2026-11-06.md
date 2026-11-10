@@ -1,5 +1,7 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
+FOS03 /10.11: Manager draft0/1 D2569:24648/24539,T24851/24757,M25041/24945 → один `OrderComposer` DEV reference `?view=manager-orders&composeSpacing=pilot`. [Source map/план](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md), [QA/Owner gate](FOS03_REPORT_2026-11-10.md). Размеры контролов/даты/сценарии прежние; полный screen parity и rollout не присвоены.
+
 Актуальная продуктовая база: main a400b9d, PR #31 MERGED 10.11.2026. Матрица ниже хранит исходные 69 сравнений на head51d93be. Позже Owner поручил унифицировать ширину дат и добавить согласованный срок клиенту: эти изменения отдельно проверены на79d0529, финальный test-only head — f991bd77. Их 18 снимков в output/m8-client-agreed-date не подменяют старые 69 пар. Полная визуальная приёмка остаётся открытой.
 
 ## M8 / 10.11.2026 — исходная screen/state matrix после PR #30
