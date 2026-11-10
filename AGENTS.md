@@ -1,5 +1,11 @@
 # Flexomir OS — правила работы Codex
 
+## Состояние после merge / 10.11.2026
+
+PR #31 слит по прямому поручению Owner; продуктовый main — `a400b9dc73ad77b01b37932fa4c5abbd57d134e0`, проверенный PR head — `f991bd77d16f0552f10e1cb8e0014d7d95a84850`, обе CI успешны. PR #29/#30 тоже уже слиты. Клиентское readonly-поле согласованного срока и общая строка дат находятся в main; фиксация менеджером, переход в «В работе» и реальные API/1С остаются OPEN. Перед новой задачей сверять фактические Git/PR/Drive, не переиспользовать ветки слитых PR.
+
+Датированные SHA и статусы прошлых поставок ниже — исторические факты. Действующие правила, роли, frozen FE11 и Owner-решения сохраняют силу. Краткое состояние — [PROJECT_STATE](docs/PROJECT_STATE.md), порядок дальнейшей работы — [DELIVERY_PLAN](docs/DELIVERY_PLAN.md).
+
 ## CURRENT / 10.11.2026 — Owner popup pilot accepted / rollout
 
 - `navigation/item` и `popup/item` используют одну базовую роль Manrope 14px/18px Medium 500. React source: `--fos-type-menu-item`; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item`. Не дублировать font-size/line-height/font-weight в CSS потребителей и не создавать локальные исключения.

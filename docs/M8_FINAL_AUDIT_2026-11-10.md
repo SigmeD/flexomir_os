@@ -1,10 +1,18 @@
 # M8 — заключительная проверка экранов
 
-## Проверка перед merge по поручению Owner
+## Итог поставки — 10.11.2026
+
+[PR #31](https://github.com/SigmeD/flexomir_os/pull/31) слит по прямому поручению Owner. Merge/main SHA a400b9dc73ad77b01b37932fa4c5abbd57d134e0; проверенный PR head f991bd77d16f0552f10e1cb8e0014d7d95a84850. Дерево файлов после squash совпало с проверенным head, сборка на main прошла. Remote feature branch удалена; локальная ветка и четыре stash сохранены.
+
+Обе финальные CI-проверки успешны: [Orders Core UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/42824002319) и [FE-S03 M7 UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/42824002316). Полный локальный popup-набор после исправления outside-click — 35/35 PASS. Исходные FAIL и промежуточные результаты ниже сохранены как доказательства; 520/4 относится к раннему head 51d93be, а не новому полному прогону после всех правок.
+
+Issue #21 остаётся открытым до полного DoD. Manager agreement/status/API и общая визуальная приёмка не закрываются техническим merge. Дальше приведены checkpoints этой поставки; её актуальный статус указан здесь.
+
+## Диагностика перед merge по поручению Owner
 
 Owner прямо разрешил merge PR31 в main/origin. На head79d0529 CI выявил ошибку тестовой геометрии: Orders233PASS/1FAIL, M7 core159PASS, последующий popup lifecycle31PASS/4FAIL. Падал один сценарий popup-dismissal: после добавления даты центр textarea оказался под открытым More. Trace локального воспроизведения2/2FAIL сохраняет point195,663 и menuitem, перехватывающий click. Это не клик вне меню, который сценарий должен был проверять.
 
-В тесте выбран видимый левый край textarea12,12 обычным click без force. Все исходные проверки закрытия, фокуса, немедленного inert/pointer-events и таймауты сохранены; UI, физика и frozen sources не менялись. Исправленный строгий сценарий повторён3раза в Chromium/Firefox/WebKit/touch:12/12PASS, buildPASS. Точечное изменение координаты одобрено независимым reviewer; CI нового head должен быть проверен отдельно перед фактическим merge. Доказательства: output/m8-merge/popup-red.log, popup-strict.log, trace-first.
+В тесте выбран видимый левый край textarea12,12 обычным click без force. Все исходные проверки закрытия, фокуса, немедленного inert/pointer-events и таймауты сохранены; UI, физика и frozen sources не менялись. Исправленный строгий сценарий повторён3раза в Chromium/Firefox/WebKit/touch:12/12PASS, buildPASS. Точечное изменение координаты одобрено независимым reviewer; CI финального head f991bd77 затем завершился успешно; merge выполнен после этого. Доказательства: output/m8-merge/popup-red.log, popup-strict.log, trace-first.
 
 ## Последующее уточнение10.11 — поле согласованного срока клиенту
 
@@ -30,7 +38,7 @@ Owner прямо разрешил merge PR31 в main/origin. На head79d0529 CI
 
 **Ответ о статусах:** по CURRENT E2E Manager сохраняет согласованные данные, затем «Создать заказ» запускает1С; после результата система синхронизирует данные/статусы. Само сохранение даты не является утверждённым переходом в«В работе»; точное event→status правило OPEN у Owner/PO/Алексея. В React ManagerDemoIntake production action disabled и не вызывает1С.
 
-**База:** `origin/main 9d1f5bca738e667dc3d63a7a1f0ce9a2f1ec18da`, PR #30 MERGED. **Ветка:** `feat/m8-final-screen-qa`. Одна поставка по [issue #21](https://github.com/SigmeD/flexomir_os/issues/21); merge этого инкремента отдельно.
+**База:** `origin/main 9d1f5bca738e667dc3d63a7a1f0ce9a2f1ec18da`, PR #30 MERGED. **Ветка:** `feat/m8-final-screen-qa`. Одна поставка по [issue #21](https://github.com/SigmeD/flexomir_os/issues/21); этот инкремент затем слит в PR #31; итог указан в начале отчёта.
 
 ## 1. Основные результаты
 
@@ -97,12 +105,12 @@ PNG/HTML/JSON прогона ignored/local и не доступны через G
 | Auth | Утверждённого CURRENT визуального reference нет | Owner/design; OWNER_DESIGN_OPEN |
 | Макеты / file formats / storage/history | Только UI preview и local selection, full product scope открыт | Owner/PO/Алексей |
 | Whole-screen visual acceptance и косметические отличия | CI и выборочный независимый review не заменяют решение Owner по всем утверждённым экранам | Owner: просмотр готовых пар и решения по конкретным OPEN; дата не назначена |
-| M8 technical delivery | Повторная full regression завершена:520 PASS/4 expected skips/0 FAIL. CI отправленного PR head сверяется отдельно | Codex, до сдачи |
+| M8 technical delivery | PR #31 MERGED, main a400b9d; обе CI на f991bd77 SUCCESS. Полный520/4 относится к раннему head51d93be | Выполнено; визуальная приёмка отдельно |
 
 Подтверждённых новых P0/P1 в проверенном объёме не обнаружено; это не доказательство полного отсутствия дефектов вне проверенных состояний. Issue #21 не закрыт, M8 не объявлен OWNER ACCEPTED / RELEASED.
 
 ## 4. Договорённости и следующий шаг
 
-Codex завершил локальные build/M7/full QA; отправляет один PR и проверяет CI его фактического head с минимальными правками, tests, script и LIVE docs; синхронизирует существующий Drive CURRENT. Owner получает конкретные пары и список решений для visual review. Merge только по отдельному поручению.
+PR #31 с кодом, проверками и LIVE-документами слит по отдельному поручению Owner после успешного CI. Существующий Drive CURRENT синхронизирован с main a400b9d. Для визуальной приёмки остаются конкретные пары и список открытых решений.
 
 После закрытия утверждённых M8 gates — M9: frontend подключается к согласованным доступным API Алексея; fixtures не выдаются за production. Следующая плановая ревизия документации —24.11.2026.
