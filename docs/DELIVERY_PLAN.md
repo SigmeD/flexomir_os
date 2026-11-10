@@ -1,5 +1,9 @@
 # Flexomir OS — план frontend и Liquid Glass
 
+## Уточнение10.11 — унификация размеров в текущем M8 / PR #31
+
+По прямому поручению Owner унифицирована строка дат создания/просмотра Client/Manager: один OrderDateFields, desktop до506px на колонку вместо разных506/720 и ширины половины1056px Manager detail. Проверены соседние формы, shared44px input/select, пять ширин; buildPASS, Orders64/64 + Firefox/WebKit4/4, независимое review без code/layout findings. Подробности в [итоговом аудите](M8_FINAL_AUDIT_2026-11-10.md). Новый agreed-date workflow и status mapping пока обсуждаются; это не автоматическое разрешение их реализации или merge PR31.
+
 ## CURRENT 10.11.2026 — M8, финальный аудит перед Owner screen review
 
 PR #30 MERGED в 9d1f5bc. Текущая ветка feat/m8-final-screen-qa закрывает техническую часть оставшейся M8-проверки:69fresh Figma↔React pairs, проверка реальных сценариев, точечные source fixes и независимый review. [План исполнения](superpowers/plans/2026-11-10-m8-final-screen-qa.md), [итоговый аудит M8](M8_FINAL_AUDIT_2026-11-10.md).

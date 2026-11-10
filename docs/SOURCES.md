@@ -1,5 +1,11 @@
 # Flexomir OS — CURRENT источники
 
+## Проверка размеров и смены статуса —10.11.2026
+
+Figma read-only session88ca34e1-ac28-461b-ac35-576d4803d425: FOS Date Field1169:437 (Default1169:383 / Readonly1169:433, control44px); Client New1810:12510/1837:6359/1810:12545 (506/728/350px); Client Detail1838:6565/1838:6810/1838:7031 (старый desktop720px); Manager draft2569:24648/24851/25041 (506/350/350px). Новое прямое указание Owner о едином размере выше старой readonly ширины.
+
+Заново прочитаны существующие CURRENT frontend plan и E2E v0.2. E2E различает сохранение договорённостей, «Создать заказ» в1С и последующий sync; точный production status mapping остаётся OPEN. Поля/textarea остальных форм проверены в коде; Figma Support Description2412:10665 подтверждает отдельный textarea146px с label (control120px), не базовое однострочное поле44px. Raw refs прошлого M8 использовались как изображения для сравнения; свежие измерения узлов и browser captures отдельно в [аудите](M8_FINAL_AUDIT_2026-11-10.md).
+
 ## M8 final audit — 10.11.2026
 
 Проверены существующие Drive CURRENT frontend plan, UX/UI source index, SRS v0.5, E2E v0.2 и Glass contract. Поздние Owner решения/merged PR #29/#30 выше старых candidate notes. База fresh origin/main 9d1f5bc, четыре stash сохранены, активных PR на старте нет.

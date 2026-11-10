@@ -1,5 +1,15 @@
 # Flexomir OS — React Component Registry
 
+## M8 / 10.11.2026 — единые размеры полей заказа
+
+| Figma/master → React | Решение | Consumers / контракт |
+| --- | --- | --- |
+| Date Field 1169:437, Default1169:383 / Readonly1169:433 → FOSDateField | REUSE | Общая высота44px, состояния и native date input сохранены |
+| Client New1810:12510, Manager draft2569:24648 → OrderDateFields | CREATE layout composition | OrderComposer и OrderDetail обеих ролей; desktop колонки до506px, сужаются вместе с контейнером; tablet две равные колонки или одиночное поле на всю ширину; mobile одна колонка |
+| Client Detail1838:6565 date720px → Owner instruction10.11 | EXTEND shared layout | Новый эталон ширины — поле Client New506px, а не старый readonly frame720px; Figma не изменена |
+
+Проверка остальных форм: основные поля позиции уже имеют desktop-колонки до506px; группа формы/ширины/высоты намеренно уже. Обычные input/select используют общую высоту44px. Textarea, поиск компаний и формы поддержки/профиля имеют отдельные композиции; их размеры не приравниваются к половине строки дат. Проверка браузером и результаты — в существующем итоговом аудите M8. Публикация согласованной даты и переход статуса в эту правку размеров не входят.
+
 ## M8 / 10.11.2026 — адресная проверка существующих компонентов
 
 | Figma/master → React | Решение | Consumers / проверка |

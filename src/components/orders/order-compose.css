@@ -33,8 +33,7 @@
 .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { margin: 0; color: #273343; font-size: 20px; font-weight: 600; line-height: 28px; }
 .fos-order-composer__general { margin-top: 38px; }
 .fos-order-composer__general > h2 { margin-bottom: 10px; }
-.fos-order-composer__general > .fos-field + .fos-field { margin-top: 20px; }
-.fos-order-composer__date { max-width: 506px; }
+.fos-order-composer__dates + .fos-field { margin-top: 20px; }
 .fos-order-composer__products[data-empty] .fos-order-composer__section-heading { margin-bottom: 12px; }
 .fos-order-composer__products[data-empty] .fos-order-detail__empty { min-height: 44px; font-size: var(--fos-type-body-size); line-height: var(--fos-type-body-line-height); }
 .fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: 63px; }
@@ -44,7 +43,6 @@
   .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { font-size: 18px; line-height: 26px; }
   .fos-order-composer__general { margin-top: 36px; }
   .fos-order-composer__general > h2 { margin-bottom: 12px; }
-  .fos-order-composer__date { max-width: none; }
   .fos-order-composer__products[data-empty] .fos-order-composer__section-heading { margin-bottom: 8px; }
   .fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: 68px; }
 }

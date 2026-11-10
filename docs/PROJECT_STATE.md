@@ -1,5 +1,11 @@
 # Flexomir OS — текущее состояние проекта
 
+## Уточнение10.11 — размеры полей заказа
+
+В том же PR #31 общая композиция OrderDateFields подключена к OrderComposer/OrderDetail Client/Manager. Убраны разные локальные правила ширины: desktop до506px на поле, tablet адаптивно по числу полей, mobile одна колонка. FOSDateField/FOSInput и данные/права/статусы не менялись. Согласованный срок у клиента и фиксация менеджером обсуждаются отдельно, не реализованы этой правкой.
+
+Свежая проверка:30 состояний на1440/1024/768/390/320, без overflow/page errors; все обычные контроли44px. BuildPASS, Orders64/64 Chromium, Firefox/WebKit4/4 existing flow tests. Независимый review без code/layout findings; уточнения формулировок размеров исправлены. [Доказательства и границы](M8_FINAL_AUDIT_2026-11-10.md). Merge не выполнен.
+
 ## CURRENT 10.11.2026 — заключительная проверка M8
 
 PR #30 MERGED: main/origin/main 9d1f5bc, дерево соответствует проверенному head 039381c; remote head branch удалена. Новый этап — issue #21 в одной ветке feat/m8-final-screen-qa, без worktree.

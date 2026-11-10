@@ -1,5 +1,19 @@
 # M8 — заключительная проверка экранов
 
+## Дополнение10.11 — размеры существующих полей по поручению Owner
+
+**Реализовано:** общий OrderDateFields использует существующий FOSDateField в OrderComposer/OrderDetail обеих ролей. Desktop grid max1038px, gap26px, две колонки до506px; одиночное поле сохраняет ту же колонку. Ниже1024px одиночное поле занимает доступную ширину, пара делится поровну с gap28px; ниже601px поля идут друг под другом. Старое отдельное readonly720px правило удалено. Manager detail body1056px ранее давал по516px на дату; теперь даты до506px, как в форме создания. Разница ширины родительских контейнеров ролей на1024px остаётся адаптивной композицией, а не отдельным размером контрола.
+
+**Охват аудита:** основные поля позиции уже используют desktop grid1038/gap26, artwork max506; форма/ширина/высота — отдельная более узкая группа. Input/Date/Select используют общий44px контроль. Support120px textarea и Order112px textarea — разные многострочные композиции; Layout description имеет свои responsive размеры, Profile/Auth ограничивают ширину формы. Уравнивание их ширины с колонкой даты не требуется. Новые видимость agreed-date, редактирование, подтверждение, статусы и серверные команды не реализованы.
+
+**Измерения Chromium:** output/m8-fields/measure.json/log,30 состояний =2роли ×3экрана (New/Detail/Item) ×5ширин. Даты на1440px:506×44px везде; на768px: одиночное728px / пара350px; на390px:350px; на320px:280px. На1024px дата Client315.5px и Manager307px из-за доступного пространства их контейнеров; внутри каждой роли New/Detail совпадают.0 horizontal overflow,0 page errors, все измеренные однострочные контроли44px.
+
+**Проверки после правки:** npm run build PASS; существующие order-compose/client-orders/manager-orders/orders-components/orders-figma-parity:64/64 Chromium; два существующих New→Item→Save и five-size reference tests:4/4 Firefox/WebKit. Полный прежний520PASS относится к предыдущему head, после этой правки не перезапускался. Новые screenshot18шт: output/m8-fields/{client,manager}-{detail,new,item}-{1440,768,390}.png. Поле даты совпадает с заданной шириной Client New; Client readonly намеренно уже старого frame720px. Header/Sidebar/action dock и данные неизменны; fixture copy и ранее согласованные Owner deltas не являются новой pixel-parity претензией.
+
+**Независимое review:** просмотрены9 свежих screenshots и2 Figma reference images, исходный diff/measurements; code/layout findings нет. Два замечания к формулировкам реестра (до506px и исключение узких Item dimensions) исправлены. Reviewer runtime не запускал. Owner screen acceptance/merge отдельно; Figma и frozenFE11/14-18-500 не менялись.
+
+**Ответ о статусах:** по CURRENT E2E Manager сохраняет согласованные данные, затем «Создать заказ» запускает1С; после результата система синхронизирует данные/статусы. Само сохранение даты не является утверждённым переходом в«В работе»; точное event→status правило OPEN у Owner/PO/Алексея. В React ManagerDemoIntake production action disabled и не вызывает1С.
+
 **База:** `origin/main 9d1f5bca738e667dc3d63a7a1f0ce9a2f1ec18da`, PR #30 MERGED. **Ветка:** `feat/m8-final-screen-qa`. Одна поставка по [issue #21](https://github.com/SigmeD/flexomir_os/issues/21); merge этого инкремента отдельно.
 
 ## 1. Основные результаты

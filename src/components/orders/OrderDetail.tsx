@@ -4,6 +4,7 @@ import { HeaderAction } from '@/components/ui/header-action'
 import { MoreAction } from '@/components/ui/overflow-menu'
 import { FOSDateField, FOSInput, FOSTextarea } from '@/components/ui/fos-controls'
 import { OrderItemSummary } from './OrderItemSummary'
+import { OrderDateFields } from './OrderDateFields'
 import { ManagerDemoIntake } from './ManagerDemoIntake'
 import type { OrderDetailContent, OrderListItem } from './order-model'
 import './order-detail.css'
@@ -35,10 +36,10 @@ export function OrderDetail({ order, detail, onBack, actions, role = 'client', m
           : <p className="fos-order-detail__empty">Позиции не указаны.</p>}
       </section>
       <section className="fos-order-detail__general" aria-labelledby="order-detail-general-title"><h2 id="order-detail-general-title">Общие данные заказа</h2>
-        <div className="fos-order-detail__dates">
+        <OrderDateFields className="fos-order-detail__dates">
           <FOSDateField label="Желаемый срок" value={dateValue(detail.requestedDate)} readOnly />
           {role === 'manager' && <FOSDateField label="Согласованный срок" value={dateValue(detail.agreedDate)} readOnly />}
-        </div>
+        </OrderDateFields>
         <FOSTextarea label="Комментарии" value={detail.comment || ''} placeholder="Необязательно" readOnly />
       </section>
       {managerIntake && <ManagerDemoIntake state={demoProcessingState} onStateChange={onDemoProcessingStateChange} demoEnabled={demoProcessingEnabled} />}
