@@ -1,89 +1,72 @@
-# Flexomir OS — frontend платформы типографии
+# Flexomir OS
 
-**CURRENT 10.11.2026:** реализована общая роль Manrope 14/18 Medium 500 для Sidebar и popup items через два алиаса. Motion reference не менялся; визуальная приёмка новой типографики и обновление Figma OPEN. [Контракт и QA](docs/TYPOGRAPHY_AUDIT_2026-11-09.md), [Draft PR #29](https://github.com/SigmeD/flexomir_os/pull/29).
+Flexomir OS — личный кабинет для клиентов типографии и рабочее место её менеджеров. Клиент оформляет заказ, добавляет продукцию и макеты, следит за выполнением и обращается в поддержку. Менеджер просматривает поступившие заказы, работает с компаниями и обрабатывает обращения.
 
-**CURRENT 09.11.2026:** post-FE11 popup lifecycle QA в [Draft PR #29](https://github.com/SigmeD/flexomir_os/pull/29): повторное открытие More, Escape focus и Profile focus handoff исправлены. Build PASS; полный Chromium прогон458passed/4ожидаемых skips. Motion reference v0.2 `f527bcb` остаётся `OWNER APPROVED / FROZEN`, без изменений физики/материала. Итоговые cross-browser/CI результаты и открытый Owner screen gate — [FE11 report](docs/FE11_POPUP_PILOT_2026-11-09.md).
+## Что можно попробовать сейчас
 
-**CURRENT 08.11.2026:** FE-DEBUG-02 / issue #25 is in [Draft PR #26](https://github.com/SigmeD/flexomir_os/pull/26) on `feat/fe-debug-02-client-workspace-centering`; centered workspace is checked at seven widths in Chromium/Firefox/WebKit, `npm run build` PASS, and full Playwright regression is 342/342. Independent QA found no confirmed issue in the latest diff. PR checks are available on GitHub; Owner visual review remains open. No merge or backend/API/1C changes. See [project state](docs/PROJECT_STATE.md), [delivery plan](docs/DELIVERY_PLAN.md), [screen map](docs/SCREEN_MAP_M4_2026-11-06.md), and [handoff](docs/HANDOFF.md). Canonical [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
+В этом репозитории находится интерфейс приложения на React и TypeScript. Он работает с демонстрационными данными: можно пройти путь от создания заказа у клиента до его просмотра и обработки у менеджера.
 
-React + TypeScript интерфейс системы типографии: кабинеты клиента и менеджера для заказов, компаний, поддержки и макетов. Серверные данные, права, API и интеграцию с 1С определяют согласованные контракты; frontend fixtures используются для демонстрации сценариев до подключения backend.
+В кабинете клиента доступны:
 
-Документация проверена по текущей задаче: **08.11.2026**. Следующая ревизия: **22.11.2026**.
+- Список заказов с фильтрами и подробной информацией о каждом заказе.
+- Создание заказа, добавление и редактирование позиций, повтор завершённого заказа.
+- Выбор файла с компьютера и работа с разделом «Мои макеты».
+- Создание и просмотр обращений в поддержку.
+- Настройки профиля.
 
-> **История 07.11.2026 (не текущая очередь):** FE-S03 / M7 и его correction вошли в `main`; далее был завершён FE-S04. Действующий этап M8 / FE-S05 указан в CURRENT блоке выше и в [PROJECT_STATE](docs/PROJECT_STATE.md). Backend/API/1С — Алексей; неподтверждённые функции не входят.
+В кабинете менеджера доступны списки новых и всех заказов, просмотр заказа и его позиций, создание черновика для выбранной компании, список компаний и обращения в поддержку.
 
-После `npm run dev`: `?view=manager-companies`, `?view=client-support`, `?view=manager-support`, `?view=client-layouts`. Готовые разделы связаны через общий Sidebar/Drawer; Orders/New/Repeat доступны как прежде. Все данные синтетические, файлы выбираются только локально, перезагрузка очищает демосессию. `&demoTools=1` открывает существующие инструменты демороли; `&fixture=empty`, `&fixture=support-error`, `&fixture=layout-error` — явные QA fixtures.
+Интерфейс рассчитан на компьютер, планшет и телефон. Оба кабинета используют общие элементы: навигацию, формы, карточки, кнопки и меню.
 
-M7 QA: `npx playwright test --config=playwright.m7.config.ts --workers=2`; результаты/PNG локальны в `output/fe-s03/` и доступны в CI artifact `fe-s03-m7-browser-evidence`. Для сравнения с заново полученными CURRENT Figma PNG: `node scripts/m7-figma-comparison.cjs`; входные файлы и узлы перечислены в [реестре компонентов](docs/COMPONENT_REGISTRY_2026-11-06.md), готовый локальный обзор — `output/fe-s03/comparison/index.html`. Эти материалы не добавляются в Git.
+## Что ещё в работе
 
-Рабочая система типографии для клиента и менеджера: заказы, компании, позиции и поддержка, с последующей интеграцией API и 1С. Границы MVP определяют утверждённые CURRENT требования. Рабочая папка: `D:\Projects\flexomir_os`.
+Сейчас команда проверяет удобство экранов, их соответствие макетам Figma и поведение на разных устройствах. Часть визуальных решений ещё ждёт приёмки.
 
-**Проверено 04.11.2026:** Git подключён к [SigmeD/flexomir_os](https://github.com/SigmeD/flexomir_os), `main` опубликована. Уже существует React/TypeScript/Vite Glass-полигон; `npm run build` проходит. Это ещё не принятый продуктовый экран Manager «Заказы». Не создавать рядом второе приложение.
+Подключение к серверу и 1С — следующий этап. Настоящий вход в систему, права доступа, отправка писем и хранение файлов пока не подключены. Серверную часть и интеграцию с 1С ведёт Алексей.
 
-## Начать здесь
-
-- [Правила Codex](AGENTS.md): источники, процесс, Context7, Git и QA.
-- [Текущее состояние](docs/PROJECT_STATE.md) и [передача контекста](docs/HANDOFF.md).
-- [Источники Drive/Figma](docs/SOURCES.md), [план поставки](docs/DELIVERY_PLAN.md) и [решения и блокеры](docs/DECISIONS.md).
-- [Настройка Codex](docs/CODEX_SETUP.md) и [критерии QA](docs/QA_CHECKLIST.md).
-
-Screens (OWNER уточнение 04.11): текущие Client UX V2 и Manager UX V2 → карта общих компонентов → узкий React-контракт → React-компоненты и QA → сборка экранов по Figma. HTML-проверка нужна только нестандартному Liquid Glass motion/menus, до переноса конкретного эффекта; **не** каждому экрану. Первый контракт: [HeaderAction](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view), без бизнес-логики/React экранов до отдельных задач.
-
-Внешние продуктовые статусы перенесены из пакета правил от 04.11.2026. При аудите перечитаны CURRENT Baseline, Frontend Startup, UX/UI Index и Glass Visual Contract; Figma и полная нормативная сверка FE-01 ещё впереди. Репозиторий по последней проверке PUBLIC, а пакет предполагает приватный: [открытый вопрос](docs/DECISIONS.md).
-
-## Актуальный порядок (Owner 04.11, после компонентного аудита)
-
-`CURRENT Figma / FOS Masters → component contract → (HTML + Owner visual gate, если сложный motion) → shared React component + QA → React screen из готовых компонентов → screen QA/Owner → PR`.
-
-НЕ переводить обычные экраны целиком в HTML. История «каждый экран через HTML» заменена новым решением, см. [AGENTS](AGENTS.md) и [HeaderAction contract](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view). Manager Orders HTML GL-01B — изолированный тест motion, а не новая архитектура экранов. Различать icon+caption HeaderAction и прямоугольную текстовую ActionButton.
-
-## Текущий Glass-полигон
-
-Локальная проба в существующем React-приложении. Визуальная приёмка пользователем **OPEN**.
-
-- [Одна линза над настоящими HTML-заказами](http://127.0.0.1:5173/?view=material).
-- Контроль оптики: [strength=0](http://127.0.0.1:5173/?view=material&phase=optics&strength=0), [0.1](http://127.0.0.1:5173/?view=material&phase=optics&strength=0.1), [0.6](http://127.0.0.1:5173/?view=material&phase=optics&strength=0.6).
-- Тот же материал в Select: [обычный](http://127.0.0.1:5173/?glass=current), [матовый 97%](http://127.0.0.1:5173/?glass=matte).
-
-`FosGlassMaterial` — один адаптер готового Website Glass `GlassLens`. Он задаёт форму, направленный свет, матовый центр, кромку, тень и движение. Собственных displacement-карт, SVG-фильтров или нарисованного фона нет. `glass.tsx`, `glass-motion.ts` и глобальный `src/styles.css` сохранены побайтно.
-
-[Материал: эталоны, ограничения, результаты и снимки](docs/fos-glass-material.md) · [Select: первопричина и DevTools](docs/glass-select-check.md).
+Изменения в демоверсии хранятся в памяти открытой страницы и сбрасываются при перезагрузке. Выбранные файлы остаются на компьютере пользователя и на сервер не отправляются. Обработка заказа в демоверсии не запускает производство.
 
 ## Запуск и проверки
 
-После запуска: [Клиент / Мои заказы](http://127.0.0.1:5173/?view=client-orders), [Менеджер / Заказы](http://127.0.0.1:5173/?view=manager-orders), [общие компоненты заказов](http://127.0.0.1:5173/?view=orders-components). В FE-S02 Client Add открывает Composer; «Завершённые» → DEMO-007 → Ещё → «Дублировать заказ». Новая позиция: Add в шапке; сохранённая позиция: Save; возврат без правок — More → «Отменить ввод/изменения». К списку ведут desktop breadcrumbs или «Заказы» в общей навигации; из формы позиции сначала Save/явный Cancel. Дата/комментарий заказа сохраняются в памяти при вводе, отдельной footer Save нет.
+Для запуска нужны Node.js и npm. В разработке используется Node.js 24, в автоматических проверках — Node.js 22.
 
-Для сквозной демонстрации откройте [Client + инструменты смены роли](http://127.0.0.1:5173/?view=client-orders&demoTools=1). После Send переключите роль кнопкой «Демо: менеджер» **в той же странице**, откройте новый DEMO-ID в «Все заказы». Новая вкладка/перезагрузка начинают отдельный набор данных. «Сбросить демо» возвращает исходные fixtures. Переключатель — отдельный demo harness, в обычной экранной композиции скрыт. Это не авторизация и не синхронизация с сервером. `&fixture=empty` проверяет пустой набор. PR #16 Draft, визуальная приёмка и merge заблокированы до Owner gate; [матрица переходов](docs/SCREEN_MAP_M4_2026-11-06.md#fe-s02--проверка-переходов-figma--react), [компоненты и OPEN отличия](docs/COMPONENT_REGISTRY_2026-11-06.md).
-
-Draft/Item сохраняются только в памяти, ID позиции стабилен при редактировании; положительных Delete Draft/Item нет. Валидация полей, варианты формы/материала и способ печати — UX DEMO, не required-field/API/1С-контракт. Желаемая дата и общий комментарий необязательны в демо. Файл отображается как выбранный локально, библиотека отключена; HELP — исключительный режим. У менеджера изменение согласованного срока и «Создать заказ» disabled до контрактов.
+Из папки проекта:
 
 ```powershell
-cd D:\Projects\flexomir_os
-npm install
+npm ci
 npm run dev
 ```
 
+Приложение откроется по адресу [http://127.0.0.1:5173](http://127.0.0.1:5173/). Если порт занят, используйте адрес, который появится в терминале.
+
+- [Кабинет клиента](http://127.0.0.1:5173/?view=client-orders).
+- [Кабинет менеджера](http://127.0.0.1:5173/?view=manager-orders).
+- [Демонстрация со сменой роли](http://127.0.0.1:5173/?view=client-orders&demoTools=1).
+
+Чтобы проверить один заказ с обеих сторон, откройте демонстрацию со сменой роли. Создайте и отправьте заказ от клиента, затем через кнопку «Демо» переключитесь на менеджера в той же вкладке. Новая вкладка начинает отдельную демонстрацию.
+
+Проверка TypeScript и сборка приложения:
+
 ```powershell
-npx playwright install chromium firefox webkit
 npm run build
-npm run verify:material-optics
-npm run test:material
-npm run test:e2e -- --workers=2
-npx playwright test --config=playwright.orders.config.ts --workers=2
 ```
 
-Оптический тест измеряет положение настоящего разделителя заказов и изменение текстового профиля при неизменных DOM-координатах. Сравнительные PNG и метрики: `output/playwright/fos-material/`. Тесты Select включают фильтрацию, клавиатуру, axe, контраст и 14 визуальных эталонов в двух viewport. Эталоны обновляются только отдельной командой `npm run test:visual -- --update-snapshots`; обычная проверка их не меняет. Эталон теста не означает утверждение дизайна пользователем.
+Браузерные тесты:
 
-Предыдущий отчёт от 03.11.2026: build и оптический gate PASS; **38/38 Select**, **30 material PASS +2 Chromium-specific skip**. Axe0 violations в проверенной области; incomplete раскрыты в отчёте. Контраст пунктов обычного ≥4.83:1, матового ≥9.79:1. Эти браузерные результаты не запускались повторно при подключении правил 04.11; свежая проверка — только `npm run build`. Метрики находятся локально в `output/playwright/fos-material/summary.json` и не публикуются в Git.
+```powershell
+npx playwright install chromium firefox webkit
+npm run test:e2e -- --workers=2
+```
 
-Отчёты `output/`, `test-results/`, `playwright-report/`, видео и снимки прогонов исключены через `.gitignore`. Небольшие эталоны в `tests/*-snapshots/` сохраняются как входные данные визуальных тестов. Отдельных npm-команд `lint` и `typecheck` пока нет; проверка TypeScript входит в `npm run build`.
+Дополнительные проверки компонентов и визуальных эффектов описаны в [критериях проверки](docs/QA_CHECKLIST.md), [отчёте по материалу Glass](docs/fos-glass-material.md) и [проверке Select](docs/glass-select-check.md). Снимки и видео тестовых прогонов сохраняются локально и не входят в репозиторий.
 
-Ссылки отчётов в `output/` работают только там, где сохранены локальные доказательства; свежий клон их не содержит. [Хранение и повторное получение доказательств](docs/fos-glass-material.md#хранение-доказательств): команды, внешние HTML-эталоны и границы воспроизводимости. Завершённые планы Glass удалены из рабочего дерева; их история остаётся в Git, действующие ограничения — в отчётах и плане поставки.
+## Начать здесь
 
-Firefox и WebKit используют штатный frosted fallback без преломления. Reduced-motion отключает перелёт и наклон; forced-colors использует системную поверхность. Проверены именно движки Playwright на Windows, не физические устройства Safari/iOS.
+- [Текущий план работ в Google Drive](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) — этапы, приоритеты и открытые вопросы.
+- [Макеты в Figma](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS) — дизайн приложения и общие компоненты.
+- [Карта экранов](docs/SCREEN_MAP_M4_2026-11-06.md) и [реестр компонентов](docs/COMPONENT_REGISTRY_2026-11-06.md) — как устроен интерфейс.
+- [Состояние проекта](docs/PROJECT_STATE.md), [передача работы](docs/HANDOFF.md) и [принятые решения](docs/DECISIONS.md) — подробности для команды. В документах есть записи прошлых этапов; актуальный статус слияний проверяется в GitHub, очередь работ — в плане Google Drive.
+- [Источники требований](docs/SOURCES.md) и [правила работы в репозитории](AGENTS.md).
+- [Исходный аудит и контрольные суммы](STAGE_234k_AUDIT.md) — техническая история первых компонентов.
 
-## Границы пробы
-
-Учебные заказы без API, 1С и сохранения настроек. Бизнес-логика, статусы, Sidebar, Tabs, утверждённая кнопка, Overflow Menu и Figma не изменялись. По умолчанию остаётся обычный Select; матовый97% — opt-in для сравнения. Точное совпадение со сложным renderer прототипов не заявляется: ограничения штатной библиотеки перечислены в отчёте материала.
-
-[Исходный аудит и контрольные суммы](STAGE_234k_AUDIT.md). Ревизия: **2026-11-04**, следующая: **2026-11-18**.
+README обновлён **10.11.2026**. Следующая ревизия документации — **24.11.2026**.
