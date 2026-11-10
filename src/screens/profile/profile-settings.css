@@ -1,10 +1,10 @@
-.fos-profile-page { position: relative; min-height: 100%; color: #1f2228; font-family: Manrope, system-ui, sans-serif; }
+.fos-profile-page { position: relative; min-height: 100%; color: #1f2228; font-family: var(--fos-font-family); }
 .fos-orders-page__main.fos-profile-main { padding: 0; }
 .fos-profile-page__content { box-sizing: border-box; width: 100%; padding: 28px 32px 48px 40px; }
 .fos-profile-page__header { position: relative; min-height: 157px; }
 .fos-profile-page__breadcrumb { color: #293849; font-size: 13px; line-height: 20px; }
 .fos-profile-page__header .fos-page-header__row { min-height: 48px; }
-.fos-profile-page__header .fos-page-header__row h1 { max-width: calc(100% - 180px); margin: 24px 0 0; padding: 0; color: #253144; font-size: 24px; line-height: 32px; font-weight: 700; }
+.fos-profile-page__header .fos-page-header__row h1 { max-width: calc(100% - 180px); margin: 24px 0 0; padding: 0; color: #253144; }
 .fos-profile-actions { position: absolute; top: 44px; right: 0; display: flex; width: 148px; height: 68px; align-items: flex-start; gap: 12px; }
 .fos-profile-actions .fos-ha,
 .fos-profile-actions .fos-more { flex: 0 0 68px; }
@@ -25,7 +25,7 @@
 @media (max-width: 1023px) {
   .fos-profile-page__content { padding: 20px 32px 112px; }
   .fos-profile-page__header { min-height: 112px; }
-  .fos-profile-page__header .fos-page-header__row h1 { margin-top: 20px; font-size: 22px; line-height: 30px; }
+  .fos-profile-page__header .fos-page-header__row h1 { margin-top: 20px; }
   .fos-profile-actions {
     position: fixed;
     z-index: 12;
@@ -42,13 +42,13 @@
   .fos-profile-page__content { padding: 20px 20px 120px; }
   .fos-profile-page__header { min-height: 102px; }
   .fos-profile-page__breadcrumb { font-size: 12px; }
-  .fos-profile-page__header .fos-page-header__row h1 { max-width: calc(100% - 8px); margin-top: 18px; font-size: 20px; line-height: 28px; }
+  .fos-profile-page__header .fos-page-header__row h1 { max-width: calc(100% - 8px); margin-top: 18px; }
   .fos-profile-actions { right: calc(20px + env(safe-area-inset-right, 0px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
   .fos-profile-card { min-height: 435px; padding: 20px 16px 22px; }
   .fos-profile-photo h2 { font-size: 14px; }
   .fos-profile-photo__row { align-items: center; }
   .fos-profile-photo__actions { gap: 8px; }
-  .fos-profile-photo__actions .fos-action { min-height: 40px; padding: 8px 12px; border-radius: 20px; font-size: 13px; }
+  .fos-profile-photo__actions .fos-action { min-height: 40px; padding: 8px 12px; border-radius: 20px; }
   .fos-profile-card__divider { margin: 24px 0 16px; }
   .fos-profile-fields { gap: 18px; }
 }
@@ -58,7 +58,7 @@
   .fos-profile-card { padding-right: 12px; padding-left: 12px; }
   .fos-profile-photo__row { gap: 12px; }
   .fos-profile-photo__actions { max-width: calc(100% - 92px); }
-  .fos-profile-photo__actions .fos-action { padding-right: 8px; padding-left: 8px; border-radius: 20px; font-size: 12px; }
+  .fos-profile-photo__actions .fos-action { padding-right: 8px; padding-left: 8px; border-radius: 20px; }
 }
 @media (min-width: 1024px) and (max-width: 1279px) {
   .fos-profile-page__content { padding-right: 32px; padding-left: 16px; }

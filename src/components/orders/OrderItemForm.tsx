@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { emptyDemoItem, validDemoItem, type DemoItem } from '@/demo/order-compose-model'
 import { FOSInput, FOSQuantity, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
 import { HeaderAction } from '@/components/ui/header-action'
@@ -10,10 +10,17 @@ import { LayoutBrowser } from '@/components/layouts/LayoutBrowser'
 import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-item-form.css'
 
+export interface OrderItemExitActions {
+  dirty: boolean
+  commit: () => boolean
+  discard: () => void
+}
+
 /** New/Edit Item: CURRENT CORE D1791:6130 / T1837:6385 / M1791:6185. */
-export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigationSectionChange }: {
+export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigationSectionChange, onExitActionsChange }: {
   item?: DemoItem; onSave: (item: DemoItem) => void; onClose: () => void; onBackToList?: () => void
   onNavigationSectionChange?: (section: CabinetSection) => void
+  onExitActionsChange?: (actions: OrderItemExitActions | null) => void
 }) {
   const [initial] = useState(() => ({ ...emptyDemoItem(), ...item }))
   const [value, setValue] = useState(initial)
@@ -31,6 +38,26 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
   }
   const error = (key: 'quantity' | 'width' | 'height') => touched[key] && value[key] !== '' && !(Number(value[key]) > 0 && (key !== 'quantity' || Number.isSafeInteger(Number(value[key])))) ? 'Введите положительное ' + (key === 'quantity' ? 'целое число' : 'число') : undefined
   const blur = (key: string) => () => setTouched(current => ({ ...current, [key]: true }))
+  useEffect(() => {
+    if (pickerOpen) {
+      onExitActionsChange?.(null)
+      return
+    }
+    onExitActionsChange?.({
+      dirty,
+      commit() {
+        if (!dirty) return true
+        if (!validDemoItem(value)) {
+          form.current?.reportValidity()
+          return false
+        }
+        onSave(value)
+        return true
+      },
+      discard: onClose,
+    })
+    return () => onExitActionsChange?.(null)
+  }, [dirty, item, onClose, onExitActionsChange, onSave, pickerOpen, value])
   if (pickerOpen) return <LayoutBrowser mode={item ? 'replace' : 'select'} parentContext={{
     breadcrumb: { label: title },
     navigation: onNavigationSectionChange ? { activeSection: 'artworks', returnSection: 'orders', onSectionChange: onNavigationSectionChange } : undefined,

@@ -31,6 +31,7 @@ test('Client account menu and profile use the same identity and canonical page a
 test('Manager profile keeps its own fixture identity when switching demo roles', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/?demoTools=1')
+  await page.getByRole('button', { name: 'Демо — показать панель демонстрации' }).click()
   await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
 
   await expect(page.locator('[data-testid="account-menu-trigger"]:visible')).toContainText('А')
@@ -76,7 +77,7 @@ test('photo preview can be selected, cancelled, marked for removal, restored, an
   await expect(page.getByTestId('profile-avatar').locator('img')).toBeVisible()
 
   await page.getByRole('button', { name: 'Удалить фото' }).click()
-  await page.getByRole('button', { name: 'ОК' }).click()
+  await page.getByRole('button', { name: 'ОК', exact: true }).click()
   await expect(page.getByTestId('profile-avatar').locator('img')).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Восстановить фотографию' })).toBeVisible()
   await page.getByRole('button', { name: 'Восстановить фотографию' }).click()

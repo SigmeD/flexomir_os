@@ -36,7 +36,7 @@ export function NavigationDrawerLab() {
       </header>
 
       <main className="nav-drawer-lab__main" data-testid="drawer-test-background">
-        <p className="nav-drawer-lab__eyebrow">FOS V2 / GL-02B / НАВИГАЦИЯ</p>
+        <p className="nav-drawer-lab__eyebrow">FOS V2 / FE-11 v0.2 / OWNER APPROVED</p>
         <h1>{role === 'client' ? 'Мои заказы' : 'Заказы'}</h1>
         <p className="nav-drawer-lab__caption">
           Тестовый экран для навигационного меню. Открытие, закрытие и выбор

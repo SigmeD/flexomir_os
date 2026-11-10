@@ -25,7 +25,7 @@
   border: 0;
   background: none;
   color: var(--ha-caption);
-  font-family: Manrope, Onest, system-ui, sans-serif;
+  font-family: var(--fos-font-family);
   cursor: pointer;
   touch-action: manipulation;
   text-align: center;

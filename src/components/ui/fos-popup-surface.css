@@ -1,0 +1,118 @@
+.fos-popup-surface {
+  --fos-popup-color: #253144;
+  --fos-popup-outline: rgba(222,225,229,.66);
+  position: relative;
+  box-sizing: border-box;
+  isolation: isolate;
+  border: 0;
+  outline: 1px solid var(--fos-popup-outline);
+  border-radius: 20px;
+  background: rgba(255,255,255,.72);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  color: var(--fos-popup-color);
+  box-shadow: 0 8px 24px rgba(38,41,45,.09), inset 0 1px 2px rgba(255,255,255,.65);
+  font-family: var(--fos-font-family);
+  font-size: 14px;
+  line-height: 20px;
+}
+.fos-popup-surface button { font-family: inherit; }
+.fos-popup-surface[data-sidebar-material="true"] {
+  background: var(--fos-popup-fill, rgba(255,255,255,.72));
+  box-shadow: none;
+}
+.fos-popup-surface[data-sidebar-material="true"] [data-popup-item]:not(:disabled):not([data-disabled]) {
+  color: var(--fos-popup-color);
+}
+.fos-popup-surface[data-sidebar-material="true"] [data-popup-item]:not(:disabled):not([data-disabled]):hover {
+  color: var(--fos-popup-hover-color, #3e6578);
+}
+.fos-popup-surface__shell.fos-glass-material {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+/* Frosting must sample outside the isolated popup at its outer boundary.
+ * The material supplies the shared light/rim/shadow, without a second blur. */
+.fos-popup-surface__shell > .fos-glass-optics {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.fos-popup-surface [role="menuitem"],
+.fos-popup-surface [role="option"] {
+  font: var(--fos-type-popup-item);
+  color: #253144;
+  background: transparent;
+  transform-origin: center;
+  transition: transform 160ms ease;
+}
+.fos-popup-surface [role="menuitem"][data-lens-active="true"],
+.fos-popup-surface [role="option"][data-lens-active="true"] { transform: scale(1.043); }
+.fos-popup-surface[data-state="open"] { transform-origin: top left; }
+.fos-popup-surface__lens {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 12px;
+  background: rgba(235,240,247,.82);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0,0,0);
+  will-change: transform, width, height, opacity;
+  transition: opacity 120ms ease;
+}
+.fos-popup-surface__lens-material.fos-glass-material {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: visible;
+}
+.fos-popup-surface__content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  border-radius: inherit;
+  font-family: inherit;
+}
+.fos-popup-surface[data-state="open"] { animation: fos-popup-enter 190ms cubic-bezier(.2,.85,.2,1) both; }
+.fos-popup-surface[data-state="closed"] { animation: fos-popup-exit 150ms ease-in both; pointer-events: none; }
+@supports not (backdrop-filter: blur(1px)) {
+  .fos-popup-surface { background: rgba(255,255,255,.97); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fos-popup-surface[data-state] { animation-duration: .01ms !important; }
+  .fos-popup-surface__lens { transition: none; will-change: auto; }
+  .fos-popup-surface [role="menuitem"], .fos-popup-surface [role="option"] { transition: none; }
+  .fos-popup-surface [role="menuitem"][data-lens-active="true"],
+  .fos-popup-surface [role="option"][data-lens-active="true"] { transform: none; }
+}
+@media (forced-colors: active) {
+  .fos-popup-surface {
+    outline: 2px solid ButtonText;
+    background: Canvas;
+    color: CanvasText;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  .fos-popup-surface__lens { display: none; }
+}
+.fos-popup-surface[data-hover-lens="false"] .fos-popup-surface__lens { display: none; }
+@keyframes fos-popup-enter {
+  from { opacity: 0; transform: translate3d(0,-5px,0) scale(.985); }
+  to { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+}
+@keyframes fos-popup-exit {
+  from { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+  to { opacity: 0; transform: translate3d(0,-4px,0) scale(.992); }
+}

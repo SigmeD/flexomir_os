@@ -1,5 +1,29 @@
 # Flexomir OS — CURRENT источники
 
+## Navigation/popup typography — 10.11.2026
+
+Источник новой роли — прямое решение Owner в чате: `navigation/item` и `popup/item` → Manrope 14/18 Medium 500, единая база/алиасы, сохранение profile roles и frozen motion, окончательный стандарт после визуальной приёмки. Read-only Figma: `634:511` и `3038:2667`; мастера пока содержат прежнюю типографику, не изменены. Drive frontend CURRENT проверен (modified 09.11.2026); GitHub PR #29 open/Draft на baseline 785696e. Context7 Playwright: computed CSS assertions и screenshot comparison для регрессии. [Карта и evidence](TYPOGRAPHY_AUDIT_2026-11-09.md).
+
+## Post-FE11 lifecycle QA — 09.11.2026
+
+Источник — прямое поручение Owner продолжить QA после утверждения frozen reference. Baseline `3bb9faf`, PR #29. До исправлений воспроизведены три failures; browser focus trace показал закрывающееся account menu как источник focus-steal. Переиспользована проверенная в этой сессии Radix Content onCloseAutoFocus/onInteractOutside семантика. Context7 Playwright TestProject grepInvert сверено для touch-проекта. Figma/визуальный master/engine не изменялись. [Отчёт](FE11_POPUP_PILOT_2026-11-09.md).
+
+## FE11-v0.2 approval / controlled transfer — 09.11.2026
+
+Источник approval: прямой ответ Owner «да теперь все верно, подтверждаю» на стенд v0.2. Reference commit `f527bcb`; [manifest](FE11_MOTION_FROZEN_V0_2.json) фиксирует source hashes. Context7: Radix Primitives Content onInteractOutside/onCloseAutoFocus и Root non-modal contract — для исправления адаптерного Escape→reopen, без изменения motion. Figma masters не менялись. [Результат/границы/QA](FE11_POPUP_PILOT_2026-11-09.md).
+
+## FE-11 v0.2 selection-only and freeze policy — 09.11.2026
+
+Новый Owner источник: `D:/downloads/FLEXOMIR_FE11_NAVIGATION_DRAWER_LENS_SCENARIO_2026-11-09.md` и прямое поручение о порядке стенд→подтверждение→общий React→адаптеры→QA→freeze. Это заменяет hover-preview из предыдущего MD. Видео `bandicam 2026-11-09 22-11-25-875.mp4` найдено; прямой просмотр не выполнен. Проверен текстовый сценарий и живой стенд с покадровыми данными. Figma/material/spring не менялись. [Версия/источники/approval](FE11_POPUP_PILOT_2026-11-09.md).
+
+## FE-11 pilot — 09.11.2026
+
+Новый источник Owner: `D:/downloads/FLEXOMIR_FE11_UNIFIED_LIQUID_GLASS_POPUPS_2026-11-09.md`; форма `D:/Projects/flexomir_os/Форма бургер меню.png` просмотрена. Видео 20-13-48 найдено, покадровая проверка не выполнена. Read-only GitHub PR #29 OPEN Draft подтверждён; origin/main `01721e1`. Использованы DS/FOS ссылки, проверенные ранее в этой сессии; Figma в этом пилоте заново не запрашивалась, masters не редактировались. [Границы/источники/QA](FE11_POPUP_PILOT_2026-11-09.md).
+
+## FE-DEBUG-2026-11-09 — checked 09.11.2026
+
+Task brief: `D:/downloads/FLEXOMIR_OS_CODEX_FRONTEND_FIXES_2026-11-09.md`; user evidence: six Bandicam recordings and numbered images `1.png`–`12.png` under `D:/Business_Profit/Syntecore/Флексомир/Фронт/Фиксы 09.11/` (read-only). Read current Drive frontend plan, UX/UI source index, SRS v0.5, Data & Integration, E2E, Liquid Glass contract, and Account/Profile 08.11 update before coding. Read-only Figma context: AppShell `637:180`, Sidebar Account Footer `3123:1214`, Adaptive GlassLens `1578:453/493`, Drawer `1962:3834/3854`, More `1914:655..676`, Profile Page Actions `3215:1357`. Figma was not edited. The CURRENT references explicitly use a frosted Drawer and white More menu; cross-menu material consolidation therefore remains an Owner visual decision. Context7 React docs were fetched for current effect/event cleanup patterns. All external screenshots/videos remain outside Git.
+
 ## FE-ACTION-08NOV / FOSAction and responsive work dock — checked 09.11.2026
 
 Read-only Figma mapping: Action `835:259`, Secondary Default/Hover/Pressed `835:243/245/247`; Work Action Dock `3143:1219`; adapter `3144:2851`; App Shell `637:180`; Account Trigger `3037:2656`; Avatar80 `3177:1314`; Profile Page Actions `3215:1357`; HeaderAction `1953:4168`; shared header `2302:2138`. Source task: `D:/downloads/Flexomir_Codex_Task_02.md`; user-provided existing-style references: `Screenshot_1.png` and `Screenshot_2.png` (kept untracked). Figma masters were not edited. Current Drive frontend plan was checked before implementation; it identified FE-ACTION-08NOV as next task after FE-PROFILE-01. Context7 Playwright v1.64.1 documentation was fetched for responsive viewport and bounding-box/screenshot verification. Owner visual acceptance is OPEN.

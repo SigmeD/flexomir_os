@@ -1,5 +1,59 @@
 # Flexomir OS — React Component Registry
 
+## Navigation / popup item typography — Owner decision 10.11.2026
+
+К реализации: базовая роль `--fos-type-menu-item` = Manrope 14/18 Medium 500; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item` ссылаются на неё. Визуальная приёмка и синхронизация Figma OPEN.
+
+| Figma master / Owner delta | React component / disposition | Props/states and consumers |
+| --- | --- | --- |
+| Navigation Item `634:511`, Default/Selected; новая Owner роль вместо прежней 13/18/600 | EXTEND typography token in existing `SidebarNav` CSS | Все состояния; Client/Manager Sidebar и NavigationDrawer; строки 44px, прежние иконки и motion |
+| Account Menu `3038:2667`; item role вместо прежней 15/20/500 | REUSE `FosPopupSurface` typography selector | AccountMenu, GlassSelect portal, OverflowMenu; disabled/focus/hover/selected; строки 56/36/48px |
+| Profile identity/header/caption roles | KEEP | Имя/компания/аватар, page titles и подписи не являются navigation/item или popup/item |
+
+Frozen `FosPopupRows`, GlassLens, material/physics/optical scaling не редактируются. More получает только новую общую типографику, без визуальной миграции движка.
+
+## Post-FE11 lifecycle / 09.11.2026
+
+EXTEND существующий `FosPopupSurface`: closed=inert/pointer-none при прежней exit animation. EXTEND AccountMenu focus handoff для открытия Profile; EXTEND OverflowMenu trigger-aware outside handling и reason-aware Escape return-focus. Линзы, физика, материал и типографические преобразования не менялись. `FOSAction/useDirectionalPress` не менялись: исправлен источник потери клавиатурного фокуса в popup adapter. Регрессии `tests/popup-dismissal.spec.ts`, freeze/adapter suites и прежние order/profile сценарии. CI — существующие Orders Core / M7 jobs. [Причины и QA](FE11_POPUP_PILOT_2026-11-09.md).
+
+## CURRENT FE11-v0.2 / OWNER APPROVED / FROZEN
+
+Owner подтвердил стенд; эталон зафиксирован в `f527bcb`, [manifest](FE11_MOTION_FROZEN_V0_2.json). Единственный общий visual list — `FosPopupRows`, оболочка — `FosPopupSurface`, оптика/пружина — прежние `FosGlassMaterial`/`glass-motion`. Потребители: Drawer (dialog), Account (Radix menu), GlassSelect (listbox). Lab использует тот же компонент, отдельный кандидат/render-slot удалены. Formulas/material/scale защищены freeze-contract test. Account Escape→reopen исправлен в адаптере через trigger-aware onInteractOutside; Select flip/clamp/scroll остаются в listbox adapter. Нативные FOSSelect и исключённый Order More не мигрированы. Проверка адаптеров ≠ автоматическая экранная приёмка. [QA и ограничения](FE11_POPUP_PILOT_2026-11-09.md).
+
+## CURRENT FE-11 v0.2 / LAB ONLY / OWNER OPEN
+
+`src/lab/DrawerLensCandidate.tsx` — кандидат selection-only контроллера: фактическое перекрытие DOM-label/icon из единственного FosGlassMaterial spring frame. Подключён только NavigationDrawerLab через `NavigationDrawer.renderNavigation`; не переносить на общие popup до явного Owner approval. Spring/material/Sidebar остаются прежними. Freeze policy: [version reference](FE11_POPUP_PILOT_2026-11-09.md); статус НЕ `OWNER APPROVED / FROZEN`. После одобрения один перенос и переиспользование, без копий и локальных CSS; любое последующее изменение frozen engine требует отдельного разрешения.
+
+## FE-11 pilot / 09.11.2026
+
+EXTEND `FosPopupSurface` с opt-in `sidebarMaterial`; CREATE `FosPopupRows` (selectedId + DOM item/label/icon slots → один accepted FosGlassMaterial spring и optical frame). Первый потребитель — `NavigationDrawer`: dialog semantics, inert/focus/commit сохраняются в адаптере. Источник — Sidebar 2.2.5 C / lens `1578:493`, Drawer `1962:3834/3854`, новое Owner ТЗ 09.11. Account/Select ещё не мигрированы; Order More исключён. [Карта, API, QA и Owner gate](FE11_POPUP_PILOT_2026-11-09.md).
+
+## Typography foundation / 09.11.2026
+
+| Figma role / master | React component | Consumer and disposition |
+| --- | --- | --- |
+| Page Header V3 `2302:2138` | REUSE `PageHeader`; CSS role variables from `src/styles.css` | Client/Manager orders and Profile. Profile no longer overrides H1 type; responsive sizes are 30/40 desktop, 26/36 through 1023px, 22/30 through 600px. |
+| FOS Body/Label/Heading styles `2272:2199` | REUSE `FOSInput`, `FOSAction`, order card/detail primitives | Semantic variables: Card 16/22, Body MD 14/20, Label MD 13/18, Body SM 12/18. |
+| Account Menu `3042:2806`; popup `1914:655..676` | REUSE `AccountMenu`, `FosPopupSurface`, `OverflowMenu` | Canonical Manrope family is shared; popup item weight remains within the FE-11 Owner visual gate. No menu optics/actions changed in this typography slice. |
+| Client Support Detail `2364:10455` | REUSE shared support thread | Figma explicitly maps thread content to Body SM 12/18; retained. |
+| FOS Liquid Glass navigation lens | REUSE `SidebarNav`, `GlassPillTabs`, `FosPopupSurface` | Existing navigation weights and 1.043 optical scale are preserved. |
+| Existing `GlassSelect` | EXTEND shared trigger/content family contract | Trigger and portalled options inherit canonical Manrope; still the same component and body portal. |
+
+Changed source: `src/styles.css`, shared `PageHeader`/FOS controls/overlays/navigation and order primitives, Profile CSS. Regression: `tests/typography-contract.spec.ts`; profile cross-browser config now includes that suite.
+
+## FE-DEBUG-2026-11-09 — existing components and consumers
+
+| Figma / source | React component | Change / consumer / status |
+| --- | --- | --- |
+| App Shell `637:180`, Desktop nav y=100 | REUSE `AppShell` + `SidebarNav` | Shared nav top spacing is 52px after the 28px brand; list is the only sidebar scroll region; footer stays pinned to viewport height. Client and Manager. |
+| Sidebar lens `1578:493`, Sidebar response `2.2.5 C` | EXTEND `CabinetNavigation` → `AppShell` → `SidebarNav` | Carry the previous section as the lens origin when route shells change; reuse the existing `FosGlassMaterial` spring. Initial deep links remain settled; the mobile Drawer keeps its existing same-lens selection/settle behavior. |
+| FOS demo presentation | REUSE `OrderDemoWorkspace` + `FosGlassMaterial` | DEV-only fixed utility, collapsed by default; QA reset appears only inside the expanded panel. Does not enter AppShell geometry or intercept primary actions while collapsed. |
+| Client New/Existing draft | REUSE `ClientOrdersScreen`, `OrderComposer`, `OrderItemForm`, `ConfirmDialog` | Dirty item navigation confirms; Yes validates/commits to one session draft before leaving, No discards only unsaved item edits; list reopens existing draft with its ID title. Base fixtures remain read-only. |
+| Sidebar Account Footer `3123:1214` / GlassLens `1578:493` | EXTEND `AccountMenu` footer trigger with shared `FosGlassMaterial` | Existing 240×72 footer geometry; glass appears for hover/focus/press and text receives optical scale; mobile avatar trigger unchanged. Account popover remains independent. |
+| Owner popup references `Стилистика формы.png`, `Форма бургер меню.png`; Drawer `1962:3834/3854`; More `1914:655..676`; GlassSelect | CREATE shared `FosPopupSurface`; REUSE `NavigationDrawer`, `AccountMenu`, `OverflowMenu`, `GlassSelect` and `SidebarNav` | One Liquid Glass surface with neutral 72% coat, 20px backdrop blur, shared stroke/shadow and Manrope 15/20/500 menu-item type. Account, More and Select use one spring-travel hover/focus lens with +4.3% optical label scale; Drawer reuses its existing selected lens and follows hover/focus within the popup, returning to selection on exit. Drawer anchors under hamburger. Consumers retain actions, placement and dismissal lifecycle. Owner visual direction approved; rendered visual acceptance OPEN. |
+
+QA additions: `tests/fe-debug-shell.spec.ts`, `tests/fe-debug-order-transitions.spec.ts`, `tests/fe-debug-overlays.spec.ts`, `tests/popup-surface.spec.ts`. FE-11 popup suite passed 58/58 in Chromium 1440/390; computed 20px backdrop blur and shared action typography are asserted. FE-10 Manager mobile selection was not reproduced; no route code change. FE-07 `DEMO-001` remains read-only. Final Owner visual acceptance remains OPEN.
+
 ## FE-ACTION-08NOV — shared FOS actions and responsive action dock, 09.11.2026
 
 | Figma master / variant | React component | Props / states | Consumers / disposition |

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
-import { backToOrders, chooseMore, commitItem, fillItem } from './helpers/orders'
+import { backToOrders, chooseMore, commitItem, fillItem, setDemoRole } from './helpers/orders'
 
 test('Client/Manager list, readonly detail and draft composition meet basic screen accessibility', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
@@ -91,7 +91,7 @@ test('complete Orders compositions at five widths for Figma side-by-side review'
     await commitItem(page)
     await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
     await capture('submitted')
-    await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+    await setDemoRole(page, 'manager')
     await capture('manager-list')
     await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
     await capture('manager-detail')

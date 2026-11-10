@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { commitItem, fillItem } from './helpers/orders'
+import { commitItem, fillItem, setDemoRole } from './helpers/orders'
 
 test('A: Manager queue New contains client submissions; All includes labeled synthetic imported fixture', async ({ page }) => {
   await page.goto('/?view=manager-orders&demoTools=1&fixture=imported-1c')
@@ -19,9 +19,9 @@ test('B: manager creates a private draft using an existing company and it is abs
   await expect(page.getByRole('button', { name: 'Сохранить черновик менеджера' })).toBeDisabled()
   await page.getByLabel('Компания', { exact: true }).selectOption('company-01')
   await page.getByRole('button', { name: 'Сохранить черновик менеджера' }).click()
-  await page.getByRole('button', { name: 'Демо: клиент', exact: true }).click()
+  await setDemoRole(page, 'client')
   await expect(page.getByRole('button', { name: /Открыть заказ DEMO-NEW-/ })).toHaveCount(0)
-  await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+  await setDemoRole(page, 'manager')
   await expect(page.getByRole('button', { name: /Открыть заказ DEMO-NEW-/ })).toHaveCount(1)
 })
 
@@ -52,13 +52,13 @@ test('D: Client submission is visible in Manager New and local processing result
   await fillItem(page)
   await commitItem(page)
   await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
-  await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+  await setDemoRole(page, 'manager')
   const queue = page.getByRole('group', { name: 'Очередь заказов менеджера' })
   await queue.getByRole('button', { name: 'Новые' }).click()
   await expect(page.getByRole('button', { name: 'Открыть заказ ' + id })).toBeVisible()
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   await page.getByRole('button', { name: 'Демо-обработка завершена' }).click()
-  await page.getByRole('button', { name: 'Демо: клиент', exact: true }).click()
+  await setDemoRole(page, 'client')
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   await expect(page.getByTestId('order-detail-status')).toHaveText('Демо-обработка завершена')
 })

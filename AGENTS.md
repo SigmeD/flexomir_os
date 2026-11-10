@@ -1,5 +1,19 @@
 # Flexomir OS — правила работы Codex
 
+## CURRENT / 10.11.2026 — Owner typography decision / VISUAL OPEN
+
+- `navigation/item` и `popup/item` используют одну базовую роль Manrope 14px/18px Medium 500. React source: `--fos-type-menu-item`; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item`. Не дублировать font-size/line-height/font-weight в CSS потребителей и не создавать локальные исключения.
+- Это разрешение на базовую типографику пунктов Sidebar/Drawer/Account/More/GlassSelect, не на изменение утверждённых GlassLens/Motion Engine, optical scale или материалов. Заголовки, подписи, профильные identity/data и trigger typography имеют отдельные роли.
+- Решение Owner принято к реализации. Визуальная приёмка новой роли и синхронизация Figma остаются OPEN; не объявлять её окончательно утверждённым DS-стандартом до приёмки. [Токены, влияние и QA](docs/TYPOGRAPHY_AUDIT_2026-11-09.md).
+
+## CURRENT / 09.11.2026 — FE-11 Motion approval and freeze (Owner instruction)
+
+- Сначала доработать и показать Motion Engine / GlassLens на тестовом стенде. Перенос в общие Liquid Glass компоненты и подключение каждого типа меню — только после явного подтверждения Owner и с регрессией.
+- Новый сценарий `FLEXOMIR_FE11_NAVIGATION_DRAWER_LENS_SCENARIO_2026-11-09.md` заменяет прежнее popup hover-preview направление: hover/focus не двигают линзу; выбор по click/Enter/Space/tap; оптический scale определяется фактическим пересечением движущейся линзы с подписью.
+- После явного утверждения зафиксировать версию, эталон, Git SHA и статус `OWNER APPROVED / FROZEN` в документации и реестре. До этого статус — `OWNER OPEN`, даже если тесты проходят.
+- Замороженные Motion Engine, GlassLens, параметры физики/материала, hover/click и типографические трансформации запрещено менять без отдельного разрешения Owner. При дефекте сначала показать первопричину, влияние и предлагаемый fix; не обходить эталон локальными CSS и копиями движка.
+- Owner явно подтвердил v0.2: «да теперь все верно, подтверждаю». Эталон — commit `f527bcb`, статус `OWNER APPROVED / FROZEN`; [freeze manifest](docs/FE11_MOTION_FROZEN_V0_2.json). Контроллер перенесён без изменения формулы и физики в `FosPopupRows`; временный lab-контроллер и render-slot удалены. Для Drawer/Account/GlassSelect выполняются отдельные адаптерные проверки; это не автоматическая приёмка всех экранов. Нативный FOSSelect и исключённый Order More требуют отдельного этапа.
+
 ## CURRENT / 06.11.2026 — Git hygiene: ветки, PR и завершение инкремента (Owner APPROVED)
 
 - **Одна бизнес-задача / функциональный инкремент = одна рабочая ветка + один PR** с React-кодом, тестами и необходимыми LIVE-документами. Внутри допустимы несколько коротких этапов/коммитов и короткий handoff между ними. Не создавать новую ветку/PR только потому, что добавился экран, компонент или обновился документ. FE-S01 завершён в PR #14 (main 884e78f); действующий FE-S02 / issue #15 — одна ветка `feat/fe-s02-order-compose-flow` и один PR A/B/C. Пожелания встречи 06.11 (CR-REP, подписной, новые реквизиты/файлы/audio/video) отложены до согласования PO/заказчика/Алексея и в FE-S02 не входят. Актуальный номер PR сверять в GitHub/Drive.

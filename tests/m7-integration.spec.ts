@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { setDemoRole } from './helpers/orders'
 
 async function section(page: Page, id: string) {
   if ((page.viewportSize()?.width ?? 1440) < 1024) {
@@ -21,7 +22,7 @@ for (const width of [1440, 1024, 768, 390, 320]) test(`D cabinet navigation pres
   await section(page, 'support')
   await expect(page.getByLabel('Тема', { exact: true })).toHaveValue('Только клиентский автор')
   await page.getByRole('button', { name: 'Отправить обращение', exact: true }).click()
-  await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+  await setDemoRole(page, 'manager')
   await section(page, 'support')
   await expect(page.getByText('Только клиентский автор', { exact: true }).filter({ visible: true })).toHaveCount(0)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Мои обращения')

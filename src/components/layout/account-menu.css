@@ -5,11 +5,13 @@
   min-width: 0;
   border: 0;
   color: #1f2228;
-  font-family: Manrope, system-ui, sans-serif;
+  font-family: var(--fos-font-family);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 .fos-account-footer {
+  position: relative;
+  isolation: isolate;
   margin: auto -16px 0;
   width: 240px;
   height: 72px;
@@ -19,7 +21,20 @@
   background: #f6f7f9;
   text-align: left;
 }
-.fos-account-footer:hover { background: rgba(255,255,255,.5); }
+.fos-account-footer__glass { position: absolute !important; z-index: 0; inset: 8px 10px; opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
+.fos-account-footer__glass > .fos-glass-optics { border-radius: inherit; }
+.fos-account-avatar, .fos-account-footer__name { position: relative; z-index: 1; }
+.fos-account-footer__name { transform-origin: left center; transition: transform 180ms ease; }
+@media (hover: hover) {
+  .fos-account-footer:hover .fos-account-footer__glass,
+  .fos-account-footer:focus-visible .fos-account-footer__glass { opacity: 1; }
+  .fos-account-footer:hover .fos-account-footer__name,
+  .fos-account-footer:focus-visible .fos-account-footer__name { transform: scale(1.043); }
+}
+.fos-account-footer:active .fos-account-footer__glass { opacity: 1; }
+.fos-account-footer:active .fos-account-footer__name { transform: scale(1.043); }
+.fos-account-footer:focus-visible .fos-account-footer__glass { opacity: 1; }
+.fos-account-footer:focus-visible .fos-account-footer__name { transform: scale(1.043); }
 .fos-account-footer:focus-visible,
 .fos-account-trigger:focus-visible {
   outline: 2px solid #1f3861;
@@ -78,14 +93,10 @@
   box-sizing: border-box;
   width: 332px;
   min-height: 264px;
+}
+.fos-account-menu__content {
+  min-height: 262px;
   padding: 0 17px;
-  border: 1px solid #dae4ea;
-  border-radius: 20px;
-  background: #fff;
-  color: #253144;
-  box-shadow: 0 10px 30px rgba(20,43,71,.14);
-  font-family: Manrope, system-ui, sans-serif;
-  outline: none;
 }
 .fos-account-menu__identity {
   display: flex;
@@ -106,22 +117,23 @@
   height: 56px;
   align-items: center;
   padding: 0 8px;
-  border-radius: 4px;
+  border-radius: 12px;
   color: #253144;
-  font-size: 15px;
-  line-height: 20px;
-  font-weight: 600;
   cursor: pointer;
   outline: none;
+  background: transparent;
 }
-.fos-account-menu__item[data-highlighted] { background: #f6f7f9; }
+.fos-account-menu__item[data-highlighted] { background: transparent; }
 .fos-account-menu__item[data-disabled] { color: #75808c; cursor: default; }
 .fos-account-menu__item--logout { color: #7b3440; }
 .fos-account-menu__item--logout[data-disabled] { color: #9b7c81; }
 @media (max-width: 400px) { .fos-account-menu { width: 280px; min-height: 264px; } }
 @media (forced-colors: active) {
-  .fos-account-menu { border-color: CanvasText; background: Canvas; color: CanvasText; }
   .fos-account-menu__separator { background: CanvasText; }
   .fos-account-menu__item[data-highlighted], .fos-account-footer, .fos-account-trigger { background: Canvas; color: CanvasText; }
   .fos-account-avatar { border: 1px solid ButtonText; background: Canvas; color: CanvasText; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fos-account-footer__glass, .fos-account-footer__name { transition: none; }
+  .fos-account-footer__name { transform: none !important; }
 }

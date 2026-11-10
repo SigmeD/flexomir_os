@@ -4,7 +4,7 @@ import base from './playwright.config'
 /** Account/Profile regression across browser engines and a touch-enabled mobile viewport. */
 export default defineConfig({
   ...base,
-  testMatch: /profile-settings\.spec\.ts/,
+  testMatch: /(profile-settings|typography-contract)\.spec\.ts/,
   timeout: 30000,
   outputDir: 'output/playwright/profile-settings',
   reporter: [['list'], ['json', { outputFile: 'output/playwright/profile-settings/results.json' }]],

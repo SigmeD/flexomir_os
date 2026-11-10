@@ -25,6 +25,11 @@ on:
       - 'tests/order-compose.spec.ts'
       - 'tests/orders-components.spec.ts'
       - 'tests/orders-figma-parity.spec.ts'
+      - 'tests/popup-dismissal.spec.ts'
+      - 'tests/fe11-frozen-contract.spec.ts'
+      - 'tests/fe11-popup-adapters.spec.ts'
+      - 'tests/fe-debug-order-transitions.spec.ts'
+      - 'docs/FE11_MOTION_FROZEN_V0_2.json'
       - 'tests/helpers/orders.ts'
       - 'playwright.orders.config.ts'
       - '.github/workflows/fe08-manager-orders-qa.yml'
@@ -43,7 +48,7 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run build
-      - run: npx playwright test tests/orders-components.spec.ts tests/orders-figma-parity.spec.ts tests/order-compose.spec.ts tests/client-orders.spec.ts tests/order-detail.spec.ts tests/manager-orders.spec.ts tests/navigation-drawer.spec.ts tests/glass-pill-tabs-react.spec.ts tests/gl03-compact-pill-tabs.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts --workers=2
+      - run: npx playwright test tests/orders-components.spec.ts tests/orders-figma-parity.spec.ts tests/order-compose.spec.ts tests/client-orders.spec.ts tests/order-detail.spec.ts tests/manager-orders.spec.ts tests/navigation-drawer.spec.ts tests/glass-pill-tabs-react.spec.ts tests/gl03-compact-pill-tabs.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts tests/popup-dismissal.spec.ts tests/fe11-frozen-contract.spec.ts tests/fe11-popup-adapters.spec.ts tests/fe-debug-order-transitions.spec.ts --workers=2
       - name: Save Orders Core visual review captures
         if: always()
         uses: actions/upload-artifact@v4

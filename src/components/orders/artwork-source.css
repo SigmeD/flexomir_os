@@ -1,4 +1,4 @@
-.fos-artwork-source { min-width: 0; font-family: Manrope, system-ui, sans-serif; color: #1f2228; }
+.fos-artwork-source { min-width: 0; font-family: var(--fos-font-family); color: #1f2228; }
 .fos-artwork-source > h2 { margin: 0 0 8px; font-size: 20px; font-weight: 600; line-height: 28px; color: #263244; }
 .fos-artwork-source__dropzone { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 183px; padding: 28px 12px 24px; border: 1px dashed #c4d1e0; border-radius: 12px; background: #fbfcfe; text-align: center; }
 .fos-artwork-source__dropzone > .fos-action { min-width: 164px; }

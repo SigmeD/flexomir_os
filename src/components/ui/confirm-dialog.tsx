@@ -12,6 +12,7 @@ export function ConfirmDialog({
   busy = false,
   onConfirm,
   onCancel,
+  onDismiss,
 }: {
   open: boolean
   title: string
@@ -21,6 +22,8 @@ export function ConfirmDialog({
   busy?: boolean
   onConfirm: () => void | Promise<void>
   onCancel: () => void
+  /** Optional close-only action for Escape, outside click, and the close icon. */
+  onDismiss?: () => void
 }) {
   const dialogRef = useRef<HTMLDivElement>(null)
 
@@ -31,7 +34,7 @@ export function ConfirmDialog({
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape' && !busy) {
         event.preventDefault()
-        onCancel()
+        ;(onDismiss ?? onCancel)()
         return
       }
       if (event.key !== 'Tab') return
@@ -54,13 +57,13 @@ export function ConfirmDialog({
       document.removeEventListener('keydown', onKeyDown)
       previousFocus?.focus()
     }
-  }, [open, busy, onCancel])
+  }, [open, busy, onCancel, onDismiss])
 
   if (!open) return null
   return createPortal(
-    <div className="fos-confirm-overlay" onMouseDown={event => { if (event.target === event.currentTarget && !busy) onCancel() }}>
+    <div className="fos-confirm-overlay" onMouseDown={event => { if (event.target === event.currentTarget && !busy) (onDismiss ?? onCancel)() }}>
       <div ref={dialogRef} className="fos-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="fos-confirm-title" aria-describedby={body ? 'fos-confirm-body' : undefined}>
-        <button className="fos-confirm-dialog__close" type="button" aria-label="Закрыть" onClick={onCancel} disabled={busy}><span aria-hidden="true">×</span></button>
+      <button className="fos-confirm-dialog__close" type="button" aria-label="Закрыть" onClick={onDismiss ?? onCancel} disabled={busy}><span aria-hidden="true">×</span></button>
         <h2 id="fos-confirm-title">{title}</h2>
         {body && <p id="fos-confirm-body">{body}</p>}
         <div className="fos-confirm-dialog__actions">

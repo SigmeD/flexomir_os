@@ -18,7 +18,7 @@
   background: #fff;
   color: #1f2228;
   box-shadow: 0 12px 36px rgba(20,43,71,.18);
-  font-family: Manrope, system-ui, sans-serif;
+  font-family: var(--fos-font-family);
 }
 .fos-confirm-dialog h2 { margin: 0 44px 22px 0; font-size: 18px; line-height: 26px; font-weight: 600; }
 .fos-confirm-dialog p { margin: -12px 0 20px; color: #586d7c; font-size: 14px; line-height: 20px; }
@@ -32,7 +32,7 @@
   border-radius: 8px;
   background: transparent;
   color: #1f2228;
-  font: 400 24px/1 Manrope, system-ui, sans-serif;
+  font: 400 24px/1 var(--fos-font-family);
   cursor: pointer;
 }
 .fos-confirm-dialog__close:hover { background: #f6f7f9; }

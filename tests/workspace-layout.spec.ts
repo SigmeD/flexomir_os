@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { setDemoRole } from './helpers/orders'
 
 const widths = [320, 390, 768, 1024, 1440, 1920, 2560] as const
 const routes = [
@@ -129,7 +130,7 @@ test('nested Client and Manager states keep the shared workspace centered throug
     await expectCenteredWorkspace(page, width, 'Manager order detail')
 
     await page.goto('/?demoTools=1')
-    await page.getByRole('button', { name: 'Демо: менеджер', exact: true }).click()
+    await setDemoRole(page, 'manager')
     await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
     await expect(page.getByTestId('order-composer')).toBeVisible()
     await expectCenteredWorkspace(page, width, 'Manager order composer')

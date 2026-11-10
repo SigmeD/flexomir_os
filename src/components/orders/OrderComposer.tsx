@@ -7,23 +7,33 @@ import { FOSDateField, FOSSelect, FOSTextarea } from '@/components/ui/fos-contro
 import { OrderItemForm } from './OrderItemForm'
 import { OrderItemRow } from './OrderItemRow'
 import { SectionAddItem } from './SectionAddItem'
+import type { OrderItemExitActions } from './OrderItemForm'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-compose.css'
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
-export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChange, onDraftDirtyChange, onNavigationSectionChange, managerCompanies = [] }: {
+export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBack, onItemEditorChange, onDraftDirtyChange, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [] }: {
   draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend: (draft: DemoDraft) => void; onBack: () => void
+  isNewDraft?: boolean
   onItemEditorChange?: (open: boolean) => void
   onDraftDirtyChange?: (dirty: boolean) => void
   onNavigationSectionChange?: (section: CabinetSection) => void
+  onItemExitActionsChange?: (actions: OrderItemExitActions | null) => void
+  onDeleteDraft?: (id: string) => void
   managerCompanies?: readonly { id: string; name: string }[]
 }) {
   const [value, setValue] = useState(draft)
   const [editing, setEditing] = useState<string | null>(null)
   const [feedback, setFeedback] = useState('')
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const nextItem = useRef(1)
   const returnFocus = useRef<string | null>(null)
   const root = useRef<HTMLDivElement>(null)
+  function cancelDelete() {
+    setConfirmDelete(false)
+    root.current?.querySelector<HTMLButtonElement>('button.fos-more')?.focus({ preventScroll: true })
+  }
   useEffect(() => { onItemEditorChange?.(editing !== null); return () => onItemEditorChange?.(false) }, [editing, onItemEditorChange])
   useEffect(() => { onDraftDirtyChange?.(JSON.stringify(value) !== JSON.stringify(draft)); return () => onDraftDirtyChange?.(false) }, [value, draft, onDraftDirtyChange])
   useLayoutEffect(() => {
@@ -43,15 +53,16 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
     save({ ...value, items: existing ? value.items.map(current => current.id === existing.id ? { ...item, id } : current) : [...value.items, { ...item, id }] })
     setEditing(null)
   }
+  const title = isNewDraft ? 'Новый заказ' : 'Заказ ' + value.id
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id}>
     {editing === null ? <>
-      <PageHeader title="Новый заказ" floatingWorkActions subtitle={value.ownerRole === 'manager' ? 'Черновик менеджера · приватно в демосессии' : 'Черновик'} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: 'Новый заказ' }]} actions={<>
+      <PageHeader title={title} floatingWorkActions subtitle={value.ownerRole === 'manager' ? 'Черновик менеджера · приватно в демосессии' : 'Черновик'} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
         {value.ownerRole === 'manager'
           ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
           : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!canSendDemo(value)} onAction={() => onSend(value)} />}
         <OverflowMenu items={[
           { id: 'add', label: 'Добавить позицию', onSelect: addItem, focusAfter: 'consumer' },
-          { id: 'delete', label: 'Удалить черновик', disabled: true, reason: 'Удаление не согласовано' },
+          { id: 'delete', label: 'Удалить черновик', disabled: !onDeleteDraft, reason: onDeleteDraft ? undefined : 'Удаление доступно только для черновика демосессии', onSelect: () => setConfirmDelete(true) },
         ]} />
       </>} />
       <div className="fos-order-composer__body">
@@ -73,6 +84,11 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onItemEditorChang
         </section>
       </div>
       <p className="fos-sr-only" role="status">{feedback || 'Черновик только в памяти страницы'}</p>
-    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} />}
+      <ConfirmDialog open={confirmDelete} title="Удалить черновик?" body="Черновик будет удалён из текущей демонстрационной сессии." confirmLabel="Да" cancelLabel="Отмена" onConfirm={() => {
+        onDeleteDraft?.(value.id)
+        setConfirmDelete(false)
+        onBack()
+      }} onCancel={cancelDelete} onDismiss={cancelDelete} />
+    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} onExitActionsChange={onItemExitActionsChange} />}
   </div>
 }

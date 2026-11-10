@@ -1,5 +1,42 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner decision 10.11.2026 — navigation/item и popup/item
+
+Принято к реализации: Manrope 14/18 Medium 500, одна базовая роль и два алиаса без локальных размеров/весов. Это закрывает прежний выбор TY-05 в пользу новой общей роли, но визуальная приёмка реализации и окончательная фиксация DS-стандарта остаются OPEN. Заголовки/подписи/profile data — отдельные роли. GlassLens/Motion Engine и их optical scale не меняются. Figma пока содержит прежние роли; обновление после visual gate. [Реализация и доказательства](TYPOGRAPHY_AUDIT_2026-11-09.md).
+
+## Owner scope 09.11.2026 — post-freeze QA fixes
+
+Owner «приступай» разрешил следующий этап: диагностику и исправление оставшихся More/FOSAction сбоев, повтор QA/CI и подготовку PR к приёмке. Исправления ограничены popup focus/dismissal lifecycle; More не переносится визуально на frozen v0.2. Reference `f527bcb`, формулы/параметры/frozen files остаются без изменений. Приёмка интегрированных экранов и merge не следуют автоматически из этого поручения.
+
+## OWNER APPROVED / FROZEN 09.11.2026 — FE11-v0.2
+
+Прямое подтверждение Owner: «да теперь все верно, подтверждаю». Утверждён selection-only motion стенда v0.2; Git reference `f527bcb`, [freeze manifest](FE11_MOTION_FROZEN_V0_2.json). Контроллер перенесён в общий Rows без изменения frame/material/physics; Drawer/Account/GlassSelect подключаются через свои семантические адаптеры с отдельным QA. Нативный FOSSelect и исключённый Order More не мигрируются автоматически. Приёмка стенда не является Owner acceptance всех экранов. Любая правка frozen implementation — только по отдельному разрешению после причины/влияния/предложения; локальные CSS-обходы и копии запрещены.
+
+## CURRENT 09.11.2026 — FE-11 motion scenario and freeze policy
+
+Owner заменил hover-preview сценарием selection-only: hover/focus не двигают линзу; click/Enter/Space/tap ретаргетируют её; scale связан с реальным геометрическим перекрытием. Кандидат v0.2 живёт только на стенде. Последовательность обязательна: стенд → явное подтверждение → общий React-компонент → проверка каждого адаптера → QA → version/reference/Git SHA + `OWNER APPROVED / FROZEN`. После freeze любое изменение engine/GlassLens/параметров/материала/реакций/типографической трансформации требует отдельного разрешения Owner; сначала причина/влияние/предложение. CSS-обходы и отдельные копии запрещены. Сейчас approval OPEN, не FROZEN. [Источник и реестр](FE11_POPUP_PILOT_2026-11-09.md).
+
+## FE-11 / Owner direction 09.11.2026 — phased popup migration
+
+Новое ТЗ `FLEXOMIR_FE11_UNIFIED_LIQUID_GLASS_POPUPS_2026-11-09.md` задаёт Sidebar neutral material/lens как эталон и требует hover/focus preview в popup без изменения выбранного раздела до click/tap. Drawer — первый пилот; Account и Select мигрировать после Owner visual approval пилота (C–D). Order More исключён, ConfirmDialog не превращать в меню. Старые белые DS/FOS меню не подменяют новое Owner-направление; masters не изменены. Реализован opt-in pilot, приёмка OPEN: [FE11 pilot](FE11_POPUP_PILOT_2026-11-09.md).
+
+## OPEN 09.11.2026 — Typography audit
+
+- **TY-05 / OWNER VISUAL GATE:** Figma Account Menu commands are Manrope 15px SemiBold. The shared FE-11 popup currently applies 15/20 Medium to menuitem/option roles. Keep FE-11 appearance and lens unchanged in this typography slice; decide whether Account Menu uses the Figma weight or the shared popup weight during the existing FE-11 visual review.
+- **TY-08 / OWNER DESIGN REQUIRED:** Profile-photo and Layout-upload subsection headings currently use 15/22 (Profile is 14/22 on mobile). The current Profile Figma examples are WIP, and the approved masters do not establish whether these are a distinct subheading role or Card Heading 16/22. Keep current values pending approval.
+- **CONFIRMED TYPOGRAPHY EXCEPTIONS:** Support thread uses FOS Body SM 12/18 in FOS V2 Support Detail `2364:10455`; Sidebar/GlassPill lens weights and optical text scale remain governed by the accepted Liquid Glass contract. They were preserved.
+- **IMPLEMENTED CANDIDATE:** scoped Manrope family token; PageHeader/Profile and Composer empty-copy corrections. Technical QA does not imply Owner visual acceptance. See [audit and evidence](TYPOGRAPHY_AUDIT_2026-11-09.md); no merge.
+
+## OPEN 09.11.2026 — FE-DEBUG-2026-11-09
+
+- **FE-07 / OPEN — PO + Owner + backend contract:** Should a base fixture such as `DEMO-001` become editable, and under which owner/company/transfer/version rules? Current FE-S01/FE-S02 contract says base fixtures are read-only; frontend keeps it disabled.
+- **FE-11 / APPROVED 09.11.2026 — Owner visual direction:** Owner supplied `Стилистика формы.png` as the shared popup reference and requested one reusable Liquid Glass surface across popup menus, including typography, while preserving each menu's actions and dismissal behavior. `FosPopupSurface` implements the shared translucent neutral material, radius, stroke/shadow and Manrope-family font for NavigationDrawer, AccountMenu, OverflowMenu and GlassSelect. Drawer placement follows `Форма бургер меню.png`. Final visual acceptance of the rendered result remains OPEN.
+- **FE-10 / NOT_REPRODUCED:** On the current baseline, mobile Manager detail → select active `Заказы` returns to the list and closes Drawer; no route change made.
+- FE-01 saves/discards only current unsaved item changes in the local demo draft. Persistence, atomic failure, browser reload/back, idempotency and real server save remain OPEN under API/PO contracts.
+- **FE-09 / FIXED + TECHNICAL QA:** the isolated SidebarNav lab passed while the real route transition failed because each screen shell mounted a fresh lens at its destination (`travel target=0`). Preserve the existing approved material/spring and pass the previous selected section to the destination shell; no motion engine or visual master changed. Technical visual-travel regression is in `tests/manager-orders.spec.ts`; Owner visual acceptance remains OPEN.
+
+Source evidence: CURRENT Figma AppShell `637:180`, Sidebar Account Footer `3123:1214`, Drawer `1962:3834/3854`, Overflow `1914:655..676`; task brief `D:/downloads/FLEXOMIR_OS_CODEX_FRONTEND_FIXES_2026-11-09.md`. No SRS, scope, API, Figma or product behavior was modified.
+
 ## OPEN 09.11.2026 — FE-ACTION-08NOV visual acceptance
 
 - Implementation candidate follows current FOS V2 Action `835:259` and Work Dock `3143:1219` / adapter `3144:2851`, with existing Liquid Glass material and existing shared React controls. Figma is unchanged.
