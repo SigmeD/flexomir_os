@@ -4,7 +4,8 @@ test('navigation and popup items share the Owner 14/18 Medium role without chang
   test.setTimeout(60000)
   async function itemType(selector: string, height: number) {
     const items = page.locator(selector)
-    expect(await items.count()).toBeGreaterThan(0)
+    // Wait for React/layout readiness before enumerating dynamically rendered items.
+    await expect(items.first()).toBeVisible()
     await items.first().evaluate(element => Promise.all(element.closest('[data-fos-popup-surface]')?.getAnimations().map(animation => animation.finished) ?? []))
     for (const item of await items.all()) {
       await expect(item).toHaveCSS('font-family', /Manrope/)

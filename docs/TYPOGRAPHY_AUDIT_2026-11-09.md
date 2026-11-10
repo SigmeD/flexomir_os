@@ -2,6 +2,23 @@
 
 ## CURRENT 10.11.2026 — единая роль navigation/item + popup/item
 
+Проверка продолжения на `0312b3b383027cde88245e82933c6be71ba4e10e` (10.11): `npm run build` PASS; typography + popup-dismissal + frozen-contract + popup-adapters — **24/24 PASS** в двух Chromium viewport projects (51.4s). Лог: `output/review-2026-11-10.log`. Все шесть GitHub CI jobs на этом SHA — SUCCESS; PR #29 OPEN / Draft, merge не выполнен. Это свежая адресная регрессия, не новый полный локальный прогон.
+
+Свежие визуальные материалы (Chromium, 1440×900 / 390×900), сняты и просмотрены 10.11:
+
+- Account + desktop Sidebar: [Client](../output/playwright/review-2026-11-10/client-account-1440.png), [Manager](../output/playwright/review-2026-11-10/manager-account-1440.png).
+- Mobile Drawer: [Client](../output/playwright/review-2026-11-10/client-drawer-390.png), [Manager](../output/playwright/review-2026-11-10/manager-drawer-390.png).
+- Mobile Account: [Client](../output/playwright/review-2026-11-10/client-account-390.png), [Manager](../output/playwright/review-2026-11-10/manager-account-390.png).
+- [More](../output/playwright/review-2026-11-10/client-more-390.png), [GlassSelect lab](../output/playwright/review-2026-11-10/select-390.png).
+
+Материалы локальные/ignored; исходные Owner references не менялись. UI source и Figma в этой проверке не редактировались. Следующий gate — Owner visual acceptance новой роли; синхронизация Figma и merge остаются отдельными действиями по правилам `AGENTS.md`.
+
+Дополнительный cross-browser прогон: **23 PASS / 1 FAIL**, WebKit в `itemType()` увидел 0 видимых Sidebar items сразу после загрузки, а error-context уже содержит desktop navigation. Пять изолированных повторов исходного теста с trace — **5/5 PASS**. Причина согласуется с гонкой готовности render/layout: `locator.count()` и `.all()` не ожидают появления элементов (сверено через Context7 с официальными Playwright sources). В `tests/typography-contract.spec.ts` immediate count заменён на `await expect(items.first()).toBeVisible()` перед перечислением. Таймауты и проверки шрифта/высоты сохранены. Исходный FAIL: `output/review-2026-11-10-cross-browser.log`; изолированная диагностика: `output/review-2026-11-10-webkit-diagnostic.log` и `webkit-diagnostic/**/trace.zip`.
+
+Независимый read-only review `785696e..0312b3b`: **PASS WITH RISKS**, конкретных дефектов нет; пять frozen sources и Sidebar controller неизменны. Reviewer отдельно проверил предложенное ожидание теста: отсутствующая/скрытая навигация по-прежнему приводит к FAIL. Он не запускал runtime/tests и не выполнял визуальную приёмку; текущие browser evidence проверены основным агентом. Forced-colors покрыт computed weight, не отдельным визуальным аудитом контраста. Owner/Figma gates остаются OPEN.
+
+После исправления ожидания полный typography suite повторён: **24/24 PASS (58.8s)**, Chromium / Firefox / WebKit / touch Chromium, обе роли и пять ширин. Лог: `output/review-2026-11-10-cross-browser-fixed.log`. Production source не менялся; build и frozen-contract результаты выше относятся к тому же UI source. CI для нового test/docs commit проверяется отдельно от SUCCESS на `0312b3b`.
+
 **Статус: OWNER DECISION / IMPLEMENTED; VISUAL ACCEPTANCE OPEN; FIGMA UPDATE OPEN.** Владелец поручил Manrope 14px/18px Medium 500 для пунктов Sidebar и popup. Это более новое решение заменяет прежние размеры/веса navigation и команд Account (включая вопрос TY-05 ниже), но не меняет типографическую трансформацию линзы. Исторический аудит ниже описывает состояние до этого решения.
 
 `src/styles.css` содержит одну составную роль `--fos-type-menu-item` и два алиаса: `--fos-type-navigation-item`, `--fos-type-popup-item`. Sidebar/Drawer используют первый; общая Surface задаёт второй для menuitem/option в Account, More и GlassSelect portal. Локальный `text-sm` удалён только у Select option; trigger и другие поля сохраняют свои роли. Заголовки, подписи, имя/компания/аватар профиля и tabs не включены в новую роль.
@@ -16,7 +33,7 @@ QA: build PASS; начальные typography/surface/freeze 9/9 PASS; cross-bro
 
 Следующий gate: показать новую типографику Owner → визуальная приёмка → обновить Figma/статус DS-стандарта. Ни принятие к реализации, ни зелёный CI не заменяют этот gate. Merge отдельно.
 
-Диагностические прогоны сохранены отдельно: первый полный 460 PASS / 2 timeout / 4 expected skips; оба сценария изолированно прошли на двух viewport projects (4/4), без изменения production-кода/таймаутов тестов. В motion/adapter прогоне 28 PASS / 3 Firefox teardown protocol errors / 5 expected skips; в последовательном повторе Firefox прошёл, но четыре WebKit page-creation завершились до открытия приложения (27 PASS / 4 browser errors / 5 skips). Изолированный WebKit motion-повтор: 5 PASS / 1 expected skip, включая все четыре случая. Это диагностика инфраструктурной нестабильности, не чистые исходные прогоны. Итоговый изолированный полный повтор сохраняется в `output/playwright/navigation-typography/final-regression.json`; статус на delivery SHA — в PR #29.
+Диагностические прогоны сохранены отдельно: первый полный 460 PASS / 2 timeout / 4 expected skips; оба сценария изолированно прошли на двух viewport projects (4/4), без изменения production-кода/таймаутов тестов. В motion/adapter прогоне 28 PASS / 3 Firefox teardown protocol errors / 5 expected skips; в последовательном повторе Firefox прошёл, но четыре WebKit page-creation завершились до открытия приложения (27 PASS / 4 browser errors / 5 skips). Изолированный WebKit motion-повтор: 5 PASS / 1 expected skip, включая все четыре случая. Это диагностика инфраструктурной нестабильности, не чистые исходные прогоны. Упомянутый ранее `output/playwright/navigation-typography/final-regression.json` при проверке 10.11 отсутствует: итоговый чистый полный локальный повтор не подтверждён. Фактические CI checks на delivery SHA — в PR #29; свежие адресные результаты приведены выше.
 
 ## Исторический аудит 09.11.2026
 

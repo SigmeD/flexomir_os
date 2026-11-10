@@ -2,6 +2,8 @@
 
 ## CURRENT 10.11.2026 — shared item typography
 
+Продолжение: build и 24/24 адресных typography/lifecycle/freeze/adapter проверок PASS; все шесть CI jobs на `0312b3b` SUCCESS. После исправления test-readiness — typography 24/24 PASS в четырёх browser/input проектах. Подготовлены восемь свежих desktop/mobile снимков Client/Manager меню, ссылки в [аудите](TYPOGRAPHY_AUDIT_2026-11-09.md). Независимое ревью — PASS WITH RISKS, без конкретных дефектов. Исправлен только immediate-count в typography test: ожидание видимого первого пункта перед перечислением; UI/frozen files не менялись. Исходные diagnostic logs сохранены, старое неподтверждённое упоминание final-regression.json исправлено. Далее Owner visual review по готовым снимкам; Figma/merge только после соответствующих разрешений.
+
 Owner разрешил Manrope 14/18 Medium 500: `--fos-type-menu-item` → navigation/popup aliases в `src/styles.css`. Sidebar/Drawer/Account/More/GlassSelect переиспользуют роль; локальных размеров/весов пунктов нет, Select сохраняет прежнюю 36px строку. Profile data/headings/captions и frozen implementation не редактировались. Build и cross-browser typography 24/24 PASS; новый контракт включён в M7 CI. Продолжается прежняя ветка/PR #29; [QA](TYPOGRAPHY_AUDIT_2026-11-09.md). Следующий gate — Owner visual acceptance; только затем Figma + статус утверждённого DS-стандарта. Merge OPEN.
 
 ## CURRENT 09.11.2026 — post-FE11 focus/dismissal fixes

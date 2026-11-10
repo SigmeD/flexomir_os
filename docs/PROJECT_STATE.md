@@ -2,6 +2,8 @@
 
 ## CURRENT 10.11.2026 — navigation/popup typography
 
+Продолжение QA: на `0312b3b` локальный build и адресная typography/lifecycle/freeze/adapter регрессия 24/24 PASS; шесть GitHub CI jobs SUCCESS. После исправления только test-readiness — typography 24/24 PASS в Chromium/Firefox/WebKit/touch Chromium. Свежие desktop/mobile материалы Client/Manager сняты и просмотрены. Независимый read-only review — PASS WITH RISKS, конкретных дефектов нет. Диагностика и доказательства — в [аудите](TYPOGRAPHY_AUDIT_2026-11-09.md). Owner visual gate, Figma update и merge OPEN.
+
 По новому решению Owner Sidebar/Drawer и popup commands используют общую базовую роль Manrope 14/18 Medium 500 через два алиаса. Код — продолжение PR #29; высоты строк 44/56/48/36px сохранены, profile identity/title/caption roles и frozen engine не менялись. Build, typography/surface/freeze 9/9 и cross-browser typography 24/24 PASS. Полный QA и CI на новом head — [PR checks](https://github.com/SigmeD/flexomir_os/pull/29/checks). **Owner visual acceptance / Figma update / final DS standard OPEN**, merge не разрешён. [Детали](TYPOGRAPHY_AUDIT_2026-11-09.md).
 
 ## CURRENT 09.11.2026 — post-FE11 QA closure

@@ -2,6 +2,8 @@
 
 ## CURRENT 10.11.2026 — shared navigation/popup item role
 
+Продолжение QA: build, 24/24 адресных Chromium checks и шесть CI jobs на `0312b3b` PASS; свежие снимки обоих кабинетов и независимый read-only review (PASS WITH RISKS) готовы. Исправлено только ожидание видимых пунктов в typography test после одного WebKit immediate-count FAIL; полный typography suite после fix — 24/24 PASS в четырёх browser/input проектах. UI и frozen reference сохранены. Результаты повторов и материалы Owner review — [аудит](TYPOGRAPHY_AUDIT_2026-11-09.md). Следующий продуктовый gate — Owner visual acceptance, затем Figma sync; merge отдельно.
+
 Owner typography delta в текущем PR #29: одна роль 14/18 Medium 500 → два алиаса → существующие Sidebar/Drawer/Account/More/GlassSelect. Код реализован, обе роли/пять ширин проверены в четырёх browser/input проектах (24/24). Motion unchanged; далее итоговый regression/CI → Owner visual gate → Figma/утверждённый DS standard. Последние два шага пока OPEN. [Контракт и QA](TYPOGRAPHY_AUDIT_2026-11-09.md).
 
 ## CURRENT 09.11.2026 — close remaining popup QA
