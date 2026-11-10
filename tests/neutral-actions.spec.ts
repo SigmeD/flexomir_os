@@ -78,7 +78,7 @@ test('neutral pilot supports reduced motion, forced colors, narrow height and ax
   await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' })
   const plus = page.getByTestId('neutral-paper').getByTestId('neutral-plus')
   await expect(plus).toHaveCSS('border-width', '1px')
-  expect(await plus.locator('.fos-section-add__glyph').evaluate(node => getComputedStyle(node, '::before').backgroundColor)).toBe(await plus.evaluate(node => getComputedStyle(node).color))
+  await expect(plus.locator('.fos-section-add__glyph')).toHaveCSS('color', await plus.evaluate(node => getComputedStyle(node).color))
   await plus.click()
   await expect(page.getByTestId('neutral-paper').getByTestId('neutral-count')).toHaveText('Нажатий: 1')
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)

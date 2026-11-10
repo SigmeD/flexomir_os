@@ -270,3 +270,41 @@ test('Plus and Secondary share exactly the same hover geometry and content scale
   expect(plusState.surface[0]).toBeCloseTo(1.012, 4)
   expect(plusState.content[0]).toBeCloseTo(1.02, 4)
 })
+
+
+test('Manrope text Plus replaces both CSS strokes and keeps its centered box', async ({ page }, info) => {
+  const { button, material, hit } = await open(page)
+  const glyph = button.locator('.fos-section-add__glyph')
+  await expect(glyph).toHaveText('+')
+  await expect(glyph).toHaveCSS('font-size', '28px')
+  await expect(glyph).toHaveCSS('font-weight', '500')
+  expect(await glyph.evaluate(node => getComputedStyle(node).fontFamily)).toContain('Manrope')
+  expect(await glyph.evaluate(node => [getComputedStyle(node, '::before').content, getComputedStyle(node, '::after').content])).toEqual(['none', 'none'])
+  async function capture(state: string) {
+    const box = (await glyph.boundingBox())!
+    expect(Math.abs(box.x + box.width / 2 - hit.x - hit.width / 2)).toBeLessThan(1)
+    expect(Math.abs(box.y + box.height / 2 - hit.y - hit.height / 2)).toBeLessThan(1)
+    const bytes = await page.screenshot({ clip: hit })
+    await info.attach(state, { body: bytes, contentType: 'image/png' })
+    const png = PNG.sync.read(bytes)
+    let mass = 0, weightedX = 0, weightedY = 0
+    for (let y = 10; y < 34; y++) for (let x = 10; x < 34; x++) {
+      const offset = (y * png.width + x) * 4
+      const weight = Math.max(0, (190 - (png.data[offset] + png.data[offset + 1] + png.data[offset + 2]) / 3) / 151)
+      mass += weight; weightedX += (x + .5) * weight; weightedY += (y + .5) * weight
+    }
+    expect(mass).toBeGreaterThan(15)
+    expect(Math.abs(weightedX / mass - 22)).toBeLessThan(1.25)
+    expect(Math.abs(weightedY / mass - 22)).toBeLessThan(1.25)
+  }
+  await capture('default')
+  await button.hover()
+  await expect(button).toHaveAttribute('data-surface-active', 'false')
+  await capture('hover')
+  await page.mouse.move(hit.x + 28, hit.y + 18); await page.mouse.down()
+  await expect.poll(() => scaleY(material)).toBeLessThan(.98)
+  await capture('pressed')
+  await page.mouse.up(); await page.mouse.move(0, 0)
+  await expect(button).toHaveAttribute('data-surface-active', 'false')
+  await capture('release')
+})

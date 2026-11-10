@@ -84,6 +84,7 @@ async function capture(engine, { touch = false, native = false, zoom = false } =
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await button.focus(); await page.keyboard.down(' '); await snapshot('reduced-pressed'); await page.keyboard.up(' ')
   await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await button.evaluate(node => node.blur()) // next sample is hover, not lingering keyboard focus
   const secondary = page.getByTestId('surface-secondary')
   await secondary.scrollIntoViewIfNeeded()
   await page.mouse.move(0, 0)

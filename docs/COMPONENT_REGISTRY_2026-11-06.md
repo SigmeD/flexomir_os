@@ -2,9 +2,9 @@
 
 ## FOS08/09 — общий quiet action preset / DEV / Owner NOT ACCEPTED
 
-SectionAdd1986:774 → SectionAddItem EXTEND neutral DEV → FOSAction round44/glass34/glyph24/14 REUSE. Action835:259 → FOSAction EXTEND materialPreset=neutral-action-pilot. Оба используют один новый consumer FosActionMaterial (native lighting/shadow=none existing FosGlassMaterial/GlassLens), один border+outershadow на materialroot; target без вторых контуров/теней. Материал/геометрия reference variant сохранены в том же adapter.
+SectionAdd1986:774 → SectionAddItem EXTEND neutral DEV → FOSAction round44/glass34/glyph24 REUSE; glyph теперь один текстовый + Manrope50028/24, вместо двух CSS-полосок. Action835:259 → FOSAction EXTEND materialPreset=neutral-action-pilot. Оба используют один новый consumer FosActionMaterial (native lighting/shadow=none existing FosGlassMaterial/GlassLens), один border+outershadow на materialroot; target без вторых контуров/теней. Материал/геометрия reference variant сохранены в том же adapter.
 
-useDirectionalPress EXTEND optional material mode → useActionSurface CREATE input adapter двух существующих Track/spring pressure/hover. Legacy content RAF не запускается параллельно. По Screenshot_6 никакой shape-specific motion: одинаковые formulas surface1.012/content1.02/shadow/press/release у Plus и Secondary; Plus glyph14 сохранён. Frozen5/GlassLens read-only.
+useDirectionalPress EXTEND optional material mode → useActionSurface CREATE input adapter двух существующих Track/spring pressure/hover. Legacy content RAF не запускается параллельно. По Screenshot_6 никакой shape-specific motion: одинаковые formulas surface1.012/content1.02/shadow/press/release у Plus и Secondary; Plus text glyph использует существующий content scale1.02, отдельной анимации нет. Frozen5/GlassLens read-only.
 
 Потребители: neutral Plus+Secondary на NeutralActionsLab, PlusMotionLab reference comparison, opt-in DEV Client Plus. HeaderAction1953:4168/2173:1425 сохранил прежний palette adapter/SVG mask и legacy motion, его rollout DEFER. Обычные Client/Manager, Profile, reference palette и production не мигрируют. Disabled — native boolean, не новый preset. Сокращённый public API предложен в [контракте](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md), массовая миграция до приёмки не выполнялась.
 
