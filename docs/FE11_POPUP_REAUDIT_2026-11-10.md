@@ -2,6 +2,7 @@
 
 **Статус:** PILOT IMPLEMENTED / QA VERIFIED; Owner visual/action acceptance и массовый rollout OPEN. Merge не разрешён.
 **База:** `a9ffa8a`, ветка `feat/fe11-popup-unification-reaudit`. Предыдущий PR #29 уже слит в `03238af`.
+**Поставка:** [Draft PR #30](https://github.com/SigmeD/flexomir_os/pull/30), code/test checkpoint `4bc4a5d1e6174e2f5f7c51784ecbbfded07ef8c9`. CI проверяется на фактическом PR head; merge не выполнен.
 **Задание:** `D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md`.
 **План и полный список потребителей:** [план пилота](superpowers/plans/2026-11-10-fe11-popup-reaudit.md).
 

@@ -2,6 +2,8 @@
 
 ## CURRENT 10.11.2026 — FE11 re-audit / изолированный пилот
 
+[Draft PR #30](https://github.com/SigmeD/flexomir_os/pull/30), code/test checkpoint `4bc4a5d`; CI/merge отдельно, Owner acceptance OPEN.
+
 QA VERIFIED для пилота: build PASS, cross-browser80/80, motion frames4/4, полная регрессия500 PASS/4 expected skips/0 FAIL; frozen5/5 MATCH. Независимый adversarial static review PASS после исправлений. Остаётся Owner visual/action gate; CI PR проверяется отдельно.
 
 PR #29 MERGED в `03238af`; README обновлён в `a9ffa8a`. Новое поручение Owner — повторный аудит popup. Ветка `feat/fe11-popup-unification-reaudit` от свежей main, без worktree. Owner подтвердил сохранение14/18/500. Реализованы public `FosPopup`, pilot Account/More и узкий `FOSGlassSelect` для Shape/Material; включение только в dev через `popupPilot=1`. Ordinary routes и frozen sources сохранены. Пилот, команды проверок, snapshots и оставшиеся gates — [отчёт](FE11_POPUP_REAUDIT_2026-11-10.md). Action-adapter first activation, Owner visual acceptance, массовый rollout/Figma и merge OPEN; текущий этап — окончательная QA, не продуктовая приёмка.
