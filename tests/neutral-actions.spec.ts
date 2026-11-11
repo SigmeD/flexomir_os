@@ -142,7 +142,7 @@ test('signed-file add pilot reuses the same neutral 44px Liquid Glass action wit
   await expect(file.locator('.fos-glass-material')).toHaveCSS('width', '34px')
   await expect(file.locator('.fos-section-add__file-icon')).toHaveCSS('width', '24px')
   await expect(file.locator('.fos-section-add__file-icon')).toHaveCSS('height', '24px')
-  await expect(file.locator('.fos-section-add__file-icon')).toHaveCSS('mask-image', /url\\(/)
+  await expect(file.locator('.fos-section-add__file-icon')).toHaveCSS('mask-image', /url\(/)
   await expect(file.locator('img')).toHaveCount(0)
   await expect(file).toHaveAttribute('data-pressed', 'false')
 
