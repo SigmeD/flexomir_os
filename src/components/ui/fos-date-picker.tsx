@@ -5,6 +5,7 @@ import { ru } from 'react-day-picker/locale'
 import { FOSInput } from './fos-controls'
 import { FosButtonRoot } from './fos-button-root'
 import { FosPopup } from './fos-popup'
+import { DateLensContext, FosDatePickerDay } from './fos-date-picker-day'
 import { dateFromISO, dateToISO, displayDate, inputDate, russianDate } from './date-only'
 import './fos-date-picker.css'
 
@@ -33,6 +34,7 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
   const [touched, setTouched] = useState(false)
   const [resetVersion, setResetVersion] = useState(0)
   const [open, setOpen] = useState(false)
+  const [previewDay, setPreviewDay] = useState<string>()
   const [month, setMonth] = useState<Date>(() => dateFromISO(value) || new Date())
   const lower = dateFromISO(min || ''), upper = dateFromISO(max || '')
   const boundsConflict = !!lower && !!upper && min! > max!
@@ -115,6 +117,7 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
     if (lower && anchor < lower) anchor = lower
     if (upper && anchor > upper) anchor = upper
     openingDate.current = anchor
+    setPreviewDay(undefined)
     setMonth(anchor)
     setOpen(true)
   }
@@ -149,6 +152,7 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
       className="fos-field__native-proxy" onChange={() => {}}
       onInvalid={event => { event.preventDefault(); setTouched(true); input.current?.focus() }} />
     {open && createPortal(<dialog ref={dialog} id={id + '-calendar'} aria-label={label}
+      onKeyDownCapture={() => setPreviewDay(undefined)}
       className="fos-date-picker-dialog" onCancel={event => { event.preventDefault(); dismiss() }}
       onClick={event => {
         if (event.target !== event.currentTarget) return
@@ -165,8 +169,9 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
       <FosPopup mode="listbox" role="presentation" data-state="open" className="fos-date-picker-popup"
         semanticRows={<>
           <FosButtonRoot family="utility" className="fos-date-picker-popup__close" aria-label="Закрыть календарь" onClick={dismiss}>×</FosButtonRoot>
-          <DayPicker mode="single" required locale={ru} weekStartsOn={1} autoFocus fixedWeeks
-            month={month} onMonthChange={setMonth} selected={dateFromISO(value)}
+          <DateLensContext.Provider value={{ selected: value, preview: previewDay, setPreview: setPreviewDay }}>
+          <DayPicker mode="single" required locale={ru} weekStartsOn={1} autoFocus fixedWeeks components={{ Day: FosDatePickerDay }}
+            month={month} onMonthChange={next => { setPreviewDay(undefined); setMonth(next) }} selected={dateFromISO(value)}
             startMonth={lower || dateFromISO('0001-01-01')} endMonth={upper || dateFromISO('9999-12-31')}
             disabled={[...(lower ? [{ before: lower }] : []), ...(upper ? [{ after: upper }] : [])]}
             labels={{ labelDayButton: day => russianDate(day) }}
@@ -179,6 +184,7 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
                 onValueChange(dateToISO(day)); dismiss()
               }
             }} />
+          </DateLensContext.Provider>
         </>} />
     </dialog>, document.body)}
   </div>

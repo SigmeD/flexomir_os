@@ -1,5 +1,7 @@
 # Flexomir OS — React Component Registry
 
+FOS07 lens /11.11 Owner: DayPicker Day→EXTEND FosDatePickerDay, REUSE default DayButton/keyboard и существующий FosGlassMaterial с параметрами Rows. Один активный material: доступный hover либо accepted selected day; readonly/form/frozen прежние. Синий selected заменён линзой; неподвижная ячейка с240ms opacity, отдельная2D-физика не создавалась. Consumer — только DEV-пилот, G-04 OPEN.
+
 FOS07 /11.11: Date Field1169:437 → REUSE FOSInput/Field + CREATE FOSDatePicker controlled adapter; FosPopup/Surface/frozen Rows → REUSE semanticRows с календарным grid; React DayPicker9.14.0 → REUSE date/keyboard/RU. Новый open-calendar master отсутствует: G-04 OWNER OPEN. Единственный consumer — Fos07DatePickerLab на отдельной DEV entry; OrderComposer/Detail и FOSDateField пока KEEP. [Полная карта/контракт](FOS07_DATEPICKER_PILOT_2026-11-11.md).
 
 Проверено 11.11.2026: изменения ниже подключены и слиты в PR #35–38. Обычные Client/Manager и production используют ArtworkSource states, принятые отступы, общий hover и Select без placeholder-строки. [Текущее состояние](PROJECT_STATE.md), [план](DELIVERY_PLAN.md).

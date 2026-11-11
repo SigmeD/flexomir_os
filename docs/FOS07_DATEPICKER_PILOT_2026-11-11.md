@@ -60,3 +60,11 @@ G-04 OWNER OPEN: приёмка пилота, обычный rollout и merge э
 ## Уточнение Owner: компактный календарь /11.11
 
 По Screenshot_1 Owner поручил убрать повторный заголовок «Желаемый срок» и нижнюю инструкцию. Они удалены из popup; подпись самого поля и доступное имя dialog сохранены. Закрытие перенесено в строку месяца, календарь лишён отдельной строки заголовка и подвала; hit targets44px и существующая клавиатура сохранены. Для узкой области при zoom навигация переносится без наложения на месяц. Изменение продолжает Draft PR #41; это не приёмка G-04 и не разрешение rollout.
+
+## Уточнение Owner: день как линза меню /11.11
+
+Owner показал дату18 и Account Menu как стилевой reference. Новый FosDatePickerDay переиспользует Day/DayButton библиотеки и FosGlassMaterial с параметрами существующей линзы Rows: radius14,blur1.5,strength.1,neutral,centerOpacity.12,rim12. Синий фон выбранного дня и серый day-hover заменены стеклом. Одновременно видна одна линза: preview доступного дня, иначе accepted selected date; leave/disabled/keyboard возвращают выбранную. Hover не меняет value/aria-selected; click/Enter/tap коммитят прежним callback. При закрытии и смене месяца preview очищается. Клавиатурный outline и отметка today сохранены.
+
+Календарь использует неподвижный материал в активной ячейке с проявлением240ms и reduced-motion/forced-colors fallback. Вертикальная физика меню не переносится на двумерную сетку и не изменяется; отдельный spring, moving-2D engine или новая формула optical scale не создаются. Пять frozen sources/manifest сохранены. Карта: Date Field1169:437→FOSDatePicker; existing Rows material→REUSE FosGlassMaterial; DayPicker Day→EXTEND FosDatePickerDay; consumer только DEV-пилот.
+
+Новый сценарий до реализации подтвердил отсутствие линзы (RED). После реализации полный44/44PASS Chromium/Firefox/WebKit/touch:40 прежних и4 новых проверки, две роли/пять ширин/axe/zoom. В первом расширенном прогоне четыре новых assertions имели неверный вложенный locator; исправлен только поиск ячейки. Единичная потеря keyboard focus в WebKit не воспроизвелась в целевом прогоне, полном44 и десяти отдельных повторах10/10; первопричина не подтверждена, product assertions не менялись. Свежие hover/return/selected PNG и видео — в существующей галерее. G-04 и rollout остаются OPEN.
