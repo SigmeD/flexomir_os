@@ -1,5 +1,11 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner10.11 — следующий scope01–13
+
+Поручение: разобрать ТЗ `D:/downloads/FLEXOMIR_OS_NEXT_SCOPE_13_CODEX_SDLC_TZ_2026-11-10.md`, декомпозировать и приступить. [План и зависимости](NEXT_SCOPE_13_2026-11-10.md). Разрешена автономная работа внутри этапа; это не разрешение merge, frozen FE11 changes, API/storage/ACL и rollout визуальных пилотов.
+
+G-02 **OPEN**: Save Item dirty-only с валидацией по клику либо прежнее dirty&&valid с причиной. Пока сохраняется действующий dirty&&valid, отсутствующий исторический файл не объявляется существующим. G-01 hover-vs-frozen, G-03 Delete Item, G-04 DatePicker, G-05 neutral action palette, G-06 Item↔Library lifecycle, G-07 file contracts и G-08 Support attachments остаются за указанными в ТЗ владельцами. Новый frontend-план не превращает эти кандидаты в утверждённые требования.
+
 ## Действующий статус — 10.11.2026
 
 PR #29, #30 и #31 уже слиты; последняя продуктовая база — main a400b9d, проверенный head PR #31 — f991bd77. Owner отдельно разрешил merge PR #31. Датированные записи ниже сохраняют основания решений, а упомянутые в них ветки, PR и результаты относятся к указанному моменту. Текущая очередь — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).

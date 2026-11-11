@@ -134,7 +134,7 @@ export function SidebarNav({
               if (hoverLens && !nextItem) setHoveredId(null)
             }}
             onClick={() => {
-              if (!item.disabled && item.id !== activeId) {
+              if (!item.disabled) {
                 setHoveredId(null)
                 onSelect(item.id)
               }

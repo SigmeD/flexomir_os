@@ -117,8 +117,23 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     }
     action()
   }
-  function navigateSection(section: CabinetSection) {
-    requestProfileTransition(() => { setProfileOpen(false); visit(currentRole, section) })
+  function navigateSection(section: CabinetSection, onCommit?: () => void) {
+    requestProfileTransition(() => {
+      setProfileOpen(false)
+      visit(currentRole, section)
+      onCommit?.()
+      if (profileOpen) requestAnimationFrame(() => {
+        const focused = document.activeElement
+        if (focused instanceof HTMLElement && focused !== document.body
+          && focused.getClientRects().length > 0 && !focused.closest('[inert]')) return
+        // A fast next interaction can open another popup before this frame.
+        if (Array.from(document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"], [aria-modal="true"]'))
+          .some(modal => modal.getClientRects().length > 0 && !modal.closest('[inert], [aria-hidden="true"]'))) return
+        // Activity keeps inactive sections mounted; focus only the visible destination.
+        Array.from(document.querySelectorAll<HTMLElement>('.fos-app-shell main h1'))
+          .find(heading => heading.getClientRects().length > 0)?.focus({ preventScroll: true })
+      })
+    })
   }
   function switchRole(nextRole: ProfileRole) {
     requestProfileTransition(() => { setProfileOpen(false); visit(nextRole, sections[nextRole]) })
@@ -257,6 +272,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
       busy={profileSaving}
       onConfirm={saveAndContinue}
       onCancel={discardAndContinue}
+      onDismiss={() => { setSaveBeforeNavigation(false); setPendingProfileAction(null) }}
     />
   </div>
 }

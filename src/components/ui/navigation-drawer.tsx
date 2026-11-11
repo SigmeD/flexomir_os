@@ -118,10 +118,6 @@ export function NavigationDrawer({
   function requestSelection(id: string) {
     // Never interrupt an in-flight lens transition by closing on a duplicate tap.
     if (pendingIdRef.current === id) return
-    if (id === activeId && pendingIdRef.current === null) {
-      if (closeOnSelection) closeMenu()
-      return
-    }
     pendingRequestRef.current += 1
     pendingIdRef.current = id
     setPendingId(id)
@@ -215,7 +211,12 @@ export function NavigationDrawer({
       document.body.style.overflow = priorBodyOverflow
       document.documentElement.style.overflow = priorHtmlOverflow
       // Restore focus after inert is released, not while the background is inert.
-      window.requestAnimationFrame(() => triggerRef.current?.focus())
+      window.requestAnimationFrame(() => {
+        // A route guard may already own focus in a new modal. Do not steal it.
+        const modal = document.activeElement?.closest('[aria-modal="true"]')
+        if (modal && !modal.closest('[inert], [aria-hidden="true"]')) return
+        triggerRef.current?.focus()
+      })
     }
   }, [open])
 
