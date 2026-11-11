@@ -148,7 +148,7 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
       readOnly={readOnly} disabled={disabled} required={required} tabIndex={-1} aria-hidden="true"
       className="fos-field__native-proxy" onChange={() => {}}
       onInvalid={event => { event.preventDefault(); setTouched(true); input.current?.focus() }} />
-    {open && createPortal(<dialog ref={dialog} id={id + '-calendar'} aria-label={label} aria-describedby={id + '-calendar-help'}
+    {open && createPortal(<dialog ref={dialog} id={id + '-calendar'} aria-label={label}
       className="fos-date-picker-dialog" onCancel={event => { event.preventDefault(); dismiss() }}
       onClick={event => {
         if (event.target !== event.currentTarget) return
@@ -164,9 +164,7 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
       }}>
       <FosPopup mode="listbox" role="presentation" data-state="open" className="fos-date-picker-popup"
         semanticRows={<>
-          <div className="fos-date-picker-popup__header"><span>{label}</span>
-            <FosButtonRoot family="utility" className="fos-date-picker-popup__close" aria-label="Закрыть календарь" onClick={dismiss}>×</FosButtonRoot>
-          </div>
+          <FosButtonRoot family="utility" className="fos-date-picker-popup__close" aria-label="Закрыть календарь" onClick={dismiss}>×</FosButtonRoot>
           <DayPicker mode="single" required locale={ru} weekStartsOn={1} autoFocus fixedWeeks
             month={month} onMonthChange={setMonth} selected={dateFromISO(value)}
             startMonth={lower || dateFromISO('0001-01-01')} endMonth={upper || dateFromISO('9999-12-31')}
@@ -181,7 +179,6 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
                 onValueChange(dateToISO(day)); dismiss()
               }
             }} />
-          <p id={id + '-calendar-help'} className="fos-date-picker-popup__help">Стрелки — день и неделя. Page Up / Down — месяц. Esc — закрыть.</p>
         </>} />
     </dialog>, document.body)}
   </div>

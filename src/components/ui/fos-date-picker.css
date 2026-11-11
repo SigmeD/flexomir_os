@@ -21,17 +21,16 @@
 }
 .fos-date-picker-dialog::backdrop { background: transparent; }
 .fos-date-picker-popup > .fos-popup-surface__content { padding: 12px; max-height: var(--fos-date-max-height, calc(100dvh - 24px)); overflow-y: auto; overscroll-behavior: contain; }
-.fos-date-picker-popup__header { display: flex; align-items: center; justify-content: space-between; padding-left: 8px; font: var(--fos-type-popup-item); }
 .fos-date-picker-popup__close, .fos-date-picker-popup .rdp-button_previous, .fos-date-picker-popup .rdp-button_next {
   display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; padding: 0;
   border: 0; border-radius: 14px; color: inherit; background: transparent;
 }
-.fos-date-picker-popup__close { font-size: 24px; }
-.fos-date-picker-popup .rdp-root { position: relative; width: 100%; }
+.fos-date-picker-popup__close { position: absolute; z-index: 2; right: 0; top: 0; font-size: 24px; }
+.fos-date-picker-popup .rdp-root { position: relative; width: 100%; container-type: inline-size; }
 .fos-date-picker-popup .rdp-months { position: relative; }
-.fos-date-picker-popup .rdp-month_caption { display: flex; align-items: center; min-height: 48px; padding-inline: 8px 96px; font: var(--fos-type-popup-item); }
+.fos-date-picker-popup .rdp-month_caption { display: flex; align-items: center; min-height: 44px; padding-inline: 8px 140px; font: var(--fos-type-popup-item); }
 .fos-date-picker-popup .rdp-caption_label { text-transform: capitalize; }
-.fos-date-picker-popup .rdp-nav { position: absolute; right: 0; top: 0; display: flex; height: 48px; align-items: center; }
+.fos-date-picker-popup .rdp-nav { position: absolute; right: 44px; top: 0; display: flex; height: 44px; align-items: center; }
 .fos-date-picker-popup .rdp-chevron { width: 20px; height: 20px; fill: currentColor; }
 .fos-date-picker-popup .rdp-month_grid { width: 100%; table-layout: fixed; border-spacing: 0; }
 .fos-date-picker-popup .rdp-weekday { height: 32px; font-weight: 400; font-size: var(--fos-type-secondary-size); color: var(--fos-v2-semantic-color-text-secondary, #586d7c); }
@@ -46,7 +45,10 @@
 .fos-date-picker-popup .rdp-today:not(.rdp-selected) .rdp-day_button { border-color: currentColor; }
 .fos-date-picker-popup button:is(:disabled, [aria-disabled="true"]) { opacity: .42; cursor: default; }
 .fos-date-picker-popup .rdp-outside { visibility: hidden; }
-.fos-date-picker-popup__help { margin: 12px 8px 4px; font-size: var(--fos-type-secondary-size); line-height: var(--fos-type-secondary-line-height); color: var(--fos-v2-semantic-color-text-secondary, #586d7c); }
+@container (max-width: 250px) {
+  .fos-date-picker-popup .rdp-nav { position: relative; right: auto; justify-content: flex-end; padding-right: 44px; }
+  .fos-date-picker-popup .rdp-month_caption { padding-inline: 8px; }
+}
 @media (forced-colors: active) {
   .fos-date-picker-popup .rdp-selected .rdp-day_button { background: Highlight; color: HighlightText; forced-color-adjust: none; }
   .fos-date-picker-popup button:is(:disabled, [aria-disabled="true"]) { color: GrayText; opacity: 1; }
