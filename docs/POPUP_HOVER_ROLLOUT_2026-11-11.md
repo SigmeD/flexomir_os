@@ -1,6 +1,12 @@
 # Принятый hover v0.3 — остальные выпадающие списки
 
-**Основание:** Owner 11.11: «точно такое же компонент поведения, как реализован … подключить к остальным выпадающим спискам». Это расширяет прежнее Account-only разрешение PR #36; физика/материал FE11-v0.2 остаются FROZEN. База `origin/main` 4ae4841, ветка `feat/popup-hover-rollout`.
+## Доставка
+
+[PR #37](https://github.com/SigmeD/flexomir_os/pull/37) MERGED 11.11.2026, merge `3317d5029ac7baa3bfa8eccd8b03a72b15cd62b1`; проверенный head `678bf4635e661fa127fb1a3dbd01bd1c7d58bd11`.
+CI 4/4 SUCCESS: [Orders](https://github.com/SigmeD/flexomir_os/actions/runs/43049308099), [Hover](https://github.com/SigmeD/flexomir_os/actions/runs/43049308060), [Drawer](https://github.com/SigmeD/flexomir_os/actions/runs/43049308061), [M7](https://github.com/SigmeD/flexomir_os/actions/runs/43049308110). После merge повторены build 238 modules PASS, production 14 PASS / 6 условных SKIP и frozen contract 4/4 PASS. Remote head удалён.
+Код подключён на обычных экранах и в production. Полная визуальная приёмка M8 остаётся OPEN. Датированные промежуточные попытки CI ниже сохранены как доказательства причин и исправлений; они не являются текущим ожиданием merge. [Текущее состояние](PROJECT_STATE.md).
+
+**Основание:** Owner 11.11: «точно такое же компонент поведения, как реализован … подключить к остальным выпадающим спискам». Это расширяет прежнее Account-only разрешение PR #36; физика/материал FE11-v0.2 остаются FROZEN. Историческая база разработки — `origin/main` 4ae4841, ветка `feat/popup-hover-rollout`.
 
 **Цель:** переиспользовать принятые 240ms появления/затухания и ту же линзу во всех пользовательских popup. Hover не меняет данные, маршрут, фокус или aria-selection. Keyboard и touch сохраняют прежнюю активацию.
 
@@ -25,14 +31,14 @@ CURRENT masters перечитаны 11.11 через Figma. Их статиче
 - Выбор очищает preview. selectionPending блокирует новые hover-цели до завершения существующего adapter lifecycle. Controlled rejection, отмена onClick, Escape/outside, фокус и touch сохраняются.
 - Reduced-motion/forced-colors без новых анимаций. Пять frozen исходников и manifest неизменны.
 
-## Проверяемые шаги
+## Завершённые шаги
 
 - [x] RED: четыре новые проверки до реализации упали именно на отсутствии hover-превью/перемещения линзы.
 - [x] GREEN: общий FosPopup preview + CSS; pending state трёх адаптеров; без копий.
 - [x] Эталонный listbox, все пять adapters: hover/leave/disabled/keyboard/touch, выбранное/пустое, commit/reject, scroll, reopen, пять ширин.
 - [x] Прежний Drawer selection-only hover заменён по прямому решению Owner; физические/геометрические пороги сохранены.
 - [x] Build, профильные browser regressions, production smoke, визуальные доказательства, независимый QA.
-- [ ] LIVE docs + один PR; merge по действующему поручению Owner после нужных review/CI; проверить результат в main/origin и синхронизировать CURRENT Drive.
+- [x] LIVE docs, PR #37, review/CI, разрешённый merge, проверка main/origin и синхронизация Drive выполнены.
 
 **Приёмка:** FUNCTIONAL и TECHNICAL требуют исполненных проверок; visual evidence отдельно от зелёного CI. Новый визуальный эффект не проектируется: переносится принятый v0.3. Другие задачи, DatePicker07 и backend остаются OPEN.
 
@@ -55,7 +61,7 @@ SKIP только для несовместимого ввода: hover/keyboard
 
 Прежние неуспешные результаты не выдаются за успешные: первый Manager тест искал exact «Компания02», хотя fixture имеет длинное полное имя; исправлен только selector на /^Компания 02/. В Drawer geometry sample после удаления устаревшего hover неявное ожидание стабильности исчезло: viewportY смешивал96px travel с190ms panel-entry transform, давал99.3…99.7px. Добавлено ожидание собственных panel.getAnimations().finished ДО sample; прежние96px/.5px, scale1.043, overlap и количество промежуточных кадров сохранены. Повтор всех24 Drawer pilot scenarios19PASS/5SKIP; остальные88 navigation из предыдущего совместного набора PASS. Код motion не менялся.
 
-Визуальные доказательства: [галерея8PNG + видео hover/return](http://127.0.0.1:5173/output/playwright/popup-hover/review/index.html), five-width Manager PNG в output/playwright/popup-hover/evidence. Capture390×844 Chromium после document.fonts.ready. Reviewer просмотрел More/GlassSelect/Drawer hover↔return и свежие4Figma references: геометрия/читаемость baseline сохранены. StaticFigma не является runtime-hover эталоном и не содержит тех же данных/viewport; pixel-perfect full-screen VISUAL acceptance M8 остаётсяOPEN. Видео reviewer не декодировал; timing подтверждён браузерными assertions. FUNCTIONAL/TECHNICAL PASS локально; GitHub CI и merge — только по фактическому PR head, затем статус в CURRENT Drive.
+Визуальные доказательства: [галерея8PNG + видео hover/return](http://127.0.0.1:5173/output/playwright/popup-hover/review/index.html), five-width Manager PNG в output/playwright/popup-hover/evidence. Capture390×844 Chromium после document.fonts.ready. Reviewer просмотрел More/GlassSelect/Drawer hover↔return и свежие4Figma references: геометрия/читаемость baseline сохранены. StaticFigma не является runtime-hover эталоном и не содержит тех же данных/viewport; pixel-perfect full-screen VISUAL acceptance M8 остаётсяOPEN. Видео reviewer не декодировал; timing подтверждён браузерными assertions. FUNCTIONAL/TECHNICAL PASS; успешные CI фактического head и merge подтверждены в разделе «Доставка».
 
 ## CI: установка окружения /11.11
 
