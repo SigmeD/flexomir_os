@@ -1,5 +1,7 @@
 # Flexomir OS — источники проекта
 
+FOS12 /11.11: CURRENT Drive modified06:25:07 перечитан, очередь — один пилот12. Figma session552c9aee-1769-4007-bc19-8fa4a022306a: [ArtworkSource634:445](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=634-445), Client New1791:6130/Edit1782:6025, instances2025:6811/2026:6870 и отдельный Layout Upload Selected1438:453 изучены по context/screenshot/структуре. ArtworkSource — COMPONENT без selected-library/unavailable variants; proposed20МБ не принято как правило. Canvas не менялась. [Карта и OPEN](FOS12_ARTWORK_STATES_PILOT_2026-11-11.md), [доказательства](FOS12_REPORT_2026-11-11.md); raw Figma PNG локально в output/playwright/fos12/reference.
+
 Для унификации кнопок действует поручение Owner от 11.11 в этой сессии. Геометрия берётся из ранее сверенных CURRENT мастеров Figma SectionAdd 1986:774, Action 835:259, HeaderAction 1953:4168 / 2173:1425 и More 1914:650. Нейтральная палитра и усиленный отклик относятся к этому поручению. Файлы мастеров хранят прежнюю редакцию. Источник замороженного движения — [FE11-v0.2](FE11_MOTION_FROZEN_V0_2.json). [Карта компонентов](COMPONENT_REGISTRY_2026-11-06.md).
 
 11.11.2026 в Google Drive CURRENT зафиксированы приёмка FOS08/09 и DEV-варианта FOS03, версия интерфейса 6007e60 и состояние поставки. Визуальные доказательства и Figma-ссылки сохранены в профильных отчётах. [Google Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), [FOS08/09](FOS08_09_REPORT_2026-11-10.md), [FOS03](FOS03_HEADER_AUDIT_2026-11-10.md)

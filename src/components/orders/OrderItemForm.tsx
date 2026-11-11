@@ -4,7 +4,7 @@ import { FOSInput, FOSQuantity, FOSSelect, FOSTextarea } from '@/components/ui/f
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
-import { ArtworkSource } from './ArtworkSource'
+import { ArtworkSource, type ArtworkSourcePresentation } from './ArtworkSource'
 import { PrintingMethodControl } from './PrintingMethodControl'
 import { LayoutBrowser } from '@/components/layouts/LayoutBrowser'
 import type { CabinetSection } from '@/components/layout/CabinetPage'
@@ -17,10 +17,11 @@ export interface OrderItemExitActions {
 }
 
 /** New/Edit Item: CURRENT CORE D1791:6130 / T1837:6385 / M1791:6185. */
-export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigationSectionChange, onExitActionsChange }: {
+export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigationSectionChange, onExitActionsChange, artworkPresentation = 'reference' }: {
   item?: DemoItem; onSave: (item: DemoItem) => void; onClose: () => void; onBackToList?: () => void
   onNavigationSectionChange?: (section: CabinetSection) => void
   onExitActionsChange?: (actions: OrderItemExitActions | null) => void
+  artworkPresentation?: ArtworkSourcePresentation
 }) {
   const [initial] = useState(() => ({ ...emptyDemoItem(), ...item }))
   const [value, setValue] = useState(initial)
@@ -94,7 +95,7 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
           <option value="">Выберите материал</option><option>Бумага</option><option>Плёнка</option>
         </FOSSelect>
       </div>
-      <div className="fos-item-form__artwork"><ArtworkSource value={value} onChange={update} onOpenLibrary={() => { pickerScroll.current = window.scrollY; setPickerOpen(true) }} /></div>
+      <div className="fos-item-form__artwork"><ArtworkSource value={value} onChange={update} presentation={artworkPresentation} onOpenLibrary={() => { pickerScroll.current = window.scrollY; setPickerOpen(true) }} /></div>
       <FOSTextarea wrapperClassName="fos-item-form__note" label="Комментарии" placeholder="Необязательно" value={value.comment || ''} onChange={event => update({ comment: event.target.value })} />
     </div>
     <p className="fos-sr-only" role="status">{dirty ? 'Есть несохранённые изменения позиции' : 'Изменений позиции нет'}</p>

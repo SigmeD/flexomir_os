@@ -1,5 +1,11 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner11.11 — начать FOS12
+
+После описания следующей задачи Owner поручил «приступакай к реализации». Разрешён один frontend DEV-пилот empty/local/library/unavailable; визуальная приёмка и rollout отдельно. [Контракт](FOS12_ARTWORK_STATES_PILOT_2026-11-11.md), [результаты](FOS12_REPORT_2026-11-11.md).
+
+REUSE ArtworkSource/LocalFileControl/FOSAction/picker; default reference. CURRENT634:445 содержит empty, отдельных Library/unavailable variants нет: OWNER VISUAL OPEN. Dirty&&valid, frozen FE11, storage/API и пункт13 не менялись. Разрешение merge PR33/34 не относится к этой новой поставке.
+
 ## Owner 11.11 — объединить текущие PR
 
 Поручение «Сливай pr» разрешает merge PR #33 и #34 после необходимых проверок. PR #33 слит в main b2b858f. Это не разрешение rollout DEV-отступов, изменения frozen motion, нового файлового scope или объявления production-ready. Последующее сообщение Owner сохраняет очередь: устранить причину WebKit FAIL, совместимость/QA, затем пилот12 и файловые контракты.
