@@ -1,5 +1,11 @@
 # Flexomir OS — передача работы
 
+## Продолжать с принятого rollout /11.11
+
+Ветка feat/fos12-artwork-source-pilot, PR #35 расширен по замечанию Owner. FOS12 принят наf509eba; Owner явно разрешил подключение FOS03/FOS12 и merge после QA. Код уже обычный: status gap8 у Composer/Detail обеих ролей, Manager32/24, ArtworkSource states в Client/Manager/production. Spacing60/Artwork52/build/production4 и независимый runtime19 PASS; полная700/финальный CI — в новом PR head. [Отчёт](ACCEPTED_UI_ROLLOUT_2026-11-11.md).
+
+После успешных проверок выполнить разрешённый merge, main/origin sync, remote cleanup и новую обычную ветку от свежего origin/main. Screenshot_1.png — пользовательский untracked, не менять/не коммитить; локальные ветки/stash сохранить. Ниже — предшествующие ограничения пилота, заменённые новым решением Owner.
+
 ## Продолжать здесь — FOS12 /11.11
 
 Активная ветка `feat/fos12-artwork-source-pilot`, база main398a93b, PR33/34 MERGED. Пилот12 — общий ArtworkSource, только Client DEV artworkStates=pilot. [Отчёт](FOS12_REPORT_2026-11-11.md), [контракт](FOS12_ARTWORK_STATES_PILOT_2026-11-11.md), [галерея](http://127.0.0.1:5173/output/playwright/fos12/review/index.html).

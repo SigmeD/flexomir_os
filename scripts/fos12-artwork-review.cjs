@@ -2,9 +2,9 @@ const fs = require('node:fs')
 const crypto = require('node:crypto')
 const { chromium, expect } = require('@playwright/test')
 
-const output = 'output/playwright/fos12/review'
+const output = process.env.FOS_REVIEW_OUTPUT || 'output/playwright/accepted-rollout/artwork-review'
 const base = process.env.FOS_REVIEW_URL || 'http://127.0.0.1:5173'
-const pilot = '/?view=client-orders&artworkStates=pilot'
+const pilot = '/?view=client-orders'
 const rows = [], errors = []
 fs.mkdirSync(output, { recursive: true })
 const artwork = page => page.locator('.fos-artwork-source')
@@ -52,25 +52,31 @@ async function main() {
     const page = await browser.newPage({ viewport: { width: 1440, height: 960 }, deviceScaleFactor: 1 })
     page.on('pageerror', error => errors.push(String(error)))
     if (process.argv.includes('--production')) {
-      for (const role of ['client', 'manager']) {
-        await newItem(page, `/?view=${role}-orders&artworkStates=pilot`)
+      for (const role of ['client', 'manager']) for (const formerFlag of [false, true]) {
+        const url = `/?view=${role}-orders${formerFlag ? '&artworkStates=pilot' : ''}`
+        await newItem(page, url)
         await artwork(page).getByRole('button', { name: 'Мои макеты', exact: true }).click()
         await page.getByTestId('layout-row-demo-layout-01').click()
         await page.getByRole('button', { name: 'Выбрать макет', exact: true }).click()
-        await expect(artwork(page)).not.toHaveAttribute('data-artwork-presentation')
-        await expect(artwork(page).getByRole('button', { name: 'Загрузить', exact: true })).toBeVisible()
-        await expect(artwork(page)).toContainText('Выбран демомакет: Этикетка 100×150')
-        rows.push({ role, pilot: false })
+        await expect(artwork(page)).toHaveAttribute('data-artwork-presentation', 'states')
+        await expect(artwork(page).getByRole('button', { name: 'Заменить макет', exact: true })).toBeVisible()
+        await expect(artwork(page)).toContainText('Выбран из библиотеки: Этикетка 100×150')
+        await page.goto(base + url)
+        await page.locator(`[data-order-open="${role === 'manager' ? 'DEMO-002' : 'DEMO-003'}"]`).click()
+        const gap = await page.locator('.fos-page-header').evaluate(root => root.querySelector('.fos-page-header__subtitle').getBoundingClientRect().top - root.querySelector('h1').getBoundingClientRect().bottom)
+        expect(gap).toBe(8)
+        await page.screenshot({ path: `${output}/production-${role}-${formerFlag ? 'former-flag' : 'ordinary'}.png`, fullPage: true })
+        rows.push({ role, formerFlag, acceptedSource: true, statusGap: gap })
       }
       if (errors.length) throw Error(errors.join('\n'))
       fs.writeFileSync(`${output}/production.json`, JSON.stringify({ rows, errors }, null, 2))
-      console.log(JSON.stringify({ productionRoutes: rows.length, pilot: false, pageErrors: errors.length }))
+      console.log(JSON.stringify({ productionRoutes: rows.length, acceptedSource: true, pageErrors: errors.length }))
       return
     }
     for (const width of [1440, 1024, 768, 390, 320]) {
       await page.setViewportSize({ width, height: 960 })
       await newItem(page, '/?view=client-orders')
-      const baseline = await capture(page, width, 'reference-empty')
+      const baseline = await capture(page, width, 'ordinary-empty-pass1')
       await newItem(page, pilot)
       const empty = await capture(page, width, 'empty')
       for (const field of ['source', 'panel', 'action', 'options', 'note']) {
@@ -99,8 +105,8 @@ async function main() {
     fs.writeFileSync(`${output}/observations.json`, JSON.stringify({ rows, errors, hashes }, null, 2))
     const escape = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]))
     const sections = [1440, 1024, 768, 390, 320].map(width => `<section><h2>${width}px</h2><div class="grid">${rows.filter(row => row.width === width).map(row => `<figure><figcaption>${escape(row.state)}</figcaption><a href="${row.file}-viewport.png"><img src="${row.file}-component.png" alt="${escape(row.state)} · ${width}px"></a><a href="${row.file}-viewport.png">Контекст экрана</a></figure>`).join('')}</div></section>`).join('')
-    fs.writeFileSync(`${output}/index.html`, `<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FOS12 — пилот макета</title><style>body{font:15px/1.5 system-ui;margin:24px;color:#1f2228}h1{font-size:28px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}figure{margin:0;padding:12px;border:1px solid #d6d9e0}figcaption{font-weight:600;margin-bottom:12px}img{display:block;max-width:100%;height:auto}a{color:#1f3861}section{margin-top:32px}</style><h1>FOS12 — состояния макета позиции</h1><p>DEV-пилот. Новые Library/Unavailable состояния ждут Owner visual acceptance. Raw PNG не изменены; ссылка под каждым кадром открывает контекст экрана с намеренным положением прокрутки.</p><p><a href="../reference/artwork-source-634-445.png">CURRENT Figma master634:445 — empty</a> · <a href="observations.json">Геометрия и SHA-256</a> · <a href="${base}${pilot}">Открыть живой пилот</a></p>${sections}</html>`)
-    console.log(JSON.stringify({ captures: rows.length * 2, pageErrors: errors.length, overflow: 0, emptyGeometryMatches: 5, gallery: `${output}/index.html` }))
+    fs.writeFileSync(`${output}/index.html`, `<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FOS12 — принятые состояния макета</title><style>body{font:15px/1.5 system-ui;margin:24px;color:#1f2228}h1{font-size:28px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}figure{margin:0;padding:12px;border:1px solid #d6d9e0}figcaption{font-weight:600;margin-bottom:12px}img{display:block;max-width:100%;height:auto}a{color:#1f3861}section{margin-top:32px}</style><h1>FOS12 — состояния макета позиции</h1><p>Принятые состояния подключены на обычных экранах Client и Manager. Raw PNG не изменены; ссылка под каждым кадром открывает контекст экрана с намеренным положением прокрутки.</p><p><a href="https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=634-445">CURRENT Figma master634:445 — empty</a> · <a href="observations.json">Геометрия и SHA-256</a> · <a href="${base}${pilot}">Открыть обычный экран</a></p>${sections}</html>`)
+    console.log(JSON.stringify({ captures: rows.length * 2, pageErrors: errors.length, overflow: 0, repeatGeometryMatches: 5, gallery: `${output}/index.html` }))
   } finally { await browser.close() }
 }
 main().catch(error => { console.error(error); process.exitCode = 1 })

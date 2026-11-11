@@ -142,13 +142,13 @@ test('FOS12 library choice leaves all other dirty fields intact and saved metada
   await expect(page.getByRole('button', { name: 'Сохранить позицию', exact: true })).toBeDisabled()
 })
 
-test('FOS12 ordinary Client and flagged Manager retain reference presentation', async ({ page }) => {
-  for (const url of ['/?view=client-orders', '/?view=manager-orders&artworkStates=pilot']) {
+test('FOS12 accepted source is the default in both roles, independent of the former pilot flag', async ({ page }) => {
+  for (const url of ['/?view=client-orders', '/?view=manager-orders', '/?view=manager-orders&artworkStates=pilot']) {
     await newItem(page, url)
     await chooseLibrary(page)
-    await expect(source(page)).not.toHaveAttribute('data-artwork-presentation')
-    await expect(source(page).getByRole('button', { name: 'Загрузить', exact: true })).toBeVisible()
-    await expect(source(page)).toContainText('Выбран демомакет: Этикетка 100×150')
+    await expect(source(page)).toHaveAttribute('data-artwork-presentation', 'states')
+    await expect(source(page).getByRole('button', { name: 'Заменить макет', exact: true })).toBeVisible()
+    await expect(source(page)).toContainText('Выбран из библиотеки: Этикетка 100×150')
   }
 })
 

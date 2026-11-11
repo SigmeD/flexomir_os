@@ -1,5 +1,7 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
+Accepted rollout11.11: FOS03 PageHeader.status below-title → Client/Manager Composer/Detail (включая Manager DEMO-002); Manager Composer32/24 без query. FOS12 ArtworkSource → все Client/Manager New/Edit/Repeat и production без DEV gate. Owner принял references и поручил подключение/merge; не весь кабинет/API. [Матрица источников и QA](ACCEPTED_UI_ROLLOUT_2026-11-11.md). Предыдущие пилотные записи ниже — история.
+
 FOS12 /11.11: Client New/Edit/Repeat Item1791:6130/1782:6025 → ArtworkSource634:445 → один DEV-пилот artworkStates=pilot. Empty/local/library/unavailable/HELP, native chooser/picker и сохранение исходных ID/dirty&&valid. Другие consumers reference. Новые selected/unavailable states OWNER VISUAL OPEN, не screen parity PASS. [Карта/контракт](FOS12_ARTWORK_STATES_PILOT_2026-11-11.md), [QA](FOS12_REPORT_2026-11-11.md).
 
 FOS03 /10.11: Manager draft0/1 D2569:24648/24539,T24851/24757,M25041/24945 → один `OrderComposer` DEV reference `?view=manager-orders&composeSpacing=pilot`. [Source map/план](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md), [QA/Owner gate](FOS03_REPORT_2026-11-10.md). Размеры контролов/даты/сценарии прежние; полный screen parity и rollout не присвоены.

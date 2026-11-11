@@ -55,14 +55,9 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
     setEditing(null)
   }
   const title = isNewDraft ? 'Новый заказ' : 'Заказ ' + value.id
-  // FOS03 Owner reference only. The ordinary UI keeps its accepted composition.
-  const spacingPilot = import.meta.env.DEV && value.ownerRole === 'manager'
-    && new URLSearchParams(window.location.search).get('composeSpacing') === 'pilot'
-  const artworkPilot = import.meta.env.DEV && value.ownerRole === 'client'
-    && new URLSearchParams(window.location.search).get('artworkStates') === 'pilot'
-  return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id} data-compose-spacing={spacingPilot ? 'pilot' : undefined}>
+  return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id} data-order-role={value.ownerRole}>
     {editing === null ? <>
-      <PageHeader title={title} floatingWorkActions subtitle="Черновик" subtitleRole="status" subtitlePlacement={spacingPilot ? 'below-title' : undefined} breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
+      <PageHeader title={title} floatingWorkActions subtitle="Черновик" subtitleRole="status" breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
         {value.ownerRole === 'manager'
           ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
           : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!canSendDemo(value)} onAction={() => onSend(value)} />}
@@ -98,6 +93,6 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
         setConfirmDelete(false)
         onBack()
       }} onCancel={cancelDelete} onDismiss={cancelDelete} />
-    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} artworkPresentation={artworkPilot ? 'states' : 'reference'} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} onExitActionsChange={onItemExitActionsChange} />}
+    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} onExitActionsChange={onItemExitActionsChange} />}
   </div>
 }

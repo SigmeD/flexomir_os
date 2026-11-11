@@ -67,13 +67,15 @@ for (const width of widths) {
     expect(errors).toEqual([])
   })
 
-  test(`FOS03 normal Manager and flagged Client retain existing geometry at ${width}`, async ({ page }, info) => {
+  test(`FOS03 accepted Manager spacing is active without a flag and Client is flag-independent at ${width}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 960 })
     await newOrder(page, 'manager', false)
     const current = await geometry(page)
-    expect(current.companyGap).toBe(0)
-    expect(current.sectionGap).toBe(width >= 1024 ? 63 : 68)
-    expect(current.subtitleGap).toBe(width >= 1024 ? 28 : 8)
+    expect(current.companyGap).toBe(32)
+    expect(current.sectionGap).toBe(32)
+    expect(current.headingGap).toBe(24)
+    expect(current.noteGap).toBe(24)
+    expect(current.subtitleGap).toBe(8)
     expect(current.company!.y).toBe(width >= 1024 ? 151 : 193)
     await page.screenshot({ path: info.outputPath(`manager-default-${width}.png`), fullPage: true })
     await newOrder(page, 'client', false)
