@@ -1,5 +1,9 @@
 # Flexomir OS — передача работы
 
+## Продолжать с принятого FOS02 /11.11
+
+Ветка feat/fos02-account-hover-pilot от main/originbc880b1; PR35MERGED. Owner разрешил DEV-пилот, затем после объяснения сценария/hover подтвердил «Принято». По standing поручению подключать/сливать принятое Account actionPreview=account-hover-v0.3 включён на ordinary/production обеих ролей; без query gate. Другие popup прежние; frozen5/5 неизменны; Account presence240ms в общем FosPopup.css. [Контракт/QA](FOS02_ACCOUNT_PREVIEW_2026-11-11.md): targeted29/11skip, regression61/3skip, production7PASS/1SKIP, buildPASS, independently authored16checks выполненыroot и reviewPASSWITHRISKS. Следующее: один PR/CI фактическогоhead, разрешённый merge/main sync/remote cleanup/Drive. Сохранять Screenshot_1.png untracked и4stash. СтарыеDEVproduction7PASS/1SKIP не заменяют новыйproduction rollout.
+
 ## Продолжать с принятого rollout /11.11
 
 Ветка feat/fos12-artwork-source-pilot, PR #35 расширен по замечанию Owner. FOS12 принят наf509eba; Owner явно разрешил подключение FOS03/FOS12 и merge после QA. Код уже обычный: status gap8 у Composer/Detail обеих ролей, Manager32/24, ArtworkSource states в Client/Manager/production. Spacing60/Artwork52/build/production4 и независимый runtime19 PASS; полная700/финальный CI — в новом PR head. [Отчёт](ACCEPTED_UI_ROLLOUT_2026-11-11.md).

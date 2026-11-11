@@ -1,5 +1,9 @@
 # Flexomir OS — состояние проекта
 
+## Сейчас — принятое Account hover /11.11
+
+PR35 MERGED, main/originbc880b1. Owner разрешил пилот02, затем принял hover-сценарий; по действующему поручению о подключении/merge принятых задач Account hover включён на обычных Client/Manager/production. Ветка feat/fos02-account-hover-pilot. Targeted29PASS/11SKIP, regression61PASS/3SKIP, production7PASS/1SKIP, build и независимый review16 поведения +12 сглаживания PASS WITH RISKS; frozen5/5 неизменны. [Результат/границы](FOS02_ACCOUNT_PREVIEW_2026-11-11.md). Далее CI фактического PR head → разрешённый merge → main/Drive sync. Полная M8 visual acceptance остаётсяOPEN. Ниже — предыдущие этапы.
+
 ## Сейчас — подключение принятых FOS03/FOS12 /11.11
 
 Owner принял FOS12-f509eba и явно поручил подключить все принятые варианты и слить PR #35. В рабочей ветке ArtworkSource действует в обоих кабинетах/production, Manager32/24 включён без флага, статус Composer/Detail находится в8px от H1. Случай Manager DEMO-002 со Screenshot_1 исправлен общим PageHeader. Локальные spacing60, Artwork52, production4, build и независимый review PASS; полная регрессия/новый CI фиксируются в PR до разрешённого merge. [Отчёт](ACCEPTED_UI_ROLLOUT_2026-11-11.md).
