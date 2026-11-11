@@ -1,5 +1,9 @@
 # Flexomir OS — React Component Registry
 
+## CURRENT /11.11 — placeholder не является пунктом Select
+
+Select1148:311/292 → FOSSelect → FOSSelectPopup → FosPopup: EXTEND visible items filter по existing emptyIsPlaceholder/id. Trigger/full native options REUSE; required/reset/value/onChange прежние. Consumers: Client/Manager Shape/Material, Manager company, shared lab. CompanyOrders status/sorting explicitfalse сохраняют semantic empty. GlassSelect placeholder уже только в Trigger, без изменения semantic rows. [Полная карта/QA](SELECT_PLACEHOLDER_2026-11-11.md). Frozen5/5/hover/material прежние.
+
 ## CURRENT /11.11 — shared popup hover v0.3
 
 FosPopup → EXTEND: общий transient preview для actions/listbox/navigation; выбранное значение и semantic aria отдельно. Удалён Account-only actionPreview prop; общий marker data-hover-preview=v0.3 и прежняя240ms presence. `selectionPending` задаётся существующим adapter pending state. Enabled baseline определяется из реальных data-popup-item DOM rows, включая semantic GlassSelect; optional empty string валиден, disabled placeholder не является baseline. Frozen Rows/material REUSE,5/5 unchanged. Полная Figma→React→props/states→consumers карта и актуальные QA — [единый контракт поставки](POPUP_HOVER_ROLLOUT_2026-11-11.md). Охват: AccountMenu, OverflowMenu, FOSSelectPopup, GlassSelectContent, NavigationDrawer; все текущие popup consumers ordinary/production. Старое Account-only описание ниже историческое.

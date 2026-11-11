@@ -1,5 +1,9 @@
 # Flexomir OS — передача работы
 
+## CURRENT /11.11 — Select placeholder
+
+PR37 MERGED/main3317d50. Ветка fix/select-placeholder-options от свежегоorigin/main; одна runtime строка фильтрует только visible FosPopup items при emptyIsPlaceholder=true и emptyid. Full items/native options/closed trigger не менялись; semantic empty filters explicitfalse и GlassSelect прежние. RED воспроизведён; forms128/FOS04 12/hover13+3skip/buildPASS; production15checks/12PNG. Independent5/5 root-executed по reviewer script; [контракт/QA](SELECT_PLACEHOLDER_2026-11-11.md). Дальше финальный review, один PR/CI и разрешённый merge, main/Drive/remote cleanup. Сохранять4stash, локальные ветки и Screenshot_1/2/3.png untracked. DatePicker07 не начат; прежняя ветка подготовлена. Нижние PR37/Account/DEV записи — история.
+
 ## CURRENT /11.11 — общий popup hover
 
 CI исходного head4c8bd86 задержался/упал до тестов из-за DNS apt Ubuntu; повтор на новыхrunner запущен. Четыре относящихся к поставкеworkflow переведены на официальный pinned Playwright1.64.1 container, ровно по lock, с version guard и прежними testcommands/projects/thresholds. [Доказательства и источник решения](POPUP_HOVER_ROLLOUT_2026-11-11.md#ci-установка-окружения-1111). Проверять новыйhead CI, старые infrastructure failures не считать product failure или PASS.

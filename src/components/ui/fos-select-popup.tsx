@@ -137,6 +137,6 @@ export function FOSSelectPopup({ id, label, readOnly, children, onChange, onInva
       <span className="fos-field__select-label">{items.find(item => item.id === value)?.label ?? ''}</span>
     </FosButtonRoot>
     {open && createPortal(<FosPopup ref={popup} mode="listbox" id={listId} aria-label={label} selectedId={value} selectionPending={settling !== null}
-      items={items} onSelect={choose} className="fos-popup--select" style={position} onKeyDown={onKeys} />, document.body)}
+      items={items.filter(item => !emptyIsPlaceholder || item.id !== '')} onSelect={choose} className="fos-popup--select" style={position} onKeyDown={onKeys} />, document.body)}
   </>
 }

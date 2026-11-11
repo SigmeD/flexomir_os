@@ -124,12 +124,12 @@ for (const role of ['client', 'manager'] as const) {
   })
 }
 
-test('FOS04 required placeholder is disabled and skipped by keyboard before and after choice', async ({ page }, info) => {
+test('FOS04 required placeholder stays outside the list before and after choice', async ({ page }, info) => {
   await page.goto('/tests/fixtures/fos-select.html')
   const trigger = page.getByRole('combobox', { name: 'Выбор' })
   await trigger.click()
-  await page.screenshot({ path: info.outputPath('required-placeholder.png'), fullPage: true })
-  await expect(page.getByRole('option', { name: 'Выберите значение' })).toBeDisabled()
+  await page.screenshot({ path: info.outputPath('required-placeholder.png') })
+  await expect(page.getByRole('option', { name: 'Выберите значение' })).toHaveCount(0)
   await expect(page.getByRole('option', { name: 'Альфа' })).toBeFocused()
   await page.keyboard.press('Home')
   await page.keyboard.press('Space')
@@ -157,13 +157,13 @@ test('FOS04 Item shape/material and Manager company placeholders cannot clear re
   for (const [label, option, placeholder] of [['Форма', 'Круглая', 'Выберите форму'], ['Материал', 'Бумага', 'Выберите материал']]) {
     await chooseFormOption(page, label, option)
     await page.getByRole('combobox', { name: label, exact: true }).click()
-    await expect(page.getByRole('option', { name: placeholder })).toBeDisabled()
+    await expect(page.getByRole('option', { name: placeholder })).toHaveCount(0)
     await page.keyboard.press('Escape')
   }
   await page.goto('/?view=manager-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByRole('combobox', { name: 'Компания', exact: true }).click()
-  await expect(page.getByRole('option', { name: 'Выберите компанию' })).toBeDisabled()
+  await expect(page.getByRole('option', { name: 'Выберите компанию' })).toHaveCount(0)
 })
 
 for (const source of ['LOCAL', 'LIBRARY', 'HELP'] as const) {

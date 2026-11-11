@@ -1,5 +1,7 @@
 # Flexomir OS — источники проекта
 
+CURRENT /11.11 Select placeholder: Screenshot_3.png + подтверждённая формулировка и Owner «приступай». Drive CURRENT перечитан после PR37MERGED/main3317d50. CURRENT Figma1148:311(set Default/Focus/Error/Readonly) заново прочитана через session372db390; reference output/playwright/select-placeholder/reference.png. Новый Owner-контракт уточняет содержимое popup, закрытая геометрия/Figma canvas прежние. [Источник изменения/общий компонент/QA](SELECT_PLACEHOLDER_2026-11-11.md).
+
 CI geometry11.11: artifact13867377701/run43047299458 и output/playwright/popup-hover/ci-70770fd/webkit-geometry-frames.json — первичное доказательство пропущенного partial-overlap окна старой подписи. Context7 /microsoft/playwright/v1.64.1 clock.md + class-clock.md перечитаны для install-before-navigation/pauseAt/runFor всех timers. Контролируемая частота относится только к sampler test, не к приложению/frozen физике; прежние thresholds сохранены. [Разбор](POPUP_HOVER_ROLLOUT_2026-11-11.md#ci-geometry-sample-70770fd).
 
 CI окружение11.11: Context7 resolve Playwright → /microsoft/playwright/v1.64.1, официальные docs/src/ci.md + docker.md для matching-version preinstalled container. MCR registry manifest и config проверены напрямую, digest/env доказательства в output/playwright/popup-hover/ci-image-config.json. Основание — фактические DNS failures apt в Actions, не замена продуктовых проверок. [Сведения](POPUP_HOVER_ROLLOUT_2026-11-11.md#ci-установка-окружения-1111).

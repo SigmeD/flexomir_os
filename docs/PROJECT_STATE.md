@@ -1,5 +1,9 @@
 # Flexomir OS — состояние проекта
 
+## CURRENT /11.11 — placeholder Select только в поле
+
+PR37 MERGED, main/origin3317d50. По Screenshot_3 и подтверждённому поручению Owner общий FOSSelectPopup исключает placeholder из видимого списка; закрытое пустое поле, label и native proxy сохраняются. Реальные empty filter options (Все статусы) прежние. Ветка fix/select-placeholder-options. Локально forms128PASS, FOS04 12PASS, hover13PASS/3conditionalSKIP, production15/15checks +12PNG, build238modulesPASS; reviewer-authored5/5 исполнены root, frozen5/5. [Контракт и доказательства](SELECT_PLACEHOLDER_2026-11-11.md). Далее review/CI фактическогоhead → разрешённый merge → main/Drive sync. DatePicker07 не начат; нижние CURRENT записи — история.
+
 ## CURRENT /11.11 — общий hover выпадающих меню
 
 CI начального head4c8bd86 не дошёл до тестов: apt DNS Ubuntu. Необходимая стабилизация четырёхworkflow — официальный Playwright1.64.1 image, pinned digest, matching-version guard; npm/build/testcommands/браузеры/пороги прежние. [Диагноз и новый CI gate](POPUP_HOVER_ROLLOUT_2026-11-11.md#ci-установка-окружения-1111).
