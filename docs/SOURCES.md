@@ -12,7 +12,9 @@ Status-size follow-up10.11: перечитаны точные Figma styles S:7b4
 
 ## Как выбирать источник
 
-FOS03 /10.11: [источники/план](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md). Drive CURRENT modified14:09:37.549Z перечитан; gates прежние. Figma read-only session`bb9a0704-e302-499e-b2bc-b52f01338d24`: Manager0/1 D/T/M, instance→master/context/raw screenshots; section-gap633:148→633:80=32, block/md633:122→633:79=24. Canvas не менялась. Локальные reference PNG/JSON — `output/playwright/fos03/reference`; прежняя13-point/A поставка — [PR33](https://github.com/SigmeD/flexomir_os/pull/33), не принятая main.
+FOS03 /10.11: [источники/план](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md). Drive CURRENT modified14:09:37.549Z перечитан; gates прежние. Figma read-only session`bb9a0704-e302-499e-b2bc-b52f01338d24`: Manager0/1 D/T/M, instance→master/context/raw screenshots; section-gap633:148→633:80=32, block/md633:122→633:79=24. Canvas не менялась. Локальные reference PNG/JSON — `output/playwright/fos03/reference`; Wave A — [PR33](https://github.com/SigmeD/flexomir_os/pull/33), MERGED 11.11 в main b2b858f.
+
+10.11, scope01–13: перечитаны Drive Frontend CURRENT (modified14:09:37.549Z, POST-M8 addendum), SRS (modified06.11 12:54:47.366Z), E2E (modified02.11 10:25:14.515Z). Owner указал локальный `D:/downloads/FLEXOMIR_OS_NEXT_SCOPE_13_CODEX_SDLC_TZ_2026-11-10.md`; [разбор и план](NEXT_SCOPE_13_2026-11-10.md) фиксируют его исполнение и OPEN gates. Figma Select1148:311/292 проверен через metadata/screenshot/design context:44px field и approved open-popup contract; новые визуальные макеты/мастера не изменены. Локальный исходный файл существует только на машине Owner, не обещается доступным на другом checkout.
 
 Требования и подтверждённые решения определяют логику, права и данные. Утверждённые Figma DS/FOS masters — внешний вид и поведение компонентов. Новое решение Owner важнее старого кадра; CURRENT-кандидат не означает автоматическое согласование объёма. Реализацию, CI и merge сверяем в GitHub, очередность — в существующем Drive CURRENT.
 

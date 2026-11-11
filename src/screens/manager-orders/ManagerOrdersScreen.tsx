@@ -72,6 +72,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
       <AppShell
         items={navigation ? cabinetItems('manager', navigation.ready) : managerNav}
         activeId="orders"
+        onProfileReturnToRoot={preview.backToList}
         onSelect={id => { if (selectedManagerDraft && managerDraftDirty) return; if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) }}
         roleLabel="Менеджер"
         variant="manager"

@@ -7,7 +7,7 @@ import type { CabinetRole } from './CabinetPage'
 /** Local demo destinations supplied by the workspace; no production routing/authorization. */
 export const CabinetNavigation = createContext<{
   ready: readonly CabinetSection[]
-  navigate: (section: CabinetSection) => void
+  navigate: (section: CabinetSection, onCommit?: () => void) => void
   /** Previous selected section, used to animate the shared sidebar lens across screen shells. */
   motionFromSection?: CabinetSection | null
   identity?: DemoProfileIdentity

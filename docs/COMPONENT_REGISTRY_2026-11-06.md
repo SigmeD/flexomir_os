@@ -34,7 +34,18 @@ CURRENT Manager D2569:24648/24539 lifecycle label Y109 и PageHeader master 2302
 
 [План/мастера](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md), [QA/ограничения](FOS03_REPORT_2026-11-10.md). Owner visual gate до распространения; manual screen Y не объявляются новым DS contract.
 
-Актуальная продуктовая база: main a400b9d, PR #31 MERGED 10.11.2026. Последние изменения — общий OrderDateFields и клиентское readonly-отображение согласованного срока; основные контракты ниже сохранены. Предыдущие checkpoints фиксируют происхождение компонентов и не задают текущую очередь. Проверки и их границы — в [итоговом аудите M8](M8_FINAL_AUDIT_2026-11-10.md).
+## Scope01–13 / Wave A, PR #33 MERGED 11.11
+
+Карта до реализации и весь план — [NEXT_SCOPE_13](NEXT_SCOPE_13_2026-11-10.md). Статус: PR #33 MERGED по поручению Owner, main b2b858f, CI4/4 на25eb159. Локальные targeted124/full582+4SKIP относятся к отчёту поставки. [Доказательства и review](NEXT_SCOPE_A_REPORT_2026-11-10.md).
+
+| Figma/source → React | Решение / контракт | Consumers |
+| --- | --- | --- |
+| Shell637:180, Profile3215:1357 → AppShell/CabinetNavigation/OrderDemoWorkspace | EXTEND: Profile route проходит guard ровно один раз; optional navigate onCommit сбрасывает вложенный root у владельца экрана; Close/Escape не равны Discard. Без DOM-bubble interception | Client/Manager Orders и CabinetPage в Layouts/Companies/Support |
+| Nav1578:493 + Drawer1962:3834/3854 → SidebarNav/NavigationDrawer | EXTEND activation callback для текущего раздела; Drawer route после фактического rest, включая same-id; фокус нового modal guard приоритетнее возврата на trigger. Материал/физика/Rows не меняются | Оба кабинета, navigation labs |
+| Select1148:311/292 → FOSSelect/FOSSelectPopup | EXTEND adapter: required + emptyIsPlaceholder запрещают выбор пустого placeholder; optional semantic empty фильтра остаётся доступен. Native events/validation/reset/FormData сохраняются | Item shape/material, Manager company, CompanyOrders filters, lab |
+| Artwork634:445 → ArtworkSource | EXTEND source transition: Local/HELP очищают устаревший unavailableArtwork. Save validation сохранена; новый Library/Local visual pilot12 DEFER | Client/Manager New/Edit/Repeat Item |
+
+Историческая база M8: main a400b9d, PR #31 MERGED 10.11.2026. База интеграции текущей поставки после PR #33 — b2b858f. PR #31 добавил общий OrderDateFields и клиентское readonly-отображение согласованного срока; основные контракты ниже сохранены. Предыдущие checkpoints фиксируют происхождение компонентов и не задают текущую очередь. Проверки и их границы — в [итоговом аудите M8](M8_FINAL_AUDIT_2026-11-10.md).
 
 ## Уточнение Owner10.11 — согласованный срок клиента
 

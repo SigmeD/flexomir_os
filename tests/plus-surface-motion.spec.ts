@@ -311,8 +311,13 @@ test('Manrope text Plus replaces both CSS strokes and keeps its centered box', a
 })
 
 test('Fast native clicks remain visible across the action family', async ({ page }, info) => {
+  // The press envelope uses wall time, while the frozen spring caps each frame
+  // at 32 ms. Test its amplitude at a fixed cadence, not CI/trace scheduling.
+  await page.clock.install({ time: new Date('2026-11-11T12:00:00Z') })
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/?view=neutral-actions')
+  await page.evaluate(() => document.fonts.ready)
+  await page.clock.pauseAt(new Date('2026-11-11T13:00:00Z'))
   const paper = page.getByTestId('neutral-paper')
   const observations = []
   for (const [id, selector, surface] of [
@@ -323,27 +328,45 @@ test('Fast native clicks remain visible across the action family', async ({ page
     ['reference-secondary', '.fos-action__motion', false], ['reference-plus', '.fos-section-add__glyph', false],
   ] as const) {
     const button = paper.getByTestId(id), target = button.locator(selector)
-    await button.hover()
-    await expect.poll(() => target.isVisible()).toBe(true)
+    const counter = paper.getByTestId(id.startsWith('neutral-') ? 'neutral-count' : 'reference-count')
+    const previousCount = Number((await counter.innerText()).match(/\d+/)![0])
+    const hit = (await button.boundingBox())!
+    await page.mouse.move(hit.x + hit.width / 2, hit.y + hit.height / 2)
+    await page.clock.runFor(1500)
+    await expect(target).toBeVisible()
     if (await button.getAttribute('data-surface-motion') === 'pressure') await expect(button).toHaveAttribute('data-surface-active', 'false')
     const baseline = await scaleY(target)
-    const sampling = target.evaluate(async node => {
-      const start = performance.now(), rows: { time: number; scale: number }[] = []
-      await new Promise<void>(resolve => {
+    // Arm synchronously: no host-side actionability delay consumes the sample.
+    await target.evaluate(node => {
+      const button = node.closest('button')!
+      const sample = { started: 0, released: 0, clicks: 0, rows: [] as { time: number; scale: number }[] }
+      ;(window as any).__quickClickSample = sample
+      button.addEventListener('click', () => sample.clicks++, { once: true })
+      button.addEventListener('pointerup', () => { sample.released = performance.now() }, { once: true })
+      button.addEventListener('pointerdown', () => {
+        sample.started = performance.now()
         const frame = (stamp: number) => {
           const transform = getComputedStyle(node).transform
-          rows.push({ time: stamp - start, scale: transform === 'none' ? 1 : new DOMMatrixReadOnly(transform).m22 })
-          if (stamp - start < 500) requestAnimationFrame(frame); else resolve()
+          sample.rows.push({ time: stamp - sample.started, scale: transform === 'none' ? 1 : new DOMMatrixReadOnly(transform).m22 })
+          if (stamp - sample.started < 500) requestAnimationFrame(frame)
         }
         requestAnimationFrame(frame)
-      })
-      return rows
+      }, { once: true })
     })
-    await button.click({ delay: 0 })
-    const rows = await sampling
+    // The unchanged hit target was checked above. Native mouse input avoids a
+    // locator's stability wait needing animation frames while the clock pauses.
+    await page.mouse.click(hit.x + hit.width / 2, hit.y + hit.height / 2, { delay: 0 })
+    await page.clock.runFor(512)
+    const sample = await page.evaluate(() => (window as any).__quickClickSample as { started: number; released: number; clicks: number; rows: { time: number; scale: number }[] })
+    const { rows } = sample
     const minimum = Math.min(...rows.map(row => row.scale))
+    observations.push({ id, baseline, minimum, ...sample })
+    await info.attach(`quick-click-${id}`, { body: JSON.stringify(observations.at(-1)), contentType: 'application/json' })
+    expect(sample.clicks, id).toBe(1)
+    await expect(counter).toHaveText(`Нажатий: ${previousCount + 1}`)
+    expect(sample.released - sample.started, id).toBe(0)
+    expect(rows.length, id).toBeGreaterThanOrEqual(31)
     expect(baseline - minimum, id).toBeGreaterThan(surface ? .02 : .01)
-    observations.push({ id, baseline, minimum, rows })
   }
   await info.attach('quick-click-response', { body: JSON.stringify(observations), contentType: 'application/json' })
 })

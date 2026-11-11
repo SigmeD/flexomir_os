@@ -1,15 +1,12 @@
 # Flexomir OS — передача работы
 
-11.11.2026 владелец проекта принял кнопки FOS08/09 и DEV-вариант FOS03 для нового заказа менеджера. Принята версия интерфейса 6007e60. Для проверки FOS03 открыть пилот и нажать «Добавить заказ». [Отчёт по кнопкам](FOS08_09_REPORT_2026-11-10.md), [аудит отступов](FOS03_HEADER_AUDIT_2026-11-10.md), [DEV-пилот](http://127.0.0.1:5173/?view=manager-orders&composeSpacing=pilot)
+11.11.2026 Owner поручил «Сливай pr». PR #33 MERGED, main `b2b858f93e68c0543babe6564adb5224820cad91`; head `25eb159`, CI4/4. Удалённая ветка PR #33 удалена GitHub автоматически; локальные ветки и четыре stash сохранены.
 
-Следующий шаг по PR #34 — сверить CI по текущему коммиту. Объединение следует после отдельного разрешения владельца проекта. Распространение отступов FOS03 за пределы DEV-варианта — отдельный шаг. [PR #34](https://github.com/SigmeD/flexomir_os/pull/34), [CI](https://github.com/SigmeD/flexomir_os/pull/34/checks)
+Поставка PR #34 включает main после PR #33. Семь конфликтов workflow/LIVE docs разрешены с сохранением обеих поставок; общие исходники объединены автоматически. В workflow сохранены проверки Wave A, кнопок и FOS03. [Wave A](NEXT_SCOPE_A_REPORT_2026-11-10.md), [кнопки](FOS08_09_REPORT_2026-11-10.md).
 
-PR #33 остаётся отдельным черновиком. При разрешённой интеграции нужно сохранить записи об обеих поставках в общей документации. Очередь работ ведётся в Google Drive. [PR #33](https://github.com/SigmeD/flexomir_os/pull/33), [CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit)
+Причина чувствительности быстрого клика: 180 мс wall-time envelope и ограничение шага frozen spring до32мс при редких кадрах. Исходное падение и диагностика сохранены в `output/pr-merge`. Амплитуда проверяется управляемыми кадрами без ослабления порогов; production-код анимации не менялся. Сборка PASS, motion54 PASS/2 штатных SKIP, frozen5/5; независимое ревью разрешения конфликтов и теста PASS WITH RISKS. Финальные QA/CI head и merge SHA — в [PR #34](https://github.com/SigmeD/flexomir_os/pull/34), post-merge статус — в [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Owner разрешил объединение после успешных проверок.
 
-## База для следующей задачи
-
-- Рабочая папка — D:\Projects\flexomir_os. Текущий main — 7b17db6 после документационного PR #32. Продуктовая база PR #31 — a400b9d, сборка после объединения прошла.
-- Рабочая ветка PR #34 — `feat/fos03-manager-spacing-pilot`. Перед продолжением сверить ветку, рабочее дерево и статус PR.
+Рабочая папка — D:/Projects/flexomir_os, ветка `feat/fos03-manager-spacing-pilot`. FOS03 принят только в DEV-пилоте `composeSpacing=pilot`, версия интерфейса `6007e60`; обычные маршруты не переключать автоматически.
 
 ## Что уже сделано
 
