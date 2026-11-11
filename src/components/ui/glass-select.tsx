@@ -261,7 +261,7 @@ export function GlassSelectContent({ className, children, onKeyDown, ...props }:
       className={cn(className)}
     >
       <FosPopup
-        mode="listbox" role="presentation" selectedId={value} semanticRows={children}
+        mode="listbox" role="presentation" selectedId={value} semanticRows={children} selectionPending={pendingValue !== null}
         data-state={open ? 'open' : 'closed'}
         style={popupStyle}
         className="glass-select-material"

@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 test.use({ video: 'on' })
 test.beforeEach(async ({ page }) => { await page.goto('/?view=navigation-drawer') })
 
-test('candidate hover changes only text color; lens and type scale remain selected', async ({ page }, info) => {
+test('accepted popup hover previews one lens while the real navigation selection remains unchanged', async ({ page }, info) => {
   test.skip(info.project.use.hasTouch === true, 'Pointer preview is covered on desktop engines')
   await page.setViewportSize({ width: 390, height: 844 })
   await page.getByTestId('navigation-drawer-trigger').click()
@@ -15,14 +15,14 @@ test('candidate hover changes only text color; lens and type scale remain select
   const before = await lens.boundingBox()
   const color = await support.evaluate(el => getComputedStyle(el).color)
   await support.hover()
-  await expect(lens).toHaveAttribute('data-travel-target', '0')
+  await expect(lens).toHaveAttribute('data-travel-target', '96')
   await expect(orders).toHaveAttribute('aria-current', 'page')
   await expect(lens).toHaveAttribute('data-motion-state', 'settled')
-  expect(Math.abs((await lens.boundingBox())!.y - before!.y)).toBeLessThan(.8)
-  await expect.poll(() => support.locator('[data-popup-label]').evaluate(el => Number(getComputedStyle(el).getPropertyValue('--fos-sidebar-label-scale')))).toBe(1)
+  expect(Math.abs((await lens.boundingBox())!.y - before!.y - 96)).toBeLessThan(.8)
+  await expect.poll(() => support.locator('[data-popup-label]').evaluate(el => Number(getComputedStyle(el).getPropertyValue('--fos-sidebar-label-scale')))).toBeCloseTo(1.043, 4)
   await expect.poll(() => support.evaluate(el => getComputedStyle(el).color)).not.toBe(color)
   await expect(panel.locator('[data-motion="travel"]')).toHaveCount(1)
-  await page.screenshot({ path: `output/playwright/fe11-pilot/${info.project.name}-hover.png`, fullPage: true })
+  await page.screenshot({ path: `output/playwright/fe11-pilot/${info.project.name}-hover.png` })
   await panel.locator('.fos-nav-drawer__footer').hover()
   await expect(lens).toHaveAttribute('data-travel-target', '0')
   await expect(orders).toHaveAttribute('aria-current', 'page')
@@ -49,7 +49,9 @@ test('candidate arrows only focus; activation moves the same lens and Escape res
 test('candidate intermediate frames follow geometric text intersection, never selected state', async ({ page }, info) => {
   await page.getByTestId('navigation-drawer-trigger').click()
   await expect(page.locator('[data-motion-reference]')).toBeVisible()
-  await page.getByTestId('sidebar-nav-support').hover()
+  // Isolate click-driven full travel; hover now intentionally previews the target.
+  // Viewport Y must not include the independent 190ms panel-entry transform.
+  await page.getByRole('dialog').evaluate(el => Promise.all(el.getAnimations().map(animation => animation.finished)))
   const frames = await page.evaluate(async () => {
     const root = document.querySelector('[data-motion-reference]')!
     const lens = root.querySelector<HTMLElement>('[data-testid="sidebar-selected-lens"]')!

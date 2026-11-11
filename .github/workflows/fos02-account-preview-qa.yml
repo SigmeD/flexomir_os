@@ -6,14 +6,20 @@ on:
       - 'src/components/layout/AccountMenu.tsx'
       - 'src/components/layout/account-menu.css'
       - 'src/components/ui/fos-popup*'
+      - 'src/components/ui/fos-select-popup.tsx'
+      - 'src/components/ui/glass-select.tsx'
+      - 'src/components/ui/navigation-drawer.tsx'
+      - 'src/components/ui/overflow-menu.tsx'
       - 'src/components/ui/fos-glass-material*'
       - 'src/components/ui/glass-motion.ts'
       - 'docs/FE11_MOTION_FROZEN_V0_2.json'
       - 'tests/fos02-account-preview.spec.ts'
+      - 'tests/popup-hover-rollout.spec.ts'
       - 'tests/popup-dismissal.spec.ts'
       - 'tests/fe11-*.spec.ts'
       - 'tests/profile-settings.spec.ts'
       - 'playwright.fos02*.config.ts'
+      - 'playwright.popup-hover.config.ts'
       - 'package*.json'
       - '.github/workflows/fos02-account-preview-qa.yml'
   workflow_dispatch:
@@ -35,11 +41,20 @@ jobs:
         run: npx playwright test --config=playwright.fos02.config.ts --workers=2
       - name: Existing popup, Profile and adapter regression
         run: npx playwright test --config=playwright.fos02-regression.config.ts --workers=2
+      - name: Shared hover across More, Select and Drawer
+        run: npx playwright test --config=playwright.popup-hover.config.ts --workers=2
+      - name: Drawer preview and frozen optical geometry
+        run: npx playwright test --config=playwright.fe11.config.ts tests/fe11-drawer-pilot.spec.ts --workers=2
+      - name: Production shared hover and touch
+        run: POPUP_HOVER_PRODUCTION=1 npx playwright test --config=playwright.popup-hover.config.ts --grep 'More shares|ordinary Manager|Drawer previews|GlassSelect semantic|touch activates' --workers=2
       - name: Production build uses the accepted Account behavior
         run: FOS02_PRODUCTION=1 npx playwright test --config=playwright.fos02.config.ts --grep 'accepted Account|presence eases' --workers=2
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: fos02-account-preview-evidence
-          path: output/playwright/fos02/**
+          path: |
+            output/playwright/fos02/**
+            output/playwright/popup-hover/**
+            output/playwright/fe11-pilot/**
           retention-days: 7

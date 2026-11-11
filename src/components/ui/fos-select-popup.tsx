@@ -136,7 +136,7 @@ export function FOSSelectPopup({ id, label, readOnly, children, onChange, onInva
       onKeyDown={event => { onKeyDown?.(event); if (!event.defaultPrevented && !readOnly && ['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) { event.preventDefault(); setOpen(true) } }}>
       <span className="fos-field__select-label">{items.find(item => item.id === value)?.label ?? ''}</span>
     </FosButtonRoot>
-    {open && createPortal(<FosPopup ref={popup} mode="listbox" id={listId} aria-label={label} selectedId={value}
+    {open && createPortal(<FosPopup ref={popup} mode="listbox" id={listId} aria-label={label} selectedId={value} selectionPending={settling !== null}
       items={items} onSelect={choose} className="fos-popup--select" style={position} onKeyDown={onKeys} />, document.body)}
   </>
 }

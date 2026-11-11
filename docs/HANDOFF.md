@@ -1,5 +1,11 @@
 # Flexomir OS — передача работы
 
+## CURRENT /11.11 — общий popup hover
+
+Ветка `feat/popup-hover-rollout` от свежего origin/main4ae4841; PR36 MERGED. Owner прямо разрешил подключить точно принятое Account-поведение к остальным dropdown. Общий FosPopup теперь управляет hover всех пяти adapters; field/navigation selectedId остаётся реальным, selectionPending не допускает hover retarget во время commit. Одна240ms presence, прежние frozen Rows/material/5files. [Контракт/QA/evidence](POPUP_HOVER_ROLLOUT_2026-11-11.md). Локальные targeted23, forms124, Account29, popup/Profile61, Drawer19+navigation88, production14 PASS; условныеSKIP указаны в таблице. Reviewer8/8/root executor + source/visual review без blocker; полный M8 screen acceptance не заявлен.
+
+Следующий шаг Codex — один PR с LIVE docs, CI фактическогоhead и разрешённый standing поручением merge, затем main/origin sync, remote merged-head cleanup и CURRENT Drive. Локальные ветки (включая неиспользованную feat/fos07-glass-datepicker-pilot),4stash и пользовательские Screenshot_1.png/Screenshot_2.png сохранить. DatePicker07 не начат. Нижние Account-only/DEV-only записи — история.
+
 ## Продолжать с принятого FOS02 /11.11
 
 Ветка feat/fos02-account-hover-pilot от main/originbc880b1; PR35MERGED. Owner разрешил DEV-пилот, затем после объяснения сценария/hover подтвердил «Принято». По standing поручению подключать/сливать принятое Account actionPreview=account-hover-v0.3 включён на ordinary/production обеих ролей; без query gate. Другие popup прежние; frozen5/5 неизменны; Account presence240ms в общем FosPopup.css. [Контракт/QA](FOS02_ACCOUNT_PREVIEW_2026-11-11.md): targeted29/11skip, regression61/3skip, production7PASS/1SKIP, buildPASS, independently authored16checks выполненыroot и reviewPASSWITHRISKS. Следующее: один PR/CI фактическогоhead, разрешённый merge/main sync/remote cleanup/Drive. Сохранять Screenshot_1.png untracked и4stash. СтарыеDEVproduction7PASS/1SKIP не заменяют новыйproduction rollout.

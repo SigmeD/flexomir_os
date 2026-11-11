@@ -60,7 +60,7 @@ test('accepted Account hover works on ordinary and former pilot URLs', async ({ 
     await open(page, role, formerFlag)
     if (!info.project.use.hasTouch) { await profile(page).hover(); await expect(lens(page)).toHaveCount(1) }
     else await expect(lens(page)).toHaveCount(0)
-    await expect(menu(page)).toHaveAttribute('data-action-preview', 'account-hover-v0.3')
+    await expect(menu(page)).toHaveAttribute('data-hover-preview', 'v0.3')
     await expect(menu(page).getByRole('menuitem', { name: 'Настройки компании' })).toHaveAttribute('aria-disabled', 'true')
   }
 })
@@ -74,7 +74,7 @@ for (const role of ['client', 'manager']) test(`pointer preview ${role}: one len
     const focused = await page.evaluateHandle(() => document.activeElement)
     await profile(page).hover()
     await expect(lens(page)).toHaveCount(1)
-    await expect(menu(page)).toHaveAttribute('data-action-preview', 'account-hover-v0.3')
+    await expect(menu(page)).toHaveAttribute('data-hover-preview', 'v0.3')
     expect(await focused.evaluate(node => node === document.activeElement)).toBe(true)
     await expect(page.getByRole('heading', { level: 1, name: 'Настройки профиля', exact: true })).toHaveCount(0)
     await expect.poll(() => label(page).evaluate(el => new DOMMatrix(getComputedStyle(el).transform).a)).toBeCloseTo(1.043, 4)

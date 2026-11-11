@@ -14,27 +14,27 @@
 .fos-popup__item:disabled, .fos-popup__item[data-disabled] { opacity: .55; cursor: default; }
 .fos-popup__item[data-highlighted] { background: transparent; }
 .fos-popup__item [data-popup-label] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-/* Account-only presence, requested by Owner. One ramp fades the canonical
+/* Shared v0.3 presence, requested by Owner. One ramp fades the canonical
    material and reveals its existing optical TARGET; no second spring/scale. */
 @property --fos-action-preview-presence {
   syntax: '<number>';
   inherits: true;
   initial-value: 0;
 }
-.fos-popup[data-action-preview="account-hover-v0.3"] { --fos-action-preview-duration: 240ms; }
-.fos-popup[data-action-preview="account-hover-v0.3"] .fos-popup-rows {
+.fos-popup[data-hover-preview="v0.3"] { --fos-action-preview-duration: 240ms; }
+.fos-popup[data-hover-preview="v0.3"] .fos-popup-rows {
   --fos-action-preview-presence: 0;
   transition: --fos-action-preview-presence var(--fos-action-preview-duration) cubic-bezier(.22,.61,.36,1);
 }
-.fos-popup[data-action-preview="account-hover-v0.3"][data-preview-visible="true"] .fos-popup-rows { --fos-action-preview-presence: 1; }
-.fos-popup[data-action-preview="account-hover-v0.3"] .fos-popup-rows__lens { opacity: var(--fos-action-preview-presence); }
-.fos-popup[data-action-preview="account-hover-v0.3"] [data-popup-label] {
+.fos-popup[data-hover-preview="v0.3"][data-preview-visible="true"] .fos-popup-rows { --fos-action-preview-presence: 1; }
+.fos-popup[data-hover-preview="v0.3"] .fos-popup-rows__lens { opacity: var(--fos-action-preview-presence); }
+.fos-popup[data-hover-preview="v0.3"] [data-popup-label] {
   transform: scale(calc(1 + (var(--fos-sidebar-label-scale, 1) - 1) * var(--fos-action-preview-presence)));
 }
-.fos-popup[data-action-preview="account-hover-v0.3"] [data-popup-item] { transition: color var(--fos-action-preview-duration) ease; }
+.fos-popup[data-hover-preview="v0.3"] [data-popup-item] { transition: color var(--fos-action-preview-duration) ease; }
 @media (prefers-reduced-motion: reduce), (forced-colors: active) {
-  .fos-popup[data-action-preview="account-hover-v0.3"] .fos-popup-rows,
-  .fos-popup[data-action-preview="account-hover-v0.3"] [data-popup-item] { transition: none; }
+  .fos-popup[data-hover-preview="v0.3"] .fos-popup-rows,
+  .fos-popup[data-hover-preview="v0.3"] [data-popup-item] { transition: none; }
 }
 .fos-popup--account.fos-account-menu { min-height: 0; }
 .fos-popup--account .fos-account-menu__content { min-height: 0; padding-bottom: 12px; }
