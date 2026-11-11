@@ -14,6 +14,7 @@ function Samples({ palette, surfaceLabel }: { palette: ActionPalette; surfaceLab
     <h3>{neutral ? 'Единое семейство · OWNER OPEN' : 'Reference-палитра · для сравнения'}</h3>
     <div className="neutral-lab__controls">
       <SectionAddItem palette={palette} onClick={activate} data-testid={`${prefix}-plus`} />
+      <SectionAddItem palette={palette} icon="file" accessibleName="Добавить подписной бланк" onClick={activate} data-testid={`${prefix}-file-add`} />
       <HeaderAction palette={palette} action="save" accessibleName={neutral ? 'Нейтральный Save' : 'Текущий Save'} onAction={activate} data-testid={`${prefix}-header`} />
       <FOSAction palette={palette} hierarchy="primary" onClick={activate} data-testid={`${prefix}-primary`}>Основное действие</FOSAction>
       <FOSAction palette={palette} onClick={activate} data-testid={`${prefix}-secondary`}>Вторичное действие</FOSAction>
