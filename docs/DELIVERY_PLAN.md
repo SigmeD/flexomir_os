@@ -1,5 +1,7 @@
 # Flexomir OS — текущий план
 
+**Активный шаг02: принятое Account hover — QA/CI/merge.** Owner разрешил пилот и принял описанный сценарий; подключение ordinary/production выполнено в текущей ветке по поручению подключать/сливать принятые задачи. [FOS02 и QA](FOS02_ACCOUNT_PREVIEW_2026-11-11.md):29targeted/61regression/7productionPASS, conditionalSKIP11/3/1, frozen5/5. Далее frontend/Codex: CI фактическогоhead → merge → main/Drive sync. Следующий независимый UI-блок07DatePicker;05/06/10/11/13 по отдельным решениям. Полная M8 visual acceptance OPEN; сроки не назначены. Прежняя очередь ниже историческая.
+
 **Текущий шаг: подключить принятые FOS03/FOS12 и слить PR #35.** Owner принялf509eba, потребовал исправить оставшийся status gap в обычном OrderDetail и разрешил rollout/merge. Подключение готово, выполняются окончательные проверки. После merge — сверить main/origin SHA, сохранить локальную работу, создать ветку следующего пункта от свежего origin/main. [Основания и QA](ACCEPTED_UI_ROLLOUT_2026-11-11.md). Непринятые решения остаются OPEN; прежний пилотный gate ниже исторический.
 
 **Сейчас: пункт12, один DEV-пилот ArtworkSource.** Подготовлен в `feat/fos12-artwork-source-pilot` от main398a93b после merge PR33/34. Локальные проверки прошли; следующий gate — Owner visual acceptance выбранного/недоступного макета, затем разрешённый rollout. [Отчёт](FOS12_REPORT_2026-11-11.md), [контракт](FOS12_ARTWORK_STATES_PILOT_2026-11-11.md). Это не новый API scope и не закрытие пункта12 целиком.

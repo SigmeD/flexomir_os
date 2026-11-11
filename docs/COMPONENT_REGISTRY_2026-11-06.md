@@ -1,5 +1,11 @@
 # Flexomir OS — React Component Registry
 
+## FOS02 /11.11 — Account hover принят и подключён
+
+Owner уточнил hover-плавность: общий FosPopup.css/FosPopup владеют единым240ms presence, opacity+проявление прежнего optical target; одна lens сохраняется на fadeout/reentry, intent-ref защищает cleanup. Keyboard/touch/reduced/forced immediate. Пять frozen-файлов/physicalparameters прежние; это отдельная Account-only presentation, CSS changed вне frozenRows. Glass surface blur20/white.72 проверен без изменений. Final targeted29/11skip, regression61/3skip, production7/1skip; independent16behavior+12smooth(rootexecutor), reviewPASSWITHRISKS.
+
+Account3042:2806(Wide/Narrow,Company/Personal) → AccountMenu(open/closed,sidebar/header,identity/disabled) → AppShell Client/Manager: REUSE, approved account-hover-v0.3 ordinary/production. FosPopup(actions) → EXTEND отдельным actionPreview/previewId, не business selectedId; default остальных consumers без preview. FosPopupRows/FosGlassMaterial → REUSE, frozen5/5/physics/material неизменны, одна линза. Keyboard outline/Escape/outside/focus — прежний Radix adapter; hover не забирает фокус. [Результаты](FOS02_ACCOUNT_PREVIEW_2026-11-11.md), [план](FOS02_IMPLEMENTATION_PLAN_2026-11-11.md). CURRENT Figma descriptionv0.2 superseded новым Owner-решением только Account; canvas не менялась.
+
 ## Принятые варианты подключены /11.11
 
 ArtworkSource — один принятый вариант без presentation/reference/DEV API, все New/Edit/Repeat consumers Client+Manager и production. PageHeader status по умолчанию below-title, secondary остаётся below-row. Shared Composer/Detail компенсируют desktop flow20px, compact прежний; Manager Composer использует section32/block24 без query. FOSAction/LocalFileControl/FE11 не менялись. [Карта источников, Owner-решения и проверки](ACCEPTED_UI_ROLLOUT_2026-11-11.md). Нижняя карта пилота фиксируетf509eba до rollout.

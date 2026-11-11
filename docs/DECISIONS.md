@@ -1,5 +1,21 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner11.11 — сгладить hover; матовость формы проверена
+
+После приёмки Account-сценария Owner попросил «анимацию плавнее ... при наведении мыши». В общем Account-only presentation добавлен один240ms presence для opacity прежней линзы и проявления optical target. Steady1.043, physics/material/frozen5 прежние; transient display теперь плавный. Keyboard/touch/action не задерживаются. Дополнительно Owner попросил перепроверить матовость: computedblur20px/white.72 и контрольная сетка доказали работающийblur, материал не менялся. [Доказательства](FOS02_ACCOUNT_PREVIEW_2026-11-11.md). Разрешение относится к Account hover, не глобальному frozen-профилю других popup.
+
+## Owner11.11 — Account hover-сценарий принят, подключение/merge по standing поручению
+
+После показа пилота, объяснения hover/keyboard и полного сценария Owner уточнил «т.е. линза появляется при наведении?», получил подтверждение и ответил «Принято». Принят описанный Account hover-сценарий: линза только enabled hover, действие только поclick/Enter/Space/tap, leave/disabled/keyboard очищают preview. По действующему «все принятые задачи подключай и сливай в main/origin» вариант подключён обычным Client/Manager/production, merge послеCI. Это Account-исключение из старой selection-only политики, не изменение frozen physics/material/5файлов и не whole-screen M8 visual acceptance. [Результаты](FOS02_ACCOUNT_PREVIEW_2026-11-11.md). Предыдущие DEV-only/G-01 OPEN записи ниже исторические.
+
+## Owner11.11 — G-01: разрешён DEV-пилот B
+
+На прямой вопрос «DEV-пилот v0.3 только Account Menu с прежней физикой?» Owner ответил «давай попробуем». Разрешён вариант B [контракта](FOS02_ACCOUNT_PREVIEW_2026-11-11.md): DEV-only Account hover-preview, прежние frozen material/physics, action только по явной активации. Это отдельное разрешение experimental interaction adapter, не изменение пяти frozen-файлов и не приёмка/rollout. [План реализации](FOS02_IMPLEMENTATION_PLAN_2026-11-11.md). Предыдущая запись G-01 OPEN ниже — история подготовки.
+
+## FOS02 /11.11 — G-01 подготовлен, решение OPEN
+
+После «продолжай работу по этапу» подготовлен [Account-only DEV preview контракт](FOS02_ACCOUNT_PREVIEW_2026-11-11.md). Рекомендация B: экспериментальнаяv0.3 interaction только Account, прежние shared material/physics. A: сохранитьv0.2; C: глобальный hover отложить. Варианты не утверждены. CURRENT Figma3042:2806 и manifest явно selection-only; actions selectedId=never не позволяет подменить hover прежним выбранным действием. Реализация после отдельного Owner G-01. PR35/03/12MERGEDbc880b1, CI3/3SUCCESS.
+
 ## Owner11.11 — приёмка и подключение FOS03/FOS12, merge разрешён
 
 FOS12 наf509eba принят ответом «Принято». После Screenshot_1 Manager DEMO-002 Owner потребовал «так подключи принятый вариант», затем «все принятые задачи подключай и сливай в main/origin» и «от main/orgin создавай ветку на следующую задачу». Это разрешает rollout FOS03/FOS12 и merge PR #35 после проверок, заменяя прежний запрет rollout/merge ниже. Непринятые02/05/06/07/10/11/13 этим решением не утверждены. [Подключение и QA](ACCEPTED_UI_ROLLOUT_2026-11-11.md).
