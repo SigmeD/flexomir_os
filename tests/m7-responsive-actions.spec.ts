@@ -1,6 +1,14 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Locator, type Page } from '@playwright/test'
 import { setDemoRole } from './helpers/orders'
 
+async function focusByKeyboard(page: Page, control: Locator) {
+  // Scripted focus after a pointer action inherits pointer modality. Exercise
+  // actual Tab navigation before asserting the canonical :focus-visible ring.
+  await control.focus()
+  await page.keyboard.press('Shift+Tab')
+  await page.keyboard.press('Tab')
+  await expect(control).toBeFocused()
+}
 const actionWidths = [
   { width: 1440, dock: false },
   { width: 1024, dock: false },
@@ -239,7 +247,7 @@ test('FOSAction secondary keeps the canonical liquid-glass pill at its 44px cons
   await expect(action).toHaveCSS('height', '44px')
   await expect(action.locator('[data-fos-glass-material]')).toHaveAttribute('data-strength', '0.1')
   await page.screenshot({ path: testInfo.outputPath('fos-action-liquid-glass-profile.png'), fullPage: true })
-  await action.focus()
+  await focusByKeyboard(page, action)
   await expect(action).toBeFocused()
   await expect(action).toHaveCSS('outline-style', 'solid')
   const before = await action.boundingBox()
@@ -320,7 +328,7 @@ test('FOSAction press motion respects reduced motion and keeps a forced-colors f
   await page.keyboard.up('Space')
 
   await page.emulateMedia({ forcedColors: 'active' })
-  await action.focus()
+  await focusByKeyboard(page, action)
   await expect(action.locator('[data-fos-glass-material]')).toBeHidden()
   await expect(action).toHaveCSS('outline-width', '2px')
   await expect(action).toHaveCSS('outline-style', 'solid')

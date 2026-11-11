@@ -40,6 +40,8 @@ FOS02 Account hover принят Owner и подключён на обычных
 
 ## 3. Что в процессе
 
+CI первогоhead93184df: Account43009121771 иOrders43009121723SUCCESS; M743009121736 остановился на4старых focus-visible assertions в m7-responsive-actions. Runtime probe доказал: послеpointer scriptedfocus не matches focus-visible (none/3px), настоящиеShift+Tab/Tab даютcanonical2pxsolid в обычном/forcedрежимах. В двухM7тестах заменён способ входа вkeyboardfocus, сохранены всеstyle/geometry/press/fallback assertions и порог2px. Повтор6/6PASS Chromium/Firefox/WebKit. Новыйhead содержит только эту тестовую правку и запись; production source идентичен93184df. СтарыеCIне заменяют проверку новогоhead.
+
 - Frontend/Codex: зафиксировать весь инкремент одним PR, проверить CI фактического head и выполнить уже разрешённый merge/main sync; срок — текущая поставка, календарная оценка не назначена.
 - Frontend/Codex: после merge сверить SHA/содержимое main, удалить remote head после доказательства merge, сохранить local branches/4stash/Screenshot_1.png и обновить Drive CURRENT.
 - Owner/PO/Алексей:05/06/10/11/13 и API/1С остаются отдельной очередью;07DatePicker — следующий отдельный UI-пилот. Полная M8 visual acceptance OPEN; даты не назначены.
