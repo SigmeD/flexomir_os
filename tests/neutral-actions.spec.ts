@@ -125,3 +125,38 @@ test('Client and Manager use the same Plus and open the item editor immediately'
     await expect(page.getByTestId('order-item-form')).toBeVisible()
   }
 })
+
+
+test('signed-file add pilot reuses the same neutral 44px Liquid Glass action with an SVG icon', async ({ page }) => {
+  await page.goto('/?view=neutral-actions')
+  const paper = page.getByTestId('neutral-paper')
+  const original = paper.getByTestId('neutral-plus')
+  const file = paper.getByTestId('neutral-file-add')
+  const count = paper.getByTestId('neutral-count')
+
+  await expect(original).toHaveAttribute('aria-label', 'Добавить позицию')
+  await expect(file).toHaveAttribute('aria-label', 'Добавить подписной бланк')
+  await expect(file).toHaveCSS('width', '44px')
+  await expect(file).toHaveCSS('height', '44px')
+  await expect(file.locator('.fos-glass-material')).toHaveCount(1)
+  await expect(file.locator('.fos-glass-material')).toHaveCSS('width', '34px')
+  await expect(file.locator('.fos-section-add__file-icon')).toHaveCSS('width', '24px')
+  await expect(file.locator('.fos-section-add__file-icon')).toHaveCSS('height', '24px')
+  await expect(file.locator('.fos-section-add__file-icon')).toHaveCSS('mask-image', /add-signed-file/)
+  await expect(file.locator('img')).toHaveCount(0)
+  await expect(file).toHaveAttribute('data-pressed', 'false')
+
+  await file.click()
+  await expect(count).toHaveText('Нажатий: 1')
+  await file.focus()
+  await page.keyboard.press('Enter')
+  await page.keyboard.press('Space')
+  await expect(count).toHaveText('Нажатий: 3')
+
+  for (const width of [1440, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 })
+    await expect(file).toBeVisible()
+    await expect(file.locator('.fos-glass-material')).toHaveCount(1)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  }
+})
