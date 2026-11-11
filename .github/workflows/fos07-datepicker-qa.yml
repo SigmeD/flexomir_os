@@ -1,0 +1,45 @@
+name: FOS07 Glass DatePicker Pilot QA
+
+on:
+  pull_request:
+    paths:
+      - 'src/components/ui/fos-date-picker*'
+      - 'src/components/ui/date-only.ts'
+      - 'src/components/ui/fos-controls*'
+      - 'src/components/ui/fos-popup*'
+      - 'src/Fos07DatePickerLab.tsx'
+      - 'src/fos07-datepicker-lab.css'
+      - 'fos07-datepicker.html'
+      - 'tests/fos07-datepicker.spec.ts'
+      - 'playwright.fos07.config.ts'
+      - 'package*.json'
+      - '.github/workflows/fos07-datepicker-qa.yml'
+  workflow_dispatch:
+
+jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f
+      options: --user 1001 --ipc=host --init
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Verify browser image version
+        run: node -e "if(require('@playwright/test/package.json').version !== '1.64.1') throw new Error('Playwright image must match lockfile')"
+      - run: npm run build
+      - name: Calendar, keyboard, form, responsive, zoom and accessibility
+        run: npx playwright test --config=playwright.fos07.config.ts --workers=2
+      - name: Preserve frozen motion contract
+        run: npx playwright test tests/fe11-frozen-contract.spec.ts --project=chromium-1440 --workers=1 --reporter=line
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fos07-datepicker-evidence
+          path: output/playwright/fos07/**
+          retention-days: 7

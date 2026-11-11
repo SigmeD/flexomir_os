@@ -1,0 +1,10 @@
+.fos07-lab { max-width: 1100px; margin: 40px auto; padding: 0 24px; color: var(--fos-v2-semantic-color-text-primary, #1f2228); font: 400 var(--fos-type-body-size)/var(--fos-type-body-line-height) var(--fos-font-family); }
+.fos07-lab h1 { font-size: var(--fos-type-page-size); line-height: var(--fos-type-page-line-height); margin: 12px 0; }
+.fos07-lab h2 { font-size: var(--fos-type-card-size); line-height: var(--fos-type-card-line-height); margin: 0 0 24px; }
+.fos07-lab header { margin-bottom: 24px; }
+.fos07-lab nav, .fos07-lab__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-block: 24px; }
+.fos07-lab__surface { margin-bottom: 24px; border: 1px solid var(--fos-v2-semantic-color-border-default, #d6d9e0); background: var(--fos-v2-semantic-color-bg-surface, white); border-radius: 20px; padding: 24px; }
+.fos07-lab__data { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0; }
+.fos07-lab__data dd { margin: 0; overflow-wrap: anywhere; }
+.fos07-lab__check { display: flex; align-items: center; gap: 8px; margin-top: 24px; }
+@media (max-width: 600px) { .fos07-lab { margin-block: 24px; padding-inline: 12px; } .fos07-lab__surface { padding: 16px; } .fos07-lab__data { grid-template-columns: 1fr; } }
