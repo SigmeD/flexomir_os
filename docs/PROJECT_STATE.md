@@ -1,9 +1,9 @@
 # Flexomir OS — состояние проекта
 
-№07 в работе: общий Glass DatePicker подготовлен как отдельный DEV-пилот на React DayPicker9.14.0 и существующем FosPopup. [Контракт, запуск и проверки](FOS07_DATEPICKER_PILOT_2026-11-11.md). G-04 OWNER OPEN: обычные формы сохраняют FOSDateField, клиентский agreedDate readonly.
+№07 принят Owner («да, отлично применяй»): общий Glass DatePicker с линзой подключён к желаемому сроку в обычных Client/Manager заказах. [Контракт и проверки](FOS07_DATEPICKER_PILOT_2026-11-11.md), [поставка PR #41](https://github.com/SigmeD/flexomir_os/pull/41). Клиентский agreedDate и OrderDetail остаются readonly; данные YYYY-MM-DD.
 
 Актуализировано 11.11.2026. Следующая ревизия сводок — 25.11.2026.
-Очередность определяет [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); PR и SHA сверяются в GitHub. Последний инкремент интерфейса — [PR #38](https://github.com/SigmeD/flexomir_os/pull/38), merge `26768f9f019563092c17488def2070bf34f26e71`. Это база проверенного кода приложения; документационные коммиты могут идти после неё.
+Очередность определяет [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); фактические head/CI/merge поставки DatePicker сверяются в [PR #41](https://github.com/SigmeD/flexomir_os/pull/41). Предыдущая поставка интерфейса — [PR #38](https://github.com/SigmeD/flexomir_os/pull/38), merge `26768f9f019563092c17488def2070bf34f26e71`; далее документационный PR #39/main94b6587 — база разработки №07.
 
 ## Что работает сейчас
 
@@ -27,8 +27,9 @@
 | [PR #36](https://github.com/SigmeD/flexomir_os/pull/36) | Account hover и сглаживание 240 ms; `4ae4841` |
 | [PR #37](https://github.com/SigmeD/flexomir_os/pull/37) | Общий hover остальных popup и стабильное CI-окружение; `3317d50` |
 | [PR #38](https://github.com/SigmeD/flexomir_os/pull/38) | Placeholder Select только в пустом поле; `26768f9` |
+| [PR #41](https://github.com/SigmeD/flexomir_os/pull/41) | Принятый Glass DatePicker и линза, обычный OrderComposer Client/Manager; readonly и ISO сохранены |
 
-Все перечисленные PR слиты. Ожидание их приёмки/CI/merge больше не является текущей задачей. Полная визуальная приёмка экранов M8 остаётся отдельным gate.
+PR #33–38 слиты. Для поставки DatePicker фактический статус доставки задаётся PR #41; G-04 принят Owner. Полная визуальная приёмка экранов M8 остаётся отдельным gate.
 
 ## Проверки и доказательства
 
@@ -41,7 +42,6 @@
 
 ## Что осталось открытым
 
-- №07 Glass DatePicker: изолированный пилот реализован; решение Owner/G-04 и распространение открыты.
 - №05: Save UX/G-02; действует dirty && valid. №06: права и статусы дублирования/удаления позиций.
 - №10/13: хранение файлов и связь Item↔Library; №11: вложения поддержки. Нужны решения Owner/PO и готовые контракты Алексея.
 - Действие менеджера для фиксации согласованного срока, публикация черновика клиенту и event→«В работе». Сохранение даты не меняет статус автоматически.

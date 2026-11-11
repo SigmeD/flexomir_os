@@ -22,15 +22,21 @@ export interface FOSDatePickerProps {
   required?: boolean
   error?: string
   helper?: string
+  /** Optional UI draft owner for forms whose editors unmount while editing an item. */
+  inputDraft?: string
+  onInputDraftChange?: (text: string) => void
+  onValidityChange?: (valid: boolean) => void
 }
-/** G-04 pilot only. Existing order fields retain FOSDateField until Owner approval. */
-export function FOSDatePicker({ label, value, onValueChange, min, max, name, id: suppliedId, readOnly, disabled, required, error, helper }: FOSDatePickerProps) {
+/** Owner-approved shared calendar; ISO data and an optional uncommitted UI draft stay separate. */
+export function FOSDatePicker({ label, value, onValueChange, min, max, name, id: suppliedId, readOnly, disabled, required, error, helper, inputDraft, onInputDraftChange, onValidityChange }: FOSDatePickerProps) {
   const generated = useId(), id = suppliedId || generated
   const input = useRef<HTMLInputElement>(null), proxy = useRef<HTMLInputElement>(null)
   const trigger = useRef<HTMLButtonElement>(null), dialog = useRef<HTMLDialogElement>(null)
   const initialValue = useRef(value)
   const openingDate = useRef<Date | undefined>(undefined)
-  const [draft, setDraft] = useState(displayDate(value))
+  const [localDraft, setLocalDraft] = useState(displayDate(value))
+  const draft = inputDraft ?? localDraft
+  const setDraft = (text: string) => { setLocalDraft(text); onInputDraftChange?.(text) }
   const [touched, setTouched] = useState(false)
   const [resetVersion, setResetVersion] = useState(0)
   const [open, setOpen] = useState(false)
@@ -44,11 +50,20 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
   const invalidMessage = invalid ? 'Проверьте дату' : ''
   const onChangeRef = useRef(onValueChange)
   onChangeRef.current = onValueChange
-  useLayoutEffect(() => { setDraft(displayDate(value)); setTouched(false) }, [value, resetVersion])
+  const synchronized = useRef({ value, resetVersion })
+  useLayoutEffect(() => {
+    // A remounted field must retain its form-owned invalid text. Only a real
+    // controlled value change or reset replaces that draft with formatted ISO.
+    if (synchronized.current.value !== value || synchronized.current.resetVersion !== resetVersion) {
+      setDraft(displayDate(value)); setTouched(false)
+      synchronized.current = { value, resetVersion }
+    }
+  }, [value, resetVersion])
   useLayoutEffect(() => {
     input.current?.setCustomValidity(invalidMessage)
     proxy.current?.setCustomValidity(invalidMessage)
   }, [invalidMessage])
+  useLayoutEffect(() => { onValidityChange?.(!invalid) }, [invalid, onValidityChange])
   useEffect(() => {
     const form = proxy.current?.form
     const reset = (event: Event) => { queueMicrotask(() => {

@@ -11,8 +11,8 @@ function DatePickerLab() {
   const [role, setRole] = useState<'client' | 'manager'>('client')
   const [reject, setReject] = useState(false), [submitted, setSubmitted] = useState('')
   return <main className="fos07-lab">
-    <header><p>FLEXOMIR OS · ПИЛОТ №07 · G-04 OPEN</p><h1>Календарь выбора даты</h1>
-      <p>Один компонент для обоих кабинетов. Обычные формы заказов пока используют прежний календарь.</p>
+    <header><p>FLEXOMIR OS · КАЛЕНДАРЬ №07 · G-04 ПРИНЯТ</p><h1>Календарь выбора даты</h1>
+      <p>Один компонент для обоих кабинетов. Принятый календарь подключён к желаемому сроку обычных заказов.</p>
     </header>
     <nav aria-label="Кабинет пилота">
       <FOSAction hierarchy={role === 'client' ? 'primary' : 'secondary'} onClick={() => setRole('client')} aria-pressed={role === 'client'}>Клиент</FOSAction>

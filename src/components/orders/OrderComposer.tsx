@@ -4,6 +4,8 @@ import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
 import { FOSDateField, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
+import { FOSDatePicker } from '@/components/ui/fos-date-picker'
+import { displayDate } from '@/components/ui/date-only'
 import { OrderItemForm } from './OrderItemForm'
 import { OrderItemRow } from './OrderItemRow'
 import { OrderDateFields } from './OrderDateFields'
@@ -25,6 +27,8 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
   managerCompanies?: readonly { id: string; name: string }[]
 }) {
   const [value, setValue] = useState(draft)
+  const [requestedDateInput, setRequestedDateInput] = useState(() => displayDate(draft.requestedDate))
+  const [dateInputValid, setDateInputValid] = useState(true)
   const [editing, setEditing] = useState<string | null>(null)
   const [feedback, setFeedback] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -36,7 +40,7 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
     root.current?.querySelector<HTMLButtonElement>('button.fos-more')?.focus({ preventScroll: true })
   }
   useEffect(() => { onItemEditorChange?.(editing !== null); return () => onItemEditorChange?.(false) }, [editing, onItemEditorChange])
-  useEffect(() => { onDraftDirtyChange?.(JSON.stringify(value) !== JSON.stringify(draft)); return () => onDraftDirtyChange?.(false) }, [value, draft, onDraftDirtyChange])
+  useEffect(() => { onDraftDirtyChange?.(JSON.stringify(value) !== JSON.stringify(draft) || !dateInputValid || requestedDateInput !== displayDate(draft.requestedDate)); return () => onDraftDirtyChange?.(false) }, [value, draft, dateInputValid, requestedDateInput, onDraftDirtyChange])
   useLayoutEffect(() => {
     if (editing !== null) return
     const target = returnFocus.current ? root.current?.querySelector<HTMLElement>(returnFocus.current) : root.current?.querySelector<HTMLElement>('h1')
@@ -59,8 +63,8 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
     {editing === null ? <>
       <PageHeader title={title} floatingWorkActions subtitle="Черновик" subtitleRole="status" breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
         {value.ownerRole === 'manager'
-          ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
-          : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!canSendDemo(value)} onAction={() => onSend(value)} />}
+          ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={!dateInputValid || JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { if (!dateInputValid) return; onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
+          : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!dateInputValid || !canSendDemo(value)} onAction={() => { if (dateInputValid && canSendDemo(value)) onSend(value) }} />}
         <OverflowMenu items={[
           { id: 'add', label: 'Добавить позицию', onSelect: addItem, focusAfter: 'consumer' },
           { id: 'delete', label: 'Удалить черновик', disabled: !onDeleteDraft, reason: onDeleteDraft ? undefined : 'Удаление доступно только для черновика демосессии', onSelect: () => setConfirmDelete(true) },
@@ -81,7 +85,8 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
         </section>
         <section className="fos-order-composer__general" aria-labelledby="compose-general-title"><h2 id="compose-general-title">Общие данные заказа</h2>
           <OrderDateFields className="fos-order-composer__dates">
-            <FOSDateField label="Желаемый срок" value={value.requestedDate} error={!validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onChange={event => save({ ...value, requestedDate: event.target.value })} />
+            <FOSDatePicker label="Желаемый срок" value={value.requestedDate} inputDraft={requestedDateInput} onInputDraftChange={setRequestedDateInput} onValidityChange={setDateInputValid}
+              error={!dateInputValid || !validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onValueChange={requestedDate => save({ ...value, requestedDate })} />
             {value.ownerRole === 'client' && <FOSDateField label="Согласованный срок" value="" readOnly />}
           </OrderDateFields>
           <FOSTextarea label="Комментарии" placeholder="Необязательно" value={value.comment} onChange={event => save({ ...value, comment: event.target.value })} />

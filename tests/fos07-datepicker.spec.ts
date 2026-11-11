@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { chooseFormOption, commitItem, fillItem } from './helpers/orders'
 
 test('FOS07 RU calendar commits ISO once; navigation and Escape do not commit', async ({ page }) => {
   await page.goto('/fos07-datepicker.html')
@@ -240,3 +241,51 @@ test('FOS07 selected date and pointer preview use one shared Glass lens without 
   await page.getByRole('button', { name: 'Открыть календарь: Желаемый срок', exact: true }).click()
   await expect(target.locator('..').locator('[data-date-lens]')).toHaveCount(1)
 })
+
+for (const role of ['client', 'manager'] as const) {
+  test(`FOS07 ordinary ${role}: accepted calendar, invalid draft guard and item roundtrip`, async ({ page }, info) => {
+    const errors: string[] = []
+    page.on('pageerror', error => errors.push(error.message))
+    await page.goto('/?view=' + role + '-orders')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    const composer = page.getByTestId('order-composer')
+    const trigger = composer.getByRole('button', { name: 'Открыть календарь: Желаемый срок', exact: true })
+    await expect(trigger).toBeVisible()
+    if (role === 'manager') await chooseFormOption(page, 'Компания', 'Компания 01')
+    else {
+      await expect(composer.getByLabel('Согласованный срок', { exact: true })).toHaveAttribute('readonly', '')
+      await expect(composer.getByRole('button', { name: /календарь: Согласованный срок/ })).toHaveCount(0)
+    }
+    const date = composer.getByLabel('Желаемый срок', { exact: true })
+    await date.fill('16.11.2026')
+    if (info.project.name.includes('touch')) await trigger.tap()
+    else await trigger.click()
+    const dialog = page.getByRole('dialog', { name: 'Желаемый срок' })
+    await expect(dialog.locator('[data-date-lens]')).toHaveCount(1)
+    await dialog.getByRole('button', { name: '18 ноября 2026', exact: true }).click()
+    await expect(date).toHaveValue('18.11.2026')
+    await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
+    await fillItem(page)
+    await commitItem(page)
+    const action = page.getByRole('button', { name: role === 'client' ? 'Передать менеджеру (демо)' : 'Сохранить черновик менеджера', exact: true })
+    await expect(action).toBeEnabled()
+    await date.fill('31.11.2026')
+    await date.press('Tab')
+    await expect(date).toHaveAttribute('aria-invalid', 'true')
+    await expect(action).toBeDisabled()
+    await page.getByRole('button', { name: 'Изменить позицию 1', exact: true }).click()
+    await page.getByLabel('Количество', { exact: true }).fill('700')
+    await commitItem(page)
+    await expect(date).toHaveValue('31.11.2026')
+    await expect(action).toBeDisabled()
+    await trigger.click()
+    await dialog.getByRole('button', { name: '18 ноября 2026', exact: true }).click()
+    await expect(action).toBeEnabled()
+    await action.click()
+    if (role === 'client') {
+      await expect(page.getByTestId('order-detail').getByLabel('Желаемый срок', { exact: true })).toHaveValue('2026-11-18')
+      await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveAttribute('readonly', '')
+    } else await expect(action).toBeDisabled()
+    expect(errors).toEqual([])
+  })
+}

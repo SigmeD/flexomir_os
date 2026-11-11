@@ -1,6 +1,6 @@
 # №07 — Glass DatePicker: анализ, контракт и пилот
 
-Статус: IMPLEMENTATION AUTHORIZED / PILOT OWNER OPEN (G-04). Owner 11.11.2026 поручил начать B2.5–B2.8; решение о распространении требуется после показа пилота. База свежего origin/main — 94b6587, ветка feat/fos07-glass-datepicker-pilot. Обычная папка, новый worktree не нужен.
+Статус: OWNER APPROVED / G-04 ACCEPTED / ORDINARY CONNECTED. Owner после компактного варианта и линзы ответил «да, отлично применяй». Подключение выполняется в том же PR #41; фактические CI/merge/SHA сверять в GitHub. Ниже сохранены основания и история пилота. Owner 11.11.2026 поручил начать B2.5–B2.8; решение о распространении требуется после показа пилота. База свежего origin/main — 94b6587, ветка feat/fos07-glass-datepicker-pilot. Обычная папка, новый worktree не нужен.
 
 ## B2.5 — выбор подхода
 
@@ -68,3 +68,11 @@ Owner показал дату18 и Account Menu как стилевой referenc
 Календарь использует неподвижный материал в активной ячейке с проявлением240ms и reduced-motion/forced-colors fallback. Вертикальная физика меню не переносится на двумерную сетку и не изменяется; отдельный spring, moving-2D engine или новая формула optical scale не создаются. Пять frozen sources/manifest сохранены. Карта: Date Field1169:437→FOSDatePicker; existing Rows material→REUSE FosGlassMaterial; DayPicker Day→EXTEND FosDatePickerDay; consumer только DEV-пилот.
 
 Новый сценарий до реализации подтвердил отсутствие линзы (RED). После реализации полный44/44PASS Chromium/Firefox/WebKit/touch:40 прежних и4 новых проверки, две роли/пять ширин/axe/zoom. В первом расширенном прогоне четыре новых assertions имели неверный вложенный locator; исправлен только поиск ячейки. Единичная потеря keyboard focus в WebKit не воспроизвелась в целевом прогоне, полном44 и десяти отдельных повторах10/10; первопричина не подтверждена, product assertions не менялись. Свежие hover/return/selected PNG и видео — в существующей галерее. G-04 и rollout остаются OPEN.
+
+## CURRENT: приёмка и подключение к заказам
+
+Owner принял компактный календарь и линзу: «да, отлично применяй». G-04 закрыт для этого варианта. Общий OrderComposer подключает FOSDatePicker для желаемого срока Client/Manager без DEV-флагов. Новые, повторные и редактируемые черновики используют один компонент. Клиентский согласованный срок и все даты OrderDetail сохраняют прежний readonly FOSDateField; Manager date commit/event→«В работе» не реализуется этой задачей.
+
+Незавершённый текст хранится отдельно от ISO-модели в OrderComposer и переживает Item editor. FOSDatePicker поддерживает optional controlled inputDraft/onInputDraftChange и синхронное onValidityChange; remount с тем же accepted ISO не стирает invalid draft. Save/Send и их обработчики блокируют неверный ввод; Manager dirty учитывает raw/invalid. Valid выбор по-прежнему передаётся через save, сохраняет YYYY-MM-DD и старые события. Новые required/min/max/past-date правила не добавлены.
+
+Проверки rollout:52/52PASS (44 пилота+8 обычных сценариев), существующие OrderComposer/Detail/spacing/frozen58/58PASS. Два старых assertions пришлось уточнить по exact label из-за новой кнопки календаря; формат ввода и editable-display tests изменён на ДД.ММ.ГГГГ, readonly ISO assertions сохранены. Build1603modulesPASS:JS602.06KB/gzip185.12KB вместо пилотных238modules; календарная библиотека теперь входит в обычный bundle. Production30/30PASS:Chromium/Firefox/WebKit, обе роли и пять ширин;30PNG в output/playwright/fos07/production. Независимый reviewer-authored script7E482E1B73C7985E9DBA566FCF4AC11A0A85E48CEA402AE2F059766C3767DEBC исполнен root неизменно:5/5PASS Chromium/WebKit/real touch. Проверены invalid→Item roundtrip→repair same accepted date, Manager guards/save, Client Send→readonly ISO, optional empty, отсутствие pageerrors/nonGET. Review source/hashes/PNG — отдельный gate в PR. Старые результаты пилота не подменяют новые.

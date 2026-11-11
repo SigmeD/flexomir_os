@@ -1,6 +1,6 @@
 # Flexomir OS — передача работы
 
-№07: отдельный DEV-пилот DatePicker реализован на текущей feat/fos07-glass-datepicker-pilot, [контракт](FOS07_DATEPICKER_PILOT_2026-11-11.md). Открыть /fos07-datepicker.html после npm run dev. Следующий шаг — приёмка Owner/G-04; не подключать к обычным заказам до решения.
+№07 принят Owner и подключён к желаемому сроку обычных Client/Manager заказов в PR #41. [Контракт](FOS07_DATEPICKER_PILOT_2026-11-11.md). Input draft/validity переживают Item editor; readonly agreedDate/Detail и ISO сохранены. Фактический head/CI/merge сверять в PR; не использовать ветку завершённого PR для следующего инкремента.
 
 Актуально на 11.11.2026; следующая ревизия — 25.11.2026. Перед новой реализацией сверить [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), Git и [локальный план](DELIVERY_PLAN.md).
 
@@ -24,10 +24,10 @@
 
 ## Следующая работа и открытые вопросы
 
-Текущий блок — №07 Glass DatePicker, Owner gate G-04. Существующая feat/fos07-glass-datepicker-pilot содержит реализацию пилота, не является пустой. Не переключать и не обновлять её как пустую ветку; перед продолжением проверить status/worktree/PR. Обычные формы и frozen остаются прежними.
+Текущий инкремент — №07 Glass DatePicker, G-04 принят Owner. Ветка feat/fos07-glass-datepicker-pilot содержит общий компонент и подключение OrderComposer обеих ролей. До завершения PR не обновлять её как пустую ветку; после merge не использовать повторно. Frozen и readonly-сценарии сохранены.
 
-1. Просмотреть пилот и его галерею с Owner. Карта master→component→states→consumers находится в профильном контракте.
-2. После явной приёмки G-04 подключать принятую версию общим adapter к нужным editable DateField; сохранить readonly и существующие правила форм.
+1. №07: приёмка Owner уже получена. Проверить фактическую доставку PR #41; карта и доказательства в профильном контракте.
+2. Следующий открытый UI/продуктовый блок выбрать по Drive CURRENT и готовым решениям; G-04 повторно не открывать.
 3. Frozen FE11 reference f527bcb, manifest и материал не менять без отдельного разрешения.
 4. Не брать backend/storage/ACL/1С на frontend. №05/06/10/11/13, действие менеджера по сроку и полная M8 приёмка остаются в [плане](DELIVERY_PLAN.md); сроки не назначены.
 
