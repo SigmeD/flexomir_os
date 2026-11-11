@@ -1,9 +1,9 @@
 # Flexomir OS — состояние проекта
 
-№07 принят Owner («да, отлично применяй»): общий Glass DatePicker с линзой подключён к желаемому сроку в обычных Client/Manager заказах. [Контракт и проверки](FOS07_DATEPICKER_PILOT_2026-11-11.md), [поставка PR #41](https://github.com/SigmeD/flexomir_os/pull/41). Клиентский agreedDate и OrderDetail остаются readonly; данные YYYY-MM-DD.
+№07 принят Owner («да, отлично применяй») и слит в PR #41, merge e6a04fd: общий Glass DatePicker с линзой подключён к желаемому сроку в обычных Client/Manager заказах. [Контракт и проверки](FOS07_DATEPICKER_PILOT_2026-11-11.md), [поставка PR #41](https://github.com/SigmeD/flexomir_os/pull/41). Клиентский agreedDate и OrderDetail остаются readonly; данные YYYY-MM-DD.
 
 Актуализировано 11.11.2026. Следующая ревизия сводок — 25.11.2026.
-Очередность определяет [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); фактические head/CI/merge поставки DatePicker сверяются в [PR #41](https://github.com/SigmeD/flexomir_os/pull/41). Предыдущая поставка интерфейса — [PR #38](https://github.com/SigmeD/flexomir_os/pull/38), merge `26768f9f019563092c17488def2070bf34f26e71`; далее документационный PR #39/main94b6587 — база разработки №07.
+Очередность определяет [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Последний инкремент кода приложения — [PR #41](https://github.com/SigmeD/flexomir_os/pull/41), merge `e6a04fd748dbb16702610b3d7898b8ba1d3f87a5`; проверенный head `85ad6ef147a246b03652b92e70e50925d948870d`. Документационные коммиты могут следовать после него; фактический main сверяется в Git.
 
 ## Что работает сейчас
 
@@ -27,9 +27,9 @@
 | [PR #36](https://github.com/SigmeD/flexomir_os/pull/36) | Account hover и сглаживание 240 ms; `4ae4841` |
 | [PR #37](https://github.com/SigmeD/flexomir_os/pull/37) | Общий hover остальных popup и стабильное CI-окружение; `3317d50` |
 | [PR #38](https://github.com/SigmeD/flexomir_os/pull/38) | Placeholder Select только в пустом поле; `26768f9` |
-| [PR #41](https://github.com/SigmeD/flexomir_os/pull/41) | Принятый Glass DatePicker и линза, обычный OrderComposer Client/Manager; readonly и ISO сохранены |
+| [PR #41](https://github.com/SigmeD/flexomir_os/pull/41) | Glass DatePicker и линза в обычном OrderComposer Client/Manager; readonly/ISO сохранены, merge `e6a04fd` |
 
-PR #33–38 слиты. Для поставки DatePicker фактический статус доставки задаётся PR #41; G-04 принят Owner. Полная визуальная приёмка экранов M8 остаётся отдельным gate.
+PR #33–38 и #41 слиты. G-04 принят Owner; ожидание merge DatePicker закрыто. Полная визуальная приёмка экранов M8 остаётся отдельным gate.
 
 ## Проверки и доказательства
 
@@ -37,6 +37,8 @@ PR #33–38 слиты. Для поставки DatePicker фактически�
 | --- | --- | --- |
 | PR #37, head `678bf46` | 4/4 SUCCESS: [Orders](https://github.com/SigmeD/flexomir_os/actions/runs/43049308099), [Hover](https://github.com/SigmeD/flexomir_os/actions/runs/43049308060), [Drawer](https://github.com/SigmeD/flexomir_os/actions/runs/43049308061), [M7](https://github.com/SigmeD/flexomir_os/actions/runs/43049308110) | Build 238 modules; production 14 PASS / 6 условных SKIP; frozen contract 4/4 PASS |
 | PR #38, head `a13cd0b` | 3/3 SUCCESS: [Orders](https://github.com/SigmeD/flexomir_os/actions/runs/43059507333), [Hover](https://github.com/SigmeD/flexomir_os/actions/runs/43059507183), [M7](https://github.com/SigmeD/flexomir_os/actions/runs/43059507218) | Новый build 238 modules; production 15/15; frozen fingerprints 5/5 |
+
+PR #41, head `85ad6ef`: CI 5/5 SUCCESS — [DatePicker](https://github.com/SigmeD/flexomir_os/actions/runs/43085191441), [Orders](https://github.com/SigmeD/flexomir_os/actions/runs/43085191443), [Hover](https://github.com/SigmeD/flexomir_os/actions/runs/43085191433), [Artwork/Spacing](https://github.com/SigmeD/flexomir_os/actions/runs/43085191426), [M7](https://github.com/SigmeD/flexomir_os/actions/runs/43085191869). До merge: DatePicker 52/52, регрессия 58/58, production 30/30; после merge: новый build 1603 modules PASS, ordinary 2/2, production smoke 5/5 и frozen 5/5. [Контракт DatePicker](FOS07_DATEPICKER_PILOT_2026-11-11.md).
 
 Сценарии, исходные падения и границы QA сохранены в [контракте hover](POPUP_HOVER_ROLLOUT_2026-11-11.md), [контракте Select](SELECT_PLACEHOLDER_2026-11-11.md) и [итоговом аудите M8](M8_FINAL_AUDIT_2026-11-10.md). Reviewer-authored браузерные проверки исполнял root из-за child browser EPERM; reviewer проверил JSON, hashes и PNG. Видео и результаты в output локальны и не входят в Git. Старые 520/4, 582/4 и другие прогоны не являются новыми проверками текущего HEAD.
 

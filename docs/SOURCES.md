@@ -1,6 +1,6 @@
 # Flexomir OS — источники проекта
 
-Owner FOS07 rollout /11.11: «да, отлично применяй» после просмотра компактного календаря и Account-style линзы. Это приёмка G-04 и разрешение общего подключения. Figma не менялась; [контракт/consumer map](FOS07_DATEPICKER_PILOT_2026-11-11.md), фактическая поставка — PR #41.
+Owner FOS07 rollout /11.11: «да, отлично применяй» после просмотра компактного календаря и Account-style линзы. Это приёмка G-04 и разрешение общего подключения. Figma не менялась; [контракт/consumer map](FOS07_DATEPICKER_PILOT_2026-11-11.md), поставка [PR #41](https://github.com/SigmeD/flexomir_os/pull/41) MERGED, merge `e6a04fd748dbb16702610b3d7898b8ba1d3f87a5`, проверенный head `85ad6ef147a246b03652b92e70e50925d948870d`, CI5/5SUCCESS.
 
 №07 /11.11: новое поручение Owner реализовать B2.5–B2.8. CURRENT Date Field1169:437 и popup1914:655 перечитаны с context/screenshot; metadata FOS Masters1688:532 не содержит отдельного календарного мастера. Figma read-only session c31bae2e-08a1-47a8-88ea-057e57b78f2d; canvas не менялась. Context7 /gpbl/react-day-picker/v9.14.0 и APG DatePicker dialog использованы для библиотечной/keyboard части. [Карта, ссылки и ограничения](FOS07_DATEPICKER_PILOT_2026-11-11.md).
 

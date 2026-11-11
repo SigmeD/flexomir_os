@@ -1,6 +1,14 @@
 # №07 — Glass DatePicker: анализ, контракт и пилот
 
-Статус: OWNER APPROVED / G-04 ACCEPTED / ORDINARY CONNECTED. Owner после компактного варианта и линзы ответил «да, отлично применяй». Подключение выполняется в том же PR #41; фактические CI/merge/SHA сверять в GitHub. Ниже сохранены основания и история пилота. Owner 11.11.2026 поручил начать B2.5–B2.8; решение о распространении требуется после показа пилота. База свежего origin/main — 94b6587, ветка feat/fos07-glass-datepicker-pilot. Обычная папка, новый worktree не нужен.
+Статус: OWNER APPROVED / G-04 ACCEPTED / ORDINARY CONNECTED / MERGED. Owner принял компактный вариант с линзой ответом «да, отлично применяй». [PR #41](https://github.com/SigmeD/flexomir_os/pull/41) слит 11.11.2026 в19:33:59UTC, merge `e6a04fd748dbb16702610b3d7898b8ba1d3f87a5`, проверенный head `85ad6ef147a246b03652b92e70e50925d948870d`. Историческая база разработки — origin/main94b6587; remote head после merge удалён.
+
+## Доставка
+
+CI фактического head:5/5SUCCESS — [DatePicker](https://github.com/SigmeD/flexomir_os/actions/runs/43085191441), [Orders](https://github.com/SigmeD/flexomir_os/actions/runs/43085191443), [Hover](https://github.com/SigmeD/flexomir_os/actions/runs/43085191433), [Artwork/Spacing](https://github.com/SigmeD/flexomir_os/actions/runs/43085191426), [M7](https://github.com/SigmeD/flexomir_os/actions/runs/43085191869). Дерево merge идентично проверенному head: a54a277d406f7a7e51079005257a5ba7a1acb39d. После merge: новый build1603modulesPASS, ordinary2/2, production smoke5/5 и frozen5/5. Исходные52/52+58/58+production30/30 и независимое review сохранены ниже. Полная M8 приёмка, SR/реальные устройства и API-ready остаются отдельными gates.
+
+## История разработки и принятый контракт
+
+Датированные этапы ниже сохраняют причины и результаты; прежние G-04 OPEN, Draft и ожидание rollout заменены статусом доставки выше.
 
 ## B2.5 — выбор подхода
 
@@ -34,7 +42,7 @@ Figma read-only session c31bae2e-08a1-47a8-88ea-057e57b78f2d, Date Field context
 - [x] Стенд: fos07-datepicker.html + src/Fos07DatePickerLab.tsx + scoped lab CSS. Client/Manager fixtures, native comparison, readonly/disabled/error/bounds/controlled rejection/reset. DEV-only отдельная Vite entry; App и обычные формы не меняются.
 - [x] Проверки: Chromium/Firefox/WebKit/touch; ISO/invalid/leap/year crossing/minmax/keyboard/focus/outside/required/FormData/reset; пять ширин1440/1024/768/390/320, zoom200%, reduced-motion/forced-colors и axe. Снимки и видео сохранять в output/playwright/fos07.
 - [x] npm run build; действующие date/order regressions и fingerprints5/5. Независимое review перед сдачей. Для новых browser API обращаться к Context7.
-- [x] LIVE docs обновлены в той же ветке, открыт [Draft PR #41](https://github.com/SigmeD/flexomir_os/pull/41); ссылка и визуальные доказательства подготовлены для Owner. G-04 остаётся OPEN до решения. До приёмки не подключать обычные поля и не сливать эксперимент как принятый rollout.
+- [x] LIVE docs обновлены в той же ветке, открыт [PR #41](https://github.com/SigmeD/flexomir_os/pull/41); ссылка и визуальные доказательства подготовлены для Owner. Исторический gate пилота впоследствии закрыт приёмкой Owner; обычный rollout слит в PR #41.
 
 ## B2.8 — критерии приёмки
 
@@ -55,11 +63,11 @@ VISUAL: закрытое поле сверяется с1169:437; открыты�
 
 Пилот: http://127.0.0.1:5173/fos07-datepicker.html ; [галерея и видео](http://127.0.0.1:5173/output/playwright/fos07/review/index.html). Native calendar и все обычные order consumers сохранены. Закрытые поля используют тот же FOSInput/Field:44px,8px radius,label13/18/600,body14/20. Readonly без calendar trigger, error/helper прежние. Popup использует существующие20px/blur20/surface/motion; геометрия календарной сетки — новый кандидат, не утверждённый Figma master. CSS zoom200% проверен с keyboard open и visualViewport bounds; pointer/touch отдельно на пяти ширинах. Реальные устройства и ручной NVDA/VoiceOver ещё не проверены.
 
-G-04 OWNER OPEN: приёмка пилота, обычный rollout и merge экспериментальной задачи ожидают решения Owner. Глобальная визуальная приёмка M8 и API/production-ready не заявляются.
+Исторический gate пилота: G-04 тогда был OPEN. После замечаний ниже Owner принял вариант и поручил применение; rollout и merge выполнены. Глобальная визуальная приёмка M8 и API/production-ready не заявляются.
 
 ## Уточнение Owner: компактный календарь /11.11
 
-По Screenshot_1 Owner поручил убрать повторный заголовок «Желаемый срок» и нижнюю инструкцию. Они удалены из popup; подпись самого поля и доступное имя dialog сохранены. Закрытие перенесено в строку месяца, календарь лишён отдельной строки заголовка и подвала; hit targets44px и существующая клавиатура сохранены. Для узкой области при zoom навигация переносится без наложения на месяц. Изменение продолжает Draft PR #41; это не приёмка G-04 и не разрешение rollout.
+По Screenshot_1 Owner поручил убрать повторный заголовок «Желаемый срок» и нижнюю инструкцию. Они удалены из popup; подпись самого поля и доступное имя dialog сохранены. Закрытие перенесено в строку месяца, календарь лишён отдельной строки заголовка и подвала; hit targets44px и существующая клавиатура сохранены. Для узкой области при zoom навигация переносится без наложения на месяц. На этом этапе изменение продолжало Draft PR #41; последующая явная приёмка Owner разрешила rollout.
 
 ## Уточнение Owner: день как линза меню /11.11
 
@@ -67,7 +75,7 @@ Owner показал дату18 и Account Menu как стилевой referenc
 
 Календарь использует неподвижный материал в активной ячейке с проявлением240ms и reduced-motion/forced-colors fallback. Вертикальная физика меню не переносится на двумерную сетку и не изменяется; отдельный spring, moving-2D engine или новая формула optical scale не создаются. Пять frozen sources/manifest сохранены. Карта: Date Field1169:437→FOSDatePicker; existing Rows material→REUSE FosGlassMaterial; DayPicker Day→EXTEND FosDatePickerDay; consumer только DEV-пилот.
 
-Новый сценарий до реализации подтвердил отсутствие линзы (RED). После реализации полный44/44PASS Chromium/Firefox/WebKit/touch:40 прежних и4 новых проверки, две роли/пять ширин/axe/zoom. В первом расширенном прогоне четыре новых assertions имели неверный вложенный locator; исправлен только поиск ячейки. Единичная потеря keyboard focus в WebKit не воспроизвелась в целевом прогоне, полном44 и десяти отдельных повторах10/10; первопричина не подтверждена, product assertions не менялись. Свежие hover/return/selected PNG и видео — в существующей галерее. G-04 и rollout остаются OPEN.
+Новый сценарий до реализации подтвердил отсутствие линзы (RED). После реализации полный44/44PASS Chromium/Firefox/WebKit/touch:40 прежних и4 новых проверки, две роли/пять ширин/axe/zoom. В первом расширенном прогоне четыре новых assertions имели неверный вложенный locator; исправлен только поиск ячейки. Единичная потеря keyboard focus в WebKit не воспроизвелась в целевом прогоне, полном44 и десяти отдельных повторах10/10; первопричина не подтверждена, product assertions не менялись. Свежие hover/return/selected PNG и видео — в существующей галерее. На этом этапе G-04 и rollout ещё были OPEN; последующее решение Owner и merge закрыли их.
 
 ## CURRENT: приёмка и подключение к заказам
 
