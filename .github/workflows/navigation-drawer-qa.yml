@@ -15,6 +15,9 @@ on:
 jobs:
   build-and-browser:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f
+      options: --user 1001 --ipc=host --init
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -26,8 +29,9 @@ jobs:
         run: npm ci
       - name: TypeScript and production build
         run: npm run build
-      - name: Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Verify matching preinstalled browser image
+        run: |
+          node -e "const version = require('@playwright/test/package.json').version; if (version !== '1.64.1') throw new Error('Update the pinned Playwright image to match ' + version); console.log('Playwright image matches ' + version)"
       - name: NavigationDrawer and shared-component regression
         run: npx playwright test tests/navigation-drawer.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts tests/glass-pill-tabs-react.spec.ts --project chromium-1440 --project chromium-390
       - name: QA screenshot artifacts

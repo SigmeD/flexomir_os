@@ -2,6 +2,8 @@
 
 ## CURRENT /11.11 — общий hover выпадающих меню
 
+CI начального head4c8bd86 не дошёл до тестов: apt DNS Ubuntu. Необходимая стабилизация четырёхworkflow — официальный Playwright1.64.1 image, pinned digest, matching-version guard; npm/build/testcommands/браузеры/пороги прежние. [Диагноз и новый CI gate](POPUP_HOVER_ROLLOUT_2026-11-11.md#ci-установка-окружения-1111).
+
 PR36 уже MERGED, база этой поставки main/origin `4ae4841`. По новому прямому поручению Owner принятое Account-поведение v0.3 подключено через один FosPopup к More, FOSSelect, GlassSelect и NavigationDrawer. Hover временный: данные, aria-selection, фокус и маршрут не меняет; leave/keyboard возвращают реальную selection, pending commit защищён. Обычные Client/Manager и production включены без флагов; frozen5/5 прежние. [Карта компонентов, проверки и доказательства](POPUP_HOVER_ROLLOUT_2026-11-11.md).
 
 Локально: новый hover23PASS/9conditionalSKIP, form re-audit124PASS, Account29/11SKIP, Profile/popup61/3SKIP, Drawer pilot19/5SKIP + navigation88PASS, production14/6SKIP, buildPASS238modules. Независимые8/8 Chromium/WebKit проверки авторства reviewer выполнены root, source/JSON/PNG проверены reviewer. Один PR из `feat/popup-hover-rollout`; CI и merge проверяются на фактическом head. Standing разрешение Owner на merge принятое действует. Полная M8 visual acceptance, DatePicker07 и backend остаются OPEN. Предыдущие записи ниже — история, не текущие ограничения Account-only.
