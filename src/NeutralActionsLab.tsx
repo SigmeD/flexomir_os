@@ -15,6 +15,7 @@ function Samples({ palette, surfaceLabel }: { palette: ActionPalette; surfaceLab
     <div className="neutral-lab__controls">
       <SectionAddItem palette={palette} onClick={activate} data-testid={`${prefix}-plus`} />
       <SectionAddItem palette={palette} icon="file" accessibleName="Добавить подписной бланк" onClick={activate} data-testid={`${prefix}-file-add`} />
+      <SectionAddItem palette={palette} icon="file" accessibleName="Добавить подписной бланк — недоступно в работе" disabled onClick={activate} data-testid={`${prefix}-file-add-disabled`} />
       <HeaderAction palette={palette} action="save" accessibleName={neutral ? 'Нейтральный Save' : 'Текущий Save'} onAction={activate} data-testid={`${prefix}-header`} />
       <FOSAction palette={palette} hierarchy="primary" onClick={activate} data-testid={`${prefix}-primary`}>Основное действие</FOSAction>
       <FOSAction palette={palette} onClick={activate} data-testid={`${prefix}-secondary`}>Вторичное действие</FOSAction>
