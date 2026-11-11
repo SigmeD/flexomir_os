@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { forwardRef, useRef, type ComponentProps } from 'react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import moreIcon from '@/assets/orders/more.svg'
@@ -7,7 +8,7 @@ import './overflow-menu.css'
 
 /** More 1914:650. Transparent 48px hit area; never a primary circle. */
 export const MoreAction = forwardRef<HTMLButtonElement, ComponentProps<'button'> & { presentation?: HeaderActionPresentation }>(function MoreAction({ presentation = 'auto', className = '', ...props }, ref) {
-  return <button type="button" aria-label="Ещё" title="Ещё" {...props} ref={ref} className={'fos-more fos-more--' + presentation + ' ' + className}><span className="fos-more__hit"><img src={moreIcon} alt="" /></span><span className="fos-more__caption" aria-hidden="true">Ещё</span><span className="fos-more__tooltip" aria-hidden="true">Ещё</span></button>
+  return <FosButtonRoot family="navigation" type="button" aria-label="Ещё" title="Ещё" {...props} ref={ref} className={'fos-more fos-more--' + presentation + ' ' + className}><span className="fos-more__hit"><img src={moreIcon} alt="" /></span><span className="fos-more__caption" aria-hidden="true">Ещё</span><span className="fos-more__tooltip" aria-hidden="true">Ещё</span></FosButtonRoot>
 })
 export interface OverflowItem { id: string; label: string; onSelect?: () => void; disabled?: boolean; reason?: string; focusAfter?: 'trigger' | 'consumer' }
 /** Menus 1914:655..676 share one accessible Radix lifecycle, no visual engine. */

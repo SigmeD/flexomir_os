@@ -1,15 +1,12 @@
 # Flexomir OS — передача работы
 
-Активный инкремент10.11: `fix/next-scope-a-correctness`, base `7b17db6`, [план13 пунктов](NEXT_SCOPE_13_2026-11-10.md) и [отчёт wave A](NEXT_SCOPE_A_REPORT_2026-11-10.md). Старые ветки/stash сохранены. Source-level исправления Profile/Select/Local artwork: build PASS, targeted124/124, full582 PASS/4 SKIP, repeated focus24/24 и integration3/3; independent review PASS/READY WITH RISKS, один собственный runtime390. Исходные RED и финальные evidence — `output/playwright/next-scope-a/`, логи `output/next-scope-a-*.log`; прежние результаты ниже не заменяют новый прогон. Доставка — один Draft PR этой ветки; фактический head/CI сверять в GitHub, следующий gate Owner; merge не выполнялся. Save UX G-02, новые визуальные пилоты и реальные файлы/API остаются OPEN.
+11.11.2026 Owner поручил «Сливай pr». PR #33 MERGED, main `b2b858f93e68c0543babe6564adb5224820cad91`; head `25eb159`, CI4/4. Удалённая ветка PR #33 удалена GitHub автоматически; локальные ветки и четыре stash сохранены.
 
-Обновлено 10.11.2026 после merge [PR #31](https://github.com/SigmeD/flexomir_os/pull/31).
+Поставка PR #34 включает main после PR #33. Семь конфликтов workflow/LIVE docs разрешены с сохранением обеих поставок; общие исходники объединены автоматически. В workflow сохранены проверки Wave A, кнопок и FOS03. [Wave A](NEXT_SCOPE_A_REPORT_2026-11-10.md), [кнопки](FOS08_09_REPORT_2026-11-10.md).
 
-## База для следующей задачи
+Причина чувствительности быстрого клика: 180 мс wall-time envelope и ограничение шага frozen spring до32мс при редких кадрах. Исходное падение и диагностика сохранены в `output/pr-merge`. Амплитуда проверяется управляемыми кадрами без ослабления порогов; production-код анимации не менялся. Сборка PASS, motion54 PASS/2 штатных SKIP, frozen5/5; независимое ревью разрешения конфликтов и теста PASS WITH RISKS. Финальные QA/CI head и merge SHA — в [PR #34](https://github.com/SigmeD/flexomir_os/pull/34), post-merge статус — в [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Owner разрешил объединение после успешных проверок.
 
-- Рабочая папка: D:\Projects\flexomir_os. Продуктовый main/origin/main: a400b9dc73ad77b01b37932fa4c5abbd57d134e0.
-- Проверенный PR head: f991bd77d16f0552f10e1cb8e0014d7d95a84850. После squash дерево файлов совпало с main, сборка на main прошла.
-- Remote feat/m8-final-screen-qa удалена автоматически. Local feature branch и четыре старых stash сохранены; не удалять их без отдельного поручения.
-- Документальные исправления после merge готовятся отдельно в docs/post-merge-current-2026-11-10. Фактические branch/status/PR перед продолжением сверять в Git и GitHub.
+Рабочая папка — D:/Projects/flexomir_os, ветка `feat/fos03-manager-spacing-pilot`. FOS03 принят только в DEV-пилоте `composeSpacing=pilot`, версия интерфейса `6007e60`; обычные маршруты не переключать автоматически.
 
 ## Что уже сделано
 

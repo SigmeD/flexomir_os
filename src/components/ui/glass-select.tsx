@@ -1,5 +1,6 @@
 "use client";
 
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import {
   type ComponentProps,
   type CSSProperties,
@@ -115,7 +116,7 @@ export function GlassSelectTrigger({
   const { appearance, open, setOpen, triggerRef, triggerId, contentId, valueId, value, labelOf } = useSelect();
   const label = labelOf(value);
   return (
-    <button
+    <FosButtonRoot family="field"
       {...props}
       ref={triggerRef}
       id={props.id ?? triggerId}
@@ -147,7 +148,7 @@ export function GlassSelectTrigger({
       <svg viewBox="0 0 16 16" fill="none" className="size-4 shrink-0" aria-hidden>
         <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
-    </button>
+    </FosButtonRoot>
   );
 }
 
@@ -286,7 +287,7 @@ export function GlassSelectItem({
   }, [value, children, register]);
 
   return (
-    <button
+    <FosButtonRoot family="option"
       {...props}
       type="button"
       role="option"
@@ -309,6 +310,6 @@ export function GlassSelectItem({
           <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       )}
-    </button>
+    </FosButtonRoot>
   );
 }

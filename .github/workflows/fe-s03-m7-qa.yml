@@ -1,11 +1,15 @@
 name: FE-S03 M7 UI QA
-
 on:
   pull_request:
     paths:
       - 'src/**'
       - 'tests/m7-*.spec.ts'
       - 'tests/order-compose.spec.ts'
+      - 'tests/fos03-spacing.spec.ts'
+      - 'tests/neutral-actions.spec.ts'
+      - 'tests/plus-surface-motion.spec.ts'
+      - 'tests/button-system.spec.ts'
+      - 'tests/fixtures/button-root.*'
       - 'tests/next-scope-a.spec.ts'
       - 'tests/popup-dismissal.spec.ts'
       - 'tests/typography-contract.spec.ts'
@@ -19,7 +23,6 @@ on:
       - 'package*.json'
       - '.github/workflows/fe-s03-m7-qa.yml'
   workflow_dispatch:
-
 jobs:
   m7:
     runs-on: ubuntu-latest
@@ -40,6 +43,14 @@ jobs:
         run: npx playwright test --config=playwright.profile.config.ts tests/typography-contract.spec.ts --workers=1 --output=output/playwright/navigation-typography/ci
       - name: FE11 popup rollout and form contracts
         run: npx playwright test --config=playwright.reaudit.config.ts --workers=1
+      - name: FOS03 opt-in composition pilot and legacy consumers
+        run: npx playwright test --config=playwright.fos03.config.ts --workers=2
+      - name: FOS08/09 neutral action reference
+        run: npx playwright test --config=playwright.neutral-actions.config.ts --workers=1
+      - name: FOS08 Plus actual surface motion (Owner gate remains open)
+        run: npx playwright test --config=playwright.plus-motion.config.ts --workers=1
+      - name: Unified ButtonRoot and system action contracts
+        run: npx playwright test --config=playwright.buttons.config.ts --workers=2
       - name: Profile navigation and required field correctness
         run: npx playwright test --config=playwright.next-scope.config.ts --workers=2
       - name: Save M7 browser evidence
@@ -48,6 +59,8 @@ jobs:
         with:
           name: fe-s03-m7-browser-evidence
           path: |
+            output/playwright/plus-motion/**
+            output/playwright/button-system/**
             output/fe-s03/results.json
             output/fe-s03/browser/**/fes03-*.png
             output/fe-s03/browser/**/error-context.md
@@ -59,6 +72,13 @@ jobs:
             output/playwright/fe11-reaudit/cross-browser/**/error-context.md
             output/playwright/fe11-reaudit/cross-browser/**/trace.zip
             output/playwright/navigation-typography/ci/**/error-context.md
+            output/playwright/fos03/green/results.json
+            output/playwright/fos03/green/artifacts/**/*.png
+            output/playwright/fos03/green/artifacts/**/trace.zip
+            output/playwright/fos08-09/results.json
+            output/playwright/fos08-09/browser/**/*.png
+            output/playwright/fos08-09/browser/**/trace.zip
+            output/playwright/fos08-09/browser/**/error-context.md
             output/playwright/next-scope-a/green/results.json
             output/playwright/next-scope-a/green/artifacts/**/*.png
             output/playwright/next-scope-a/green/artifacts/**/error-context.md

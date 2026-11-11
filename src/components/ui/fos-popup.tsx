@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { forwardRef, useLayoutEffect, useState, type ReactNode } from 'react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { FosPopupSurface, type FosPopupSurfaceProps } from './fos-popup-surface'
@@ -38,10 +39,10 @@ export const FosPopup = forwardRef<HTMLDivElement, FosPopupProps>(function FosPo
         const attributes = { 'data-popup-item': item.id, 'data-testid': item.testId, className: 'fos-popup__item ' + rowClassName, title: item.reason }
         return mode === 'actions'
           ? <DropdownMenu.Item key={item.id} {...attributes} disabled={item.disabled} textValue={item.label} onSelect={() => activate(item)}>{content}</DropdownMenu.Item>
-          : <button key={item.id} {...attributes} type="button" role={mode === 'listbox' ? 'option' : undefined}
+          : <FosButtonRoot family="option" key={item.id} {...attributes} type="button" role={mode === 'listbox' ? 'option' : undefined}
               aria-selected={mode === 'listbox' ? selectedId === item.id : undefined}
               aria-current={mode === 'navigation' && selectedId === item.id ? 'page' : undefined}
-              tabIndex={mode === 'listbox' ? -1 : undefined} disabled={item.disabled} onClick={() => activate(item)}>{content}</button>
+              tabIndex={mode === 'listbox' ? -1 : undefined} disabled={item.disabled} onClick={() => activate(item)}>{content}</FosButtonRoot>
       })}
     </FosPopupRows>
   return <FosPopupSurface {...props} ref={ref}

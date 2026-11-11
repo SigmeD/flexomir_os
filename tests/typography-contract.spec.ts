@@ -1,5 +1,36 @@
 import { expect, test, type Page } from '@playwright/test'
 
+for (const role of ['client', 'manager']) {
+  test(`order status role: ${role} drafts and details share responsive size without changing secondary text`, async ({ page }) => {
+    for (const width of [1440, 1024, 768, 390, 320]) {
+      await page.setViewportSize({ width, height: 960 })
+      const size = width >= 1024 ? '14px' : '12px'
+      await page.goto(`/?view=${role}-orders`)
+      await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+      const draftStatus = page.locator('.fos-page-header__subtitle')
+      await expect(draftStatus).toHaveText('Черновик')
+      await expect(draftStatus).toHaveCSS('font-size', size)
+      await expect(draftStatus).toHaveCSS('line-height', '18px')
+      await page.goto(`/?view=${role}-orders`)
+      await page.locator('[data-order-open="DEMO-003"]').click()
+      const detailStatus = page.getByTestId('order-detail-status')
+      await expect(detailStatus).toHaveText('В работе')
+      await expect(detailStatus).toHaveCSS('font-size', size)
+      await expect(detailStatus).toHaveCSS('font-weight', '400')
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    }
+    await page.evaluate(() => document.documentElement.style.setProperty('--fos-type-order-status-size', '15px'))
+    await expect(page.getByTestId('order-detail-status')).toHaveCSS('font-size', '15px')
+    await page.goto('/?view=client-layouts')
+    await page.getByTestId('layout-row-demo-layout-01').click()
+    await page.evaluate(() => document.documentElement.style.setProperty('--fos-type-order-status-size', '15px'))
+    const secondary = page.locator('.fos-page-header__subtitle')
+    await expect(secondary).toBeVisible()
+    await expect(secondary).toHaveCSS('font-size', '12px')
+    await expect(secondary).toHaveCSS('line-height', '18px')
+  })
+}
+
 test('navigation and popup items share the Owner 14/18 Medium role without changing row geometry', async ({ page }) => {
   test.setTimeout(60000)
   async function itemType(selector: string, height: number) {

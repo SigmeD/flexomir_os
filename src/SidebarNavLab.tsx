@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { useState } from 'react'
 import { SidebarNav, type SidebarNavItem } from '@/components/ui/sidebar-nav'
 import { clientNavigationDemoItems as clientItems, managerNavigationDemoItems as managerItems } from './navigation-demo-items'
@@ -49,12 +50,12 @@ export function SidebarNavLab() {
       <section className="sidebar-lab__tone-review" aria-label="Проверка тона стекла">
         <span>Материал стекла:</span>
         <div role="group" aria-label="Выбор оттенка для сравнения">
-          <button type="button" data-testid="sidebar-tone-neutral"
+          <FosButtonRoot family="utility" type="button" data-testid="sidebar-tone-neutral"
             aria-pressed={glassTone === 'neutral'}
-            onClick={() => setGlassTone('neutral')}>Нейтральный · для серого фона</button>
-          <button type="button" data-testid="sidebar-tone-reference"
+            onClick={() => setGlassTone('neutral')}>Нейтральный · для серого фона</FosButtonRoot>
+          <FosButtonRoot family="utility" type="button" data-testid="sidebar-tone-reference"
             aria-pressed={glassTone === 'reference'}
-            onClick={() => setGlassTone('reference')}>Исходный · голубоватый</button>
+            onClick={() => setGlassTone('reference')}>Исходный · голубоватый</FosButtonRoot>
         </div>
         <small>Переключатель есть только в лаборатории; для экранов используем нейтральную тему.</small>
       </section>

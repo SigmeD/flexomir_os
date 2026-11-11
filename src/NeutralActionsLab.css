@@ -1,0 +1,13 @@
+.neutral-lab { max-width: 1200px; margin: 32px auto; padding: 0 24px; color: #272727; font: 400 14px/20px var(--fos-font-family); }
+.neutral-lab > header { max-width: 760px; margin-bottom: 24px; }
+.neutral-lab h1 { font-size: 28px; line-height: 36px; margin: 8px 0 16px; }
+.neutral-lab h2 { font-size: 20px; line-height: 28px; }
+.neutral-lab h3 { font-size: 14px; line-height: 20px; }
+.neutral-lab a { color: #272727; text-underline-offset: 3px; }
+.neutral-lab__surface { padding: 20px; margin-top: 24px; border: 1px solid #d7d7d7; border-radius: 12px; }
+.neutral-lab__surface--paper { background: #f8fafc; }
+.neutral-lab__surface--pattern { background-color: #f7f7f7; background-image: linear-gradient(45deg,#dedede 25%,transparent 25%,transparent 75%,#dedede 75%),linear-gradient(45deg,#dedede 25%,transparent 25%,transparent 75%,#dedede 75%); background-size: 32px 32px; background-position: 0 0,16px 16px; }
+.neutral-lab__surface--pattern h2,.neutral-lab__surface--pattern h3,.neutral-lab__surface--pattern p { width: fit-content; max-width: 100%; background: #f7f7f7; }
+.neutral-lab__sample { margin-top: 24px; min-width: 0; }
+.neutral-lab__controls { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; min-width: 0; }
+@media(max-width:600px) { .neutral-lab { margin: 20px auto; padding: 0 16px; } .neutral-lab__surface { padding: 12px; } .neutral-lab__controls { gap: 16px; } }

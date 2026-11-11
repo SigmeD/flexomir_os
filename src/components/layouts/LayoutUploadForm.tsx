@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { FOSAction, FOSInput, FOSTextarea } from '@/components/ui/fos-controls'
 import { LocalFileControl } from '@/components/ui/local-file-control'
 import { ArtworkThumbnail } from '@/components/ui/artwork-thumbnail'
@@ -26,7 +27,7 @@ export function LayoutUploadForm({ value, onChange, error }: { value: LayoutUplo
     <div className="fos-layout-upload-form__metadata">
       <FOSInput label="Название макета" value={value.title} placeholder="Например, Этикетка 100×150" onChange={event => onChange({ ...value, title: event.target.value })} />
       <div className="fos-layout-preview-field"><span>Превью макета</span><LocalFileControl label="Выбрать превью макета" onFile={file => onChange({ ...value, previewName: file.name })}>
-        {open => <button type="button" className="fos-layout-preview-field__button" onClick={open}><img src={preview} alt="" /><span>{value.previewName || 'Добавить превью'}</span><img src={uploadTrailing} alt="" /></button>}
+        {open => <FosButtonRoot family="field" type="button" className="fos-layout-preview-field__button" onClick={open}><img src={preview} alt="" /><span>{value.previewName || 'Добавить превью'}</span><img src={uploadTrailing} alt="" /></FosButtonRoot>}
       </LocalFileControl></div>
       <FOSTextarea wrapperClassName="fos-layout-upload-form__description" label="Описание (необязательно)" value={value.description} placeholder="Добавьте описание, если необходимо" onChange={event => onChange({ ...value, description: event.target.value })} />
     </div>

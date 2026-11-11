@@ -1,8 +1,18 @@
 # Flexomir OS — источники проекта
 
+Для унификации кнопок действует поручение Owner от 11.11 в этой сессии. Геометрия берётся из ранее сверенных CURRENT мастеров Figma SectionAdd 1986:774, Action 835:259, HeaderAction 1953:4168 / 2173:1425 и More 1914:650. Нейтральная палитра и усиленный отклик относятся к этому поручению. Файлы мастеров хранят прежнюю редакцию. Источник замороженного движения — [FE11-v0.2](FE11_MOTION_FROZEN_V0_2.json). [Карта компонентов](COMPONENT_REGISTRY_2026-11-06.md).
+
+11.11.2026 в Google Drive CURRENT зафиксированы приёмка FOS08/09 и DEV-варианта FOS03, версия интерфейса 6007e60 и состояние поставки. Визуальные доказательства и Figma-ссылки сохранены в профильных отчётах. [Google Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), [FOS08/09](FOS08_09_REPORT_2026-11-10.md), [FOS03](FOS03_HEADER_AUDIT_2026-11-10.md)
+
+Status-size follow-up10.11: перечитаны точные Figma styles S:7b49259b679208d3d45e87b615a9673723ad4dd9, Status Default /Manrope Regular400/14/AUTO/0% и S:ffe48f4dacd88f6906b8b1fbf3bac4deb59e84d8, Status Compact /Manrope Regular400/12/AUTO/0%. Body/SM12/18 — другая роль, не основание для desktop status12. Owner принял размер общим компонентом; Figma не менялась, line-height AUTO не объявляется реализованным.
+
+Уточнение FOS03 после второго просмотра Owner: [аудит Header](FOS03_HEADER_AUDIT_2026-11-10.md). CURRENT Manager D/T/M и вложенные Title в AppShell перечитаны; lifecycle label в экране расположен отдельно, master Subtitle скрыт. Положение подписи теперь проверяется отдельным opt-in контрактом общего PageHeader. Figma не менялась; различия типографики и compact координат остаются OPEN.
+
 Проверено 10.11.2026. Состояние реализации подтверждено [PR #31](https://github.com/SigmeD/flexomir_os/pull/31), main a400b9d, и успешными CI на head f991bd77. [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) обновлён после merge. Остальные ссылки ниже — нормативные точки входа, а не утверждение, что каждый документ заново полностью проверен этой правкой.
 
 ## Как выбирать источник
+
+FOS03 /10.11: [источники/план](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md). Drive CURRENT modified14:09:37.549Z перечитан; gates прежние. Figma read-only session`bb9a0704-e302-499e-b2bc-b52f01338d24`: Manager0/1 D/T/M, instance→master/context/raw screenshots; section-gap633:148→633:80=32, block/md633:122→633:79=24. Canvas не менялась. Локальные reference PNG/JSON — `output/playwright/fos03/reference`; Wave A — [PR33](https://github.com/SigmeD/flexomir_os/pull/33), MERGED 11.11 в main b2b858f.
 
 10.11, scope01–13: перечитаны Drive Frontend CURRENT (modified14:09:37.549Z, POST-M8 addendum), SRS (modified06.11 12:54:47.366Z), E2E (modified02.11 10:25:14.515Z). Owner указал локальный `D:/downloads/FLEXOMIR_OS_NEXT_SCOPE_13_CODEX_SDLC_TZ_2026-11-10.md`; [разбор и план](NEXT_SCOPE_13_2026-11-10.md) фиксируют его исполнение и OPEN gates. Figma Select1148:311/292 проверен через metadata/screenshot/design context:44px field и approved open-popup contract; новые визуальные макеты/мастера не изменены. Локальный исходный файл существует только на машине Owner, не обещается доступным на другом checkout.
 
@@ -19,7 +29,7 @@ Figma file7rvIYc6yj3OA7gxmf1xJbv проверялся в сессиях 0afae8b2
 | Приоритет | Источник | Для чего читать |
 | --- | --- | --- |
 | 0 | [Основная папка Flexomir-V](https://drive.google.com/drive/folders/1-0UKiK1h1MT2lXS8oy5NL89_0MUuYcnn) | Общая рабочая база |
-| 0 | [Frontend Development Plan CURRENT M0–M9](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) | Действующий план этапов; синхронизирован 10.11.2026 после PR #31 |
+| 0 | [Frontend Development Plan CURRENT M0–M9](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) | Действующий план этапов. Приёмка FOS03 и FOS08/09 отражена 11.11.2026 |
 | 1 | [00_CURRENT — Baseline](https://docs.google.com/document/d/1pHzQ2J75AZyT24Qg-HyZof79cASTXFOhqWIEDW_vVqU/edit) | Состояние и приоритет решений |
 | 1 | [07_CURRENT — Project Governance](https://docs.google.com/document/d/1m0TmticLfJYsnNG2aXt4tH6dNrjozMvRIahlCOhlicM/edit) | Решения, согласования, ограничения |
 | 1 | [03_CURRENT — SRS v0.5](https://docs.google.com/document/d/1EwjqQ3z_lO2lyDCQHhm-NIiDxgZzPrKOXAWR3tC-C4M/edit) | Функции, роли, статусы, MVP-поведение |

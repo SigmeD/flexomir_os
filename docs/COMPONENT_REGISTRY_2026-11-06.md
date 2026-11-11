@@ -1,8 +1,42 @@
 # Flexomir OS — React Component Registry
 
-## Scope01–13 / wave A, рабочая ветка10.11
+## FOS08/09 · Кнопки системы
 
-Карта до реализации и весь план — [NEXT_SCOPE_13](NEXT_SCOPE_13_2026-11-10.md). Статус: local QA verified (targeted124/full582+4SKIP); Owner acceptance/merge отдельно. [Доказательства и review](NEXT_SCOPE_A_REPORT_2026-11-10.md).
+FosButtonRoot — единственное место создания native button в JSX. Через него проходят действия, строки, навигация, поля, элементы меню, сегменты и служебные кнопки. Root передаёт ref, события, ARIA и нативные атрибуты формы. Варианты сохраняют свой визуальный и интерактивный контракт.
+
+| Роль | Мастер / вариант | Компонент |
+| --- | --- | --- |
+| Primary | Action 835:259, сплошная заливка | FOSAction → FosActionSurface |
+| Secondary | Action 835:259, нейтральное стекло | FOSAction → FosActionSurface → FosGlassMaterial |
+| Plus | SectionAdd 1986:774, hit 44, стекло 34, текст «+» Manrope 28/24 Medium | SectionAddItem → FOSAction |
+| Header | 1953:4168 / 2173:1425, desktop 68, compact 48, круг 48 | HeaderAction → FosActionSurface. Подпись отдельным элементом |
+| Закрытие диалога | Плоская иконка, compact 40 | FOSAction, tertiary / icon |
+| More | 1914:650, прозрачный триггер меню | MoreAction → FosButtonRoot, lifecycle Radix |
+| Поля, строки, сегменты и навигация | Семантические варианты соответствующих мастеров | FosButtonRoot и существующие контроллеры выбора |
+
+Общие focus и disabled для вариантов действий. useDirectionalPress передаёт давление в один useActionSurface, который использует существующие Track/spring. Профиль удерживает короткий импульс 180 мс. FOSAction сохраняет hierarchy, size и shape. Reference-палитра доступна в сравнении на DEV-стенде. Frozen FE11-v0.2 сохраняет свои контракты. [План и проверка](FOS08_PLUS_SURFACE_MOTION_2026-11-10.md).
+
+## Owner 10.11 — общий размер статуса заказа
+
+Figma text styles Status Default S:7b49259b679208d3d45e87b615a9673723ad4dd9, (14px) / Status Compact S:ffe48f4dacd88f6906b8b1fbf3bac4deb59e84d8, (12px) → EXTEND PageHeader.subtitleRole=secondary|status. Default secondary сохраняет Body/SM12/18; status использует единый --fos-type-order-status-size из src/styles.css:14px desktop≥1024,12px compact≤1023. Consumers REUSE: OrderComposer и OrderDetail, Client+Manager, включая обычный UI и production. LayoutBrowser/context остаются secondary. Owner принял общий размер; line-height18 сохранён, Figma AUTO не объявляется полностью перенесённым. Placement below-title остаётся отдельным DEV pilot, полный экран/merge OPEN.
+
+## FOS03 Header — уточнение Owner после второго просмотра
+
+CURRENT Manager D2569:24648/24539 lifecycle label Y109 и PageHeader master 2302:2138 → EXTEND существующий PageHeader: subtitlePlacement below-row (default) / below-title (opt-in). Во втором варианте H1/subtitle/context собраны в независимую текстовую колонку; 68px actions, motion и focus не меняются. Consumer: только DEV Manager OrderComposer spacing pilot; OrderDetail/LayoutBrowser/Client/production сохраняют default. Company Y сохраняется производным desktop gap 25 = прежние 5 + освобождённые 20 px; compact gap 21 не меняется. [Аудит/гейты](FOS03_HEADER_AUDIT_2026-11-10.md).
+
+## FOS03 — DEV-эталон отступов менеджера, принят Owner 11.11
+
+| Figma → React | Решение / контракт | Consumers |
+| --- | --- | --- |
+| Manager0/1 D2569:24648/24539,T24851/24757,M25041/24945 → OrderComposer | EXTEND existing composition; DEV query composeSpacing=pilot + ownerRole manager | Opted-in Manager drafts; ordinary Client/Manager/production без rollout |
+| DS V2 section-gap32/block-md24 → order-compose.css | Scoped primitive→semantic→composition vars; grid32, General offsets0/internal24, legacy fallbacks | Один reference0/1/N, five widths |
+| Select1148:292,Date1169:383,Note681:164,SectionAdd1986:774,HeaderAction/PageHeader | REUSE geometry/data/validation/IDs/private Save; frozen unchanged | Existing shared form, без новых primitives/действий |
+
+[План/мастера](FOS03_MANAGER_SPACING_PILOT_2026-11-10.md), [QA/ограничения](FOS03_REPORT_2026-11-10.md). Owner visual gate до распространения; manual screen Y не объявляются новым DS contract.
+
+## Scope01–13 / Wave A, PR #33 MERGED 11.11
+
+Карта до реализации и весь план — [NEXT_SCOPE_13](NEXT_SCOPE_13_2026-11-10.md). Статус: PR #33 MERGED по поручению Owner, main b2b858f, CI4/4 на25eb159. Локальные targeted124/full582+4SKIP относятся к отчёту поставки. [Доказательства и review](NEXT_SCOPE_A_REPORT_2026-11-10.md).
 
 | Figma/source → React | Решение / контракт | Consumers |
 | --- | --- | --- |
@@ -11,7 +45,7 @@
 | Select1148:311/292 → FOSSelect/FOSSelectPopup | EXTEND adapter: required + emptyIsPlaceholder запрещают выбор пустого placeholder; optional semantic empty фильтра остаётся доступен. Native events/validation/reset/FormData сохраняются | Item shape/material, Manager company, CompanyOrders filters, lab |
 | Artwork634:445 → ArtworkSource | EXTEND source transition: Local/HELP очищают устаревший unavailableArtwork. Save validation сохранена; новый Library/Local visual pilot12 DEFER | Client/Manager New/Edit/Repeat Item |
 
-Актуальная продуктовая база: main a400b9d, PR #31 MERGED 10.11.2026. Последние изменения — общий OrderDateFields и клиентское readonly-отображение согласованного срока; основные контракты ниже сохранены. Предыдущие checkpoints фиксируют происхождение компонентов и не задают текущую очередь. Проверки и их границы — в [итоговом аудите M8](M8_FINAL_AUDIT_2026-11-10.md).
+Историческая база M8: main a400b9d, PR #31 MERGED 10.11.2026. База интеграции текущей поставки после PR #33 — b2b858f. PR #31 добавил общий OrderDateFields и клиентское readonly-отображение согласованного срока; основные контракты ниже сохранены. Предыдущие checkpoints фиксируют происхождение компонентов и не задают текущую очередь. Проверки и их границы — в [итоговом аудите M8](M8_FINAL_AUDIT_2026-11-10.md).
 
 ## Уточнение Owner10.11 — согласованный срок клиента
 

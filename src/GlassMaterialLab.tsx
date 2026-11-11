@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { FosGlassMaterial } from '@/components/ui/fos-glass-material'
 import { useState } from 'react'
 import './glass-material-lab.css'
@@ -22,8 +23,8 @@ export function GlassMaterialLab({ orders, statuses }: { orders: ReadonlyArray<O
         href={`/?view=material&phase=optics&strength=${value}`}>{value === 0 ? 'Нулевой контроль' : `Сила ${value}`}</a>)}
     </nav>
     {!optics && <div className="fos-proof-controls">
-      <button type="button" onClick={() => setPosition(value => (value + 1) % 4)}>Сместить линзу ниже</button>
-      <button type="button" onClick={() => setPosition(0)}>Вернуть линзу</button>
+      <FosButtonRoot family="utility" type="button" onClick={() => setPosition(value => (value + 1) % 4)}>Сместить линзу ниже</FosButtonRoot>
+      <FosButtonRoot family="utility" type="button" onClick={() => setPosition(0)}>Вернуть линзу</FosButtonRoot>
       <a href="/?view=material&phase=optics&strength=0">Проверка оптики без оформления</a>
     </div>}
     <section className="fos-proof-scene" aria-label="Заказы под линзой">

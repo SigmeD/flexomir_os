@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import './order-card.css'
 import chevron from '@/assets/orders/chevron.svg'
 
@@ -17,7 +18,7 @@ export function OrderCard({ number, title, company, statusLabel, onOpen }: Order
   const content = <><span className="fos-order-card__thumbnail" aria-hidden="true">МАКЕТ</span><span className="fos-order-card__content"><strong className="fos-order-card__number">Заказ {number}</strong><span className="fos-order-card__meta"><span className="fos-order-card__status">{statusLabel}</span> · <span className="fos-order-card__company">{company}</span></span><span className="fos-sr-only">{title}</span></span><span className="fos-sr-only">Открыть заказ {number}</span><img className="fos-order-card__chevron" src={chevron} alt="" /></>
   return (
     <article className="fos-order-card" data-testid={'order-card-' + number}>
-      {onOpen ? <button type="button" className="fos-order-card__open" onClick={onOpen} data-order-open={number}>{content}</button> : <div className="fos-order-card__open">{content}</div>}
+      {onOpen ? <FosButtonRoot family="row" type="button" className="fos-order-card__open" onClick={onOpen} data-order-open={number}>{content}</FosButtonRoot> : <div className="fos-order-card__open">{content}</div>}
     </article>
   )
 }

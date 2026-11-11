@@ -1,0 +1,15 @@
+/* One contour and one outer shadow; no sidebar coat or inset rim. */
+.fos-action[data-action-palette][data-action-material="neutral-action"] { border: 0; background: transparent; box-shadow: none; }
+.fos-action-material--quiet {
+  box-sizing: border-box;
+  border: 1px solid rgb(166 166 166 / .65);
+  background: rgb(255 255 255 / .14);
+  box-shadow: 0 var(--action-shadow-y, 2px) var(--action-shadow-blur, 4px) rgb(0 0 0 / var(--action-shadow-alpha, .075));
+}
+.fos-action[data-action-palette][data-action-material="neutral-action"]:not(:disabled):hover,
+.fos-action[data-action-palette][data-action-material="neutral-action"][data-pressed="true"] { border: 0; background: transparent; box-shadow: none; }
+@media(forced-colors:active) {
+  .fos-action[data-action-palette][data-action-material="neutral-action"],
+  .fos-action[data-action-palette][data-action-material="neutral-action"]:not(:disabled):hover,
+  .fos-action[data-action-palette][data-action-material="neutral-action"][data-pressed="true"] { background: Canvas; border: 1px solid ButtonText; box-shadow: none; }
+}

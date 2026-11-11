@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { Activity, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ClientOrdersScreen } from '@/screens/client-orders/ClientOrdersScreen'
 import { ManagerOrdersScreen } from '@/screens/manager-orders/ManagerOrdersScreen'
@@ -223,10 +224,10 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
             requestAnimationFrame(() => presentationTrigger.current?.focus())
           }}>Демо: менеджер</FOSAction>
         </div>
-        <button type="button" className="fos-demo-workspace__hide" aria-label="Скрыть панель демонстрации" onClick={() => {
+        <FosButtonRoot family="utility" type="button" className="fos-demo-workspace__hide" aria-label="Скрыть панель демонстрации" onClick={() => {
           setPresentationVisible(false)
           requestAnimationFrame(() => presentationTrigger.current?.focus())
-        }}>×</button>
+        }}>×</FosButtonRoot>
       </div>
       {editorOpen && <p className="fos-demo-workspace__lock" role="status">Сохраните черновик и закройте редактор, чтобы переключить роль или сбросить демо.</p>}
       {diagnosticMessage && <p className="fos-demo-workspace__diagnostic" role="status" data-testid="demo-route-diagnostic">{diagnosticMessage}</p>}
@@ -234,7 +235,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
         <span>Инструменты только для проверки демо</span>
         <FOSAction disabled={editorOpen} onClick={resetDemo}>Сбросить демо</FOSAction>
       </div>}
-    </FosGlassMaterial> : <button ref={presentationTrigger} type="button" className="fos-demo-workspace__show" aria-label="Демо — показать панель демонстрации" onClick={() => setPresentationVisible(true)}>Демо</button>)}
+    </FosGlassMaterial> : <FosButtonRoot family="utility" ref={presentationTrigger} type="button" className="fos-demo-workspace__show" aria-label="Демо — показать панель демонстрации" onClick={() => setPresentationVisible(true)}>Демо</FosButtonRoot>)}
     <CabinetNavigation.Provider value={{
       ready: currentRole === 'client' ? ['orders', 'artworks', 'support'] : ['orders', 'clients', 'support'],
       navigate: navigateSection,

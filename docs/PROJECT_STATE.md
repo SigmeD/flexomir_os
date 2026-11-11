@@ -1,8 +1,12 @@
 # Flexomir OS — состояние проекта
 
-Активный инкремент10.11: [scope01–13, декомпозиция и wave A](NEXT_SCOPE_13_2026-11-10.md), ветка `fix/next-scope-a-correctness` от `7b17db6` (PR32 уже в main). Исправлены Profile navigation/guard/focus, required Select placeholder и устаревшее сообщение artwork после Local replacement. Build PASS, targeted124/124, full582 PASS/4 expected SKIP, focus24/24. [Отчёт и ограничения](NEXT_SCOPE_A_REPORT_2026-11-10.md). Это рабочая ветка для Draft PR, не новая поставка main. Save Item остаётся `dirty && valid`; приёмка визуальных пилотов и API-гейты открыты.
+## Текущая поставка / 11.11.2026
 
-Проверено 10.11.2026. Продуктовая база — main a400b9dc73ad77b01b37932fa4c5abbd57d134e0, [PR #31](https://github.com/SigmeD/flexomir_os/pull/31) слит. Это техническая поставка M8; полная визуальная приёмка экранов остаётся открытой.
+По поручению Owner «Сливай pr» PR #33 слит в main: `b2b858f93e68c0543babe6564adb5224820cad91`, проверенный head `25eb159`, CI 4/4 SUCCESS. Исправлены Profile navigation/guard, required Select и устаревшее предупреждение artwork. [Отчёт Wave A](NEXT_SCOPE_A_REPORT_2026-11-10.md).
+
+Поставка PR #34 включает эту базу и совместные проверки. Кнопки FOS08/09 и DEV-отступы FOS03 визуально приняты на `6007e60`; распространение отступов за пределы DEV-пилота остаётся открытым. [Кнопки и проверки](FOS08_09_REPORT_2026-11-10.md), [FOS03](FOS03_HEADER_AUDIT_2026-11-10.md).
+
+Исходный WebKit FAIL на `9bad864` сохранён. Проверка амплитуды быстрого клика теперь использует управляемый clock с прежними порогами .02/.01; рабочая анимация и frozen FE11 не изменены. На объединённых исходниках сборка PASS, motion54 PASS/2 штатных SKIP, frozen5/5. Полная регрессия и CI — отдельные проверки: фактические head, результаты и merge SHA доступны в [PR #34](https://github.com/SigmeD/flexomir_os/pull/34) и [CI](https://github.com/SigmeD/flexomir_os/pull/34/checks), post-merge статус — в существующем Drive CURRENT. Разрешение Owner на merge получено; оно не закрывает полную визуальную приёмку M8, API и выпуск.
 
 ## Что работает сейчас
 

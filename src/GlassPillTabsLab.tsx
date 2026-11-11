@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { useState } from 'react'
 import { GlassPillTabs, type GlassPillFilter } from './components/ui/glass-pill-tabs'
 import './GlassPillTabsLab.css'
@@ -71,9 +72,9 @@ export function GlassPillTabsLab() {
           <strong>Тест масштабирования</strong>
           <p>Только демонстрационные фильтры. Это не создание бизнес-статусов.</p>
           <div>
-            <button type="button" data-testid="pill-add" disabled={items.length >= 12} onClick={add}>+ Добавить</button>
-            <button type="button" data-testid="pill-remove" disabled={items.length <= 1} onClick={remove}>Убрать последнюю</button>
-            <button type="button" data-testid="pill-reset" onClick={reset}>Сбросить</button>
+            <FosButtonRoot family="utility" type="button" data-testid="pill-add" disabled={items.length >= 12} onClick={add}>+ Добавить</FosButtonRoot>
+            <FosButtonRoot family="utility" type="button" data-testid="pill-remove" disabled={items.length <= 1} onClick={remove}>Убрать последнюю</FosButtonRoot>
+            <FosButtonRoot family="utility" type="button" data-testid="pill-reset" onClick={reset}>Сбросить</FosButtonRoot>
           </div>
           <small data-testid="pill-filter-count">{items.length} фильтров · ограничение 12 только для демонстрации</small>
         </div>

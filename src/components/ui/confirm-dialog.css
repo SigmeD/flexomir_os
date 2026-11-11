@@ -26,17 +26,7 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 40px;
-  height: 40px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: #1f2228;
-  font: 400 24px/1 var(--fos-font-family);
-  cursor: pointer;
 }
-.fos-confirm-dialog__close:hover { background: #f6f7f9; }
-.fos-confirm-dialog__close:focus-visible { outline: 2px solid #1f3861; outline-offset: 1px; }
 .fos-confirm-dialog__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 12px; }
 .fos-confirm-dialog__actions .fos-action { min-width: 120px; height: 40px; min-height: 40px; border-radius: 20px; }
 @media (max-width: 360px) {

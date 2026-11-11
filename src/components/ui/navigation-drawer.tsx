@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { createPortal } from 'react-dom'
 import type { SidebarNavItem } from './sidebar-nav'
@@ -261,7 +262,7 @@ export function NavigationDrawer({
 
   return (
     <>
-      <button
+      <FosButtonRoot family="navigation"
         ref={triggerRef}
         type="button"
         className="fos-nav-drawer__trigger"
@@ -279,7 +280,7 @@ export function NavigationDrawer({
         <span aria-hidden="true" className="fos-nav-drawer__hamburger">
           <i /><i /><i />
         </span>
-      </button>
+      </FosButtonRoot>
       {rendered && createPortal(
         <div
           className="fos-nav-drawer__layer"

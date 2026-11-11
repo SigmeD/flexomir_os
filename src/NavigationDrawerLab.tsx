@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { useState } from 'react'
 import { NavigationDrawer } from '@/components/ui/navigation-drawer'
 import { clientNavigationDemoItems as clientItems, managerNavigationDemoItems as managerItems } from './navigation-demo-items'
@@ -45,21 +46,21 @@ export function NavigationDrawerLab() {
         <div className="nav-drawer-lab__settings">
           <span>Режим:</span>
           <div role="group" aria-label="Тестовая роль">
-            <button type="button" data-testid="drawer-role-client"
-              aria-pressed={role === 'client'} onClick={() => setRole('client')}>Клиент</button>
-            <button type="button" data-testid="drawer-role-manager"
-              aria-pressed={role === 'manager'} onClick={() => setRole('manager')}>Менеджер</button>
+            <FosButtonRoot family="utility" type="button" data-testid="drawer-role-client"
+              aria-pressed={role === 'client'} onClick={() => setRole('client')}>Клиент</FosButtonRoot>
+            <FosButtonRoot family="utility" type="button" data-testid="drawer-role-manager"
+              aria-pressed={role === 'manager'} onClick={() => setRole('manager')}>Менеджер</FosButtonRoot>
           </div>
         </div>
         <div className="nav-drawer-lab__settings" aria-label="Поведение меню после выбора">
           <span>Закрытие меню:</span>
           <div role="group" aria-label="Режим закрытия меню">
-            <button type="button" data-testid="drawer-mode-stay-open"
+            <FosButtonRoot family="utility" type="button" data-testid="drawer-mode-stay-open"
               aria-pressed={!closeOnSelection}
-              onClick={() => setCloseOnSelection(false)}>По клику вне меню</button>
-            <button type="button" data-testid="drawer-mode-close-after-lens"
+              onClick={() => setCloseOnSelection(false)}>По клику вне меню</FosButtonRoot>
+            <FosButtonRoot family="utility" type="button" data-testid="drawer-mode-close-after-lens"
               aria-pressed={closeOnSelection}
-              onClick={() => setCloseOnSelection(true)}>После перехода линзы</button>
+              onClick={() => setCloseOnSelection(true)}>После перехода линзы</FosButtonRoot>
           </div>
         </div>
         <section className="nav-drawer-lab__card">

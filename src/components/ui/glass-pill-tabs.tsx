@@ -1,3 +1,4 @@
+import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import {
   useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState,
   type CSSProperties, type KeyboardEvent, type PointerEvent,
@@ -242,7 +243,7 @@ export function GlassPillTabs({
             />
           </div>
           {items.map(item => (
-            <button
+            <FosButtonRoot family="segment"
               type="button"
               key={item.id}
               ref={node => {
@@ -258,7 +259,7 @@ export function GlassPillTabs({
               onClick={() => {
                 if (!item.disabled && item.id !== value) onValueChange(item.id)
               }}
-            ><span className="fos-glass-pill-tabs__label">{item.label}</span></button>
+            ><span className="fos-glass-pill-tabs__label">{item.label}</span></FosButtonRoot>
           ))}
         </div>
       </div>
