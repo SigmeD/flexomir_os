@@ -1,6 +1,22 @@
 import { expect, test } from '@playwright/test'
 
 const fixture = '/tests/fixtures/fos-select.html'
+
+test('placeholder stays in the empty field and native proxy, never in the open list', async ({ page }) => {
+  for (const suffix of ['', '?optional=1']) {
+    await page.goto(fixture + suffix)
+    const trigger = page.getByRole('combobox', { name: 'Выбор' })
+    await expect(trigger).toHaveText('Выберите значение')
+    await trigger.click()
+    const list = page.getByRole('listbox')
+    await expect(list.getByRole('option', { name: 'Выберите значение', exact: true })).toHaveCount(0)
+    await expect(list.getByRole('option')).toHaveCount(4)
+    await expect(page.locator('select option[value=""]')).toHaveText('Выберите значение')
+    await expect(page.getByTestId('change-count')).toHaveText('0')
+    await page.keyboard.press('Escape')
+    await expect(trigger).toHaveText('Выберите значение')
+  }
+})
 test('native form bridge preserves required validity, invalid focus, events, implicit values and reset', async ({ page }) => {
   await page.goto(fixture)
   const trigger = page.getByRole('combobox', { name: 'Выбор' })

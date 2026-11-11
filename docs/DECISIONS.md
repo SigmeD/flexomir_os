@@ -1,5 +1,9 @@
 # Flexomir OS — реестр решений и вопросов
 
+## Owner11.11 — подсказка Select только в поле
+
+По Screenshot_3 Owner попросил убрать «Выберите форму» из открытого Select глобально. Согласованное понимание: placeholder остаётся в пустом поле, label «Форма» и настоящие «Все статусы» сохраняются; Owner ответил «приступай». FOSSelectPopup исключает только placeholder items при отрисовке popup, native proxy/FormData/required/reset остаются. Это уточнение открытого списка1148:311, без новых masters/CSS/motion/API/ACL. [Карта и QA](SELECT_PLACEHOLDER_2026-11-11.md). Применяется standing поручение подключать/сливать принятую задачу после review/CI; полная M8 приёмка отдельно.
+
 ## Owner11.11 — принятое hover-поведение подключить ко всем dropdown
 
 Прямое поручение: «точно такое же компонент поведения, как реализован, можешь подключить к остальным выпвадающим спискам?» Разрешён перенос принятого Account v0.3 через общий FosPopup на More/FOSSelect/GlassSelect/NavigationDrawer, без отдельного эффекта/компонентных копий. Для real-selection popup временная цель не меняет значение/маршрут/aria-selection и возвращается на leave/keyboard; на время pending commit hover не ретаргетит линзу. CSS presence240ms и frozen physics/material прежние. Это заменяет прежнее Account-only ограничение interaction adapter и старые selection-only hover описания popup; desktop Sidebar не меняется. Standing поручение подключать и сливать принятые задачи действует после необходимых review/CI. [Карта и доказательства](POPUP_HOVER_ROLLOUT_2026-11-11.md). Новых ACL/API/файловых решений нет; full M8 acceptance OPEN.
