@@ -24,7 +24,7 @@ function ActionGlyph({ icon }: { icon: SectionAddItemIcon }) {
 /** Reuse the existing 44px Liquid Glass control; only the icon and accessible name change. */
 export function SectionAddItem({ palette = DEFAULT_ACTION_PALETTE, icon = 'plus', accessibleName, ...props }: SectionAddItemProps) {
   const name = accessibleName ?? (icon === 'file' ? 'Добавить файл' : 'Добавить позицию')
-  if (isNeutralAction(palette)) return <FOSAction {...props} type="button" palette={palette} shape="round" hierarchy="secondary" data-add-item className="fos-section-add fos-section-add--glass" aria-label={name} title={name}><ActionGlyph icon={icon} /></FOSAction>
+  if (isNeutralAction(palette)) return <FOSAction {...props} type="button" palette={palette} shape="round" hierarchy="secondary" data-add-item={icon === 'plus' ? true : undefined} data-add-file={icon === 'file' ? true : undefined} className="fos-section-add fos-section-add--glass" aria-label={name} title={name}><ActionGlyph icon={icon} /></FOSAction>
   return <ReferenceSectionAddItem {...props} icon={icon} accessibleName={name} />
 }
 
@@ -33,7 +33,7 @@ function ReferenceSectionAddItem({ icon, accessibleName, ref, onClick, onPointer
   const button = useRef<HTMLButtonElement>(null), glyph = useRef<HTMLSpanElement>(null)
   useImperativeHandle(ref, () => button.current!, [])
   const press = useDirectionalPress(button, glyph, props.disabled ?? false, 'fos-action')
-  return <FosButtonRoot {...props} ref={button} type="button" data-add-item data-pressed="false" className="fos-section-add" aria-label={accessibleName} title={accessibleName}
+  return <FosButtonRoot {...props} ref={button} type="button" data-add-item={icon === 'plus' ? true : undefined} data-add-file={icon === 'file' ? true : undefined} data-pressed="false" className="fos-section-add" aria-label={accessibleName} title={accessibleName}
     onClick={event => { if (press.allowsClick(event)) onClick?.(event) }}
     onPointerDown={event => { press.onPointerDown(event); onPointerDown?.(event) }}
     onPointerUp={event => { press.onPointerUp(event); onPointerUp?.(event) }}
