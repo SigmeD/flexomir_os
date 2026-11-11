@@ -34,7 +34,7 @@ Figma read-only session c31bae2e-08a1-47a8-88ea-057e57b78f2d, Date Field context
 - [x] Стенд: fos07-datepicker.html + src/Fos07DatePickerLab.tsx + scoped lab CSS. Client/Manager fixtures, native comparison, readonly/disabled/error/bounds/controlled rejection/reset. DEV-only отдельная Vite entry; App и обычные формы не меняются.
 - [x] Проверки: Chromium/Firefox/WebKit/touch; ISO/invalid/leap/year crossing/minmax/keyboard/focus/outside/required/FormData/reset; пять ширин1440/1024/768/390/320, zoom200%, reduced-motion/forced-colors и axe. Снимки и видео сохранять в output/playwright/fos07.
 - [x] npm run build; действующие date/order regressions и fingerprints5/5. Независимое review перед сдачей. Для новых browser API обращаться к Context7.
-- [ ] LIVE docs обновить в той же ветке/PR; показать ссылку и визуальные доказательства Owner. G-04 остаётся OPEN до решения. До приёмки не подключать обычные поля и не сливать эксперимент как принятый rollout.
+- [x] LIVE docs обновлены в той же ветке, открыт [Draft PR #41](https://github.com/SigmeD/flexomir_os/pull/41); ссылка и визуальные доказательства подготовлены для Owner. G-04 остаётся OPEN до решения. До приёмки не подключать обычные поля и не сливать эксперимент как принятый rollout.
 
 ## B2.8 — критерии приёмки
 
