@@ -136,6 +136,9 @@ test('signed-file add pilot reuses the same neutral 44px Liquid Glass action wit
 
   await expect(original).toHaveAttribute('aria-label', 'Добавить позицию')
   await expect(file).toHaveAttribute('aria-label', 'Добавить подписной бланк')
+  await expect(original).toHaveAttribute('data-add-item', 'true')
+  await expect(file).toHaveAttribute('data-add-file', 'true')
+  await expect(file).not.toHaveAttribute('data-add-item')
   await expect(file).toHaveCSS('width', '44px')
   await expect(file).toHaveCSS('height', '44px')
   await expect(file.locator('.fos-glass-material')).toHaveCount(1)
