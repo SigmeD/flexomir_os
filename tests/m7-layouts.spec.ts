@@ -76,7 +76,7 @@ for (const width of [1440, 1024, 768, 390, 320]) {
     await expect(page.getByTestId('artwork-library-selection')).toContainText('Локальный выбор')
     await expect(page.getByTestId('layout-picker')).toHaveCount(0)
     await expect(page.getByTestId('client-orders-screen').getByTestId('sidebar-nav-orders')).toHaveAttribute('aria-current', 'page')
-    await page.getByRole('button', { name: 'Мои макеты', exact: true }).click()
+    await page.getByRole('button', { name: 'Заменить макет', exact: true }).click()
     await page.getByTestId('layout-row-demo-layout-01').click()
     await page.getByRole('button', { name: 'Выбрать макет', exact: true }).click()
     await expect(page.getByTestId('layout-picker')).toHaveCount(0)
@@ -84,7 +84,7 @@ for (const width of [1440, 1024, 768, 390, 320]) {
     await expect(page.getByTestId('artwork-library-selection')).toContainText('Этикетка 100×150')
     await commitItem(page)
     await page.getByRole('button', { name: 'Изменить позицию 1' }).click()
-    await page.getByRole('button', { name: 'Мои макеты', exact: true }).click()
+    await page.getByRole('button', { name: 'Заменить макет', exact: true }).click()
     await expect(page.getByTestId('layout-picker')).toHaveAttribute('data-mode', 'replace')
     if (width >= 1024) {
       await expect(page.getByRole('navigation', { name: 'Хлебные крошки' })).toContainText('Этикетка DEMO')

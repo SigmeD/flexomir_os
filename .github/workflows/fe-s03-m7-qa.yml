@@ -26,7 +26,8 @@ on:
 jobs:
   m7:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # The full cross-browser sequence exceeded 20 minutes in run42988302669.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

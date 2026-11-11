@@ -1,5 +1,19 @@
 # Flexomir OS — передача работы
 
+## Продолжать с принятого rollout /11.11
+
+Ветка feat/fos12-artwork-source-pilot, PR #35 расширен по замечанию Owner. FOS12 принят наf509eba; Owner явно разрешил подключение FOS03/FOS12 и merge после QA. Код уже обычный: status gap8 у Composer/Detail обеих ролей, Manager32/24, ArtworkSource states в Client/Manager/production. Spacing60/Artwork52/build/production4 и независимый runtime19 PASS; полная700/финальный CI — в новом PR head. [Отчёт](ACCEPTED_UI_ROLLOUT_2026-11-11.md).
+
+После успешных проверок выполнить разрешённый merge, main/origin sync, remote cleanup и новую обычную ветку от свежего origin/main. Screenshot_1.png — пользовательский untracked, не менять/не коммитить; локальные ветки/stash сохранить. Ниже — предшествующие ограничения пилота, заменённые новым решением Owner.
+
+## Продолжать здесь — FOS12 /11.11
+
+Активная ветка `feat/fos12-artwork-source-pilot`, база main398a93b, PR33/34 MERGED. Пилот12 — общий ArtworkSource, только Client DEV artworkStates=pilot. [Отчёт](FOS12_REPORT_2026-11-11.md), [контракт](FOS12_ARTWORK_STATES_PILOT_2026-11-11.md), [галерея](http://127.0.0.1:5173/output/playwright/fos12/review/index.html).
+
+44 целевых+8 fixture,104 регрессионных, build, production2/2 PASS. Independent14 runtime checks/frozen5/5 PASS WITH RISKS. FUNCTIONAL/TECHNICAL local PASS, VISUAL Owner OPEN. Следующее — Draft PR/CI и Owner reference; rollout/merge не разрешены автоматически. Hidden native input в HELP disabled, checkbox не размонтируется и сохраняет focus. Storage/API/model не добавлены. Другие пункты03/02/05/07 и06/10/11/13 остаются отдельными.
+
+Ниже — основания предыдущей поставки; её ветку не переиспользовать.
+
 11.11.2026 Owner поручил «Сливай pr». PR #33 MERGED, main `b2b858f93e68c0543babe6564adb5224820cad91`; head `25eb159`, CI4/4. Удалённая ветка PR #33 удалена GitHub автоматически; локальные ветки и четыре stash сохранены.
 
 Поставка PR #34 включает main после PR #33. Семь конфликтов workflow/LIVE docs разрешены с сохранением обеих поставок; общие исходники объединены автоматически. В workflow сохранены проверки Wave A, кнопок и FOS03. [Wave A](NEXT_SCOPE_A_REPORT_2026-11-10.md), [кнопки](FOS08_09_REPORT_2026-11-10.md).

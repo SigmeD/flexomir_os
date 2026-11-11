@@ -1,5 +1,17 @@
 # Flexomir OS — состояние проекта
 
+## Сейчас — подключение принятых FOS03/FOS12 /11.11
+
+Owner принял FOS12-f509eba и явно поручил подключить все принятые варианты и слить PR #35. В рабочей ветке ArtworkSource действует в обоих кабинетах/production, Manager32/24 включён без флага, статус Composer/Detail находится в8px от H1. Случай Manager DEMO-002 со Screenshot_1 исправлен общим PageHeader. Локальные spacing60, Artwork52, production4, build и независимый review PASS; полная регрессия/новый CI фиксируются в PR до разрешённого merge. [Отчёт](ACCEPTED_UI_ROLLOUT_2026-11-11.md).
+
+Ниже — предыдущие этапы пилота и базы398a93b, не актуальное ограничение rollout.
+
+## Сейчас /11.11 — FOS12 DEV-пилот
+
+В ветке `feat/fos12-artwork-source-pilot` подготовлены empty/local/library/unavailable общего ArtworkSource в клиентском редакторе позиции. HELP сохраняет focus; выбор и отмена не меняют правила сохранения. Обычные экраны и production используют reference. Локальные проверки44+8 целевых,104 регрессионных, build и production2/2 PASS; независимое QA PASS WITH RISKS. Owner visual acceptance, rollout и merge OPEN. [Отчёт](FOS12_REPORT_2026-11-11.md), [живой экран](http://127.0.0.1:5173/?view=client-orders&artworkStates=pilot).
+
+Фактический main —398a93b, PR33/34 MERGED; финальный head5371c39 PR34 CI6/6 SUCCESS. Ниже — предшествующая поставка, не активная ветка.
+
 ## Текущая поставка / 11.11.2026
 
 По поручению Owner «Сливай pr» PR #33 слит в main: `b2b858f93e68c0543babe6564adb5224820cad91`, проверенный head `25eb159`, CI 4/4 SUCCESS. Исправлены Profile navigation/guard, required Select и устаревшее предупреждение artwork. [Отчёт Wave A](NEXT_SCOPE_A_REPORT_2026-11-10.md).

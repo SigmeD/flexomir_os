@@ -1,5 +1,21 @@
 # Flexomir OS — React Component Registry
 
+## Принятые варианты подключены /11.11
+
+ArtworkSource — один принятый вариант без presentation/reference/DEV API, все New/Edit/Repeat consumers Client+Manager и production. PageHeader status по умолчанию below-title, secondary остаётся below-row. Shared Composer/Detail компенсируют desktop flow20px, compact прежний; Manager Composer использует section32/block24 без query. FOSAction/LocalFileControl/FE11 не менялись. [Карта источников, Owner-решения и проверки](ACCEPTED_UI_ROLLOUT_2026-11-11.md). Нижняя карта пилота фиксируетf509eba до rollout.
+
+## FOS12 /11.11 — ArtworkSource, DEV-пилот
+
+Карта до JSX — в [контракте FOS12](FOS12_ARTWORK_STATES_PILOT_2026-11-11.md). Статус: local QA, OWNER VISUAL OPEN, не rollout.
+
+| Figma → React | Props / состояния | Потребители / решение |
+| --- | --- | --- |
+| Artwork634:445 + Client1791:6130/1782:6025 → ArtworkSource | EXTEND presentation=reference(default)/states; empty/local/library/unavailable/help из прежнего value | Один Client OrderItemForm через DEV artworkStates=pilot; остальные reference |
+| Native selection → LocalFileControl | REUSE API; chooser/drop/cancel/disabled. В HELP pilot hidden input disabled, checkbox DOM сохраняется | LayoutUploadPanel/Profile/reference не переключались |
+| Action835:243 → FOSAction/FosButtonRoot | REUSE: «Заменить макет»→picker, «Выбрать файл»→native chooser | Те же164×44/132×40 и принятый material/motion, без новых variants |
+
+Selected-library/unavailable masters отсутствуют: состояния предлагаются как пилот, не Figma parity PASS. [Проверки](FOS12_REPORT_2026-11-11.md).
+
 ## FOS08/09 · Кнопки системы
 
 FosButtonRoot — единственное место создания native button в JSX. Через него проходят действия, строки, навигация, поля, элементы меню, сегменты и служебные кнопки. Root передаёт ref, события, ARIA и нативные атрибуты формы. Варианты сохраняют свой визуальный и интерактивный контракт.
