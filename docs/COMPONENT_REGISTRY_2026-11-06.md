@@ -1,5 +1,9 @@
 # Flexomir OS — React Component Registry
 
+## CURRENT /11.11 — shared popup hover v0.3
+
+FosPopup → EXTEND: общий transient preview для actions/listbox/navigation; выбранное значение и semantic aria отдельно. Удалён Account-only actionPreview prop; общий marker data-hover-preview=v0.3 и прежняя240ms presence. `selectionPending` задаётся существующим adapter pending state. Enabled baseline определяется из реальных data-popup-item DOM rows, включая semantic GlassSelect; optional empty string валиден, disabled placeholder не является baseline. Frozen Rows/material REUSE,5/5 unchanged. Полная Figma→React→props/states→consumers карта и актуальные QA — [единый контракт поставки](POPUP_HOVER_ROLLOUT_2026-11-11.md). Охват: AccountMenu, OverflowMenu, FOSSelectPopup, GlassSelectContent, NavigationDrawer; все текущие popup consumers ordinary/production. Старое Account-only описание ниже историческое.
+
 ## FOS02 /11.11 — Account hover принят и подключён
 
 Owner уточнил hover-плавность: общий FosPopup.css/FosPopup владеют единым240ms presence, opacity+проявление прежнего optical target; одна lens сохраняется на fadeout/reentry, intent-ref защищает cleanup. Keyboard/touch/reduced/forced immediate. Пять frozen-файлов/physicalparameters прежние; это отдельная Account-only presentation, CSS changed вне frozenRows. Glass surface blur20/white.72 проверен без изменений. Final targeted29/11skip, regression61/3skip, production7/1skip; independent16behavior+12smooth(rootexecutor), reviewPASSWITHRISKS.

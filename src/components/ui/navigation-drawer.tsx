@@ -311,7 +311,7 @@ export function NavigationDrawer({
             contentClassName="fos-nav-drawer__content"
             data-testid="navigation-drawer-panel"
             style={panelPosition}
-            mode="navigation" selectedId={activeId} onSelect={requestSelection}
+            mode="navigation" selectedId={activeId} onSelect={requestSelection} selectionPending={pendingId !== null}
             items={items.map(item => ({ ...item, icon: item.icon ? <SidebarNavIcon name={item.icon} /> : undefined, testId: 'sidebar-nav-' + item.id }))}
             rowClassName="fos-sidebar-nav__item" labelClassName="fos-sidebar-nav__label" iconClassName="fos-sidebar-nav__icon"
             rowsClassName="fos-sidebar-nav__list" lensTestId="sidebar-selected-lens"

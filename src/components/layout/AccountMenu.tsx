@@ -57,7 +57,7 @@ export function AccountMenu({
           if (target instanceof Node && triggerRef.current?.contains(target)) event.preventDefault()
         }}
       >
-        <FosPopup mode="actions" actionPreview="account-hover-v0.3" className="fos-account-menu fos-popup--account" contentClassName="fos-account-menu__content"
+        <FosPopup mode="actions" className="fos-account-menu fos-popup--account" contentClassName="fos-account-menu__content"
           items={[{ id: 'profile', label: 'Настройки профиля' }, { id: 'company', label: 'Настройки компании', disabled: true }, { id: 'logout', label: 'Выйти', disabled: true }]}
           rowClassName="fos-account-menu__item" onSelect={id => { if (id === 'profile') { consumerFocus.current = true; onOpenProfile() } }}
           header={<div className="fos-account-menu__identity">

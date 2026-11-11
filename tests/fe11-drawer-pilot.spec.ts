@@ -1,9 +1,11 @@
 import { expect, test } from '@playwright/test'
 
+type GeometryFrame = { time: number; y: number; height: number; same: boolean; labels: Array<{ id?: string; top: number; bottom: number; scale: number; selected: boolean }> }
+
 test.use({ video: 'on' })
 test.beforeEach(async ({ page }) => { await page.goto('/?view=navigation-drawer') })
 
-test('candidate hover changes only text color; lens and type scale remain selected', async ({ page }, info) => {
+test('accepted popup hover previews one lens while the real navigation selection remains unchanged', async ({ page }, info) => {
   test.skip(info.project.use.hasTouch === true, 'Pointer preview is covered on desktop engines')
   await page.setViewportSize({ width: 390, height: 844 })
   await page.getByTestId('navigation-drawer-trigger').click()
@@ -15,14 +17,14 @@ test('candidate hover changes only text color; lens and type scale remain select
   const before = await lens.boundingBox()
   const color = await support.evaluate(el => getComputedStyle(el).color)
   await support.hover()
-  await expect(lens).toHaveAttribute('data-travel-target', '0')
+  await expect(lens).toHaveAttribute('data-travel-target', '96')
   await expect(orders).toHaveAttribute('aria-current', 'page')
   await expect(lens).toHaveAttribute('data-motion-state', 'settled')
-  expect(Math.abs((await lens.boundingBox())!.y - before!.y)).toBeLessThan(.8)
-  await expect.poll(() => support.locator('[data-popup-label]').evaluate(el => Number(getComputedStyle(el).getPropertyValue('--fos-sidebar-label-scale')))).toBe(1)
+  expect(Math.abs((await lens.boundingBox())!.y - before!.y - 96)).toBeLessThan(.8)
+  await expect.poll(() => support.locator('[data-popup-label]').evaluate(el => Number(getComputedStyle(el).getPropertyValue('--fos-sidebar-label-scale')))).toBeCloseTo(1.043, 4)
   await expect.poll(() => support.evaluate(el => getComputedStyle(el).color)).not.toBe(color)
   await expect(panel.locator('[data-motion="travel"]')).toHaveCount(1)
-  await page.screenshot({ path: `output/playwright/fe11-pilot/${info.project.name}-hover.png`, fullPage: true })
+  await page.screenshot({ path: `output/playwright/fe11-pilot/${info.project.name}-hover.png` })
   await panel.locator('.fos-nav-drawer__footer').hover()
   await expect(lens).toHaveAttribute('data-travel-target', '0')
   await expect(orders).toHaveAttribute('aria-current', 'page')
@@ -47,16 +49,24 @@ test('candidate arrows only focus; activation moves the same lens and Escape res
 })
 
 test('candidate intermediate frames follow geometric text intersection, never selected state', async ({ page }, info) => {
+  // The CI WebKit sample jumped from y85.469 (full old-label coverage) to
+  // y108.893 (no coverage), skipping the narrow partial-coverage interval.
+  // Reload under Clock before any app timers; run every native spring frame.
+  await page.clock.install({ time: new Date('2026-11-11T12:00:00Z') })
+  await page.reload()
   await page.getByTestId('navigation-drawer-trigger').click()
   await expect(page.locator('[data-motion-reference]')).toBeVisible()
-  await page.getByTestId('sidebar-nav-support').hover()
-  const frames = await page.evaluate(async () => {
+  // Isolate click-driven full travel; hover now intentionally previews the target.
+  // Viewport Y must not include the independent 190ms panel-entry transform.
+  await page.getByRole('dialog').evaluate(el => Promise.all(el.getAnimations().map(animation => animation.finished)))
+  await page.clock.pauseAt(new Date('2026-11-11T13:00:00Z'))
+  await page.evaluate(() => {
     const root = document.querySelector('[data-motion-reference]')!
     const lens = root.querySelector<HTMLElement>('[data-testid="sidebar-selected-lens"]')!
     const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-popup-item]')]
     const sample = () => {
       const box = lens.getBoundingClientRect()
-      return { y: box.top, height: box.height, same: root.querySelector('[data-testid="sidebar-selected-lens"]') === lens,
+      return { time: performance.now(), y: box.top, height: box.height, same: root.querySelector('[data-testid="sidebar-selected-lens"]') === lens,
         labels: buttons.map(button => {
           const label = button.querySelector<HTMLElement>('[data-popup-label]')!
           const rect = label.getBoundingClientRect()
@@ -65,20 +75,19 @@ test('candidate intermediate frames follow geometric text intersection, never se
         }) }
     }
     const result = [sample()]
+    Object.assign(window, { drawerGeometryFrames: result })
     buttons[2].click()
-    // Capture the React commit and actual spring frames; no production delay/RAF is added.
-    await new Promise<void>(resolve => {
-      let resting = 0
-      const capture = () => {
-        result.push(sample())
-        resting = lens.dataset.motionState === 'settled' && lens.dataset.travelTarget === '96' ? resting + 1 : 0
-        if (resting > 3 || result.length > 150) resolve()
-        else requestAnimationFrame(capture)
-      }
-      requestAnimationFrame(capture)
-    })
-    return result
+    // Capture real DOM/controller output; no production formula/driver is mocked.
+    let resting = 0
+    const capture = () => {
+      result.push(sample())
+      resting = lens.dataset.motionState === 'settled' && lens.dataset.travelTarget === '96' ? resting + 1 : 0
+      if (resting <= 3 && result.length <= 150) requestAnimationFrame(capture)
+    }
+    requestAnimationFrame(capture)
   })
+  await page.clock.runFor(2400)
+  const frames = await page.evaluate(() => (window as unknown as { drawerGeometryFrames: GeometryFrame[] }).drawerGeometryFrames)
   await info.attach('geometry-frames', { body: JSON.stringify(frames, null, 2), contentType: 'application/json' })
   expect(frames.every(frame => frame.same)).toBe(true)
   const start = frames[0].y, end = frames.at(-1)!.y
