@@ -186,4 +186,3 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
     </dialog>, document.body)}
   </div>
 }
-

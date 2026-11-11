@@ -41,14 +41,13 @@
   color: inherit; background: transparent; font: var(--fos-type-popup-item);
 }
 .fos-date-picker-popup .rdp-day_button:not(:disabled):hover,
-.fos-date-picker-popup :is(.rdp-button_previous, .rdp-button_next, .fos-date-picker-popup__close):not(:disabled):hover { background: var(--fos-v2-semantic-color-bg-subtle, #f6f7f9); }
+.fos-date-picker-popup :is(.rdp-button_previous, .rdp-button_next, .fos-date-picker-popup__close):not(:disabled):not([aria-disabled="true"]):hover { background: var(--fos-v2-semantic-color-bg-subtle, #f6f7f9); }
 .fos-date-picker-popup .rdp-selected .rdp-day_button { background: var(--fos-v2-semantic-color-border-selected, #1f3861); color: var(--fos-v2-semantic-color-bg-surface, white); }
 .fos-date-picker-popup .rdp-today:not(.rdp-selected) .rdp-day_button { border-color: currentColor; }
-.fos-date-picker-popup button:disabled { opacity: .42; cursor: default; }
+.fos-date-picker-popup button:is(:disabled, [aria-disabled="true"]) { opacity: .42; cursor: default; }
 .fos-date-picker-popup .rdp-outside { visibility: hidden; }
 .fos-date-picker-popup__help { margin: 12px 8px 4px; font-size: var(--fos-type-secondary-size); line-height: var(--fos-type-secondary-line-height); color: var(--fos-v2-semantic-color-text-secondary, #586d7c); }
 @media (forced-colors: active) {
   .fos-date-picker-popup .rdp-selected .rdp-day_button { background: Highlight; color: HighlightText; forced-color-adjust: none; }
-  .fos-date-picker-popup button:disabled { color: GrayText; opacity: 1; }
+  .fos-date-picker-popup button:is(:disabled, [aria-disabled="true"]) { color: GrayText; opacity: 1; }
 }
-

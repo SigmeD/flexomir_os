@@ -8,4 +8,3 @@
 .fos07-lab__data dd { margin: 0; overflow-wrap: anywhere; }
 .fos07-lab__check { display: flex; align-items: center; gap: 8px; margin-top: 24px; }
 @media (max-width: 600px) { .fos07-lab { margin-block: 24px; padding-inline: 12px; } .fos07-lab__surface { padding: 16px; } .fos07-lab__data { grid-template-columns: 1fr; } }
-

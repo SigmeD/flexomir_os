@@ -20,4 +20,3 @@ export function inputDate(value: string): string | undefined {
   return dateFromISO(iso) ? iso : undefined
 }
 export const russianDate = (date: Date) => new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(date).replace(/ г\.$/, '')
-

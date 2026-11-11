@@ -33,6 +33,10 @@ test('FOS07 readonly/disabled do not open; min/max exclude unavailable dates', a
   await expect(dialog.getByRole('button', { name: '9 ноября 2026', exact: true })).toBeDisabled()
   await expect(dialog.getByRole('button', { name: '21 ноября 2026', exact: true })).toBeDisabled()
   await expect(dialog.getByRole('button', { name: '20 ноября 2026', exact: true })).toBeEnabled()
+  for (const name of ['Перейти к следующему месяцу', 'Перейти к предыдущему месяцу']) {
+    await expect(dialog.getByRole('button', { name })).toHaveAttribute('aria-disabled', 'true')
+    await expect(dialog.getByRole('button', { name })).toHaveCSS('opacity', '0.42')
+  }
 })
 
 test('FOS07 manual date validation, native FormData, reset and rejected selection', async ({ page }) => {

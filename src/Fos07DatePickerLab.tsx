@@ -47,4 +47,3 @@ function DatePickerLab() {
 
 // This entry is served only by Vite DEV; ordinary production routing is unchanged.
 if (import.meta.env.DEV) createRoot(document.getElementById('root')!).render(<StrictMode><DatePickerLab /></StrictMode>)
-
