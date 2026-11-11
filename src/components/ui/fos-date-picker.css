@@ -1,0 +1,54 @@
+.fos-date-picker { position: relative; min-width: 0; }
+.fos-date-picker .fos-field__control { padding-right: 52px; }
+.fos-date-picker__trigger {
+  position: absolute; top: 26px; right: 0; width: 44px; height: 44px;
+  display: grid; place-items: center; border: 0; background: transparent;
+  color: var(--fos-v2-semantic-color-text-secondary, #737781); border-radius: 8px;
+}
+.fos-date-picker__trigger:focus-visible,
+.fos-date-picker-popup button:focus-visible { outline: 2px solid var(--fos-glass-focus, #1a6bbf); outline-offset: -3px; }
+.fos-date-picker__trigger:disabled { opacity: .42; cursor: default; }
+.fos-date-picker__icon { position: relative; width: 20px; height: 20px; }
+.fos-date-picker__icon::before { content: ''; position: absolute; left: 3px; top: 4px; width: 14px; height: 13px; border: 1.5px solid currentColor; border-radius: 2px; }
+.fos-date-picker__icon i { position: absolute; background: currentColor; }
+.fos-date-picker__icon i:nth-child(1) { left: 4px; top: 8px; width: 12px; height: 1px; }
+.fos-date-picker__icon i:nth-child(2), .fos-date-picker__icon i:nth-child(3) { top: 2px; left: 7px; width: 1.5px; height: 4px; border-radius: .75px; }
+.fos-date-picker__icon i:nth-child(3) { left: 13px; }
+.fos-date-picker-dialog {
+  position: fixed; inset: auto; margin: 0; padding: 0; border: 0; overflow: visible;
+  width: var(--fos-date-width, min(360px, calc(100vw - 24px))); max-width: none; max-height: var(--fos-date-max-height, calc(100dvh - 24px));
+  background: transparent; color: var(--fos-v2-semantic-color-text-primary, #1f2228);
+}
+.fos-date-picker-dialog::backdrop { background: transparent; }
+.fos-date-picker-popup > .fos-popup-surface__content { padding: 12px; max-height: var(--fos-date-max-height, calc(100dvh - 24px)); overflow-y: auto; overscroll-behavior: contain; }
+.fos-date-picker-popup__header { display: flex; align-items: center; justify-content: space-between; padding-left: 8px; font: var(--fos-type-popup-item); }
+.fos-date-picker-popup__close, .fos-date-picker-popup .rdp-button_previous, .fos-date-picker-popup .rdp-button_next {
+  display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: 14px; color: inherit; background: transparent;
+}
+.fos-date-picker-popup__close { font-size: 24px; }
+.fos-date-picker-popup .rdp-root { position: relative; width: 100%; }
+.fos-date-picker-popup .rdp-months { position: relative; }
+.fos-date-picker-popup .rdp-month_caption { display: flex; align-items: center; min-height: 48px; padding-inline: 8px 96px; font: var(--fos-type-popup-item); }
+.fos-date-picker-popup .rdp-caption_label { text-transform: capitalize; }
+.fos-date-picker-popup .rdp-nav { position: absolute; right: 0; top: 0; display: flex; height: 48px; align-items: center; }
+.fos-date-picker-popup .rdp-chevron { width: 20px; height: 20px; fill: currentColor; }
+.fos-date-picker-popup .rdp-month_grid { width: 100%; table-layout: fixed; border-spacing: 0; }
+.fos-date-picker-popup .rdp-weekday { height: 32px; font-weight: 400; font-size: var(--fos-type-secondary-size); color: var(--fos-v2-semantic-color-text-secondary, #586d7c); }
+.fos-date-picker-popup .rdp-day { padding: 0; text-align: center; height: 44px; }
+.fos-date-picker-popup .rdp-day_button {
+  display: block; width: 100%; height: 44px; padding: 0; border: 1px solid transparent; border-radius: 14px;
+  color: inherit; background: transparent; font: var(--fos-type-popup-item);
+}
+.fos-date-picker-popup .rdp-day_button:not(:disabled):hover,
+.fos-date-picker-popup :is(.rdp-button_previous, .rdp-button_next, .fos-date-picker-popup__close):not(:disabled):hover { background: var(--fos-v2-semantic-color-bg-subtle, #f6f7f9); }
+.fos-date-picker-popup .rdp-selected .rdp-day_button { background: var(--fos-v2-semantic-color-border-selected, #1f3861); color: var(--fos-v2-semantic-color-bg-surface, white); }
+.fos-date-picker-popup .rdp-today:not(.rdp-selected) .rdp-day_button { border-color: currentColor; }
+.fos-date-picker-popup button:disabled { opacity: .42; cursor: default; }
+.fos-date-picker-popup .rdp-outside { visibility: hidden; }
+.fos-date-picker-popup__help { margin: 12px 8px 4px; font-size: var(--fos-type-secondary-size); line-height: var(--fos-type-secondary-line-height); color: var(--fos-v2-semantic-color-text-secondary, #586d7c); }
+@media (forced-colors: active) {
+  .fos-date-picker-popup .rdp-selected .rdp-day_button { background: Highlight; color: HighlightText; forced-color-adjust: none; }
+  .fos-date-picker-popup button:disabled { color: GrayText; opacity: 1; }
+}
+

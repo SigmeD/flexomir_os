@@ -1,5 +1,7 @@
 # Flexomir OS — источники проекта
 
+№07 /11.11: новое поручение Owner реализовать B2.5–B2.8. CURRENT Date Field1169:437 и popup1914:655 перечитаны с context/screenshot; metadata FOS Masters1688:532 не содержит отдельного календарного мастера. Figma read-only session c31bae2e-08a1-47a8-88ea-057e57b78f2d; canvas не менялась. Context7 /gpbl/react-day-picker/v9.14.0 и APG DatePicker dialog использованы для библиотечной/keyboard части. [Карта, ссылки и ограничения](FOS07_DATEPICKER_PILOT_2026-11-11.md).
+
 Ревизия сводок: 11.11.2026. Следующая — 25.11.2026. Этой правкой сверены GitHub, локальный Git и существующий Drive CURRENT; нормативные SRS/Scope/Governance и Figma canvas не изменялись.
 
 ## Как выбирать источник

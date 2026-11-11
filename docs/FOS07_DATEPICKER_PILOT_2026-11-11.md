@@ -29,11 +29,11 @@ Figma read-only session c31bae2e-08a1-47a8-88ea-057e57b78f2d, Date Field context
 
 ## B2.7 — проверяемый план
 
-- [ ] RED: tests/fos07-datepicker.spec.ts и playwright.fos07.config.ts. Открытие RU grid на отдельном /fos07-datepicker.html, выбор ISO, readonly/disabled и min/max. Запустить Chromium, сохранить исходный FAIL отсутствующего пилота.
-- [ ] GREEN: src/components/ui/fos-date-picker.tsx + date-only.ts + fos-date-picker.css. DayPicker9.14.0; existing FOSInput/FosPopup/FosButtonRoot. Форма и focus lifecycle в adapter, без изменения frozen или FOSDateField.
-- [ ] Стенд: fos07-datepicker.html + src/Fos07DatePickerLab.tsx + scoped lab CSS. Client/Manager fixtures, native comparison, readonly/disabled/error/bounds/controlled rejection/reset. DEV-only отдельная Vite entry; App и обычные формы не меняются.
-- [ ] Проверки: Chromium/Firefox/WebKit/touch; ISO/invalid/leap/year crossing/minmax/keyboard/focus/outside/required/FormData/reset; пять ширин1440/1024/768/390/320, zoom200%, reduced-motion/forced-colors и axe. Снимки и видео сохранять в output/playwright/fos07.
-- [ ] npm run build; действующие date/order regressions и fingerprints5/5. Независимое review перед сдачей. Для новых browser API обращаться к Context7.
+- [x] RED: tests/fos07-datepicker.spec.ts и playwright.fos07.config.ts. Открытие RU grid на отдельном /fos07-datepicker.html, выбор ISO, readonly/disabled и min/max. Запустить Chromium, сохранить исходный FAIL отсутствующего пилота.
+- [x] GREEN: src/components/ui/fos-date-picker.tsx + date-only.ts + fos-date-picker.css. DayPicker9.14.0; existing FOSInput/FosPopup/FosButtonRoot. Форма и focus lifecycle в adapter, без изменения frozen или FOSDateField.
+- [x] Стенд: fos07-datepicker.html + src/Fos07DatePickerLab.tsx + scoped lab CSS. Client/Manager fixtures, native comparison, readonly/disabled/error/bounds/controlled rejection/reset. DEV-only отдельная Vite entry; App и обычные формы не меняются.
+- [x] Проверки: Chromium/Firefox/WebKit/touch; ISO/invalid/leap/year crossing/minmax/keyboard/focus/outside/required/FormData/reset; пять ширин1440/1024/768/390/320, zoom200%, reduced-motion/forced-colors и axe. Снимки и видео сохранять в output/playwright/fos07.
+- [x] npm run build; действующие date/order regressions и fingerprints5/5. Независимое review перед сдачей. Для новых browser API обращаться к Context7.
 - [ ] LIVE docs обновить в той же ветке/PR; показать ссылку и визуальные доказательства Owner. G-04 остаётся OPEN до решения. До приёмки не подключать обычные поля и не сливать эксперимент как принятый rollout.
 
 ## B2.8 — критерии приёмки
@@ -42,3 +42,17 @@ FUNCTIONAL: выбор одной даты всеми видами ввода, �
 TECHNICAL: build, browser QA, axe, frozen fingerprints; статус CI только по фактическому head.
 VISUAL: закрытое поле сверяется с1169:437; открытый popup — изолированный кандидат на существующей поверхности. Owner выбирает принять/доработать/оставить native. Полная визуальная приёмка M8 и backend-ready не заявляются.
 
+
+## Проверки и открытая приёмка
+
+Первичный RED воспроизвёл отсутствие пилота. Расширенный прогон нашёл повторный выбор дня без закрытия и выход popup за экран при CSS zoom200%; причины исправлены в adapter. Independent review выявил callback readonly при reset, рассинхрон controlled rejection и неверный начальный фокус для полностью прошлого диапазона; все три воспроизведены до исправления. Результаты до исправлений сохранены отдельно в output/playwright/fos07. Пороговые проверки не ослаблялись.
+
+Авторский финальный набор:40/40 PASS Chromium/Firefox/WebKit/touch,0 skipped/unexpected/flaky. Включает обе роли, пять ширин1440/1024/768/390/320, CSS zoom200%, reduced-motion/forced-colors, axe без нарушений, manual/required/FormData/reset/rejection, keyboard/leap/year0001/9999 и UTC+14/UTC−8.40 rawPNG сохранены. Выполнены отдельные 34 проверки существующих OrderComposer/Detail и frozen contract: PASS, 0 skipped/unexpected/flaky. Build238modules PASS, production assets остались прежними; fingerprints5/5. Новая отдельная DEV entry не включена в обычную production сборку.
+
+Независимый script SHA256 60A3931C447ABC323E83B148C79FB32CFF553EB9A016FCC8DBF02EA53A46F326 выполнен root неизменно:10/10PASS Chromium/WebKit, включая real touch. Автор script проверяет source hashes/results/PNG; это не независимое исполнение всех браузерных наборов.
+
+Дополнительный независимый сценарий C3F3CBED4AB9D5B42C4A4232BF2466DAE16616E36C3CE690F8A01D9E6928022A:2/2PASS Chromium/WebKit. Он проверяет исправление invalid manual draft повторным выбором принятой даты. Отдельный авторский RED подтвердил дефект до исправления; на activation отображение теперь сверяется с accepted controlled value даже при unchanged/rejected prop.
+
+Пилот: http://127.0.0.1:5173/fos07-datepicker.html ; [галерея и видео](http://127.0.0.1:5173/output/playwright/fos07/review/index.html). Native calendar и все обычные order consumers сохранены. Закрытые поля используют тот же FOSInput/Field:44px,8px radius,label13/18/600,body14/20. Readonly без calendar trigger, error/helper прежние. Popup использует существующие20px/blur20/surface/motion; геометрия календарной сетки — новый кандидат, не утверждённый Figma master. CSS zoom200% проверен с keyboard open и visualViewport bounds; pointer/touch отдельно на пяти ширинах. Реальные устройства и ручной NVDA/VoiceOver ещё не проверены.
+
+G-04 OWNER OPEN: приёмка пилота, обычный rollout и merge экспериментальной задачи ожидают решения Owner. Глобальная визуальная приёмка M8 и API/production-ready не заявляются.
