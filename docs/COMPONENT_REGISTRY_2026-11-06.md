@@ -1,5 +1,8 @@
 # Flexomir OS — React Component Registry
 
+Проверено 11.11.2026: изменения ниже подключены и слиты в PR #35–38. Обычные Client/Manager и production используют ArtworkSource states, принятые отступы, общий hover и Select без placeholder-строки. [Текущее состояние](PROJECT_STATE.md), [план](DELIVERY_PLAN.md).
+Ниже сохранены подробные датированные карты/контракты. Старые DEV-only, Account-only и OWNER OPEN в истории не отменяют более позднее явное решение Owner; текущие статусы — в [индексе решений](DECISIONS.md#актуальный-индекс--11112026). Геометрия мастеров, scope ролей и frozen manifest сохраняются.
+
 ## CURRENT /11.11 — placeholder не является пунктом Select
 
 Select1148:311/292 → FOSSelect → FOSSelectPopup → FosPopup: EXTEND visible items filter по existing emptyIsPlaceholder/id. Trigger/full native options REUSE; required/reset/value/onChange прежние. Consumers: Client/Manager Shape/Material, Manager company, shared lab. CompanyOrders status/sorting explicitfalse сохраняют semantic empty. GlassSelect placeholder уже только в Trigger, без изменения semantic rows. [Полная карта/QA](SELECT_PLACEHOLDER_2026-11-11.md). Frozen5/5/hover/material прежние.

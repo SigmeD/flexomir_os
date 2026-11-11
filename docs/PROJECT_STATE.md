@@ -1,81 +1,51 @@
 # Flexomir OS — состояние проекта
 
-## CURRENT /11.11 — placeholder Select только в поле
-
-PR37 MERGED, main/origin3317d50. По Screenshot_3 и подтверждённому поручению Owner общий FOSSelectPopup исключает placeholder из видимого списка; закрытое пустое поле, label и native proxy сохраняются. Реальные empty filter options (Все статусы) прежние. Ветка fix/select-placeholder-options. Локально forms128PASS, FOS04 12PASS, hover13PASS/3conditionalSKIP, production15/15checks +12PNG, build238modulesPASS; reviewer-authored5/5 исполнены root, frozen5/5. [Контракт и доказательства](SELECT_PLACEHOLDER_2026-11-11.md). Далее review/CI фактическогоhead → разрешённый merge → main/Drive sync. DatePicker07 не начат; нижние CURRENT записи — история.
-
-## CURRENT /11.11 — общий hover выпадающих меню
-
-CI начального head4c8bd86 не дошёл до тестов: apt DNS Ubuntu. Необходимая стабилизация четырёхworkflow — официальный Playwright1.64.1 image, pinned digest, matching-version guard; npm/build/testcommands/браузеры/пороги прежние. [Диагноз и новый CI gate](POPUP_HOVER_ROLLOUT_2026-11-11.md#ci-установка-окружения-1111).
-
-PR36 уже MERGED, база этой поставки main/origin `4ae4841`. По новому прямому поручению Owner принятое Account-поведение v0.3 подключено через один FosPopup к More, FOSSelect, GlassSelect и NavigationDrawer. Hover временный: данные, aria-selection, фокус и маршрут не меняет; leave/keyboard возвращают реальную selection, pending commit защищён. Обычные Client/Manager и production включены без флагов; frozen5/5 прежние. [Карта компонентов, проверки и доказательства](POPUP_HOVER_ROLLOUT_2026-11-11.md).
-
-Локально: новый hover23PASS/9conditionalSKIP, form re-audit124PASS, Account29/11SKIP, Profile/popup61/3SKIP, Drawer pilot19/5SKIP + navigation88PASS, production14/6SKIP, buildPASS238modules. Независимые8/8 Chromium/WebKit проверки авторства reviewer выполнены root, source/JSON/PNG проверены reviewer. Один PR из `feat/popup-hover-rollout`; CI и merge проверяются на фактическом head. Standing разрешение Owner на merge принятое действует. Полная M8 visual acceptance, DatePicker07 и backend остаются OPEN. Предыдущие записи ниже — история, не текущие ограничения Account-only.
-
-## Сейчас — принятое Account hover /11.11
-
-PR35 MERGED, main/originbc880b1. Owner разрешил пилот02, затем принял hover-сценарий; по действующему поручению о подключении/merge принятых задач Account hover включён на обычных Client/Manager/production. Ветка feat/fos02-account-hover-pilot. Targeted29PASS/11SKIP, regression61PASS/3SKIP, production7PASS/1SKIP, build и независимый review16 поведения +12 сглаживания PASS WITH RISKS; frozen5/5 неизменны. [Результат/границы](FOS02_ACCOUNT_PREVIEW_2026-11-11.md). Далее CI фактического PR head → разрешённый merge → main/Drive sync. Полная M8 visual acceptance остаётсяOPEN. Ниже — предыдущие этапы.
-
-## Сейчас — подключение принятых FOS03/FOS12 /11.11
-
-Owner принял FOS12-f509eba и явно поручил подключить все принятые варианты и слить PR #35. В рабочей ветке ArtworkSource действует в обоих кабинетах/production, Manager32/24 включён без флага, статус Composer/Detail находится в8px от H1. Случай Manager DEMO-002 со Screenshot_1 исправлен общим PageHeader. Локальные spacing60, Artwork52, production4, build и независимый review PASS; полная регрессия/новый CI фиксируются в PR до разрешённого merge. [Отчёт](ACCEPTED_UI_ROLLOUT_2026-11-11.md).
-
-Ниже — предыдущие этапы пилота и базы398a93b, не актуальное ограничение rollout.
-
-## Сейчас /11.11 — FOS12 DEV-пилот
-
-В ветке `feat/fos12-artwork-source-pilot` подготовлены empty/local/library/unavailable общего ArtworkSource в клиентском редакторе позиции. HELP сохраняет focus; выбор и отмена не меняют правила сохранения. Обычные экраны и production используют reference. Локальные проверки44+8 целевых,104 регрессионных, build и production2/2 PASS; независимое QA PASS WITH RISKS. Owner visual acceptance, rollout и merge OPEN. [Отчёт](FOS12_REPORT_2026-11-11.md), [живой экран](http://127.0.0.1:5173/?view=client-orders&artworkStates=pilot).
-
-Фактический main —398a93b, PR33/34 MERGED; финальный head5371c39 PR34 CI6/6 SUCCESS. Ниже — предшествующая поставка, не активная ветка.
-
-## Текущая поставка / 11.11.2026
-
-По поручению Owner «Сливай pr» PR #33 слит в main: `b2b858f93e68c0543babe6564adb5224820cad91`, проверенный head `25eb159`, CI 4/4 SUCCESS. Исправлены Profile navigation/guard, required Select и устаревшее предупреждение artwork. [Отчёт Wave A](NEXT_SCOPE_A_REPORT_2026-11-10.md).
-
-Поставка PR #34 включает эту базу и совместные проверки. Кнопки FOS08/09 и DEV-отступы FOS03 визуально приняты на `6007e60`; распространение отступов за пределы DEV-пилота остаётся открытым. [Кнопки и проверки](FOS08_09_REPORT_2026-11-10.md), [FOS03](FOS03_HEADER_AUDIT_2026-11-10.md).
-
-Исходный WebKit FAIL на `9bad864` сохранён. Проверка амплитуды быстрого клика теперь использует управляемый clock с прежними порогами .02/.01; рабочая анимация и frozen FE11 не изменены. На объединённых исходниках сборка PASS, motion54 PASS/2 штатных SKIP, frozen5/5. Полная регрессия и CI — отдельные проверки: фактические head, результаты и merge SHA доступны в [PR #34](https://github.com/SigmeD/flexomir_os/pull/34) и [CI](https://github.com/SigmeD/flexomir_os/pull/34/checks), post-merge статус — в существующем Drive CURRENT. Разрешение Owner на merge получено; оно не закрывает полную визуальную приёмку M8, API и выпуск.
+Актуализировано 11.11.2026. Следующая ревизия сводок — 25.11.2026.
+Очередность определяет [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); PR и SHA сверяются в GitHub. Последний инкремент интерфейса — [PR #38](https://github.com/SigmeD/flexomir_os/pull/38), merge `26768f9f019563092c17488def2070bf34f26e71`. Это база проверенного кода приложения; документационные коммиты могут идти после неё.
 
 ## Что работает сейчас
 
-React-интерфейс клиента и менеджера на демонстрационных данных. Клиент создаёт заказ с одной или несколькими позициями, выбирает макет, отправляет заказ менеджеру в рамках демосессии и повторяет завершённый заказ. Менеджер видит заказы и компании, создаёт внутренний черновик для выбранной компании. У обеих ролей есть профиль и собственные обращения в поддержку; менеджер не является оператором клиентской поддержки.
+- Client и Manager используют общие экраны, формы, меню, кнопки и демонстрационные данные. Доступны заказы, позиции, компании менеджера, макеты, поддержка и профиль.
+- Переход из профиля в «Заказы» сохраняет действующий guard несохранённых изменений.
+- Принятые отступы Manager Composer и статус в 8 px от H1 подключены на обычных экранах. Состояния ArtworkSource empty/local/library/unavailable/HELP доступны в обоих кабинетах без DEV-флага.
+- Account, «Ещё», FOSSelect, GlassSelect и мобильная навигация используют общий hover v0.3. Hover меняет только визуальную цель; выбор, маршрут и фокус прежние. Leave/keyboard возвращают реальную selection; pending commit защищён.
+- Подсказки «Выберите…» видны только в пустом поле Select. В открытом списке нет placeholder-строки; реальные варианты «Все статусы» сохраняются.
+- Общие OrderDateFields/FOSDateField имеют высоту 44 px и desktop-колонку до 506 px. Клиентский «Согласованный срок» readonly: в новом заказе пустой, в просмотре берётся из данных. Он не копируется из желаемого срока и не наследуется повторному заказу.
+- Меню сохраняют Manrope 14/18/500; физика и материал FE11-v0.2 заморожены по [manifest](FE11_MOTION_FROZEN_V0_2.json), reference `f527bcb`.
 
-В клиентском заказе видны два срока:
-
-- «Желаемый срок» — пожелание клиента.
-- «Согласованный срок» — всегда только для чтения. В новом заказе пустой; в просмотре берётся из существующих данных заказа. Желаемая дата не подставляется вместо согласованной, повторный заказ её не наследует.
-
-Создание и просмотр используют общий OrderDateFields и существующий FOSDateField: высота 44 px, desktop-колонка до 506 px; на планшете ширина зависит от доступного места, на телефоне поля идут друг под другом.
-
-Общие меню работают через FosPopup, поля выбора — через FOSSelect. Сохранены Manrope 14/18/500 для пунктов меню и замороженный FE11 v0.2, reference f527bcb. Правила защиты — в [AGENTS.md](../AGENTS.md) и [freeze manifest](FE11_MOTION_FROZEN_V0_2.json).
+Демосессия хранится в памяти страницы и сбрасывается при перезагрузке. Файлы не отправляются на сервер; создание заказа в 1С отключено.
 
 ## Что вошло в последнюю поставку
 
-В PR #31 проверены экраны Client/Manager, исправлены название вкладки браузера и хлебные крошки обращения клиента. Унифицированы размеры дат и добавлен согласованный срок клиенту. Исправлены два тестовых сценария: ожидание демопанели и клик по видимой части комментария для закрытия меню.
+| Поставка | Результат и проверенный merge |
+| --- | --- |
+| [PR #33](https://github.com/SigmeD/flexomir_os/pull/33) | Profile→Orders, required Select, безопасная часть artwork warning; `b2b858f` |
+| [PR #34](https://github.com/SigmeD/flexomir_os/pull/34) | Единые кнопки и принятый spacing pilot; `398a93b` |
+| [PR #35](https://github.com/SigmeD/flexomir_os/pull/35) | Подключение принятых FOS03/FOS12 в обычных экранах; `bc880b1` |
+| [PR #36](https://github.com/SigmeD/flexomir_os/pull/36) | Account hover и сглаживание 240 ms; `4ae4841` |
+| [PR #37](https://github.com/SigmeD/flexomir_os/pull/37) | Общий hover остальных popup и стабильное CI-окружение; `3317d50` |
+| [PR #38](https://github.com/SigmeD/flexomir_os/pull/38) | Placeholder Select только в пустом поле; `26768f9` |
 
-PR #30 с общими popup-компонентами также уже слит. Его рабочую ветку и ветку PR #31 повторно не использовать.
+Все перечисленные PR слиты. Ожидание их приёмки/CI/merge больше не является текущей задачей. Полная визуальная приёмка экранов M8 остаётся отдельным gate.
 
 ## Проверки и доказательства
 
-| Проверка | К чему относится | Результат |
+| Поставка | CI фактического head | Проверки после merge |
 | --- | --- | --- |
-| Orders Core UI QA и FE-S03 M7 UI QA | Последний PR head f991bd77 | Обе CI-проверки успешны |
-| Сборка после merge | main a400b9d | PASS |
-| Клиентские даты и связанные сценарии | Изменение отображения даты, head 79d0529 | 40 Chromium + 8 Firefox/WebKit — PASS |
-| Исправленный outside-click | Финальный тестовый diff | 12 повторных проверок и полный popup-набор 35/35 — PASS |
-| Полная локальная регрессия | Более ранний head 51d93be | 520 PASS / 4 ожидаемых пропуска; не новый полный прогон |
+| PR #37, head `678bf46` | 4/4 SUCCESS: [Orders](https://github.com/SigmeD/flexomir_os/actions/runs/43049308099), [Hover](https://github.com/SigmeD/flexomir_os/actions/runs/43049308060), [Drawer](https://github.com/SigmeD/flexomir_os/actions/runs/43049308061), [M7](https://github.com/SigmeD/flexomir_os/actions/runs/43049308110) | Build 238 modules; production 14 PASS / 6 условных SKIP; frozen contract 4/4 PASS |
+| PR #38, head `a13cd0b` | 3/3 SUCCESS: [Orders](https://github.com/SigmeD/flexomir_os/actions/runs/43059507333), [Hover](https://github.com/SigmeD/flexomir_os/actions/runs/43059507183), [M7](https://github.com/SigmeD/flexomir_os/actions/runs/43059507218) | Новый build 238 modules; production 15/15; frozen fingerprints 5/5 |
 
-Подробности, исходные падения, границы независимого review и пути к снимкам — в [итоговом аудите M8](M8_FINAL_AUDIT_2026-11-10.md). Исходные 69 сравнений экранов и последние 18 снимков полей относятся к разным проверкам; одно не подменяет другое.
+Сценарии, исходные падения и границы QA сохранены в [контракте hover](POPUP_HOVER_ROLLOUT_2026-11-11.md), [контракте Select](SELECT_PLACEHOLDER_2026-11-11.md) и [итоговом аудите M8](M8_FINAL_AUDIT_2026-11-10.md). Reviewer-authored браузерные проверки исполнял root из-за child browser EPERM; reviewer проверил JSON, hashes и PNG. Видео и результаты в output локальны и не входят в Git. Старые 520/4, 582/4 и другие прогоны не являются новыми проверками текущего HEAD.
 
 ## Что осталось открытым
 
-- Действие менеджера для фиксации согласованного срока и точный момент перехода в «В работе».
-- Публикация внутреннего черновика клиенту, реальные фильтры/поиск/сортировка и соответствие статусов данным 1С.
-- Приёмка всех утверждённых экранов; Auth design, отдельные сценарии макетов и поддержки.
-- Настоящий вход, серверные права, хранение файлов, API и обмен с 1С. Это зона Алексея; frontend подключается к согласованному готовому API.
+- Следующий UI-блок — №07 Glass DatePicker: отдельный пилот и решение Owner/G-04. Реализация не начата.
+- №05: Save UX/G-02; действует dirty && valid. №06: права и статусы дублирования/удаления позиций.
+- №10/13: хранение файлов и связь Item↔Library; №11: вложения поддержки. Нужны решения Owner/PO и готовые контракты Алексея.
+- Действие менеджера для фиксации согласованного срока, публикация черновика клиенту и event→«В работе». Сохранение даты не меняет статус автоматически.
+- Полная визуальная приёмка M8, Auth, реальные поиск/фильтры/сортировка и сопоставление статусов 1С; [issue #21](https://github.com/SigmeD/flexomir_os/issues/21) не закрывается техническим merge.
+- M9: подключение к согласованным API, серверные права, storage и 1С. Backend и интеграция принадлежат Алексею.
 
-Данные демосессии сбрасываются при перезагрузке, выбранные файлы не отправляются на сервер. Кнопка создания заказа в 1С отключена. [Issue #21](https://github.com/SigmeD/flexomir_os/issues/21) не закрыт автоматически после merge.
+Исторические remote-ветки очищены: удалены 7 refs, main не менялась; автоудаление head-веток включено. Локальные ветки и 4 stash сохранены. [Проверка Git](GIT_BRANCH_CLEANUP_2026-11-11.md); полный issue #13 остаётся открытым из-за отдельного объёма защиты main.
 
-Следующий порядок работы — в [локальном плане](DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Старые сводки сохранены в Git, действующие решения — в [реестре решений](DECISIONS.md).
-
-Ревизия: 10.11.2026. Следующая: 24.11.2026.
+Следующий порядок действий — [план](DELIVERY_PLAN.md), [handoff](HANDOFF.md) и [реестр решений](DECISIONS.md).
