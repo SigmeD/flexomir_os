@@ -25,18 +25,33 @@ Codex реализовал через общие OrderItemForm/OrderComposer:
 | `npm run build` | PASS; стандартное предупреждение Vite о размере JS chunk остаётся |
 | `npx playwright test --config=playwright.fos06.config.ts --workers=2` | **60/60 PASS**, Chromium/Firefox/WebKit/Chromium touch; обе роли, Draft/Review, explicit save/cancel, guard, lock, invalid artwork, keyboard/focus и пять ширин |
 | `npx playwright test tests/order-compose.spec.ts tests/fos05-save.spec.ts tests/next-scope-a.spec.ts tests/order-detail.spec.ts tests/m7-layouts.spec.ts tests/fe11-frozen-contract.spec.ts --workers=2 --reporter=line --output=output/playwright/fos06/regression-final` | **142/142 PASS** на Chromium1440/390; включая полные пять ширин в сценариях и frozen manifest |
-| Production preview5187 | **6/6 PASS**: Client copy и Client/Manager delete/cancel/empty, 1440 и настоящий touch320; сборка без DEV-панели |
+| Production preview5187 | **6/6 PASS**: Client copy и Client/Manager delete/cancel/empty, 1440 и настоящий touch320; дополнительно **4/4 PASS** Review copy→save→delete→save, Client/Manager ×1440/touch320, без pageerror/API requests; сборка без DEV-панели |
 | Независимый QA | **PASS WITH RISKS**, 8 самостоятельных browser-сценариев и 21 проверка модели; две P1 исправлены и перепроверены, открытых блокирующих findings нет |
 
 Визуально просмотрены Figma More и фактическое меню1440: те же 248×160, три строки по48, типографика14/18/500; keyboard focus ring — существующее состояние. На320 подтверждение и пункты помещаются, horizontal overflow отсутствует. PNG пяти ширин — `output/playwright/fos06/green/artifacts/` (menu/delete), production — `output/playwright/fos06/production/artifacts/`. В automated suite проверен axe для диалога. Это проверка затронутого поведения/общих компонентов, не полная Figma pixel-parity или Owner-приёмка M8.
 
-Артефакты: `output/playwright/fos06/green/results.json`, `production/results.json`, `regression-final/`, `independent-qa.md`, независимые JSON/scripts/PNG в том же каталоге. Они локальные и ignored; другому checkout доступны CI artifacts после запуска workflow. Новый набор добавлен в существующий Artwork/Order workflow, snapshots не обновлялись.
+Артефакты: `output/playwright/fos06/green/results.json`, `production/results.json`, `production/review-results.json`, `regression-final/`, `independent-qa.md`, независимые JSON/scripts/PNG в том же каталоге. Они локальные и ignored; другому checkout доступны CI artifacts после запуска workflow. Новый набор добавлен в существующий Artwork/Order workflow, snapshots не обновлялись. Проверенный код: `745c2252fd04038815c7eb71b136dee879b90222`; SHA256 production JS `index-CqBUkk5U.js`: `bbbfe913a6065cff0176e0b34d5fdba151aa1888c9614d357bf1c1b5fd226783`; локальный manifest — `output/playwright/fos06/verification-manifest.json`. Последующие изменения только Markdown не переиздают эти результаты как новый запуск приложения.
 
 Ранние прогоны на dev-сервере во время редактирования исходников получили reload/HMR и промежуточные failures; после стабилизации версии весь указанный набор прошёл заново. Новый тест переключения ролей исправлен: экран при переключении создаётся заново, заказ нужно открыть из списка. Финальные 60/60 и142/142 относятся к стабильной версии. Общий suite целиком в №06 не повторялся; восемь известных baseline failures из [№05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md) не объявляются исправленными.
 
 ## 3. Что в процессе
 
-Codex: локальные проверки и независимая QA завершены. PR #44 передаётся на review; CI отправленного head учитывается отдельно от локального PASS. FUNCTIONAL PASS, TECHNICAL focused PASS, VISUAL affected-component review; OWNER ACCEPTANCE / MERGE OPEN.
+Codex: локальные проверки и независимая QA завершены, CI кода745c225 — 7/7 SUCCESS. PR #44 готов к review. FUNCTIONAL PASS, TECHNICAL focused PASS, VISUAL affected-component review; OWNER ACCEPTANCE / MERGE OPEN.
+
+CI кода `745c225` — **7/7 SUCCESS**. Ссылки относятся к проверенному коду, не означают приёмку Owner:
+
+| GitHub workflow | Результат |
+| --- | --- |
+| [NavigationDrawer GL-02B QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673932) | SUCCESS |
+| [SidebarNav GL-02A QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673314) | SUCCESS |
+| [GL-03 Compact Glass Pill Tabs React QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673420) | SUCCESS |
+| [HeaderAction QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673527) | SUCCESS |
+| [Orders Core UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673358) | SUCCESS |
+| [Accepted Artwork and Order Spacing QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673309) | SUCCESS |
+| [FE-S03 M7 UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673330) | SUCCESS |
+
+После фиксации результатов дополнительный коммит меняет только Markdown. Если GitHub запускает проверки повторно на документационном head, их текущий статус смотрят в PR #44; он не подменяется успешными проверками кода выше. До merge нужен актуальный CI/review и поручение Owner.
+
 
 Owner: приёмка интерфейса №06 и поручение на merge после review, срок не назначен. Полная M8 визуальная приёмка отдельная. Алексей: backend/API/ACL/версии/конкурентные изменения и события1С — после согласования серверного контракта, срок не назначен. Проверка NVDA/VoiceOver и физических устройств не выполнялась.
 
