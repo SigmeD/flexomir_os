@@ -1,5 +1,7 @@
 # Flexomir OS — передача работы
 
+12.11 / активная №05: ветка `fix/fos05-repeat-item-save` от `1ac5200`, один Draft PR. Owner выбрал А, **только причины у полей**. [Решение и QA](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md). Общий demoItemErrors сохраняет boolean-validity, Print/Artwork получают ARIA-связи; Header/CSS/API/frozen неизменны. RED2 → targeted48/48, build и production4/4 PASS. Independent:2970 сравнений без расхождений,13+5 runtime assertions PASS WITH RISKS. Full770PASS/8SKIP/8FAIL; все8 воспроизведены на main, рабочие файлы восстановлены byte-identical. Нужны фактический PR head/CI и приёмка результата, merge OPEN. PR #40 отдельно; затем №13 + №10 с Алексеем, CMP отдельно. Даты №07 ниже — факты прошлой поставки.
+
 №07 принят Owner, подключён к обычным Client/Manager заказам и слит в PR #41 (merge e6a04fd, head85ad6ef, CI5/5SUCCESS). [Контракт](FOS07_DATEPICKER_PILOT_2026-11-11.md). Input draft/validity переживают Item editor; readonly agreedDate/Detail и ISO сохранены. Remote head удалён; локальная ветка слитого PR не используется для следующего инкремента.
 
 Актуально на 11.11.2026; следующая ревизия — 25.11.2026. Перед новой реализацией сверить [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), Git и [локальный план](DELIVERY_PLAN.md).

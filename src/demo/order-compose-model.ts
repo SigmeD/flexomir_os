@@ -36,12 +36,27 @@ export const emptyDemoItem = (): DemoItem => ({
 
 const positive = (value: string) => value.trim() !== '' && Number.isFinite(Number(value)) && Number(value) > 0
 
+export type DemoItemErrors = Partial<Record<'name' | 'quantity' | 'shape' | 'width' | 'height' | 'material' | 'printMethod' | 'artwork', string>>
+
+/** Explain the existing local demo rules; this is not an API/1C contract. */
+export function demoItemErrors(item: DemoItem): DemoItemErrors {
+  const errors: DemoItemErrors = {}
+  if (!item.name.trim()) errors.name = 'Введите наименование продукции'
+  if (!positive(item.quantity) || !Number.isSafeInteger(Number(item.quantity))) errors.quantity = 'Введите положительное целое число'
+  if (!item.shape) errors.shape = 'Выберите форму'
+  if (!positive(item.width)) errors.width = 'Введите положительное число'
+  if (!positive(item.height)) errors.height = 'Введите положительное число'
+  if (!item.material) errors.material = 'Выберите материал'
+  if (!item.printMethod) errors.printMethod = 'Выберите способ печати'
+  if (!(item.artworkMode === 'HELP' || (item.artworkMode === 'UPLOAD' && item.fileName) || (item.artworkMode === 'LIBRARY' && item.layoutId && item.layoutName))) {
+    errors.artwork = (item.unavailableArtwork ? 'Исходный макет недоступен. ' : '') + 'Выберите файл заново, макет из библиотеки или запросите помощь.'
+  }
+  return errors
+}
+
 /** Deliberately local demo rules; backend requiredness and date policy remain OPEN. */
 export function validDemoItem(item: DemoItem): boolean {
-  return Boolean(item.name.trim() && item.shape && item.material && item.printMethod
-    && positive(item.quantity) && Number.isSafeInteger(Number(item.quantity))
-    && positive(item.width) && positive(item.height)
-    && (item.artworkMode === 'HELP' || (item.artworkMode === 'UPLOAD' && item.fileName) || (item.artworkMode === 'LIBRARY' && item.layoutId && item.layoutName)))
+  return Object.keys(demoItemErrors(item)).length === 0
 }
 
 export function validDemoDate(value: string): boolean {

@@ -5,6 +5,10 @@ on:
     paths:
       - 'src/components/orders/ArtworkSource.tsx'
       - 'src/components/orders/OrderItemForm.tsx'
+      - 'src/components/orders/PrintingMethodControl.tsx'
+      - 'src/demo/order-compose-model.ts'
+      - 'tests/fos05-save.spec.ts'
+      - 'playwright.fos05.config.ts'
       - 'src/components/orders/OrderComposer.tsx'
       - 'src/components/orders/artwork-source.css'
       - 'src/components/ui/local-file-control.tsx'
@@ -37,6 +41,8 @@ jobs:
       - run: npm run build
       - name: FOS12 states, native choice, keyboard, responsive and accessibility
         run: npx playwright test --config=playwright.fos12.config.ts --workers=2
+      - name: FOS05 field-only save reasons, validation and repeat regression
+        run: npx playwright test --config=playwright.fos05.config.ts --workers=2
       - name: Accepted order status placement and Manager spacing in all consumers
         run: npx playwright test --config=playwright.order-spacing.config.ts --workers=2
       - name: Existing Layouts, Compose, Wave A and ButtonRoot regression
@@ -47,6 +53,7 @@ jobs:
           name: fos12-artwork-evidence
           path: |
             output/playwright/fos12/**
+            output/playwright/fos05/**
             output/playwright/order-spacing/**
             output/order-spacing-results.json
           retention-days: 7
