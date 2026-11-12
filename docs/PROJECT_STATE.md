@@ -1,15 +1,10 @@
 # Flexomir OS — состояние проекта
 
-№06: код дублирования/удаления позиции реализован в [PR #44](https://github.com/SigmeD/flexomir_os/pull/44), локальный QA 60/60, регрессия 142/142, production 6/6; независимая QA PASS WITH RISKS. Client/Manager: Draft и доступный полный Review до начала передачи в1С; копия через новый редактор и явный Add, удаление с подтверждением, последняя позиция Review защищена. [Поставка и ограничения](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md). Приёмка результата Owner и merge OPEN; 9 задач уже в main, №06 ещё не слит. №11 закрыт без реализации, №10/13 backlog; PR #40 и CMP отдельно.
+№06 слит в [PR #44](https://github.com/SigmeD/flexomir_os/pull/44) по поручению Owner «вливай в main/origin». Продуктовый main — `6d3fa83e14d1581017ae19a4451ec0181e9d126a`, проверенный PR head — `7c5b017228dbef58f7bb85d6211257b1519556f0`, CI **7/7 SUCCESS**. После merge выполнены новые проверки: build PASS, №06 **60/60**, frozen **2/2**, production Review **4/4**. [Контракт и доказательства](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md).
 
-№05 слит в [PR #43](https://github.com/SigmeD/flexomir_os/pull/43), main `76948df0120774464ec7edfdd5cd4b20ae810ec9`. Owner утвердил А: **причины блокировки только у полей**, `dirty && valid` сохранён. CI кода 3/3 SUCCESS; после merge — новый build PASS, FOS05 48/48 и frozen 2/2. Полная M8 приёмка остаётся отдельной.
+Из 13 пунктов **10 реализованы и слиты** (01/02/03/04/05/06/07/08/09/12), **№11 закрыт в этой итерации без реализации вложений**, **№10/13 в backlog** до backend/API Алексея. Полная M8 приёмка, согласованный срок менеджера и события1С остаются отдельными вопросами. PR #40 и CMP не входят в эту поставку.
 
-До merge production smoke — 4/4, независимый QA — PASS WITH RISKS. Общий прогон: 770 PASS, 8 SKIP, 8 FAIL; все восемь ошибок воспроизведены на исходном main. [Контракт и ограничения](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md#доставка-и-ci). №11 закрыт в этой итерации без реализации вложений, №10/13 — backlog. По №06 Owner утвердил [Q1–Q3](FOS06_ITEM_ACTIONS_DECISIONS_2026-11-12.md): обе роли до1С, копия через редактор, удаление с подтверждением и защитой последней позиции в «На рассмотрении». Реализованы 9/13; №11 снят с итерации, 2 отложены, №06 реализован в PR #44 и ещё не слит. PR #40 и CMP отдельно.
-
-№07 принят Owner («да, отлично применяй») и слит в PR #41, merge e6a04fd: общий Glass DatePicker с линзой подключён к желаемому сроку в обычных Client/Manager заказах. [Контракт и проверки](FOS07_DATEPICKER_PILOT_2026-11-11.md), [поставка PR #41](https://github.com/SigmeD/flexomir_os/pull/41). Клиентский agreedDate и OrderDetail остаются readonly; данные YYYY-MM-DD.
-
-Актуализировано 12.11.2026. Общая ревизия сводок была 11.11; следующая — 25.11.2026.
-Очередность определяет [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Предыдущий слитый инкремент кода приложения — [PR #41](https://github.com/SigmeD/flexomir_os/pull/41), merge `e6a04fd748dbb16702610b3d7898b8ba1d3f87a5`; проверенный head `85ad6ef147a246b03652b92e70e50925d948870d`. Документационный PR #42 слит в `1ac5200` — базу FOS05. Для PR #43 Owner прямо поручил merge; фактические merged_at, main SHA и post-merge проверки фиксируются в GitHub и Drive CURRENT.
+Актуализировано 12.11.2026. Общая ревизия была 11.11; следующая — 25.11.2026. Очерёдность — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), рабочая очередь — [DELIVERY_PLAN](DELIVERY_PLAN.md). SHA поставки указывает на приложение; последующая синхронизация Markdown не является новым изменением frontend.
 
 ## Что работает сейчас
 
@@ -23,7 +18,7 @@
 
 Демосессия хранится в памяти страницы и сбрасывается при перезагрузке. Файлы не отправляются на сервер; создание заказа в 1С отключено.
 
-## Что вошло в последнюю поставку
+## Слитые поставки
 
 | Поставка | Результат и проверенный merge |
 | --- | --- |
@@ -34,10 +29,14 @@
 | [PR #37](https://github.com/SigmeD/flexomir_os/pull/37) | Общий hover остальных popup и стабильное CI-окружение; `3317d50` |
 | [PR #38](https://github.com/SigmeD/flexomir_os/pull/38) | Placeholder Select только в пустом поле; `26768f9` |
 | [PR #41](https://github.com/SigmeD/flexomir_os/pull/41) | Glass DatePicker и линза в обычном OrderComposer Client/Manager; readonly/ISO сохранены, merge `e6a04fd` |
+| [PR #43](https://github.com/SigmeD/flexomir_os/pull/43) | Причины блокировки Save только у полей, dirty && valid; `76948df` |
+| [PR #44](https://github.com/SigmeD/flexomir_os/pull/44) | Duplicate/Delete Item обеих ролей в Draft/Review до передачи в1С; `6d3fa83` |
 
-PR #33–38 и #41 слиты. G-04 принят Owner; ожидание merge DatePicker закрыто. Полная визуальная приёмка экранов M8 остаётся отдельным gate.
+PR #33–38, #41, #43 и #44 слиты. G-04 принят Owner; ожидание merge DatePicker закрыто. Полная визуальная приёмка экранов M8 остаётся отдельным gate.
 
 ## Проверки и доказательства
+
+№06: CI фактического PR head7c5b017 — **7/7 SUCCESS**. Новые post-merge проверки на main6d3fa83: build PASS, FOS06 60/60, frozen 2/2, production Review 4/4. №05: CI кода848dbc6 — 3/3 SUCCESS; после merge76948df build PASS, FOS05 48/48, frozen 2/2. [№06](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md), [№05 и прежние восемь ошибок общего набора](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md). Полный suite в №06 заново не выполнялся и не объявляется зелёным.
 
 | Поставка | CI фактического head | Проверки после merge |
 | --- | --- | --- |
@@ -50,7 +49,6 @@ PR #41, head `85ad6ef`: CI 5/5 SUCCESS — [DatePicker](https://github.com/Sigme
 
 ## Что осталось открытым
 
-- №06: frontend реализован в PR #44; приёмка результата, merge и серверный контракт отдельно.
 - №10/13: backlog до backend/API Алексея. №11 закрыт в текущей итерации без реализации вложений; будущая доработка компонента поддержки отдельно.
 - Действие менеджера для фиксации согласованного срока, публикация черновика клиенту и event→«В работе». Сохранение даты не меняет статус автоматически.
 - Полная визуальная приёмка M8, Auth, реальные поиск/фильтры/сортировка и сопоставление статусов 1С; [issue #21](https://github.com/SigmeD/flexomir_os/issues/21) не закрывается техническим merge.

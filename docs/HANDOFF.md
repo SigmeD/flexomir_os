@@ -1,40 +1,26 @@
 # Flexomir OS — передача работы
 
-№06: код дублирования/удаления позиции реализован в [PR #44](https://github.com/SigmeD/flexomir_os/pull/44), локальный QA 60/60, регрессия 142/142, production 6/6; независимая QA PASS WITH RISKS. Client/Manager: Draft и доступный полный Review до начала передачи в1С; копия через новый редактор и явный Add, удаление с подтверждением, последняя позиция Review защищена. [Поставка и ограничения](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md). Приёмка результата Owner и merge OPEN; 9 задач уже в main, №06 ещё не слит. №11 закрыт без реализации, №10/13 backlog; PR #40 и CMP отдельно.
+№06 слит в [PR #44](https://github.com/SigmeD/flexomir_os/pull/44) по поручению Owner «вливай в main/origin». Продуктовый main — `6d3fa83e14d1581017ae19a4451ec0181e9d126a`, проверенный PR head — `7c5b017228dbef58f7bb85d6211257b1519556f0`, CI **7/7 SUCCESS**. После merge выполнены новые проверки: build PASS, №06 **60/60**, frozen **2/2**, production Review **4/4**. [Контракт и доказательства](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md).
 
-12.11 / активная №05: [PR #43](https://github.com/SigmeD/flexomir_os/pull/43), код `848dbc6d818d78cc7d05dd6c5644f293df7479ac`, ветка `fix/fos05-repeat-item-save` от `1ac5200`. Owner выбрал А: **причины только у полей**, `dirty && valid` сохранён. [Решение, QA и CI](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md#доставка-и-ci).
+Из 13 пунктов **10 реализованы и слиты** (01/02/03/04/05/06/07/08/09/12), **№11 закрыт в этой итерации без реализации вложений**, **№10/13 в backlog** до backend/API Алексея. Полная M8 приёмка, согласованный срок менеджера и события1С остаются отдельными вопросами. PR #40 и CMP не входят в эту поставку.
 
-Код и локальный QA готовы: RED 2 → GREEN 48/48, build PASS, production 4/4. Независимый QA: 2970 сравнений без расхождений, 13 + 5 browser/touch assertions, PASS WITH RISKS. Общий прогон: 770 PASS / 8 SKIP / 8 FAIL; все восемь ошибок подтверждены на исходном main. Owner прямо поручил merge 12.11; полная M8 приёмка отдельно. PR #40 отдельно; затем №13 + №10 с Алексеем, CMP отдельно. Данные №07 ниже — предыдущая слитая поставка.
+## Что проверено
 
-№07 принят Owner, подключён к обычным Client/Manager заказам и слит в PR #41 (merge e6a04fd, head85ad6ef, CI5/5SUCCESS). [Контракт](FOS07_DATEPICKER_PILOT_2026-11-11.md). Input draft/validity переживают Item editor; readonly agreedDate/Detail и ISO сохранены. Remote head удалён; локальная ветка слитого PR не используется для следующего инкремента.
+- PR #44 слит squash 12.11.2026 в12:13:20UTC. Дерево поставки6d3fa83 совпадает с проверенным PR head: `6b6fc96a330761b548e36195557acceafb4f52bb`. Последующие документационные коммиты отделены от этого SHA приложения.
+- Post-merge FOS06 начат12:13:31.752UTC: 60/60 PASS, unexpected0/skipped0/flaky0. Отдельно frozen2/2 и production Review4/4, Client/Manager×1440/touch320, pageerror/API requests отсутствуют. Это новые результаты после merge, не переименование старых прогонов.
+- Независимая QA до merge: PASS WITH RISKS, 8 browser-сценариев +21 проверка модели; оба найденных P1 исправлены и перепроверены. CI фактического head7c5b017 —7/7SUCCESS.
+- Remote head `docs/scope-decisions-20261112` удалён автоматически, fetch --prune выполнен. Локальная ветка сохранена; её не переиспользовать для новой задачи.
+- Предыдущие поставки: №05/PR #43 merge76948df, №07/PR #41 mergee6a04fd. [Доказательства](PROJECT_STATE.md), [№05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md), [№07](FOS07_DATEPICKER_PILOT_2026-11-11.md).
 
-Актуально на 12.11.2026; общая ревизия была 11.11, следующая — 25.11.2026. Перед новой реализацией сверить [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), Git и [локальный план](DELIVERY_PLAN.md).
+## Что остаётся
 
-## Что уже сделано
+1. Owner/UX: полная визуальная приёмка M8/issue #21; сроки не назначены. Технический merge №06 её не закрывает.
+2. Owner/PO и Алексей: действие менеджера для согласованного срока, публикация клиенту и событие перехода в «В работе». Клиентское readonly-отображение уже есть; backend/API/ACL/версии/1С — Алексей.
+3. №10/13 — backlog до API и решения Owner/PO. №11 снят с итерации: будущая доработка всего компонента поддержки, вложения не реализованы. PR #40 и CMP — отдельно.
+4. Восемь прежних ошибок полного набора More/Select учитывать по [контракту №05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md). Не объявлять их исправленными по focused-набору №06 и не обновлять snapshots ради зелёного результата.
 
-- PR #33–38 и #41 MERGED. Последний инкремент интерфейса — DatePicker PR #41, проверенный head85ad6ef, merge e6a04fd.
-- Принятые FOS03/FOS12 работают в обоих кабинетах без DEV-флага. Статус заказа находится в 8 px от H1; Manager Composer использует принятые 32/24 px.
-- Общий FosPopup обслуживает Account, More, FOSSelect, GlassSelect и Drawer. Hover v0.3 не меняет бизнес-выбор; pending commit ждёт прежний rest. Физика и материал frozen не менялись.
-- Placeholder Select остался в пустом поле и native proxy; из открытого списка исключён. Реальные пустые значения фильтров сохранены.
-- Клиентский agreedDate readonly: New пустой, Detail из данных, без подстановки desiredDate и наследования повторному заказу. OrderDateFields/FOSDateField общие.
-- Удалены 7 старых origin-веток после проверки. Локальные ветки и 4 stash сохранены; auto-delete после merge включён. [Аудит](GIT_BRANCH_CLEANUP_2026-11-11.md).
+## Следующая сессия
 
-## Доказательства
+Сверить GitHub, свежий origin/main и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Новую ветку создавать от актуального main; не возвращать завершённый №06 в реализацию. Frozen FE11 reference f527bcb, manifest и материал сохраняются. Репозиторий PUBLIC: только синтетические данные.
 
-- [PROJECT_STATE](PROJECT_STATE.md) содержит последние merge SHA и ссылки на успешные CI PR #37/#38/#41.
-- [Hover](POPUP_HOVER_ROLLOUT_2026-11-11.md): head 678bf46, CI 4/4 SUCCESS; после merge build PASS и production 14 PASS / 6 условных SKIP.
-- [Select](SELECT_PLACEHOLDER_2026-11-11.md): head a13cd0b, CI 3/3 SUCCESS; forms 128, FOS04 12, hover 13 PASS / 3 SKIP; после merge build PASS, production 15/15 и frozen 5/5.
-- Reviewer-authored проверки исполнял root из-за child browser EPERM; reviewer проверил JSON/source hashes/PNG. Это не независимое исполнение всех браузерных наборов.
-- output/playwright/popup-hover и select-placeholder содержат локальные proof/PNG; output/git-01 — bundle и матрицу веток. Эти файлы исключены из Git и не обещаются на другом checkout.
-- Исторические M8-сравнения и QA сохранены в [аудите](M8_FINAL_AUDIT_2026-11-10.md). Новые результаты ими не подменяются.
-
-## Следующая работа и открытые вопросы
-
-№06 подготовлен в PR #44, код745c225, база main76948df. №05/PR #43 и №07/PR #41 уже слиты; их ветки не переиспользовать. Фактический CI и приёмка результата №06 сверяются в GitHub и Drive CURRENT.
-
-1. Передать Owner результат №06 и CI/review PR #44. После нового поручения на merge подтвердить main SHA и присутствие результата, выполнить post-merge проверки. Полная M8 приёмка отдельно.
-2. Восемь прежних failures More/Select учитывать по списку в контракте; не объявлять весь suite зелёным и не обновлять snapshots ради FOS05.
-3. №10/13 отложены в backlog до backend/API Алексея; №11 закрыт в этой итерации и вернётся в будущей доработке поддержки. №06 реализован в PR #44: передать Owner результат и доказательства QA, не пересогласовывать Q1–Q3 повторно.
-4. Frozen FE11 reference f527bcb, manifest и материал сохраняются. Действие менеджера по сроку и полная M8 приёмка — отдельные открытые вопросы; сроки не назначены.
-
-Репозиторий PUBLIC: клиентские сведения и тяжёлые доказательства в Git не добавлять. Перед использованием машинных путей проверять наличие файлов; не восстанавливать отсутствующие untracked-скриншоты под видом Git cleanup.
+Артефакты `output/playwright/fos06/` локальные/ignored, не обещаются другому checkout. CI artifacts привязаны к соответствующим прогонам в [отчёте](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md). Общая ревизия была11.11.2026, следующая25.11.2026.

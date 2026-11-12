@@ -2,9 +2,9 @@
 
 ## 1. Основные прогрессы
 
-12.11.2026. Код №06 реализован в [PR #44](https://github.com/SigmeD/flexomir_os/pull/44), в той же ветке, где согласованы правила. База — main `76948df`, [Q1–Q3 утверждены](FOS06_ITEM_ACTIONS_DECISIONS_2026-11-12.md). Это frontend на данных демосессии; приёмка результата Owner и merge открыты.
+12.11.2026. [PR #44](https://github.com/SigmeD/flexomir_os/pull/44) слит squash по прямому поручению Owner «вливай в main/origin», merged_at12:13:20UTC. Продуктовый main — `6d3fa83e14d1581017ae19a4451ec0181e9d126a`, фактический проверенный PR head — `7c5b017228dbef58f7bb85d6211257b1519556f0`, CI **7/7 SUCCESS**. База инкремента — main76948df. [Q1–Q3](FOS06_ITEM_ACTIONS_DECISIONS_2026-11-12.md) утверждены; реализация работает на данных демосессии.
 
-В main остаются 9 реализованных пунктов из 13. №06 подготовлен отдельно для проверки; №11 закрыт решением Owner без реализации вложений, №10/13 в backlog. Техническая реализация №06 не объявляется десятой слитой задачей до merge.
+Из13пунктов **10 реализованы и слиты** (01/02/03/04/05/06/07/08/09/12), №11 закрыт без реализации вложений в этой итерации, №10/13 в backlog. №06 не остаётся в активной очереди. Полная M8 визуальная приёмка и серверная интеграция отдельно.
 
 ## 2. Какие задачи решались
 
@@ -17,7 +17,7 @@ Codex реализовал через общие OrderItemForm/OrderComposer:
 - Передача в1С блокирует вход в редактор и операции. `transferStarted` — локальный fixture/UI-признак, не новый API-контракт. Демонстрационная обработка pending/success/error не считается реальной передачей в1С.
 - Независимый QA выявил выход из dirty copy через вложенную библиотеку и через Account/Profile; Codex подключил защиту родительского редактора. Client использует существующий диалог, Manager сохраняет существующий запрет перехода при dirty.
 
-Карта Figma → React → потребители: [план инкремента](FOS06_IMPLEMENTATION_PLAN_2026-11-12.md). CURRENT More `1914:668`, New/Edit `1791:6130/1782:6025`, Review `1838:6511`, file `7rvIYc6yj3OA7gxmf1xJbv`. Figma context и скриншоты прочитаны, canvas не менялась. More использует существующие FosPopup и Manrope14/18/500, модальный диалог — существующий ConfirmDialog; CSS, материал и frozen engine не менялись. Новое решение Owner по доступности приоритетнее старых readonly/disabled кадров.
+Карта Figma → React → потребители: [выполненный план и карта компонентов](FOS06_IMPLEMENTATION_PLAN_2026-11-12.md). CURRENT More `1914:668`, New/Edit `1791:6130/1782:6025`, Review `1838:6511`, file `7rvIYc6yj3OA7gxmf1xJbv`. Figma context и скриншоты прочитаны, canvas не менялась. More использует существующие FosPopup и Manrope14/18/500, модальный диалог — существующий ConfirmDialog; CSS, материал и frozen engine не менялись. Новое решение Owner по доступности приоритетнее старых readonly/disabled кадров.
 
 | Проверка Codex | Выполнено и результат |
 | --- | --- |
@@ -34,30 +34,39 @@ Codex реализовал через общие OrderItemForm/OrderComposer:
 
 Ранние прогоны на dev-сервере во время редактирования исходников получили reload/HMR и промежуточные failures; после стабилизации версии весь указанный набор прошёл заново. Новый тест переключения ролей исправлен: экран при переключении создаётся заново, заказ нужно открыть из списка. Финальные 60/60 и142/142 относятся к стабильной версии. Общий suite целиком в №06 не повторялся; восемь известных baseline failures из [№05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md) не объявляются исправленными.
 
-## 3. Что в процессе
-
-Codex: локальные проверки и независимая QA завершены, CI кода745c225 — 7/7 SUCCESS. PR #44 готов к review. FUNCTIONAL PASS, TECHNICAL focused PASS, VISUAL affected-component review; OWNER ACCEPTANCE / MERGE OPEN.
-
-CI кода `745c225` — **7/7 SUCCESS**. Ссылки относятся к проверенному коду, не означают приёмку Owner:
+CI фактического PR head `7c5b017` — **7/7 SUCCESS**; это отдельные повторные прогоны после документационного коммита, а не подстановка результатов кода745c225:
 
 | GitHub workflow | Результат |
 | --- | --- |
-| [NavigationDrawer GL-02B QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673932) | SUCCESS |
-| [SidebarNav GL-02A QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673314) | SUCCESS |
-| [GL-03 Compact Glass Pill Tabs React QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673420) | SUCCESS |
-| [HeaderAction QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673527) | SUCCESS |
-| [Orders Core UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673358) | SUCCESS |
-| [Accepted Artwork and Order Spacing QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673309) | SUCCESS |
-| [FE-S03 M7 UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/43205673330) | SUCCESS |
+| [NavigationDrawer GL-02B QA](https://github.com/SigmeD/flexomir_os/actions/runs/43208725478) | SUCCESS |
+| [SidebarNav GL-02A QA](https://github.com/SigmeD/flexomir_os/actions/runs/43208726389) | SUCCESS |
+| [GL-03 Compact Glass Pill Tabs React QA](https://github.com/SigmeD/flexomir_os/actions/runs/43208725516) | SUCCESS |
+| [HeaderAction QA](https://github.com/SigmeD/flexomir_os/actions/runs/43208725422) | SUCCESS |
+| [Orders Core UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/43208725563) | SUCCESS |
+| [Accepted Artwork and Order Spacing QA](https://github.com/SigmeD/flexomir_os/actions/runs/43208726152) | SUCCESS |
+| [FE-S03 M7 UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/43208725579) | SUCCESS |
 
-После фиксации результатов дополнительный коммит меняет только Markdown. Если GitHub запускает проверки повторно на документационном head, их текущий статус смотрят в PR #44; он не подменяется успешными проверками кода выше. До merge нужен актуальный CI/review и поручение Owner.
+После merge выполнены **новые** проверки на main6d3fa83:
 
+| Проверка после merge | Результат |
+| --- | --- |
+| `npm run build` | PASS,1603 modules; тот же JS index-CqBUkk5U.js и SHA256 выше |
+| FOS06, четыре browser/touch проекта | **60/60 PASS**, start12:13:31.752UTC, duration104588.601ms, unexpected0/skipped0/flaky0 |
+| Frozen contract Chromium1440/390 | **2/2 PASS** |
+| Production Review copy→save→delete→save | **4/4 PASS**, Client/Manager×1440/touch320, pageerror/API requests отсутствуют |
 
-Owner: приёмка интерфейса №06 и поручение на merge после review, срок не назначен. Полная M8 визуальная приёмка отдельная. Алексей: backend/API/ACL/версии/конкурентные изменения и события1С — после согласования серверного контракта, срок не назначен. Проверка NVDA/VoiceOver и физических устройств не выполнялась.
+Дерево поставки main6d3fa83 совпадает с проверенным PR head: `6b6fc96a330761b548e36195557acceafb4f52bb`. Последующие документационные коммиты меняют только Markdown. Артефакты после merge: `output/playwright/fos06/post-merge-results.json`, `post-merge-production-results.json`, `post-merge-frozen/`. Основной green/results.json также содержит последний post-merge прогон; отдельные post-merge JSON сохраняют его явно. Эти файлы локальные/ignored. Проверки приложения повторно не запускались ради последующей синхронизации Markdown.
+
+Remote head `docs/scope-decisions-20261112` удалён автоматически; fetch --prune и пустой git ls-remote подтверждены. Локальная ветка сохранена. Существующий Drive CURRENT обновлён после merge с сохранением параллельной очереди M8. Текущая документационная правка устраняет оставшиеся pre-merge статусы в локальных сводках; код, тесты, workflows, snapshots, нормативные SRS/Scope и Figma не меняются. Проверяются ссылки/якоря, согласованность статусов и состав diff.
+
+## 3. Что в процессе
+
+Frontend-инкремент №06 завершён и слит; ожидание его merge закрыто. Owner/UX: полная M8 визуальная приёмка, сроки не назначены. Алексей: backend/API/ACL/версии/конкурентные изменения и события1С — отдельный согласованный контракт, сроки не назначены. NVDA/VoiceOver и физические устройства не проверялись. Восемь прежних ошибок полного набора из отчёта №05 не объявляются исправленными.
 
 ## 4. Основные договорённости
 
-- Передать один небольшой инкремент в PR #44 с кодом, тестами и LIVE docs — Codex, после QA; без автоматического merge.
-- Сохранить `dirty && valid`, существующие правила дат/комментариев, source order и библиотеку — Codex, в этой поставке.
-- Синхронизировать существующий Drive CURRENT и статус GitHub, сохранив параллельные записи M8 — Codex, при передаче PR.
-- №10/13 не возвращать в текущую реализацию; №11 не считать реализованными вложениями; PR #40 и CMP не смешивать — Codex/Owner, в этой итерации.
+- Считать №06 слитым frontend-инкрементом — Codex/Owner,12.11.2026. Поручение merge не подменяет полную M8 приёмку и готовность backend.
+- Сохранить утверждённые dirty && valid, общие даты/комментарии, source order и библиотеку — Codex, выполнено в PR #44.
+- Синхронизировать локальные LIVE docs с GitHub и существующим Drive CURRENT — Codex, по текущему поручению «обнови документацию».
+- №10/13 оставить в backlog; №11 не считать реализованными вложениями; PR #40 и CMP вести отдельно — Codex/Owner, текущая итерация.
+- Новую рабочую ветку создавать от свежего origin/main; слитую ветку не переиспользовать — Codex, следующая задача.
