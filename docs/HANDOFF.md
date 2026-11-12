@@ -1,10 +1,12 @@
 # Flexomir OS — передача работы
 
-12.11 / активная №05: ветка `fix/fos05-repeat-item-save` от `1ac5200`, один Draft PR. Owner выбрал А, **только причины у полей**. [Решение и QA](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md). Общий demoItemErrors сохраняет boolean-validity, Print/Artwork получают ARIA-связи; Header/CSS/API/frozen неизменны. RED2 → targeted48/48, build и production4/4 PASS. Independent:2970 сравнений без расхождений,13+5 runtime assertions PASS WITH RISKS. Full770PASS/8SKIP/8FAIL; все8 воспроизведены на main, рабочие файлы восстановлены byte-identical. Нужны фактический PR head/CI и приёмка результата, merge OPEN. PR #40 отдельно; затем №13 + №10 с Алексеем, CMP отдельно. Даты №07 ниже — факты прошлой поставки.
+12.11 / активная №05: [Draft PR #43](https://github.com/SigmeD/flexomir_os/pull/43), код `848dbc6d818d78cc7d05dd6c5644f293df7479ac`, ветка `fix/fos05-repeat-item-save` от `1ac5200`. Owner выбрал А: **причины только у полей**, `dirty && valid` сохранён. [Решение, QA и CI](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md#доставка-и-ci).
+
+Код и локальный QA готовы: RED 2 → GREEN 48/48, build PASS, production 4/4. Независимый QA: 2970 сравнений без расхождений, 13 + 5 browser/touch assertions, PASS WITH RISKS. Общий прогон: 770 PASS / 8 SKIP / 8 FAIL; все восемь ошибок подтверждены на исходном main. Приёмка результата и merge открыты. PR #40 отдельно; затем №13 + №10 с Алексеем, CMP отдельно. Данные №07 ниже — предыдущая слитая поставка.
 
 №07 принят Owner, подключён к обычным Client/Manager заказам и слит в PR #41 (merge e6a04fd, head85ad6ef, CI5/5SUCCESS). [Контракт](FOS07_DATEPICKER_PILOT_2026-11-11.md). Input draft/validity переживают Item editor; readonly agreedDate/Detail и ISO сохранены. Remote head удалён; локальная ветка слитого PR не используется для следующего инкремента.
 
-Актуально на 11.11.2026; следующая ревизия — 25.11.2026. Перед новой реализацией сверить [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), Git и [локальный план](DELIVERY_PLAN.md).
+Актуально на 12.11.2026; общая ревизия была 11.11, следующая — 25.11.2026. Перед новой реализацией сверить [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), Git и [локальный план](DELIVERY_PLAN.md).
 
 ## Что уже сделано
 
@@ -26,11 +28,11 @@
 
 ## Следующая работа и открытые вопросы
 
-№07 завершён: G-04 принят, PR #41 слит, remote feat/fos07-glass-datepicker-pilot удалён. Frozen и readonly-сценарии сохранены. Следующую задачу и новую ветку выбирать от свежего origin/main по согласованной очереди.
+Текущую №05 продолжать в её существующей ветке и PR #43. Документационные уточнения входят в тот же PR. №07 завершён и не возвращается в очередь.
 
-1. №07 не переоткрывать: delivery подтверждена. После merge выполнены build1603 modules PASS, ordinary2/2, production5/5 и frozen5/5; карта и доказательства в профильном контракте.
-2. Следующий открытый UI/продуктовый блок выбрать по Drive CURRENT и готовым решениям; G-04 повторно не открывать.
-3. Frozen FE11 reference f527bcb, manifest и материал не менять без отдельного разрешения.
-4. Не брать backend/storage/ACL/1С на frontend. №05/06/10/11/13, действие менеджера по сроку и полная M8 приёмка остаются в [плане](DELIVERY_PLAN.md); сроки не назначены.
+1. Проверить фактический head и CI PR #43; получить приёмку результата. Принятый G-02 определяет поведение, но не подменяет этот гейт.
+2. Восемь прежних failures More/Select учитывать по списку в контракте; не объявлять весь suite зелёным и не обновлять snapshots ради FOS05.
+3. После завершения №05 — №13 + №10 с Алексеем. Серверное хранение, ACL и 1С остаются его зоной; frontend подключает согласованный API.
+4. Frozen FE11 reference f527bcb, manifest и материал сохраняются. Другие открытые вопросы — №06/11, действие менеджера по сроку и полная M8 приёмка; сроки не назначены.
 
 Репозиторий PUBLIC: клиентские сведения и тяжёлые доказательства в Git не добавлять. Перед использованием машинных путей проверять наличие файлов; не восстанавливать отсутствующие untracked-скриншоты под видом Git cleanup.
