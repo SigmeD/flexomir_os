@@ -14,6 +14,11 @@ export class MediaCapture {
   subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener) } }
   private update(state: CaptureState) { this.state = state; for (const listener of [...this.listeners]) listener() }
   private release() { this.stream?.getTracks().forEach(track => track.stop()); this.stream = undefined }
+  /** Rehydrate a completed local draft; no device access or automatic delivery. */
+  restore(file: File) {
+    if (this.disposed || this.state.phase === 'requesting' || this.state.phase === 'recording' || !file.size || !/^(audio|video)\//.test(file.type)) return
+    this.update({ phase: 'ready', kind: file.type.startsWith('video/') ? 'video' : 'audio', file })
+  }
   async start(kind: CaptureKind) {
     if (this.disposed || this.state.phase === 'requesting' || this.state.phase === 'recording') return
     const generation = ++this.generation

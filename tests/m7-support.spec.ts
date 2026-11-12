@@ -26,7 +26,7 @@ for (const role of ['client', 'manager']) for (const width of [1440, 1024, 768, 
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(subject)
     await expect(page.getByText('Поддержка Flexomir OS', { exact: true })).toBeVisible()
     await expect(page.getByRole('textbox')).toHaveCount(0)
-    await expect(page.getByRole('button', { name: 'Отправить обращение', exact: true })).toBeDisabled()
+    await expect(page.getByRole('button', { name: 'Сохранить обращение', exact: true })).toBeEnabled()
     await page.goBack()
     await expect(row).toBeFocused()
     await page.getByRole('button', { name: 'Добавить обращение', exact: true }).click()

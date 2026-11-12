@@ -4,10 +4,11 @@ import { FosGlassMaterial } from '@/components/ui/fos-glass-material'
 import { FOSAction } from '@/components/ui/fos-controls'
 import closeIcon from '@/assets/messaging/close.svg'
 import downloadIcon from '@/assets/layouts/download.svg'
+import { Trash2 } from 'lucide-react'
 import './documents.css'
 
 const PdfPages = lazy(() => import('./PdfPages'))
-export function DocumentPreviewDialog({ file, canDownload, onClose }: { file: File; canDownload: boolean; onClose: () => void }) {
+export function DocumentPreviewDialog({ file, canDownload, onClose, onDelete }: { file: File; canDownload: boolean; onClose: () => void; onDelete?: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null), id = useId()
   const [url, setUrl] = useState(''), [count, setCount] = useState(0)
   useEffect(() => {
@@ -25,7 +26,7 @@ export function DocumentPreviewDialog({ file, canDownload, onClose }: { file: Fi
         {file.type === 'application/pdf' || /\.pdf$/i.test(file.name) ? <Suspense fallback={<p role="status">Открываем PDF…</p>}><PdfPages file={file} onCount={setCount} /></Suspense>
           : <p>Предпросмотр этого формата недоступен. {canDownload ? 'Можно скачать исходный файл.' : ''}</p>}
       </div>
-      <footer><span>{count ? `${count} ${count === 1 ? 'страница' : count < 5 ? 'страницы' : 'страниц'}` : 'Предпросмотр'}</span>{canDownload && url && <a href={url} download={file.name}><img src={downloadIcon} alt="" />Скачать</a>}</footer>
+      <footer><span>{count ? `${count} ${count === 1 ? 'страница' : count < 5 ? 'страницы' : 'страниц'}` : 'Предпросмотр'}</span><div className="fos-document-actions">{canDownload && url && <a href={url} download={file.name}><img src={downloadIcon} alt="" />Скачать</a>}{onDelete && <FOSAction hierarchy="tertiary" shape="icon" aria-label="Удалить документ" title="Удалить документ" onClick={onDelete}><Trash2 size={20} strokeWidth={1.5} aria-hidden="true" /></FOSAction>}</div></footer>
     </FosGlassMaterial>
   </dialog>, document.body)
 }

@@ -24,6 +24,8 @@
 .fos-pdf-pages { display: grid; justify-items: center; gap: 16px; }
 .fos-pdf-pages canvas { display: block; width: min(100%,510px); height: auto; background: white; border: 1px solid var(--fos-v2-semantic-color-border-default,#d6d9e0); border-radius: 12px; }
 .fos-document-content footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.fos-document-actions { display: flex; align-items: center; gap: 8px; }
+.fos-document-actions > button { width: 44px; min-width: 44px; height: 44px; color: var(--fos-v2-semantic-color-text-brand,#1f3861); }
 .fos-document-content footer a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--fos-v2-semantic-color-text-brand,#1f3861); font: 600 var(--fos-type-body-size)/var(--fos-type-body-line-height) var(--fos-font-family); }
 @media(max-width:1023px) { .fos-file-dropzone { width: min(350px,100%); } }
 @media(max-width:600px) { .fos-signed-documents h2 { font-size: 16px; line-height: 24px; } .fos-document-content { padding: 16px; gap: 12px; } .fos-document-viewport { padding: 8px; } }

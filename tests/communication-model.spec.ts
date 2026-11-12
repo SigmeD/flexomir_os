@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { createLocalConversation } from '../src/components/messaging/message-model'
-import { localConversation, localDraft, resetLocalCommunication, saveLocalDraft } from '../src/components/messaging/local-communication'
+import { localConversation, localDraft, resetLocalCommunication, saveLocalDraft, localRecording, saveLocalRecording } from '../src/components/messaging/local-communication'
 import { demoItemErrors, emptyDemoItem } from '../src/demo/order-compose-model'
 
 test('Q05/Q08 optional demo numeric schema rejects invalid supplied counts without requiring legacy fields',()=>{
@@ -35,7 +35,13 @@ test('Q12 object/company and author draft isolation, session reset', async () =>
   saveLocalDraft('company-A/order-1', 'client', 'private draft')
   expect(localDraft('company-A/order-1', 'manager')).toBe('')
   expect(localDraft('company-A/order-1', 'client')).toBe('private draft')
+  const recording = new File(['real local bytes'],'draft.webm',{type:'audio/webm'})
+  saveLocalRecording('company-A/order-1','client',recording)
+  expect(localRecording('company-A/order-1','client')).toBe(recording)
+  expect(localRecording('company-A/order-1','manager')).toBeUndefined()
+  expect(localRecording('company-B/order-1','client')).toBeUndefined()
   resetLocalCommunication()
   expect(localConversation('company-A/order-1').read()).toHaveLength(0)
   expect(localDraft('company-A/order-1', 'client')).toBe('')
+  expect(localRecording('company-A/order-1','client')).toBeUndefined()
 })

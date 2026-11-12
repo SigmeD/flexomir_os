@@ -42,8 +42,8 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
   const parentBreadcrumb = ticket && role === 'client' ? 'Поддержка' : 'Мои обращения'
   return <CabinetPage role={role} section="support" onNavigate={onNavigate}>
     <PageHeader title={title} floatingWorkActions autoFocus={creating || Boolean(ticket)} breadcrumbs={nav.path === 'list' ? [{ label: 'Мои обращения' }] : [{ label: parentBreadcrumb, onSelect: nav.back }, { label: title }]}
-      actions={creating ? undefined : <><HeaderAction action={nav.path === 'list' ? 'add' : 'send'} accessibleName={nav.path === 'list' ? 'Добавить обращение' : 'Отправить обращение'} data-focus-key="support-add"
-        disabled={nav.path !== 'list'} onAction={nav.path === 'list' ? () => nav.open('new') : undefined} /><MoreAction disabled /></>} />
+      actions={creating ? undefined : <><HeaderAction action={nav.path === 'list' ? 'add' : 'save'} accessibleName={nav.path === 'list' ? 'Добавить обращение' : 'Сохранить обращение'} data-focus-key="support-add"
+        disabled={nav.path !== 'list' && !ticket} onAction={nav.path === 'list' ? () => nav.open('new') : nav.back} /><MoreAction disabled /></>} />
     {ticket ? <SupportTicketDetail ticket={ticket} submitted={submitted.current.has(ticket.id)} canReply={new URLSearchParams(window.location.search).get('commDemo') === '1'} /> : creating ? <SupportTicketForm value={input} onChange={setInput} descriptionLabel={role === 'client' ? 'Описание' : 'Сообщение'} touched={touched} onBlur={field => setTouched(current => ({ ...current, [field]: true }))} error={error} onSubmit={send} /> : <>
       <ul className="fos-cabinet__rows fos-support-list" aria-label="Мои обращения">{own.map(item => <li key={item.id}><SupportTicketRow ticket={item} onOpen={() => nav.open('ticket/' + item.id, { attribute: 'data-focus-key', value: 'ticket-' + item.id })} /></li>)}</ul>
       {!own.length && <p className="fos-cabinet__empty" data-testid="support-empty" role="status">Обращений пока нет.</p>}
