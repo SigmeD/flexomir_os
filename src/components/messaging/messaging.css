@@ -18,6 +18,10 @@
 @media(prefers-reduced-motion:reduce) { .fos-record-glyphs img { transition: none; transform: none; } }
 .fos-message-thread { display: grid; gap: 24px; margin-bottom: 42px; }
 .fos-message { width: min(684px,70%); min-width: 0; }
+.fos-message:focus-visible { outline: 2px solid var(--fos-v2-semantic-color-text-brand,#1f3861); outline-offset: 4px; border-radius: 12px; }
+.fos-message-editor { display: grid; gap: 12px; margin-bottom: 12px; }
+.fos-message-editor > button { justify-self: start; }
+.fos-message-surface { -webkit-touch-callout: none; }
 .fos-message[data-own=false] { justify-self: end; }
 .fos-message-author { margin: 0 0 12px; font-size: var(--fos-type-secondary-size); }
 .fos-message-surface { padding: 16px; border: 1px solid var(--fos-v2-semantic-color-border-default,#d6d9e0); border-radius: 12px; background: var(--fos-v2-semantic-color-bg-page,#fafbfc); overflow-wrap: anywhere; }

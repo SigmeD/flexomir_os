@@ -34,7 +34,7 @@ export interface DemoDraft {
   /** Fixture/UI lock only. Real integration state must come from the agreed API. */
   transferStarted?: boolean
   /** Independent local capability fixture; not production ACL/status mapping. */
-  communication?: { canReply: boolean }
+  communication?: { canReply: boolean; phase?:'open'|'work'|'readonly' }
 }
 
 export const canEditDemoItems = (order: DemoDraft, actor: DemoDraft['ownerRole']) => !order.transferStarted
@@ -101,6 +101,7 @@ export function draftView(draft: DemoDraft): OrderListItem {
     id: draft.id, company: draft.company, title: draft.items[0]?.name || (draft.ownerRole === 'manager' ? 'Новый заказ менеджера' : 'Новый демонстрационный заказ'),
     statusLabel: draft.ownerRole === 'manager' ? 'Черновик менеджера' : draft.stage === 'draft' ? 'Черновик' : 'Передан менеджеру',
     filterId: draft.stage === 'draft' ? 'draft' : 'review',
+    communication: {canReply:draft.communication?.canReply??false,phase:draft.communication?.phase??'open'},
     detail: { items: draft.items.map(itemSummary), requestedDate: draft.requestedDate, comment: draft.comment },
   }
 }

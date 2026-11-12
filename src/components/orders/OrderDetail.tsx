@@ -46,7 +46,7 @@ export function OrderDetail({ order, detail, onBack, actions, role = 'client', m
         </OrderDateFields>
       </section>
       <SignedDocumentsSection key={'docs'+JSON.stringify([order.company,order.id])} context={JSON.stringify(['order',order.company,order.id])} canAdd={false} />
-      <OrderConversation key={JSON.stringify([order.company,order.id,role])} context={JSON.stringify(['order',order.company,order.id])} actor={role} canReply={canReply} legacyComment={detail.comment} />
+      <OrderConversation key={JSON.stringify([order.company,order.id,role])} context={JSON.stringify(['order',order.company,order.id])} actor={role} canReply={canReply} phase={order.communication?.phase??'readonly'} legacyComment={detail.comment} />
       {managerIntake && <ManagerDemoIntake state={demoProcessingState} onStateChange={onDemoProcessingStateChange} demoEnabled={demoProcessingEnabled} />}
     </div>
   </div>

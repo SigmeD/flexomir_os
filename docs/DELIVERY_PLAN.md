@@ -1,5 +1,7 @@
 # Flexomir OS — текущий план
 
+CURRENT /13.11 — в той же ветке/PR46 реализованы общий message CRUD до read, Work boundary, Support dirty Save/первоначальный header/продолжение разговора и удаление тикета. CRUD59 PASS/1 native SKIP, regression114/114, build/optics/production2/2 PASS; независимая проверка7/7 PASS WITH RISKS. Следующий gate — Owner review и актуальный CI; дублирование обращения ожидает решения о переносимой истории. [Единый отчёт](COMM_DOCS_2026-11-12.md) содержит первый200-run и успешный recheck test-only mobile locator. Состояние12.11 ниже — предыдущий этап, merge не разрешён.
+
 CURRENT /12.11 — Owner review COMM-DOCS в [draft PR #46](https://github.com/SigmeD/flexomir_os/pull/46), прежняя ветка feat/comm-docs-20261112. Четыре правки: delete local fileID → REUSE HeaderAction(save) → SectionAddItem(file)/empty-only dropzone → shared hold recording/focus/crossfade. D03/D08 разрешены для описанного локального UI, D06 production OPEN. Cross-browser130 PASS/10 native SKIP, regression58/58, build/optics/production2/2 PASS, независимый LIVE PASS WITH RISKS. Следующий gate — повторный Owner review. [отчёт и ручной чек-лист](COMM_DOCS_2026-11-12.md); второй PR/worktree не создаётся, merge отдельно.
 
 Ревизия сводок: 11.11.2026. Следующая — 25.11.2026. Каноническая очередь — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). [Фактическое состояние](PROJECT_STATE.md).

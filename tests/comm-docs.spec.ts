@@ -147,7 +147,7 @@ test('Q19–21 Support create uses one composer and retains subject on adapter e
   await expect(page.getByTestId('message-thread')).toContainText('Первое сообщение')
 })
 
-test('Q22–26 isolated Support reply stays in its ticket; ordinary requester is readonly', async ({ page }) => {
+test('Q22–26 Support reply stays in its ticket and ordinary requester can continue without flags', async ({ page }) => {
   await page.goto('/?view=client-support&commDemo=1')
   await page.getByTestId('ticket-row-client-01').click()
   await expect(page.getByText('Поддержка Flexomir OS', { exact: true })).toBeVisible()
@@ -160,7 +160,7 @@ test('Q22–26 isolated Support reply stays in its ticket; ordinary requester is
   await expect(page.getByText('Локальный ответ автора', { exact: true })).toHaveCount(0)
   await page.goto('/?view=client-support')
   await page.getByTestId('ticket-row-client-01').click()
-  await expect(page.getByTestId('message-composer')).toHaveCount(0)
+  await expect(page.getByTestId('message-composer')).toBeVisible()
 })
 
 test('Q26 file/item lock does not revoke the explicit local conversation capability', async ({page}) => {

@@ -268,6 +268,7 @@ test('Owner 2 and 4 Save retains unsent audio/video draft without posting it and
   await page.waitForTimeout(350); await page.keyboard.up('Space')
   await expect(page.getByTestId('message-composer')).toHaveAttribute('data-state','AudioReady')
   await page.getByRole('button',{name:'Удалить запись',exact:true}).click()
-  await page.getByRole('button',{name:'Сохранить обращение',exact:true}).click(); await row.click()
+  await expect(page.getByRole('button',{name:'Сохранить обращение',exact:true})).toBeDisabled()
+  await page.goBack(); await row.click()
   await expect(page.getByTestId('message-composer')).toHaveAttribute('data-state','Empty')
 })

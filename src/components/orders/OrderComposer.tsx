@@ -141,7 +141,7 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
           </OrderDateFields>
         </section>
         <SignedDocumentsSection key={'docs'+JSON.stringify([value.company,value.id])} context={JSON.stringify(['order',value.company,value.id])} canAdd={editable} />
-        <OrderConversation key={JSON.stringify([value.company,value.id,actorRole])} context={JSON.stringify(['order',value.company,value.id])} actor={actorRole} canReply={value.communication?.canReply ?? false} legacyComment={value.comment} />
+        <OrderConversation key={JSON.stringify([value.company,value.id,actorRole])} context={JSON.stringify(['order',value.company,value.id])} actor={actorRole} canReply={value.communication?.canReply ?? false} phase={value.communication?.phase??'open'} legacyComment={value.comment} />
       </div>
       <p className="fos-sr-only" role="status">{feedback || 'Черновик только в памяти страницы'}</p>
       <ConfirmDialog open={confirmDelete} title="Удалить черновик?" body="Черновик будет удалён из текущей демонстрационной сессии." confirmLabel="Да" cancelLabel="Отмена" onConfirm={() => {

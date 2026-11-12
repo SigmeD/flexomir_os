@@ -28,5 +28,9 @@ export function removeLocalDocument(context: string, id: string) {
   for (const listener of [...documentListeners]) listener()
 }
 export function subscribeLocalDocuments(listener: () => void) { documentListeners.add(listener); return () => { documentListeners.delete(listener) } }
+export function deleteLocalContext(context: string) {
+  conversations.delete(context); documents.delete(context)
+  for(const store of [drafts,attachments,recordings]) for(const key of store.keys()) if(JSON.parse(key)[0]===context)store.delete(key)
+}
 /** Called before the demo workspace remounts and reuses its object IDs. */
 export function resetLocalCommunication() { conversations.clear(); drafts.clear(); attachments.clear(); recordings.clear(); documents.clear(); for (const listener of [...documentListeners]) listener() }
