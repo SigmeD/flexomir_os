@@ -1,6 +1,6 @@
 # Flexomir OS — источники проекта
 
-FOS05 / 12.11: Owner выбрал «А- вариант. Только у полей показывают причина блокировки». G-02 APPROVED, `dirty && valid` сохраняется. [Draft PR #43](https://github.com/SigmeD/flexomir_os/pull/43), проверенный код `848dbc6`, [контракт и CI](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md#доставка-и-ci). Drive CURRENT синхронизирован 12.11; Figma634:445/1782:6025 ранее прочитаны metadata-only, canvas не менялась. Текущее уточнение обновляет документы по Git/PR/CI и не является новым UI-QA или приёмкой. После №05 — №13 + №10 с Алексеем.
+FOS05 / 12.11: Owner выбрал «А- вариант. Только у полей показывают причина блокировки». G-02 APPROVED, `dirty && valid` сохраняется. [PR #43](https://github.com/SigmeD/flexomir_os/pull/43), проверенный код `848dbc6`, [контракт и CI](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md#доставка-и-ci). Drive CURRENT синхронизирован 12.11; Figma634:445/1782:6025 ранее прочитаны metadata-only, canvas не менялась. Текущее уточнение обновляет документы по Git/PR/CI и не является новым UI-QA или приёмкой. После №05 — №13 + №10 с Алексеем.
 
 Owner FOS07 rollout /11.11: «да, отлично применяй» после просмотра компактного календаря и Account-style линзы. Это приёмка G-04 и разрешение общего подключения. Figma не менялась; [контракт/consumer map](FOS07_DATEPICKER_PILOT_2026-11-11.md), поставка [PR #41](https://github.com/SigmeD/flexomir_os/pull/41) MERGED, merge `e6a04fd748dbb16702610b3d7898b8ba1d3f87a5`, проверенный head `85ad6ef147a246b03652b92e70e50925d948870d`, CI5/5SUCCESS.
 

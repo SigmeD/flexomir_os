@@ -1,6 +1,6 @@
 # FOS05 — сохранение позиции повторного заказа
 
-12.11.2026. Owner выбрал: «А- вариант. Только у полей показывают причина блокировки». **G-02 APPROVED с уточнением: причины только у полей, без сводки рядом с Save.** Реализация и локальный QA завершены в [Draft PR #43](https://github.com/SigmeD/flexomir_os/pull/43), проверенный код `848dbc6d818d78cc7d05dd6c5644f293df7479ac`. Визуальная приёмка результата и merge отдельно. Рабочая ветка `fix/fos05-repeat-item-save`, база `1ac52005ae0b677a35f44d63994bc56e29991a98`. Один инкремент и PR; отдельный PR #40 не входит в эту работу.
+12.11.2026. Owner выбрал: «А- вариант. Только у полей показывают причина блокировки». **G-02 APPROVED с уточнением: причины только у полей, без сводки рядом с Save.** Реализация и локальный QA завершены в [PR #43](https://github.com/SigmeD/flexomir_os/pull/43), проверенный код `848dbc6d818d78cc7d05dd6c5644f293df7479ac`. Визуальная merge разрешён Owner 12.11; полная M8 приёмка отдельно. Рабочая ветка `fix/fos05-repeat-item-save`, база `1ac52005ae0b677a35f44d63994bc56e29991a98`. Один инкремент и PR; отдельный PR #40 не входит в эту работу.
 
 ## Источники и границы
 
@@ -87,7 +87,7 @@ Chromium desktop, обычный Client UI; три полных пути LOCAL /
 - [x] GREEN: `order-compose-model.ts` — объект ошибок тех же условий; `validDemoItem` возвращает отсутствие ошибок. `OrderItemForm` передаёт error общим полям. `PrintingMethodControl`/`ArtworkSource` связывают свои локальные сообщения через ARIA. Никакого summary или изменения HeaderAction/CSS/модели данных.
 - [x] Проверить один Client Repeat screenshot против baseline, затем весь `playwright.fos05.config.ts` (три движка + touch, пять ширин, обе роли, guards, save/cancel, validation boundaries, axe).
 - [x] `npm run build`, существующие Orders/Artwork/Select/DatePicker/frozen проверки; набор FOS05 подключён в существующий Artwork QA workflow. Независимое read-only QA без code-blockers. Общий suite не зелёный: восемь прежних failures подтверждены отдельно на main, детали ниже.
-- [x] LIVE docs синхронизированы с решением Owner и локальными доказательствами. Доставка — один Draft PR этой ветки; фактический head/CI проверяются в GitHub. Приёмка результата и merge остаются OPEN.
+- [x] LIVE docs синхронизированы с решением Owner и локальными доказательствами. Доставка — один Draft PR этой ветки; фактический head/CI проверяются в GitHub. Гейт разрешения на merge закрыт прямым поручением Owner 12.11; полная M8 приёмка отдельно.
 
 ## QA реализации
 
@@ -108,18 +108,18 @@ Chromium desktop, обычный Client UI; три полных пути LOCAL /
 
 Результаты: `output/playwright/fos05/full-results.json`, `full-regression.log`, `baseline/results.json`. Baseline harness `verify-baseline.cjs` временно подставлял ровно четыре исходных файла, запускал только эти четыре теста в двух projects и восстанавливал изменения в finally. Полный прогон завершился до этой проверки. Остальные scope/source и снимки не подменялись. Проверки статусов/Save/Select/date/frozen в полном прогоне прошли; восемь ошибок вынесены в OPEN тестовой базы, не скрыты и не исправляются через изменение frozen-поведения в FOS05.
 
-**FUNCTIONAL PASS / TECHNICAL focused PASS WITH BASELINE FAILURES / VISUAL baseline-reviewed, Owner result OPEN.** Ручные NVDA/VoiceOver и физические устройства не проверены. CI фактического PR head — отдельное доказательство в GitHub; локальный PASS его не подменяет. Артефакты локальные/ignored, не обещаются в другом checkout.
+**FUNCTIONAL PASS / TECHNICAL focused PASS WITH BASELINE FAILURES / VISUAL baseline-reviewed / OWNER MERGE APPROVED 12.11.** Полная M8 визуальная приёмка отдельно. Ручные NVDA/VoiceOver и физические устройства не проверены. CI фактического PR head — отдельное доказательство в GitHub; локальный PASS его не подменяет. Артефакты локальные/ignored, не обещаются в другом checkout.
 
 ## Доставка и CI
 
-[PR #43](https://github.com/SigmeD/flexomir_os/pull/43) — OPEN / DRAFT, не merged. Проверки приложения относятся к коду `848dbc6d818d78cc7d05dd6c5644f293df7479ac`. Последующие правки документации остаются в этом PR и не считаются новым прогоном UI/build.
+[PR #43](https://github.com/SigmeD/flexomir_os/pull/43) — поставка FOS05 по прямому поручению Owner на merge 12.11. Фактический статус merge и SHA проверяются в GitHub/Drive CURRENT. Проверки приложения относятся к коду `848dbc6d818d78cc7d05dd6c5644f293df7479ac`. Последующие правки документации остаются в этом PR и не считаются новым прогоном UI/build.
 
 | CI кода 848dbc6 | Проверенный статус |
 | --- | --- |
 | [Orders Core UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/43189813039) | SUCCESS |
-| [FE-S03 M7 UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/43189812889) | IN_PROGRESS |
+| [FE-S03 M7 UI QA](https://github.com/SigmeD/flexomir_os/actions/runs/43189812889) | SUCCESS |
 | [Artwork / Spacing / FOS05](https://github.com/SigmeD/flexomir_os/actions/runs/43189813092) | SUCCESS |
 
 Документационное уточнение 12.11 фиксирует номер PR, проверенный код, CI и открытые гейты; обновляет девять Markdown-файлов: README, LIVE docs, контракт FOS05 и исторический вход NEXT_SCOPE. Исправлена ссылка на стабильный заголовок «Актуальный индекс» в DECISIONS. Проверены 316 локальных ссылок/якорей: ошибок нет; из них 120 ссылок на файлы в изменённых документах проверены отдельно. `git diff --check` PASS. Код, тесты, workflows и snapshots не меняются; результаты приложения выше не переиздаются как новые. Существующий Drive CURRENT синхронизируется в этой же задаче, без создания второго плана.
 
-Следующий шаг №05: завершение CI и приёмка результата. После завершения поставки — №13 + №10 с Алексеем. Ни этот документационный запрос, ни успешный CI не означают разрешения на merge или полную M8 приёмку.
+Все три CI кода 848dbc6 завершены SUCCESS. Owner после отчёта прямо поручил merge в origin/main; это разрешение на поставку FOS05, не полная M8 приёмка. Код/тесты/workflows после проверенного кода не менялись: последующие коммиты содержат только Markdown. После merge Codex сверяет main SHA/дерево, выполняет новые post-merge проверки и синхронизирует существующий Drive CURRENT. Следующий функциональный блок — №13 + №10 с Алексеем.
