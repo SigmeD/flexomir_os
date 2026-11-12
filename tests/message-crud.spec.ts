@@ -50,6 +50,28 @@ test('CRUD message context reuses Glass and edits/deletes/copies without posting
   await expect(page.getByLabel('Сообщение',{exact:true})).toBeVisible()
 })
 
+test('CRUD opening gesture release cannot select a context action; a subsequent tap still selects',async({page},info)=>{
+  await page.goto('/?view=client-orders')
+  await page.getByRole('button',{name:'Добавить заказ',exact:true}).click()
+  await page.getByLabel('Сообщение',{exact:true}).fill('Do not delete on opening release')
+  await page.getByRole('button',{name:'Отправить сообщение локально',exact:true}).click()
+  const message=page.locator('.fos-message')
+  await message.dispatchEvent('contextmenu',{clientX:200,clientY:200})
+  const remove=page.getByRole('menuitem',{name:'Удалить',exact:true})
+  await expect(remove).toBeVisible()
+  // Linux can open on right-down; collision placement can put a row under
+  // the opening release. Radix Item synthesizes click on an unpaired up.
+  await remove.dispatchEvent('pointerup',{pointerId:91,pointerType:'mouse',button:2,isPrimary:true})
+  await expect(message).toHaveCount(1)
+  await expect(remove).toBeVisible()
+  // The same protection is required when releasing the opening long hold.
+  await remove.dispatchEvent('pointerup',{pointerId:92,pointerType:'touch',button:0,isPrimary:true})
+  await expect(message).toHaveCount(1)
+  if(info.project.use.hasTouch)await remove.tap()
+  else await remove.click()
+  await expect(message).toHaveCount(0)
+})
+
 test('CRUD first send opens an already saved ticket, so Save is disabled until a new change',async({page})=>{
   await page.goto('/?view=client-support')
   await page.getByRole('button',{name:'Добавить обращение',exact:true}).click()
