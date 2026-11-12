@@ -28,7 +28,9 @@ test('reference New Item uses shared Header Add/More, FOS fields, segmented and 
   await expect(form.getByRole('heading', { level: 1, name: 'Новая позиция', exact: true })).toBeVisible()
   await expect(form.locator('.fos-page-header [data-action=add]')).toBeDisabled()
   await expect(form.getByRole('button', { name: 'Ещё', exact: true })).toBeVisible()
-  await expect(form.locator('.fos-field')).toHaveCount(7)
+  await expect(form.locator('.fos-field')).toHaveCount(10)
+  await expect(form.getByLabel('Этикеток в рулоне')).toBeVisible()
+  await expect(form.getByLabel('Количество красок')).toBeVisible()
   await expect(form.locator('.fos-segmented')).toBeVisible()
   await expect(form.getByRole('button', { name: /Восстановить значения|Закрыть форму позиции|Сохранить позицию/ })).toHaveCount(0)
   // Fresh M8 evidence for the approved blank New Item reference, including narrow widths.

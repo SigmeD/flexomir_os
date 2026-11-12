@@ -7,7 +7,7 @@ test('Client draft: copy opens a new editor and is added only on explicit valid 
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
   await fillItem(page)
-  await page.getByLabel('Комментарии', { exact: true }).fill('Комментарий исходной позиции')
+  await page.getByLabel('Технический комментарий к позиции', { exact: true }).fill('Комментарий исходной позиции')
   await commitItem(page)
   const rows = page.getByTestId('order-composer').locator('li[data-item-id]')
   const sourceId = await rows.first().getAttribute('data-item-id')
@@ -17,7 +17,7 @@ test('Client draft: copy opens a new editor and is added only on explicit valid 
   await expect(page.getByRole('menuitem', { name: /Дублировать позицию/ })).toBeEnabled()
   await page.getByRole('menuitem', { name: 'Дублировать позицию', exact: true }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Новая позиция' })).toBeVisible()
-  await expect(page.getByLabel('Комментарии', { exact: true })).toHaveValue('Комментарий исходной позиции')
+  await expect(page.getByLabel('Технический комментарий к позиции', { exact: true })).toHaveValue('Комментарий исходной позиции')
   await expect(page.getByRole('button', { name: 'Добавить позицию', exact: true })).toBeEnabled()
   await chooseMore(page, 'Отменить ввод')
   await expect(rows).toHaveCount(1)
@@ -118,7 +118,7 @@ for (const role of ['client', 'manager'] as const) {
     await page.getByRole('button', { name: 'Открыть заказ DEMO-REVIEW-001' }).click()
     await expect(page.getByRole('button', { name: 'Ещё', exact: true })).toBeDisabled()
     await expect(page.getByTestId('order-composer')).toHaveCount(0)
-    await expect(page.getByLabel('Комментарии', { exact: true })).toHaveAttribute('readonly', '')
+    await expect(page.getByLabel('Желаемый срок', { exact: true })).toHaveAttribute('readonly', '')
   })
 }
 

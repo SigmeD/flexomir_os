@@ -113,14 +113,16 @@ for (const width of [768, 390, 320]) {
 
     await page.goto('/?view=client-support')
     await page.getByRole('button', { name: 'Добавить обращение', exact: true }).click()
-    await assertDock()
+    await expect(page.getByTestId('floating-work-actions')).toHaveCount(0)
+    await expect(page.getByTestId('message-composer')).toBeVisible()
     await page.goto('/?view=client-support')
     await page.getByTestId('ticket-row-client-01').click()
     await assertDock()
 
     await page.goto('/?view=manager-support')
     await page.getByRole('button', { name: 'Добавить обращение', exact: true }).click()
-    await assertDock()
+    await expect(page.getByTestId('floating-work-actions')).toHaveCount(0)
+    await expect(page.getByTestId('message-composer')).toBeVisible()
     await page.goto('/?view=manager-support')
     await page.getByTestId('ticket-row-manager-01').click()
     await assertDock()

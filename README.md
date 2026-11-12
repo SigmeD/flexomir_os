@@ -1,5 +1,7 @@
 # Flexomir OS
 
+Ветка COMM-DOCS: общая локальная переписка заказа/поддержки, демонстрационные производственные поля и подписные документы с настоящим PDF-просмотром. [Результат, проверки и открытые D01–D10](docs/COMM_DOCS_2026-11-12.md). До Owner-review/merge это отдельная поставка, не состояние main. Запись в рабочих экранах ожидает D03; callbacks доступны в существующем стенде `?view=neutral-actions&mediaPilot=1`. Локальные ответы в существующий SupportTicket доступны только с `commDemo=1`; серверных прав это не создаёт.
+
 Flexomir OS — личный кабинет для клиентов типографии и рабочее место её менеджеров. Клиент оформляет заказ, добавляет продукцию и макеты, следит за выполнением и обращается в поддержку. Менеджер просматривает поступившие заказы, работает с компаниями и при необходимости обращается в поддержку.
 
 ## Что можно попробовать сейчас
@@ -71,6 +73,14 @@ npm run build
 npx playwright install chromium firefox webkit
 npm run test:e2e -- --workers=2
 ```
+
+Матрица новой переписки/PDF и синтетического media lifecycle в Chromium/Firefox/WebKit/touch:
+
+```powershell
+npx playwright test --config=playwright.comm-docs.config.ts --workers=2
+```
+
+Native recording tests отдельно пропускаются в движках без MediaRecorder с указанной причиной; unsupported fallback проверяется. Физические устройства и настоящий iPhone этим не проверяются. Доказательства сохраняются в `output/comm-docs/` и CI artifact `comm-docs-evidence`.
 
 Дополнительные проверки компонентов и визуальных эффектов описаны в [критериях проверки](docs/QA_CHECKLIST.md), [отчёте по материалу Glass](docs/fos-glass-material.md) и [проверке Select](docs/glass-select-check.md). Снимки и видео тестовых прогонов сохраняются локально и не входят в репозиторий.
 

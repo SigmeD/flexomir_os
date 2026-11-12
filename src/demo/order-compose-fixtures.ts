@@ -5,7 +5,7 @@ import { itemSummary, type DemoDraft, type DemoItem } from './order-compose-mode
 export function itemActionsFixtures(fixture: string): readonly DemoDraft[] {
   if (!['item-actions-review', 'item-actions-transfer'].includes(fixture)) return []
   return [{ id: 'DEMO-REVIEW-001', company: 'Компания 01', stage: 'sent', ownerRole: 'client',
-    requestedDate: '2026-12-03', comment: 'Общий комментарий REVIEW', transferStarted: fixture === 'item-actions-transfer',
+    requestedDate: '2026-12-03', comment: 'Общий комментарий REVIEW', transferStarted: fixture === 'item-actions-transfer', communication: { canReply: true },
     items: [1, 2].map(index => ({ id: 'DEMO-REVIEW-001-ITEM-' + index, name: 'Позиция REVIEW ' + index,
       quantity: '500', shape: 'Прямоугольная', width: '100', height: '150', material: 'Бумага', printMethod: 'flex',
       artworkMode: 'HELP', fileName: '', comment: 'Комментарий REVIEW ' + index })),

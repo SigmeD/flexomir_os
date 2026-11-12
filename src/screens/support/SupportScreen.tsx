@@ -8,8 +8,9 @@ import { SupportTicketRow } from '@/components/support/SupportTicketRow'
 import { SupportTicketForm, type SupportInput } from '@/components/support/SupportTicketForm'
 import { SupportTicketDetail } from '@/components/support/SupportTicketDetail'
 import { supportFixtures, type DemoSupportTicket } from '@/demo/support-fixtures'
+import type { MessageDraft } from '@/components/messaging/message-model'
 
-/** Shared requester UI. Manager has no client queue or reply capability. */
+/** Shared requester UI. Manager is not a support operator; local follow-up requires an explicit demo capability. */
 export function SupportScreen({ role, empty = false, errorFixture = false, onNavigate }: { role: CabinetRole; empty?: boolean; errorFixture?: boolean; onNavigate?: (section: CabinetSection) => void }) {
   const [tickets, setTickets] = useState<readonly DemoSupportTicket[]>(() => empty ? [] : supportFixtures(role))
   const [input, setInput] = useState<SupportInput>({ subject: '', description: '' })
@@ -17,16 +18,21 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
   const [error, setError] = useState('')
   const submitted = useRef(new Set<string>())
   const sequence = useRef(100)
+  const operations = useRef(new Map<string,string>())
+  const failedOnce = useRef(false)
   const nav = usePreviewNavigation()
   const own = tickets.filter(ticket => ticket.owner === role)
   const ticket = own.find(item => 'ticket/' + item.id === nav.path)
   const creating = nav.path === 'new'
   const valid = Boolean(input.subject.trim() && input.description.trim())
-  function send() {
-    if (!creating || !valid) return
-    if (errorFixture) { setError('Демо: Ошибка отправки. Повторная попытка пока недоступна.'); return }
+  async function send(draft: MessageDraft, operationId: string) {
+    if (!creating || !valid || !draft.text.trim()) throw new Error('Укажите тему и описание обращения')
+    if (errorFixture && !failedOnce.current) { failedOnce.current = true; throw new Error('Демо: Ошибка отправки. Повторите попытку; ввод сохранён локально.') }
+    const previous = operations.current.get(operationId)
+    if (previous) { nav.replace('ticket/' + previous); return }
     const id = role + '-' + sequence.current++
-    setTickets(current => [...current, { id, owner: role, subject: input.subject.trim(), description: input.description.trim(), date: 'Демосессия', statusText: 'Сохранено только в демосессии' }])
+    operations.current.set(operationId,id)
+    setTickets(current => [...current, { id, owner: role, subject: input.subject.trim(), description: draft.text.trim(), file: draft.file, date: 'Демосессия', statusText: 'Сохранено только в демосессии' }])
     submitted.current.add(id)
     setInput({ subject: '', description: '' }); setTouched({}); setError('')
     // Replace the create page: Back returns to the own list, not a resubmittable form.
@@ -36,9 +42,9 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
   const parentBreadcrumb = ticket && role === 'client' ? 'Поддержка' : 'Мои обращения'
   return <CabinetPage role={role} section="support" onNavigate={onNavigate}>
     <PageHeader title={title} floatingWorkActions autoFocus={creating || Boolean(ticket)} breadcrumbs={nav.path === 'list' ? [{ label: 'Мои обращения' }] : [{ label: parentBreadcrumb, onSelect: nav.back }, { label: title }]}
-      actions={<><HeaderAction action={nav.path === 'list' ? 'add' : 'send'} accessibleName={nav.path === 'list' ? 'Добавить обращение' : 'Отправить обращение'} data-focus-key="support-add"
-        disabled={nav.path === 'list' ? false : !creating || !valid || Boolean(error)} onAction={nav.path === 'list' ? () => nav.open('new') : send} /><MoreAction disabled /></>} />
-    {ticket ? <SupportTicketDetail ticket={ticket} submitted={submitted.current.has(ticket.id)} /> : creating ? <SupportTicketForm value={input} onChange={setInput} descriptionLabel={role === 'client' ? 'Описание' : 'Сообщение'} touched={touched} onBlur={field => setTouched(current => ({ ...current, [field]: true }))} error={error} onSubmit={send} /> : <>
+      actions={creating ? undefined : <><HeaderAction action={nav.path === 'list' ? 'add' : 'send'} accessibleName={nav.path === 'list' ? 'Добавить обращение' : 'Отправить обращение'} data-focus-key="support-add"
+        disabled={nav.path !== 'list'} onAction={nav.path === 'list' ? () => nav.open('new') : undefined} /><MoreAction disabled /></>} />
+    {ticket ? <SupportTicketDetail ticket={ticket} submitted={submitted.current.has(ticket.id)} canReply={new URLSearchParams(window.location.search).get('commDemo') === '1'} /> : creating ? <SupportTicketForm value={input} onChange={setInput} descriptionLabel={role === 'client' ? 'Описание' : 'Сообщение'} touched={touched} onBlur={field => setTouched(current => ({ ...current, [field]: true }))} error={error} onSubmit={send} /> : <>
       <ul className="fos-cabinet__rows fos-support-list" aria-label="Мои обращения">{own.map(item => <li key={item.id}><SupportTicketRow ticket={item} onOpen={() => nav.open('ticket/' + item.id, { attribute: 'data-focus-key', value: 'ticket-' + item.id })} /></li>)}</ul>
       {!own.length && <p className="fos-cabinet__empty" data-testid="support-empty" role="status">Обращений пока нет.</p>}
     </>}

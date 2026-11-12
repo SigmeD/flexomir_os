@@ -1,6 +1,8 @@
 .fos-item-form__body { max-width: 1050px; margin-top: 32px; }
 .fos-item-form__fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 26px; max-width: 1038px; }
 .fos-item-form__printing, .fos-item-form__material { grid-column: 1; }
+.fos-item-form__production { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; grid-column: 1 / -1; }
+@media(max-width:600px) { .fos-item-form__production { grid-template-columns: minmax(0,1fr); gap: 24px; } }
 .fos-item-form__dimensions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; grid-column: 1 / -1; }
 .fos-item-form__artwork { display: flow-root; max-width: 506px; margin-top: 24px; }
 .fos-item-form__note { margin-top: 24px; }

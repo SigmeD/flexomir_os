@@ -37,7 +37,7 @@ test('closed menu exits inert, reopens immediately and respects outside-field fo
   await expect(page.locator('.fos-overflow')).toHaveCount(0)
   await expect(trigger).toBeFocused()
   await trigger.click()
-  const comment = page.getByLabel('Комментарии', { exact: true })
+  const comment = page.getByLabel('Сообщение', { exact: true })
   // On mobile the open menu can cover the textarea centre after the date row.
   // Exercise a real outside click on its exposed left edge, without forcing it.
   await comment.click({ position: { x: 12, y: 12 } })

@@ -3,7 +3,7 @@ import { canEditDemoItems, canSendDemo, itemSummary, validDemoDate, validDemoIte
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
-import { FOSDateField, FOSInput, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
+import { FOSDateField, FOSInput, FOSSelect } from '@/components/ui/fos-controls'
 import { FOSDatePicker } from '@/components/ui/fos-date-picker'
 import { displayDate } from '@/components/ui/date-only'
 import { OrderItemForm } from './OrderItemForm'
@@ -14,6 +14,8 @@ import type { OrderItemExitActions } from './OrderItemForm'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-compose.css'
+import { OrderConversation } from '@/components/messaging/OrderConversation'
+import { SignedDocumentsSection } from '@/components/documents/SignedDocumentsSection'
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
 export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBack, onItemEditorChange, onDraftDirtyChange, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [], actorRole = draft.ownerRole, onCancelReview, onOrderExitActionsChange }: {
@@ -126,7 +128,7 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
           <option value="">Выберите компанию</option>{managerCompanies.map(company => <option key={company.id} value={company.id}>{company.name}</option>)}
         </FOSSelect>}
         <section className="fos-order-composer__products" data-empty={value.items.length === 0 || undefined} aria-labelledby="compose-products-title">
-          <div className="fos-order-composer__section-heading"><h2 id="compose-products-title">Продукция</h2><SectionAddItem onClick={addItem} /></div>
+          <div className="fos-order-composer__section-heading"><h2 id="compose-products-title">Продукция</h2>{editable && <SectionAddItem onClick={addItem} />}</div>
           {value.items.length ? <ul className="fos-order-detail__items">{value.items.map((item, index) => <li key={item.id} data-item-id={item.id}>
             <OrderItemRow item={itemSummary(item)} position={index + 1} onOpen={() => { returnFocus.current = '[data-item-id="' + item.id + '"] button'; setEditing(item.id) }} />
           </li>)}</ul> : <p className="fos-order-detail__empty">Позиция ещё не добавлена. Добавьте первую позицию.</p>}
@@ -137,8 +139,9 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
               error={!dateInputValid || !validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onValueChange={requestedDate => save({ ...value, requestedDate })} />
             {value.ownerRole === 'client' && <FOSDateField label="Согласованный срок" value="" readOnly />}
           </OrderDateFields>
-          <FOSTextarea label="Комментарии" placeholder="Необязательно" value={value.comment} onChange={event => save({ ...value, comment: event.target.value })} />
         </section>
+        <SignedDocumentsSection key={'docs'+JSON.stringify([value.company,value.id])} context={JSON.stringify(['order',value.company,value.id])} canAdd={editable} />
+        <OrderConversation key={JSON.stringify([value.company,value.id,actorRole])} context={JSON.stringify(['order',value.company,value.id])} actor={actorRole} canReply={value.communication?.canReply ?? false} legacyComment={value.comment} />
       </div>
       <p className="fos-sr-only" role="status">{feedback || 'Черновик только в памяти страницы'}</p>
       <ConfirmDialog open={confirmDelete} title="Удалить черновик?" body="Черновик будет удалён из текущей демонстрационной сессии." confirmLabel="Да" cancelLabel="Отмена" onConfirm={() => {

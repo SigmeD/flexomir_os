@@ -1,5 +1,7 @@
 # Flexomir OS — текущий план
 
+CURRENT /12.11 — новая итерация [COMM-DOCS v1.0](https://docs.google.com/document/d/193nlQ9_pfdZI75V__dZhTwaHohaFOCm_m8rSWLE_hmw/edit), поручение Owner «приступай к реализации». Единая ветка `feat/comm-docs-20261112`, baseline `f3c86fc`; G1 текстовый пилот прошёл независимый QA, G2–G4 локальная реализация, G5 регрессия/визуальная сверка в работе. Следующий gate: точные R/Q результаты, единый draft PR, ответы D03/D08 и Owner-review. [Карта реализации](COMM_DOCS_2026-11-12.md). Этот инкремент не возвращает старые №10/13 из backend-backlog; прежний №11 остаётся исторически закрытым без реализации в старой итерации.
+
 Ревизия сводок: 11.11.2026. Следующая — 25.11.2026. Каноническая очередь — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). [Фактическое состояние](PROJECT_STATE.md).
 
 ## Где мы находимся

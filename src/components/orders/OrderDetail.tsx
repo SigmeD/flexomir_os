@@ -2,12 +2,14 @@ import type { ReactNode } from 'react'
 import { PageHeader } from '@/components/ui/page-header'
 import { HeaderAction } from '@/components/ui/header-action'
 import { MoreAction, OverflowMenu } from '@/components/ui/overflow-menu'
-import { FOSDateField, FOSInput, FOSTextarea } from '@/components/ui/fos-controls'
+import { FOSDateField, FOSInput } from '@/components/ui/fos-controls'
 import { OrderItemSummary } from './OrderItemSummary'
 import { OrderDateFields } from './OrderDateFields'
 import { ManagerDemoIntake } from './ManagerDemoIntake'
 import type { OrderDetailContent, OrderListItem } from './order-model'
 import './order-detail.css'
+import { OrderConversation } from '@/components/messaging/OrderConversation'
+import { SignedDocumentsSection } from '@/components/documents/SignedDocumentsSection'
 
 interface OrderDetailProps {
   order: OrderListItem; detail: OrderDetailContent; onBack: () => void; actions?: ReactNode
@@ -16,13 +18,14 @@ interface OrderDetailProps {
   onDemoProcessingStateChange?: (state: 'pending' | 'success' | 'error') => void
   demoProcessingEnabled?: boolean
   onEdit?: () => void
+  canReply?: boolean
 }
 function dateValue(value?: string) {
   if (!value) return ''
   return /^\d{2}\.\d{2}\.\d{4}$/.test(value) ? value.slice(6) + '-' + value.slice(3, 5) + '-' + value.slice(0, 2) : value
 }
 /** Shared readonly composition; Manager-only data slots never create production commands. */
-export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, submitted = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false, onEdit }: OrderDetailProps) {
+export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, submitted = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false, onEdit, canReply = false }: OrderDetailProps) {
   const title = submitted ? 'Заказ отправлен' : 'Заказ ' + order.id
   return <div className="fos-order-detail" data-testid="order-detail" data-role={role} data-order-id={order.id}>
     <PageHeader title={title} floatingWorkActions={!actions} autoFocus subtitleRole="status" subtitle={<span data-testid="order-detail-status">{order.statusLabel}</span>}
@@ -41,8 +44,9 @@ export function OrderDetail({ order, detail, onBack, actions, role = 'client', m
           <FOSDateField label="Желаемый срок" value={dateValue(detail.requestedDate)} readOnly />
           <FOSDateField label="Согласованный срок" value={dateValue(detail.agreedDate)} readOnly />
         </OrderDateFields>
-        <FOSTextarea label="Комментарии" value={detail.comment || ''} placeholder="Необязательно" readOnly />
       </section>
+      <SignedDocumentsSection key={'docs'+JSON.stringify([order.company,order.id])} context={JSON.stringify(['order',order.company,order.id])} canAdd={false} />
+      <OrderConversation key={JSON.stringify([order.company,order.id,role])} context={JSON.stringify(['order',order.company,order.id])} actor={role} canReply={canReply} legacyComment={detail.comment} />
       {managerIntake && <ManagerDemoIntake state={demoProcessingState} onStateChange={onDemoProcessingStateChange} demoEnabled={demoProcessingEnabled} />}
     </div>
   </div>

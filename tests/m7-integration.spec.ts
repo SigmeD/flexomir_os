@@ -21,7 +21,7 @@ for (const width of [1440, 1024, 768, 390, 320]) test(`D cabinet navigation pres
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Мои макеты')
   await section(page, 'support')
   await expect(page.getByLabel('Тема', { exact: true })).toHaveValue('Только клиентский автор')
-  await page.getByRole('button', { name: 'Отправить обращение', exact: true }).click()
+  await page.getByRole('button', { name: 'Отправить обращение локально', exact: true }).click()
   await setDemoRole(page, 'manager')
   await section(page, 'support')
   await expect(page.getByText('Только клиентский автор', { exact: true }).filter({ visible: true })).toHaveCount(0)

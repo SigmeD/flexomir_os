@@ -16,6 +16,10 @@ export interface DemoItem {
   layoutName?: string
   unavailableArtwork?: string
   comment?: string
+  /** Optional demo-only fields until D01 supplies applicability and a production catalogue. */
+  winding?: string
+  labelsPerRoll?: string
+  inkCount?: string
 }
 
 export interface DemoDraft {
@@ -29,6 +33,8 @@ export interface DemoDraft {
   sourceOrderId?: string
   /** Fixture/UI lock only. Real integration state must come from the agreed API. */
   transferStarted?: boolean
+  /** Independent local capability fixture; not production ACL/status mapping. */
+  communication?: { canReply: boolean }
 }
 
 export const canEditDemoItems = (order: DemoDraft, actor: DemoDraft['ownerRole']) => !order.transferStarted
@@ -39,12 +45,12 @@ export const validDemoReview = (order: DemoDraft) => order.stage === 'sent' && o
 
 export const emptyDemoItem = (): DemoItem => ({
   id: '', name: '', quantity: '', shape: '', width: '', height: '', material: '',
-  printMethod: '', artworkMode: 'UPLOAD', fileName: '',
+  printMethod: '', artworkMode: 'UPLOAD', fileName: '', winding: '', labelsPerRoll: '', inkCount: '',
 })
 
 const positive = (value: string) => value.trim() !== '' && Number.isFinite(Number(value)) && Number(value) > 0
 
-export type DemoItemErrors = Partial<Record<'name' | 'quantity' | 'shape' | 'width' | 'height' | 'material' | 'printMethod' | 'artwork', string>>
+export type DemoItemErrors = Partial<Record<'name' | 'quantity' | 'shape' | 'width' | 'height' | 'material' | 'printMethod' | 'artwork' | 'labelsPerRoll' | 'inkCount', string>>
 
 /** Explain the existing local demo rules; this is not an API/1C contract. */
 export function demoItemErrors(item: DemoItem): DemoItemErrors {
@@ -56,6 +62,10 @@ export function demoItemErrors(item: DemoItem): DemoItemErrors {
   if (!positive(item.height)) errors.height = 'Введите положительное число'
   if (!item.material) errors.material = 'Выберите материал'
   if (!item.printMethod) errors.printMethod = 'Выберите способ печати'
+  for (const field of ['labelsPerRoll', 'inkCount'] as const) {
+    const number = item[field]
+    if (number && (!positive(number) || !Number.isSafeInteger(Number(number)))) errors[field] = 'Введите положительное целое число'
+  }
   if (!(item.artworkMode === 'HELP' || (item.artworkMode === 'UPLOAD' && item.fileName) || (item.artworkMode === 'LIBRARY' && item.layoutId && item.layoutName))) {
     errors.artwork = (item.unavailableArtwork ? 'Исходный макет недоступен. ' : '') + 'Выберите файл заново, макет из библиотеки или запросите помощь.'
   }

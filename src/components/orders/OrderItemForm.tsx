@@ -114,6 +114,13 @@ export function OrderItemForm({ item, initialValue, onSave, onClose, onBackToLis
         <FOSInput wrapperClassName="fos-item-form__name" label="Наименование продукции" placeholder="Введите наименование" value={value.name} error={error('name')} onBlur={blur('name')} onChange={event => update({ name: event.target.value })} required />
         <FOSQuantity wrapperClassName="fos-item-form__quantity" label="Количество" min="1" value={value.quantity} error={error('quantity')} onBlur={blur('quantity')} onChange={event => update({ quantity: event.target.value })} required />
         <div className="fos-item-form__printing"><PrintingMethodControl value={value.printMethod} error={error('printMethod')} onChange={printMethod => update({ printMethod })} /></div>
+        <div className="fos-item-form__production">
+          <FOSSelect label="Тип намотки" value={value.winding || ''} helper="Тестовые значения; применимость и обязательность уточняются" onChange={event => update({ winding: event.target.value })}>
+            <option value="">Выберите намотку</option><option value="demo-external">Тестовая: наружная</option><option value="demo-internal">Тестовая: внутренняя</option>
+          </FOSSelect>
+          <FOSInput label="Этикеток в рулоне" inputMode="numeric" value={value.labelsPerRoll || ''} placeholder="Введите количество" error={error('labelsPerRoll')} onBlur={blur('labelsPerRoll')} onChange={event => update({ labelsPerRoll: event.target.value })} />
+          <FOSInput label="Количество красок" inputMode="numeric" value={value.inkCount || ''} placeholder="Укажите число красок" error={error('inkCount')} onBlur={blur('inkCount')} onChange={event => update({ inkCount: event.target.value })} />
+        </div>
         <div className="fos-item-form__dimensions"><FOSSelect wrapperClassName="fos-item-form__shape" label="Форма" value={value.shape} error={error('shape')} onBlur={blur('shape')} onChange={event => update({ shape: event.target.value })} required>
           <option value="">Выберите форму</option><option>Прямоугольная</option><option>Круглая</option>
         </FOSSelect>
@@ -124,7 +131,7 @@ export function OrderItemForm({ item, initialValue, onSave, onClose, onBackToLis
         </FOSSelect>
       </div>
       <div className="fos-item-form__artwork"><ArtworkSource value={value} error={error('artwork')} onChange={update} onOpenLibrary={() => { pickerScroll.current = window.scrollY; setPickerOpen(true) }} /></div>
-      <FOSTextarea wrapperClassName="fos-item-form__note" label="Комментарии" placeholder="Необязательно" value={value.comment || ''} onChange={event => update({ comment: event.target.value })} />
+      <FOSTextarea wrapperClassName="fos-item-form__note" label="Технический комментарий к позиции" placeholder="Необязательно" value={value.comment || ''} onChange={event => update({ comment: event.target.value })} />
     </div>
     <p className="fos-sr-only" role="status">{dirty ? 'Есть несохранённые изменения позиции' : 'Изменений позиции нет'}</p>
     <ConfirmDialog open={pendingAction !== null} title="Сохранить изменения?" confirmLabel="Да" cancelLabel="Нет"
