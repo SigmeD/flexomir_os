@@ -1,6 +1,8 @@
 # Flexomir OS — реестр решений и вопросов
 
-## Актуальный индекс — 11.11.2026
+12.11 / FOS05: Owner выбрал «А- вариант. Только у полей показывают причина блокировки». **G-02 APPROVED**: [контракт А](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md) — `dirty && valid`, причины только у соответствующих полей; без сводки рядом с Save. Реализация и локальный QA — в [PR #43](https://github.com/SigmeD/flexomir_os/pull/43), код `848dbc6`. Исторический filename не считается доступным файлом; сохранение невалидной позиции запрещено. Owner прямо поручил merge 12.11; полная M8 приёмка отдельно. После №05 — №13 + №10 с Алексеем; PR #40 и CMP отдельно.
+
+## Актуальный индекс
 
 Этот индекс определяет текущие статусы. Датированные записи ниже сохраняют основания решений; их прежние OPEN/DEV-only/ожидание merge не задают очередь после последующих подтверждений Owner.
 
@@ -9,7 +11,7 @@
 | Hover/G-01 | Принят Account, затем общий adapter для popup; PR #36/#37 MERGED. 240 ms presence, прежние frozen physics/material. Desktop Sidebar не менялся |
 | Placeholder Select | Owner подтвердил отсутствие строки в popup при сохранении пустого поля и semantic empty; PR #38 MERGED |
 | Кнопки/G-05, отступы03, ArtworkSource12 | Приняты и подключены; PR #34/#35 MERGED. Полная M8 visual acceptance отдельно |
-| Save UX/G-02 | OPEN; текущий dirty && valid сохраняется |
+| Save UX/G-02 | APPROVED12.11: А, причины только у полей; dirty && valid сохраняется. CI кода 3/3 SUCCESS; Owner разрешил merge 12.11. Факт merge и полная M8 приёмка учитываются отдельно |
 | Delete Item/G-03 | OPEN; требуются права/статусы и согласованный API |
 | DatePicker/G-04 | ACCEPTED: «да, отлично применяй» после компактного варианта и линзы. Общий DatePicker подключён к желаемому сроку Client/Manager; PR #41 MERGED e6a04fd, CI head85ad6ef 5/5 SUCCESS; readonly/ISO/бизнес-правила сохранены |
 | Item↔Library/G-06, файлы/G-07, поддержка/G-08 | OPEN; Owner/PO/Алексей определяют модель, права и API |

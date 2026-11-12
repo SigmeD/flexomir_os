@@ -1,5 +1,7 @@
 # Flexomir OS — React Component Registry
 
+FOS05 / 12.11: Owner выбрал А с причинами **только у полей**, G-02 APPROVED. Реализация — [PR #43](https://github.com/SigmeD/flexomir_os/pull/43), код `848dbc6`. [Карта и QA](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md): Item1791:6130/1782:6025 → EXTEND OrderItemForm + demoItemErrors/validDemoItem; Artwork634:445 → REUSE error + ARIA; Printing2315:9747 → EXTEND error/ARIA; остальные поля REUSE error-props. Client New/Repeat/Edit и Manager New/Edit используют один путь. HeaderAction1953:4202/CSS/Glass неизменны, `dirty && valid` сохранён. Приёмка результата и merge отдельно, CMP не входит.
+
 CURRENT FOS07 /11.11: Owner принял компактный вариант с линзой; PR #41 MERGED e6a04fd, head85ad6ef, CI5/5SUCCESS. FOSDatePicker теперь потребляется общим OrderComposer обеих ролей без DEV-флага. Optional controlled inputDraft/onInputDraftChange/onValidityChange сохраняют raw UI и валидацию при Item editor; FOSDateField оставлен для readonly OrderDetail/Client agreedDate и native reference. Карта Date Field1169:437→shared picker→Composer; FosDatePickerDay→existing material. Исторические pilot-only/G-04 OPEN ниже заменены этим решением.
 
 FOS07 lens /11.11 Owner: DayPicker Day→EXTEND FosDatePickerDay, REUSE default DayButton/keyboard и существующий FosGlassMaterial с параметрами Rows. Один активный material: доступный hover либо accepted selected day; readonly/form/frozen прежние. Синий selected заменён линзой; неподвижная ячейка с240ms opacity, отдельная2D-физика не создавалась. Пилот принят, текущие потребители описаны выше.
@@ -7,7 +9,7 @@ FOS07 lens /11.11 Owner: DayPicker Day→EXTEND FosDatePickerDay, REUSE default 
 FOS07 /11.11: Date Field1169:437 → REUSE FOSInput/Field + CREATE FOSDatePicker controlled adapter; FosPopup/Surface/frozen Rows → REUSE semanticRows с календарным grid; React DayPicker9.14.0 → REUSE date/keyboard/RU. Отдельный Figma open-calendar master отсутствует; runtime принят Owner, G-04 закрыт. Consumers: OrderComposer Client/Manager и DEV lab; readonly Detail/FOSDateField KEEP. [Полная карта/контракт](FOS07_DATEPICKER_PILOT_2026-11-11.md).
 
 Проверено 11.11.2026: изменения ниже подключены и слиты в PR #35–38. Обычные Client/Manager и production используют ArtworkSource states, принятые отступы, общий hover и Select без placeholder-строки. [Текущее состояние](PROJECT_STATE.md), [план](DELIVERY_PLAN.md).
-Ниже сохранены подробные датированные карты/контракты. Старые DEV-only, Account-only и OWNER OPEN в истории не отменяют более позднее явное решение Owner; текущие статусы — в [индексе решений](DECISIONS.md#актуальный-индекс--11112026). Геометрия мастеров, scope ролей и frozen manifest сохраняются.
+Ниже сохранены подробные датированные карты/контракты. Старые DEV-only, Account-only и OWNER OPEN в истории не отменяют более позднее явное решение Owner; текущие статусы — в [индексе решений](DECISIONS.md#актуальный-индекс). Геометрия мастеров, scope ролей и frozen manifest сохраняются.
 
 ## CURRENT /11.11 — placeholder не является пунктом Select
 

@@ -19,10 +19,10 @@ export function ArtworkSource({ value, onChange, disabled = false, error, onOpen
     {value.artworkMode !== 'HELP' && (library
       ? <FOSAction size="compact" disabled={disabled} onClick={openFile}>Выбрать файл</FOSAction>
       : <FOSAction size="compact" disabled={disabled || !onOpenLibrary} onClick={onOpenLibrary} data-artwork-library title={onOpenLibrary ? 'Выбор синтетического макета в демосессии' : 'Библиотека компании не подключена'}>Мои макеты</FOSAction>)}
-    <label><input type="checkbox" disabled={disabled} checked={value.artworkMode === 'HELP'} onChange={event => onChange({ artworkMode: event.target.checked ? 'HELP' : 'UPLOAD', fileName: '', layoutId: undefined, layoutName: undefined, unavailableArtwork: undefined })} />Нужна помощь с макетом</label>
+    <label><input type="checkbox" disabled={disabled} aria-describedby={error ? id + '-error' : undefined} checked={value.artworkMode === 'HELP'} onChange={event => onChange({ artworkMode: event.target.checked ? 'HELP' : 'UPLOAD', fileName: '', layoutId: undefined, layoutName: undefined, unavailableArtwork: undefined })} />Нужна помощь с макетом</label>
   </div>
   const content = (openFile: () => void) => <>
-    <FOSAction disabled={disabled || (library && !onOpenLibrary)} onClick={library ? onOpenLibrary : openFile} data-artwork-library={library ? '' : undefined} aria-describedby={`${id}-selection ${id}-hint`}>
+    <FOSAction disabled={disabled || (library && !onOpenLibrary)} onClick={library ? onOpenLibrary : openFile} data-artwork-library={library ? '' : undefined} aria-invalid={error ? true : undefined} aria-describedby={`${id}-selection ${id}-hint${error ? ' ' + id + '-error' : ''}`}>
       {!library && <img src={uploadIcon} alt="" />}
       {library ? 'Заменить макет' : state === 'unavailable' ? 'Выбрать файл' : value.fileName ? 'Заменить файл' : 'Загрузить'}
     </FOSAction>
@@ -39,6 +39,6 @@ export function ArtworkSource({ value, onChange, disabled = false, error, onOpen
       <LocalFileControl label="Выбрать файл макета" disabled={disabled || value.artworkMode === 'HELP'} onFile={selectFile} className="fos-artwork-source__control" state={controlState}>
         {open => <>{value.artworkMode !== 'HELP' && <div className="fos-artwork-source__dropzone" data-state={controlState}>{content(open)}</div>}{options(open)}</>}
       </LocalFileControl>
-    {error && <p className="fos-field__error" role="alert">{error}</p>}
+    {error && <p id={id + '-error'} className="fos-field__error" role="alert">{error}</p>}
   </section>
 }

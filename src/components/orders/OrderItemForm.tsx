@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { emptyDemoItem, validDemoItem, type DemoItem } from '@/demo/order-compose-model'
+import { demoItemErrors, emptyDemoItem, validDemoItem, type DemoItem, type DemoItemErrors } from '@/demo/order-compose-model'
 import { FOSInput, FOSQuantity, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
@@ -36,7 +36,8 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
     setPickerOpen(false)
     requestAnimationFrame(() => { document.querySelector<HTMLElement>('[data-artwork-library]')?.focus({ preventScroll: true }); window.scrollTo(0, pickerScroll.current) })
   }
-  const error = (key: 'quantity' | 'width' | 'height') => touched[key] && value[key] !== '' && !(Number(value[key]) > 0 && (key !== 'quantity' || Number.isSafeInteger(Number(value[key])))) ? 'Введите положительное ' + (key === 'quantity' ? 'целое число' : 'число') : undefined
+  const errors = demoItemErrors(value)
+  const error = (key: keyof DemoItemErrors) => item || dirty || touched[key] ? errors[key] : undefined
   const blur = (key: string) => () => setTouched(current => ({ ...current, [key]: true }))
   useEffect(() => {
     if (pickerOpen) {
@@ -82,19 +83,19 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
     </>} />
     <div className="fos-item-form__body">
       <div className="fos-item-form__fields">
-        <FOSInput wrapperClassName="fos-item-form__name" label="Наименование продукции" placeholder="Введите наименование" value={value.name} onChange={event => update({ name: event.target.value })} required />
+        <FOSInput wrapperClassName="fos-item-form__name" label="Наименование продукции" placeholder="Введите наименование" value={value.name} error={error('name')} onBlur={blur('name')} onChange={event => update({ name: event.target.value })} required />
         <FOSQuantity wrapperClassName="fos-item-form__quantity" label="Количество" min="1" value={value.quantity} error={error('quantity')} onBlur={blur('quantity')} onChange={event => update({ quantity: event.target.value })} required />
-        <div className="fos-item-form__printing"><PrintingMethodControl value={value.printMethod} onChange={printMethod => update({ printMethod })} /></div>
-        <div className="fos-item-form__dimensions"><FOSSelect wrapperClassName="fos-item-form__shape" label="Форма" value={value.shape} onChange={event => update({ shape: event.target.value })} required>
+        <div className="fos-item-form__printing"><PrintingMethodControl value={value.printMethod} error={error('printMethod')} onChange={printMethod => update({ printMethod })} /></div>
+        <div className="fos-item-form__dimensions"><FOSSelect wrapperClassName="fos-item-form__shape" label="Форма" value={value.shape} error={error('shape')} onBlur={blur('shape')} onChange={event => update({ shape: event.target.value })} required>
           <option value="">Выберите форму</option><option>Прямоугольная</option><option>Круглая</option>
         </FOSSelect>
         <FOSInput wrapperClassName="fos-item-form__width" label="Ширина, мм" placeholder="Введите ширину" type="number" min="0" step="any" value={value.width} error={error('width')} onBlur={blur('width')} onChange={event => update({ width: event.target.value })} required />
         <FOSInput wrapperClassName="fos-item-form__height" label="Высота, мм" placeholder="Введите высоту" type="number" min="0" step="any" value={value.height} error={error('height')} onBlur={blur('height')} onChange={event => update({ height: event.target.value })} required /></div>
-        <FOSSelect wrapperClassName="fos-item-form__material" label="Материал" value={value.material} onChange={event => update({ material: event.target.value })} required>
+        <FOSSelect wrapperClassName="fos-item-form__material" label="Материал" value={value.material} error={error('material')} onBlur={blur('material')} onChange={event => update({ material: event.target.value })} required>
           <option value="">Выберите материал</option><option>Бумага</option><option>Плёнка</option>
         </FOSSelect>
       </div>
-      <div className="fos-item-form__artwork"><ArtworkSource value={value} onChange={update} onOpenLibrary={() => { pickerScroll.current = window.scrollY; setPickerOpen(true) }} /></div>
+      <div className="fos-item-form__artwork"><ArtworkSource value={value} error={error('artwork')} onChange={update} onOpenLibrary={() => { pickerScroll.current = window.scrollY; setPickerOpen(true) }} /></div>
       <FOSTextarea wrapperClassName="fos-item-form__note" label="Комментарии" placeholder="Необязательно" value={value.comment || ''} onChange={event => update({ comment: event.target.value })} />
     </div>
     <p className="fos-sr-only" role="status">{dirty ? 'Есть несохранённые изменения позиции' : 'Изменений позиции нет'}</p>
