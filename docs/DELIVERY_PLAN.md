@@ -1,5 +1,7 @@
 # Flexomir OS — текущий план
 
+CURRENT /13.11 — PR46 MERGED, application main479c591, CI headea3f2b8 6/6SUCCESS; новые post-merge build/smoke8/production2 PASS. Текущий инкремент доставлен. Далее — отдельные Owner visual/D09, Duplicate payload и готовый API/read/ACL контракт Алексея, без новой самоназначенной функциональности. [Отчёт](COMM_DOCS_2026-11-12.md). Pre-merge планы ниже исторические; нового разрешения merge ждать не требуется.
+
 Owner /13.11 поручил merge PR46 в main/origin. Следующий шаг текущей поставки: исправить/перепроверить два pre-merge CI findings, получить зелёный актуальный CI, merge, подтвердить main/remote head cleanup и post-merge проверки. [Единый отчёт](COMM_DOCS_2026-11-12.md); старый Owner merge gate ниже заменён этим разрешением. Duplicate payload/API/ACL отдельно OPEN.
 
 CURRENT /13.11 — в той же ветке/PR46 реализованы общий message CRUD до read, Work boundary, Support dirty Save/первоначальный header/продолжение разговора и удаление тикета. CRUD59 PASS/1 native SKIP, regression114/114, build/optics/production2/2 PASS; независимая проверка7/7 PASS WITH RISKS. Следующий gate — Owner review и актуальный CI; дублирование обращения ожидает решения о переносимой истории. [Единый отчёт](COMM_DOCS_2026-11-12.md) содержит первый200-run и успешный recheck test-only mobile locator. Состояние12.11 ниже — предыдущий этап, merge не разрешён.

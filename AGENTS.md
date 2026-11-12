@@ -1,5 +1,9 @@
 # Flexomir OS — правила работы Codex
 
+## CURRENT / 13.11.2026 — COMM-DOCS merged
+
+PR #46 MERGED по прямому поручению Owner «сделай merge в main/origin». SHA приложения `479c59188b5ee0b2bda4dd3150b75803cf3d3886`, проверенный PR head `ea3f2b858d661592948c76760be6459c6c2bde28`, CI **6/6 SUCCESS**. Дерево squash совпадает с PR head. Новые post-merge build PASS, smoke **8/8**, bundled production1440/320 **2/2 PASS**, pageerrors=[]. Remote head удалён автоматически, локальная feat/comm-docs-20261112 сохранена; рабочая ветка main. Последующая синхронизация Markdown — только метаданные, не новый код приложения. Duplicate payload, Owner visual/D09, physical devices и production API/read/ACL/1С остаются OPEN. [Отчёт](docs/COMM_DOCS_2026-11-12.md), [состояние](docs/PROJECT_STATE.md). Датированные pre-merge записи ниже — история.
+
 ## CURRENT / 12.11.2026 — №06 merged
 
 PR #44 слит по прямому поручению Owner «вливай в main/origin». Продуктовый main `6d3fa83e14d1581017ae19a4451ec0181e9d126a`, проверенный PR head `7c5b017228dbef58f7bb85d6211257b1519556f0`, CI7/7SUCCESS. Новые post-merge проверки: build PASS, FOS06 60/60, frozen2/2, production Review4/4. Remote head удалён; локальная ветка сохранена. Из13пунктов10 реализованы и слиты, №11 закрыт без реализации, №10/13 backlog. Полная M8 приёмка, backend/API/ACL/1С, PR #40 и CMP отдельно. [Состояние](docs/PROJECT_STATE.md), [отчёт №06](docs/FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md). Датированные SHA ниже — история, не текущая очередь.

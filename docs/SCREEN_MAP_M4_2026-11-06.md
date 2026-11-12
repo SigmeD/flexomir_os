@@ -1,5 +1,7 @@
 # M4 — карта экранов Flexomir OS Client + Manager
 
+CURRENT /13.11 — COMM-DOCS карта Client/Manager Order/Support слита в PR46/main479c591; CI6/6 на ea3f2b8, новые post-merge build/8smoke/2production PASS. Приведённые ниже компонентные соответствия реализованы в main, полная Owner visual/API приёмка отдельно. [Отчёт](COMM_DOCS_2026-11-12.md).
+
 CURRENT /13.11 — все MessageThread consumers используют общий Glass context menu: собственное unread edit/delete, copy текста; новый Work message сохраняет CRUD до read, прежние на Work boundary фиксируются. Support Client/Manager create/detail показывают Save+More сразу, Save disabled на чистом состоянии, follow-up доступен без commDemo. More удаляет тикет; Duplicate OPEN. [Карта shared-компонентов и QA](COMM_DOCS_2026-11-12.md), PR46. Сведения12.11 о gated follow-up superseded прямым решением Owner.
 
 CURRENT Owner corrections /12.11: Client/Manager OrderComposer→SignedDocumentsSection header file-add/empty-only uploader/preview-delete; readonly OrderDetail без mutations. Order/Support используют один MessageComposer/Thread и hold recording. Support create сохраняет required topic+text, detail REUSE HeaderAction(save)→own support list, local history/draft сохранены; follow-up остаётся explicit commDemo=1. [отчёт и ручной чек-лист](COMM_DOCS_2026-11-12.md), [draft PR #46](https://github.com/SigmeD/flexomir_os/pull/46). Четыре ширины одной реализацией, D09/production отдельно.
