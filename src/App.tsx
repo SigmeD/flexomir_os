@@ -104,11 +104,11 @@ function AppViews() {
   if (view === 'glass-filter-lab') return <GlassFilterDemo />
   if (view === 'client-orders') {
     const previewEmpty = new URLSearchParams(window.location.search).get('fixture') === 'empty'
-    return <OrderDemoWorkspace role="client" empty={previewEmpty} presentationMode={params.get('demoTools') === '1'} />
+    return <OrderDemoWorkspace role="client" empty={previewEmpty} errorFixture={fixture} presentationMode={params.get('demoTools') === '1'} />
   }
   if (view === 'manager-orders') {
     const previewEmpty = new URLSearchParams(window.location.search).get('fixture') === 'empty'
-    return <OrderDemoWorkspace role="manager" empty={previewEmpty} presentationMode={params.get('demoTools') === '1'} />
+    return <OrderDemoWorkspace role="manager" empty={previewEmpty} errorFixture={fixture} presentationMode={params.get('demoTools') === '1'} />
   }
   if (view === 'material') return <GlassMaterialLab orders={orders} statuses={statuses} />
   return <OrderDemoWorkspace role="client" presentationMode diagnosticMessage={`Неизвестный экран «${view}». Открыт стенд клиента.`} />

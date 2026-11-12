@@ -5,8 +5,8 @@ import { ManagerOrdersScreen } from '@/screens/manager-orders/ManagerOrdersScree
 import { CLIENT_DEMO_COMPANY, CLIENT_ORDERS_DEMO } from '@/screens/client-orders/fixtures'
 import { MANAGER_ORDERS_DEMO } from '@/screens/manager-orders/fixtures'
 import { DEMO_IMPORTED_1C_ORDER } from './order-fixtures'
-import { canSendDemo, draftView, type DemoDraft } from './order-compose-model'
-import { COMPLETED_DEMO_ITEMS, COMPLETED_DEMO_ORDER } from './order-compose-fixtures'
+import { canEditDemoItems, canSendDemo, draftView, validDemoReview, type DemoDraft } from './order-compose-model'
+import { COMPLETED_DEMO_ITEMS, COMPLETED_DEMO_ORDER, itemActionsFixtures } from './order-compose-fixtures'
 import type { OrderStatusFilterId } from '@/components/orders/order-model'
 import { FOSAction } from '@/components/ui/fos-controls'
 import { CabinetNavigation } from '@/components/layout/CabinetNavigation'
@@ -23,6 +23,7 @@ export interface OrderDemoController {
   drafts: readonly DemoDraft[]
   createDraft: (ownerRole?: 'client' | 'manager') => string
   saveDraft: (draft: DemoDraft) => void
+  saveReviewOrder: (order: DemoDraft) => void
   deleteDraft: (id: string, ownerRole: 'client' | 'manager') => void
   sendDraft: (draft: DemoDraft) => void
   duplicateOrder: (sourceId: string) => string | undefined
@@ -36,7 +37,7 @@ const initialProfileDrafts = (): Record<ProfileRole, DemoProfileDraft> => ({
 
 /** All state dies on reload. No browser persistence, auth, upload or network requests. */
 export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orders', errorFixture = '', presentationMode = false, diagnosticMessage }: { role: 'client' | 'manager'; empty?: boolean; initialSection?: CabinetSection; errorFixture?: string; presentationMode?: boolean; diagnosticMessage?: string }) {
-  const [drafts, setDrafts] = useState<readonly DemoDraft[]>([])
+  const [drafts, setDrafts] = useState<readonly DemoDraft[]>(() => itemActionsFixtures(errorFixture))
   const [currentRole, setCurrentRole] = useState(role)
   const [sections, setSections] = useState<Record<'client' | 'manager', CabinetSection>>({ client: role === 'client' ? initialSection : 'orders', manager: role === 'manager' ? initialSection : 'orders' })
   const [motionFromSection, setMotionFromSection] = useState<CabinetSection | null>(null)
@@ -82,8 +83,15 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
       return id
     },
     saveDraft(draft) {
-      setDrafts(current => current.map(saved => saved.id === draft.id && saved.stage === 'draft' && saved.ownerRole === draft.ownerRole
+      setDrafts(current => current.map(saved => saved.id === draft.id && saved.stage === 'draft' && saved.ownerRole === draft.ownerRole && canEditDemoItems(saved, currentRole)
         ? { ...draft, stage: 'draft', items: draft.items.map(item => ({ ...item })) } : saved))
+    },
+    saveReviewOrder(order) {
+      if (!validDemoReview(order)) return
+      setDrafts(current => current.map(saved => saved.id === order.id && saved.stage === 'sent' && canEditDemoItems(saved, currentRole)
+        && saved.company === order.company && saved.ownerRole === order.ownerRole
+        && (currentRole === 'manager' || saved.company === CLIENT_DEMO_COMPANY)
+        ? { ...saved, items: order.items.map(item => ({ ...item })), requestedDate: order.requestedDate, comment: order.comment } : saved))
     },
     deleteDraft(id, ownerRole) {
       setDrafts(current => current.filter(saved => !(saved.id === id && saved.ownerRole === ownerRole && saved.stage === 'draft')))
@@ -142,7 +150,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
   function resetDemo() {
     requestProfileTransition(() => {
       setProfileOpen(false)
-      setDrafts([])
+      setDrafts(itemActionsFixtures(errorFixture))
       nextOrder.current = 100
       setClientFilter('all')
       setManagerFilter('all')
@@ -259,7 +267,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
       },
     }}>
       {currentRole === 'client' && slot('client', 'orders', <ClientOrdersScreen orders={[...(empty ? [] : [...CLIENT_ORDERS_DEMO, COMPLETED_DEMO_ORDER]), ...drafts.filter(draft => draft.ownerRole === 'client').map(draftView)]} companyName={CLIENT_DEMO_COMPANY} demo={controller} processingStates={processingStates} initialFilterId={clientFilter} onFilterChange={setClientFilter} />)}
-      {currentRole === 'manager' && slot('manager', 'orders', <ManagerOrdersScreen orders={[...(empty ? [] : MANAGER_ORDERS_DEMO), ...(new URLSearchParams(window.location.search).get('fixture') === 'imported-1c' && !empty ? [DEMO_IMPORTED_1C_ORDER] : []), ...sent.map(draft => ({ ...draftView(draft), demoProcessingState: processingStates[draft.id] ?? 'pending' })), ...drafts.filter(draft => draft.ownerRole === 'manager').map(draftView)]} demoOrderIds={sent.map(draft => draft.id)} newOrderIds={sent.map(draft => draft.id)} managerDrafts={drafts.filter(draft => draft.ownerRole === 'manager')} managerCompanies={DEMO_COMPANIES} onCreateOrder={() => controller.createDraft('manager')} onSaveManagerDraft={controller.saveDraft} onDeleteManagerDraft={id => controller.deleteDraft(id, 'manager')} onEditorStateChange={controller.onEditorStateChange} processingStates={processingStates} onProcessingStateChange={(id, state) => setProcessingStates(current => ({ ...current, [id]: state }))} demoTools={demoTools} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />)}
+      {currentRole === 'manager' && slot('manager', 'orders', <ManagerOrdersScreen orders={[...(empty ? [] : MANAGER_ORDERS_DEMO), ...(new URLSearchParams(window.location.search).get('fixture') === 'imported-1c' && !empty ? [DEMO_IMPORTED_1C_ORDER] : []), ...sent.map(draft => ({ ...draftView(draft), demoProcessingState: processingStates[draft.id] ?? 'pending' })), ...drafts.filter(draft => draft.ownerRole === 'manager').map(draftView)]} demoOrderIds={sent.map(draft => draft.id)} newOrderIds={sent.map(draft => draft.id)} reviewOrders={sent} onSaveReviewOrder={controller.saveReviewOrder} managerDrafts={drafts.filter(draft => draft.ownerRole === 'manager')} managerCompanies={DEMO_COMPANIES} onCreateOrder={() => controller.createDraft('manager')} onSaveManagerDraft={controller.saveDraft} onDeleteManagerDraft={id => controller.deleteDraft(id, 'manager')} onEditorStateChange={controller.onEditorStateChange} processingStates={processingStates} onProcessingStateChange={(id, state) => setProcessingStates(current => ({ ...current, [id]: state }))} demoTools={demoTools} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />)}
       {slot('manager', 'clients', <ManagerCompaniesScreen empty={empty} />)}
       {slot('client', 'artworks', <ClientLayoutsScreen empty={empty} errorFixture={errorFixture === 'layout-error'} />)}
       {slot('client', 'support', <SupportScreen role="client" empty={empty} errorFixture={errorFixture === 'support-error'} />)}

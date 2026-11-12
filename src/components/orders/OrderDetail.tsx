@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { PageHeader } from '@/components/ui/page-header'
 import { HeaderAction } from '@/components/ui/header-action'
-import { MoreAction } from '@/components/ui/overflow-menu'
+import { MoreAction, OverflowMenu } from '@/components/ui/overflow-menu'
 import { FOSDateField, FOSInput, FOSTextarea } from '@/components/ui/fos-controls'
 import { OrderItemSummary } from './OrderItemSummary'
 import { OrderDateFields } from './OrderDateFields'
@@ -15,18 +15,19 @@ interface OrderDetailProps {
   demoProcessingState?: 'pending' | 'success' | 'error'
   onDemoProcessingStateChange?: (state: 'pending' | 'success' | 'error') => void
   demoProcessingEnabled?: boolean
+  onEdit?: () => void
 }
 function dateValue(value?: string) {
   if (!value) return ''
   return /^\d{2}\.\d{2}\.\d{4}$/.test(value) ? value.slice(6) + '-' + value.slice(3, 5) + '-' + value.slice(0, 2) : value
 }
 /** Shared readonly composition; Manager-only data slots never create production commands. */
-export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, submitted = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false }: OrderDetailProps) {
+export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, submitted = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false, onEdit }: OrderDetailProps) {
   const title = submitted ? 'Заказ отправлен' : 'Заказ ' + order.id
   return <div className="fos-order-detail" data-testid="order-detail" data-role={role} data-order-id={order.id}>
     <PageHeader title={title} floatingWorkActions={!actions} autoFocus subtitleRole="status" subtitle={<span data-testid="order-detail-status">{order.statusLabel}</span>}
       breadcrumbs={[{ label: role === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]}
-      actions={actions || <><HeaderAction action={role === 'manager' ? 'add' : 'send'} accessibleName={role === 'manager' ? 'Добавить позицию заказа' : 'Отправить заказ'} disabled /><MoreAction disabled /></>} />
+      actions={actions || <><HeaderAction action={role === 'manager' ? 'add' : 'send'} accessibleName={role === 'manager' ? 'Добавить позицию заказа' : 'Отправить заказ'} disabled />{onEdit ? <OverflowMenu items={[{ id: 'edit', label: 'Изменить', onSelect: onEdit, focusAfter: 'consumer' }]} /> : <MoreAction disabled />}</>} />
     <p className="fos-sr-only">{order.title} · {order.company} · Только просмотр.</p>
     <div className="fos-order-detail__body">
       {role === 'manager' && <FOSInput wrapperClassName="fos-order-detail__company" label="Компания" value={order.company} readOnly />}

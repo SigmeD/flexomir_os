@@ -27,7 +27,15 @@ export interface DemoDraft {
   stage: 'draft' | 'sent'
   ownerRole: 'client' | 'manager'
   sourceOrderId?: string
+  /** Fixture/UI lock only. Real integration state must come from the agreed API. */
+  transferStarted?: boolean
 }
+
+export const canEditDemoItems = (order: DemoDraft, actor: DemoDraft['ownerRole']) => !order.transferStarted
+  && (order.stage === 'sent' || (order.stage === 'draft' && order.ownerRole === actor))
+
+export const validDemoReview = (order: DemoDraft) => order.stage === 'sent' && order.items.length > 0
+  && order.items.every(validDemoItem) && validDemoDate(order.requestedDate)
 
 export const emptyDemoItem = (): DemoItem => ({
   id: '', name: '', quantity: '', shape: '', width: '', height: '', material: '',
@@ -82,7 +90,7 @@ export function draftView(draft: DemoDraft): OrderListItem {
   return {
     id: draft.id, company: draft.company, title: draft.items[0]?.name || (draft.ownerRole === 'manager' ? 'Новый заказ менеджера' : 'Новый демонстрационный заказ'),
     statusLabel: draft.ownerRole === 'manager' ? 'Черновик менеджера' : draft.stage === 'draft' ? 'Черновик' : 'Передан менеджеру',
-    filterId: draft.ownerRole === 'manager' || draft.stage === 'draft' ? 'draft' : null,
+    filterId: draft.stage === 'draft' ? 'draft' : 'review',
     detail: { items: draft.items.map(itemSummary), requestedDate: draft.requestedDate, comment: draft.comment },
   }
 }

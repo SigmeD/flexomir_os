@@ -1,9 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { canSendDemo, itemSummary, validDemoDate, type DemoDraft, type DemoItem } from '@/demo/order-compose-model'
+import { canEditDemoItems, canSendDemo, itemSummary, validDemoDate, validDemoItem, validDemoReview, type DemoDraft, type DemoItem } from '@/demo/order-compose-model'
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
-import { FOSDateField, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
+import { FOSDateField, FOSInput, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
 import { FOSDatePicker } from '@/components/ui/fos-date-picker'
 import { displayDate } from '@/components/ui/date-only'
 import { OrderItemForm } from './OrderItemForm'
@@ -16,7 +16,7 @@ import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-compose.css'
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
-export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBack, onItemEditorChange, onDraftDirtyChange, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [] }: {
+export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBack, onItemEditorChange, onDraftDirtyChange, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [], actorRole = draft.ownerRole, onCancelReview, onOrderExitActionsChange }: {
   draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend: (draft: DemoDraft) => void; onBack: () => void
   isNewDraft?: boolean
   onItemEditorChange?: (open: boolean) => void
@@ -25,8 +25,15 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
   onItemExitActionsChange?: (actions: OrderItemExitActions | null) => void
   onDeleteDraft?: (id: string) => void
   managerCompanies?: readonly { id: string; name: string }[]
+  actorRole?: DemoDraft['ownerRole']
+  onCancelReview?: () => void
+  onOrderExitActionsChange?: (actions: OrderItemExitActions | null) => void
 }) {
   const [value, setValue] = useState(draft)
+  const valueRef = useRef(value)
+  const isReview = draft.stage === 'sent'
+  const editable = canEditDemoItems(draft, actorRole)
+  const [copySeed, setCopySeed] = useState<DemoItem | undefined>()
   const [requestedDateInput, setRequestedDateInput] = useState(() => displayDate(draft.requestedDate))
   const [dateInputValid, setDateInputValid] = useState(true)
   const [editing, setEditing] = useState<string | null>(null)
@@ -47,31 +54,72 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
     target?.focus({ preventScroll: true })
     returnFocus.current = null
   }, [editing])
+  useEffect(() => {
+    if (!isReview) return
+    onOrderExitActionsChange?.({
+      dirty: JSON.stringify(value) !== JSON.stringify(draft) || !dateInputValid || requestedDateInput !== displayDate(draft.requestedDate),
+      commit: () => {
+        const current = valueRef.current
+        if (!editable || !dateInputValid || !validDemoReview(current)) return false
+        onSave(current)
+        return true
+      },
+      discard: () => onCancelReview?.(),
+    })
+    return () => onOrderExitActionsChange?.(null)
+  }, [value, draft, editable, dateInputValid, requestedDateInput, isReview, onOrderExitActionsChange, onSave, onCancelReview])
   function save(next: DemoDraft) {
-    setValue(next); if (value.ownerRole !== 'manager') onSave(next); setFeedback('Черновик сохранён только в памяти страницы')
+    if (!editable) return
+    valueRef.current = next
+    setValue(next); if (!isReview && actorRole !== 'manager') onSave(next); setFeedback('Изменения только в памяти страницы')
   }
-  function addItem() { returnFocus.current = '[data-add-item]'; setEditing('new') }
-  function saveItem(item: DemoItem) {
-    const existing = value.items.find(current => current.id === editing)
+  function addItem() { if (!editable) return; setCopySeed(undefined); returnFocus.current = '[data-add-item]'; setEditing('new') }
+  function commitItem(item: DemoItem) {
+    if (!editable || !validDemoItem(item)) return
+    const currentValue = valueRef.current
+    const existing = currentValue.items.find(current => current.id === editing)
     let id = existing?.id
-    if (!id) { do { id = value.id + '-ITEM-' + nextItem.current++ } while (value.items.some(current => current.id === id)) }
-    save({ ...value, items: existing ? value.items.map(current => current.id === existing.id ? { ...item, id } : current) : [...value.items, { ...item, id }] })
+    if (!id) { do { id = currentValue.id + '-ITEM-' + nextItem.current++ } while (currentValue.items.some(current => current.id === id)) }
+    save({ ...currentValue, items: existing ? currentValue.items.map(current => current.id === existing.id ? { ...item, id } : current) : [...currentValue.items, { ...item, id }] })
+  }
+  function saveItem(item: DemoItem) {
+    if (!editable || !validDemoItem(item)) return
+    commitItem(item)
+    setEditing(null)
+  }
+  function duplicateItem() {
+    if (!editable) return
+    const source = valueRef.current.items.find(item => item.id === editing)
+    if (!source) return
+    setCopySeed({ ...source, id: '' })
+    setEditing('copy')
+  }
+  function deleteItem() {
+    const current = valueRef.current
+    if (!editable || (isReview && current.items.length <= 1)) return
+    const index = current.items.findIndex(item => item.id === editing)
+    if (index < 0) return
+    const items = current.items.filter(item => item.id !== editing)
+    const next = items[Math.min(index, items.length - 1)]
+    returnFocus.current = next ? '[data-item-id="' + next.id + '"] button' : '[data-add-item]'
+    save({ ...current, items })
     setEditing(null)
   }
   const title = isNewDraft ? 'Новый заказ' : 'Заказ ' + value.id
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id} data-order-role={value.ownerRole}>
     {editing === null ? <>
-      <PageHeader title={title} floatingWorkActions subtitle="Черновик" subtitleRole="status" breadcrumbs={[{ label: value.ownerRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
-        {value.ownerRole === 'manager'
+      <PageHeader title={title} floatingWorkActions subtitle={isReview ? 'На рассмотрении' : 'Черновик'} subtitleRole="status" breadcrumbs={[{ label: actorRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
+        {isReview ? <HeaderAction action="save" accessibleName="Сохранить заказ" disabled={!editable || !dateInputValid || !validDemoReview(value) || JSON.stringify(value) === JSON.stringify(draft)} onAction={() => { if (editable && dateInputValid && validDemoReview(value)) onSave(value) }} /> : value.ownerRole === 'manager'
           ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={!dateInputValid || JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { if (!dateInputValid) return; onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
           : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!dateInputValid || !canSendDemo(value)} onAction={() => { if (dateInputValid && canSendDemo(value)) onSend(value) }} />}
         <OverflowMenu items={[
-          { id: 'add', label: 'Добавить позицию', onSelect: addItem, focusAfter: 'consumer' },
-          { id: 'delete', label: 'Удалить черновик', disabled: !onDeleteDraft, reason: onDeleteDraft ? undefined : 'Удаление доступно только для черновика демосессии', onSelect: () => setConfirmDelete(true) },
+          { id: 'add', label: 'Добавить позицию', disabled: !editable, onSelect: addItem, focusAfter: 'consumer' },
+          ...(isReview ? [{ id: 'cancel', label: 'Отменить изменения', onSelect: onCancelReview, focusAfter: 'consumer' as const }] : [{ id: 'delete', label: 'Удалить черновик', disabled: !onDeleteDraft, reason: onDeleteDraft ? undefined : 'Удаление доступно только для черновика демосессии', onSelect: () => setConfirmDelete(true) }]),
         ]} />
       </>} />
       <div className="fos-order-composer__body">
-        {value.ownerRole === 'manager' && <FOSSelect wrapperClassName="fos-order-composer__company" label="Компания" value={managerCompanies.find(company => company.name === value.company)?.id ?? ''} onChange={event => {
+        {actorRole === 'manager' && isReview && <FOSInput wrapperClassName="fos-order-composer__company" label="Компания" value={value.company} readOnly />}
+        {actorRole === 'manager' && !isReview && <FOSSelect wrapperClassName="fos-order-composer__company" label="Компания" value={managerCompanies.find(company => company.name === value.company)?.id ?? ''} onChange={event => {
           const selected = managerCompanies.find(company => company.id === event.target.value)
           if (selected) save({ ...value, company: selected.name })
         }} required>
@@ -98,6 +146,8 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
         setConfirmDelete(false)
         onBack()
       }} onCancel={cancelDelete} onDismiss={cancelDelete} />
-    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} onSave={saveItem} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} onExitActionsChange={onItemExitActionsChange} />}
+    </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} initialValue={editing === 'copy' ? copySeed : undefined} onSave={saveItem} onCommit={commitItem}
+      onDuplicate={editable ? duplicateItem : undefined} onDelete={editable ? deleteItem : undefined} deleteDisabledReason={isReview && value.items.length <= 1 ? 'В заказе на рассмотрении должна остаться хотя бы одна позиция' : undefined}
+      role={actorRole} orderLabel={title} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} onExitActionsChange={onItemExitActionsChange} />}
   </div>
 }

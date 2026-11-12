@@ -8,6 +8,7 @@ import { ArtworkSource } from './ArtworkSource'
 import { PrintingMethodControl } from './PrintingMethodControl'
 import { LayoutBrowser } from '@/components/layouts/LayoutBrowser'
 import type { CabinetSection } from '@/components/layout/CabinetPage'
+import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import './order-item-form.css'
 
 export interface OrderItemExitActions {
@@ -17,18 +18,48 @@ export interface OrderItemExitActions {
 }
 
 /** New/Edit Item: CURRENT CORE D1791:6130 / T1837:6385 / M1791:6185. */
-export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigationSectionChange, onExitActionsChange }: {
+export function OrderItemForm({ item, initialValue, onSave, onClose, onBackToList, onNavigationSectionChange, onExitActionsChange, onCommit, onDuplicate, onDelete, deleteDisabledReason, orderLabel = 'Новый заказ', role = 'client' }: {
   item?: DemoItem; onSave: (item: DemoItem) => void; onClose: () => void; onBackToList?: () => void
+  initialValue?: DemoItem
+  onCommit?: (item: DemoItem) => void
+  onDuplicate?: () => void
+  onDelete?: () => void
+  deleteDisabledReason?: string
+  orderLabel?: string
+  role?: 'client' | 'manager'
   onNavigationSectionChange?: (section: CabinetSection) => void
   onExitActionsChange?: (actions: OrderItemExitActions | null) => void
 }) {
-  const [initial] = useState(() => ({ ...emptyDemoItem(), ...item }))
+  const [initial, setInitial] = useState(() => ({ ...emptyDemoItem(), ...(item ?? initialValue) }))
   const [value, setValue] = useState(initial)
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [pickerOpen, setPickerOpen] = useState(false)
   const pickerScroll = useRef(0)
   const form = useRef<HTMLFormElement>(null)
-  const dirty = JSON.stringify(value) !== JSON.stringify(initial)
+  // A prefilled copy is an unsaved new item even when its fields are unchanged.
+  const dirty = Boolean(initialValue) || JSON.stringify(value) !== JSON.stringify(initial)
+  const [pendingAction, setPendingAction] = useState<'duplicate' | 'delete' | null>(null)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const restoreMore = () => requestAnimationFrame(() => form.current?.querySelector<HTMLButtonElement>('button.fos-more')?.focus({ preventScroll: true }))
+  function runAction(action: 'duplicate' | 'delete') {
+    if (action === 'duplicate') onDuplicate?.()
+    else setConfirmDelete(true)
+  }
+  function requestAction(action: 'duplicate' | 'delete') {
+    if (dirty) setPendingAction(action)
+    else runAction(action)
+  }
+  function finishAction(save: boolean) {
+    if (!pendingAction) return
+    if (save) {
+      if (!validDemoItem(value) || !onCommit) { form.current?.reportValidity(); return }
+      onCommit(value)
+      setInitial({ ...value })
+    } else { setValue({ ...initial }); setTouched({}) }
+    const action = pendingAction
+    setPendingAction(null)
+    runAction(action)
+  }
   const update = (patch: Partial<DemoItem>) => setValue(current => ({ ...current, ...patch }))
   const title = item ? item.name : 'Новая позиция'
   useLayoutEffect(() => { window.scrollTo(0, 0) }, [])
@@ -40,10 +71,7 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
   const error = (key: keyof DemoItemErrors) => item || dirty || touched[key] ? errors[key] : undefined
   const blur = (key: string) => () => setTouched(current => ({ ...current, [key]: true }))
   useEffect(() => {
-    if (pickerOpen) {
-      onExitActionsChange?.(null)
-      return
-    }
+    // The library is nested in this editor; leaving it must still protect the item.
     onExitActionsChange?.({
       dirty,
       commit() {
@@ -58,7 +86,7 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
       discard: onClose,
     })
     return () => onExitActionsChange?.(null)
-  }, [dirty, item, onClose, onExitActionsChange, onSave, pickerOpen, value])
+  }, [dirty, item, onClose, onExitActionsChange, onSave, value])
   if (pickerOpen) return <LayoutBrowser mode={item ? 'replace' : 'select'} parentContext={{
     breadcrumb: { label: title },
     navigation: onNavigationSectionChange ? { activeSection: 'artworks', returnSection: 'orders', onSectionChange: onNavigationSectionChange } : undefined,
@@ -71,14 +99,14 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
     if (event.key === 'Escape' && !event.defaultPrevented && event.currentTarget.contains(event.target as Node) && !dirty) { event.stopPropagation(); onClose() }
   }}>
     <PageHeader title={title} floatingWorkActions autoFocus breadcrumbs={[
-      { label: 'Мои заказы', onSelect: onBackToList, disabled: dirty },
-      { label: 'Новый заказ', onSelect: onClose, disabled: dirty }, { label: title },
+      { label: role === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBackToList, disabled: dirty },
+      { label: orderLabel, onSelect: onClose, disabled: dirty }, { label: title },
     ]} actions={<>
       <HeaderAction action={item ? 'save' : 'add'} accessibleName={item ? 'Сохранить позицию' : 'Добавить позицию'} disabled={!dirty || !validDemoItem(value)} onAction={() => form.current?.requestSubmit()} />
       <OverflowMenu items={item ? [
-        { id: 'duplicate', label: 'Дублировать позицию', disabled: true, reason: 'Действие требует согласования прав' },
+        { id: 'duplicate', label: 'Дублировать позицию', disabled: !onDuplicate, reason: !onDuplicate ? 'Заказ недоступен для редактирования' : undefined, onSelect: () => requestAction('duplicate'), focusAfter: 'consumer' },
         { id: 'cancel', label: 'Отменить изменения', onSelect: onClose, focusAfter: 'consumer' },
-        { id: 'delete', label: 'Удалить позицию', disabled: true, reason: 'Удаление не согласовано' },
+        { id: 'delete', label: 'Удалить позицию', disabled: !onDelete || Boolean(deleteDisabledReason), reason: deleteDisabledReason, onSelect: () => requestAction('delete'), focusAfter: 'consumer' },
       ] : [{ id: 'cancel', label: 'Отменить ввод', onSelect: onClose, focusAfter: 'consumer' }]} />
     </>} />
     <div className="fos-item-form__body">
@@ -99,5 +127,9 @@ export function OrderItemForm({ item, onSave, onClose, onBackToList, onNavigatio
       <FOSTextarea wrapperClassName="fos-item-form__note" label="Комментарии" placeholder="Необязательно" value={value.comment || ''} onChange={event => update({ comment: event.target.value })} />
     </div>
     <p className="fos-sr-only" role="status">{dirty ? 'Есть несохранённые изменения позиции' : 'Изменений позиции нет'}</p>
+    <ConfirmDialog open={pendingAction !== null} title="Сохранить изменения?" confirmLabel="Да" cancelLabel="Нет"
+      onConfirm={() => finishAction(true)} onCancel={() => finishAction(false)} onDismiss={() => { setPendingAction(null); restoreMore() }} />
+    <ConfirmDialog open={confirmDelete} title="Удалить позицию?" confirmLabel="Удалить" cancelLabel="Отмена"
+      onConfirm={() => { setConfirmDelete(false); onDelete?.() }} onCancel={() => { setConfirmDelete(false); restoreMore() }} onDismiss={() => { setConfirmDelete(false); restoreMore() }} />
   </form>
 }
