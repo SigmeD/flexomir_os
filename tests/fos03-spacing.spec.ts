@@ -19,13 +19,13 @@ async function geometry(page: Page) {
     const company = root.querySelector('.fos-order-composer__company') ? rect('.fos-order-composer__company') : null
     const heading = rect('.fos-page-header h1'), subtitle = rect('.fos-page-header__subtitle')
     const products = rect('.fos-order-composer__products'), general = rect('.fos-order-composer__general')
-    const title = rect('.fos-order-composer__general > h2'), dates = rect('.fos-order-composer__dates'), note = rect('.fos-order-composer__general > .fos-field')
+    const title = rect('.fos-order-composer__general > h2'), dates = rect('.fos-order-composer__dates'), note = rect('.fos-order-conversation'), documents = rect('.fos-signed-documents')
     const controls = [...root.querySelectorAll('.fos-field__control')].map(node => node.getBoundingClientRect().height)
     return { company, products, general, title, dates, note, controls, heading, subtitle,
       subtitleGap: subtitle.y - heading.bottom,
       companyGap: company ? products.y - company.bottom : null,
       sectionGap: general.y - products.bottom, headingGap: dates.y - title.bottom,
-      noteGap: note.y - dates.bottom, overflow: document.documentElement.scrollWidth - innerWidth }
+      noteGap: note.y - documents.bottom, overflow: document.documentElement.scrollWidth - innerWidth }
   })
 }
 
@@ -51,7 +51,7 @@ for (const width of widths) {
       expect(layout.companyGap).toBe(32)
       expect(layout.sectionGap).toBe(32)
       expect(layout.headingGap).toBe(24)
-      expect(layout.noteGap).toBe(24)
+      expect(layout.noteGap).toBe(32)
       expect(layout.subtitleGap).toBe(8)
       expect(layout.company!.y).toBe(width >= 1024 ? 151 : 193)
       expect(layout.subtitle.y).toBe(width >= 1024 ? 108 : 154)
@@ -74,7 +74,7 @@ for (const width of widths) {
     expect(current.companyGap).toBe(32)
     expect(current.sectionGap).toBe(32)
     expect(current.headingGap).toBe(24)
-    expect(current.noteGap).toBe(24)
+    expect(current.noteGap).toBe(32)
     expect(current.subtitleGap).toBe(8)
     expect(current.company!.y).toBe(width >= 1024 ? 151 : 193)
     await page.screenshot({ path: info.outputPath(`manager-default-${width}.png`), fullPage: true })
@@ -98,7 +98,7 @@ test('FOS03 pilot keeps private Save, item IDs, dates and cancel behavior', asyn
   const row = composer.locator('li[data-item-id]').first()
   const itemId = await row.getAttribute('data-item-id')
   await page.getByLabel('Желаемый срок', { exact: true }).fill('01.12.2026')
-  await page.getByLabel('Комментарии', { exact: true }).fill('Комментарий DEMO')
+  await page.getByLabel('Сообщение', { exact: true }).fill('Комментарий DEMO')
   await save.click()
   await expect(save).toBeDisabled()
   await page.getByRole('button', { name: 'Изменить позицию 1', exact: true }).click()
@@ -108,7 +108,7 @@ test('FOS03 pilot keeps private Save, item IDs, dates and cancel behavior', asyn
   await expect(row).toHaveAttribute('data-item-id', itemId!)
   await expect(composer).toHaveAttribute('data-order-id', orderId!)
   await expect(page.getByLabel('Желаемый срок', { exact: true })).toHaveValue('01.12.2026')
-  await expect(page.getByLabel('Комментарии', { exact: true })).toHaveValue('Комментарий DEMO')
+  await expect(page.getByLabel('Сообщение', { exact: true })).toHaveValue('Комментарий DEMO')
   await expect(page.getByRole('button', { name: /Предоставить клиенту|Передать менеджеру|Создать заказ/, exact: true })).toHaveCount(0)
 })
 
@@ -117,9 +117,9 @@ test('FOS03 pilot remains usable at narrow height, 200 percent CSS zoom, reduced
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await newOrder(page)
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
-  await page.getByLabel('Комментарии', { exact: true }).fill('Низкий экран DEMO')
-  await page.getByLabel('Комментарии', { exact: true }).scrollIntoViewIfNeeded()
-  await expect(page.getByLabel('Комментарии', { exact: true })).toBeInViewport()
+  await page.getByLabel('Сообщение', { exact: true }).fill('Низкий экран DEMO')
+  await page.getByLabel('Сообщение', { exact: true }).scrollIntoViewIfNeeded()
+  await expect(page.getByLabel('Сообщение', { exact: true })).toBeInViewport()
   // 780px at 200% retains a supported 390px layout; 390px at 200% would
   // demand 195px, below the project's 320px responsive contract.
   await page.setViewportSize({ width: 780, height: 960 })

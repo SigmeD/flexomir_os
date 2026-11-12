@@ -4,6 +4,8 @@ import type { CabinetRole } from '@/components/layout/CabinetPage'
 export interface DemoSupportTicket {
   id: string; owner: CabinetRole; subject: string; description: string; statusText: string; date: string
   reply?: { message: string; date: string }
+  /** Local File only; never serialized as an uploaded name. */
+  file?: File
 }
 export function supportFixtures(role: CabinetRole): readonly DemoSupportTicket[] {
   const subjects = role === 'client' ? ['Не открывается макет', 'Вопрос по заказу', 'Ошибка загрузки файла'] : ['Не работает фильтр заказов', 'Ошибка в списке заказов', 'Вопрос по разделу клиентов']

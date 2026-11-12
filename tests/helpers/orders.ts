@@ -61,6 +61,6 @@ export async function detailData(page: Page) {
     status: await page.getByTestId('order-detail-status').innerText(),
     items: await page.getByTestId('order-item-summary').allTextContents(),
     date: await page.getByLabel('Желаемый срок', { exact: true }).inputValue(),
-    comment: await page.getByLabel('Комментарии', { exact: true }).inputValue(),
+    comment: (await page.locator('.fos-order-conversation .fos-message-surface > p').allTextContents()).join('\n'),
   }
 }

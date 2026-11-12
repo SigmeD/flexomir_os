@@ -4,6 +4,7 @@ import { FOSAction } from '@/components/ui/fos-controls'
 import { SectionAddItem } from '@/components/orders/SectionAddItem'
 import type { ActionPalette } from '@/components/ui/action-palette'
 import './NeutralActionsLab.css'
+import { MediaCapturePilot } from '@/components/messaging/MediaCapturePilot'
 
 function Samples({ palette, surfaceLabel }: { palette: ActionPalette; surfaceLabel: string }) {
   const neutral = palette !== 'reference'
@@ -29,6 +30,7 @@ function Samples({ palette, surfaceLabel }: { palette: ActionPalette; surfaceLab
 /** DEV-only Owner comparison. Shared controls; clicks have no product side effects. */
 export function NeutralActionsLab() {
   return <main className="neutral-lab" data-testid="neutral-actions-lab">
+    {new URLSearchParams(window.location.search).get('mediaPilot') === '1' && <MediaCapturePilot />}
     <header><p>FLEXOMIR OS · КНОПКИ СИСТЕМЫ</p><h1>Единое семейство кнопок</h1>
       <p>Сравнение общего Plus, HeaderAction и FOSAction. Нажатия меняют только счётчик стенда. Палитра и материалы ожидают визуальной приёмки.</p>
       <a href="/?view=client-orders">Client New: «Добавить заказ» → общий Plus</a>

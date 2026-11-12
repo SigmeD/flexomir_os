@@ -8,7 +8,7 @@ const sizes = [
 ] as const
 
 for (const role of roles) {
-  test(role + ' list → read-only detail → back preserves identity, filter and focus at five widths', async ({ page }) => {
+  test(role + ' list → readonly order with writable Work chat → back preserves identity, filter and focus at five widths', async ({ page }) => {
     for (const [, width, height] of sizes) {
       await page.setViewportSize({ width, height })
       await page.goto('/?view=' + role + '-orders')
@@ -25,8 +25,11 @@ for (const role of roles) {
       await expect(detail).toContainText('Компания 01')
       await expect(detail.getByTestId('order-item-summary')).toHaveCount(2)
       await expect(detail.getByLabel('Согласованный срок', { exact: true })).toHaveValue('2026-11-20')
-      for (const field of await detail.locator('input,textarea').all()) await expect(field).toHaveAttribute('readonly', '')
+      for (const field of await detail.locator('input:not(.fos-order-conversation input),textarea:not(.fos-order-conversation textarea)').all()) await expect(field).toHaveAttribute('readonly', '')
       for (const action of await detail.getByRole('button', { name: /Создать|Отправить|Подтвердить|Повторить|Редактировать/ }).all()) await expect(action).toBeDisabled()
+      await expect(detail.getByLabel('Сообщение', { exact: true })).toBeEditable()
+      await expect(detail.locator('.fos-order-conversation input[type=file]')).toBeEnabled()
+      await expect(detail.getByRole('button', { name: 'Переключить на видео; удерживать для записи голоса', exact: true })).toBeEnabled()
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
       await expect(page).toHaveURL(new RegExp('\\?view=' + role + '-orders$'))
       await backToOrders(page)

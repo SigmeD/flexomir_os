@@ -18,6 +18,7 @@ import { DEMO_COMPANIES } from './company-fixtures'
 import { DEMO_PROFILE_IDENTITIES, isProfileDraftDirty, useLocalPhotoPreview, type DemoProfileDraft, type DemoProfileIdentity, type ProfileRole } from './profile-model'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { FosGlassMaterial } from '@/components/ui/fos-glass-material'
+import { resetLocalCommunication } from '@/components/messaging/local-communication'
 
 export interface OrderDemoController {
   drafts: readonly DemoDraft[]
@@ -79,7 +80,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     onEditorStateChange: setEditorOpen,
     createDraft(ownerRole = 'client') {
       const id = 'DEMO-NEW-' + nextOrder.current++
-      setDrafts(current => [...current, { id, company: ownerRole === 'client' ? CLIENT_DEMO_COMPANY : '', items: [], requestedDate: '', comment: '', stage: 'draft', ownerRole }])
+      setDrafts(current => [...current, { id, company: ownerRole === 'client' ? CLIENT_DEMO_COMPANY : '', items: [], requestedDate: '', comment: '', stage: 'draft', ownerRole, communication: { canReply: true } }])
       return id
     },
     saveDraft(draft) {
@@ -105,7 +106,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
       if (sourceId !== COMPLETED_DEMO_ORDER.id || COMPLETED_DEMO_ORDER.filterId !== 'done') return
       const id = 'DEMO-NEW-' + nextOrder.current++
       const items = COMPLETED_DEMO_ITEMS.map((item, index) => ({ ...item, id: id + '-ITEM-' + (index + 1), fileName: '' }))
-      setDrafts(current => [...current, { id, company: CLIENT_DEMO_COMPANY, items, requestedDate: '', comment: COMPLETED_DEMO_ORDER.detail?.comment || '', stage: 'draft', ownerRole: 'client', sourceOrderId: sourceId }])
+      setDrafts(current => [...current, { id, company: CLIENT_DEMO_COMPANY, items, requestedDate: '', comment: COMPLETED_DEMO_ORDER.detail?.comment || '', stage: 'draft', ownerRole: 'client', sourceOrderId: sourceId, communication: { canReply: true } }])
       return id
     },
   }
@@ -149,6 +150,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
   }
   function resetDemo() {
     requestProfileTransition(() => {
+      resetLocalCommunication()
       setProfileOpen(false)
       setDrafts(itemActionsFixtures(errorFixture))
       nextOrder.current = 100

@@ -1,5 +1,11 @@
 # Flexomir OS — реестр решений и вопросов
 
+Owner /13.11 — MERGE APPROVED: «сделай merge в main/origin» для PR46. Слияние выполняется после проверки актуального head/CI; непоставленное дублирование и production read/API/ACL остаются OPEN. Это разрешение merge текущего объёма, не новое требование реализовать OPEN-пункты. Прежние записи о запрете merge — история.
+
+Owner /13.11 — APPROVED в текущем чате: Save+More видны сразу; Save disabled без собственных корректных несохранённых изменений, в том числе после первого Send/повторного открытия. Все общие чаты допускают follow-up; own unread сообщения редактируются/удаляются через shared Glass context menu, после read другим участником только Copy текста. В заказах вход в Work фиксирует прежние сообщения, но **новые Work сообщения также допускают CRUD до read** (прямое последнее уточнение Owner). More тикета содержит delete+duplicate; delete реализован локально, объём duplicate OPEN — запрошено, перенос первого сообщения или всей истории. Production read/capabilities/API/ACL — Алексей. Возврат статуса и closed/cancelled workflows не утверждены этим решением. [Реализация/QA](COMM_DOCS_2026-11-12.md), PR46; merge не поручен.
+
+Owner review /12.11 — прямые указания в этой сессии: (1) контурная корзина справа от download удаляет выбранный local бланк; (2) готовый HeaderAction(save) сохраняет тикет с перепиской и возвращает список поддержки, переиспользование отдельно подчеркнуто Owner; (3) file-add как в Figma в header, big dropzone только без файлов; (4) убрать pointer-рамку, плавная mic/video смена, удержание запускает запись. Codex уточнил short tap→mode/release→ready/отдельная отправка; Owner уточнил Save. D03/D08 APPROVED для этого UI; D06 разрешает local delete, server delete/ACL/версии отдельно. [отчёт и ручной чек-лист](COMM_DOCS_2026-11-12.md), [draft PR #46](https://github.com/SigmeD/flexomir_os/pull/46); merge не поручен.
+
 ## Owner 12.11 — остаток текущей итерации
 
 - №11 **CLOSED FOR THIS ITERATION / NOT IMPLEMENTED**: вложения поддержки снимаются с этой итерации, доработка компонента поддержки целиком будет позже. Это не приёмка отсутствующей функции.

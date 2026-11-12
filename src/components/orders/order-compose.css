@@ -34,6 +34,8 @@
   display: grid;
   gap: var(--fos-v2-semantic-space-section-gap);
 }
+.fos-order-composer[data-order-role=manager] .fos-order-composer__body > .fos-order-conversation,
+.fos-order-composer[data-order-role=manager] .fos-order-composer__body > .fos-signed-documents { margin-top: 0; }
 @media(max-width:600px) {
   .fos-demo-workspace__controls { top: 80px; right: 8px; width: min(360px, calc(100vw - 16px)); }
   .fos-demo-workspace__intro { min-width: 0; }
@@ -46,6 +48,8 @@
 }
 .fos-order-composer__body { max-width: 1050px; margin-top: var(--fos-compose-body-offset, 25px); }
 .fos-order-composer__section-heading { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 23px; }
+.fos-order-composer[data-order-role=client] .fos-order-composer__section-heading { justify-content: space-between; }
+.fos-order-composer__section-heading > button { flex: none; }
 .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { margin: 0; color: #273343; font-size: 20px; font-weight: 600; line-height: 28px; }
 .fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 38px); }
 .fos-order-composer__general > h2 { margin-bottom: var(--fos-compose-heading-gap, 10px); }

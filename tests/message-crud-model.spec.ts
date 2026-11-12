@@ -1,0 +1,55 @@
+import { test, expect } from '@playwright/test'
+import { createLocalConversation } from '../src/components/messaging/message-model'
+
+test('Unread own message can be edited/deleted; foreign/read message never mutates', async () => {
+  const chat = createLocalConversation()
+  await chat.submit('one',{text:'Initial'},'client','Клиент')
+  expect(chat.version('client')).toBe(1)
+  await expect(chat.update('one',{text:'Foreign'},'manager')).rejects.toThrow()
+  await chat.update('one',{text:'Updated'},'client')
+  expect(chat.read()[0].text).toBe('Updated')
+  chat.markRead(['one'],'client')
+  await chat.update('one',{text:'Own reading does not lock'},'client')
+  const version = chat.version('client')
+  chat.markRead(['one'],'manager')
+  expect(chat.version('client')).toBe(version)
+  await expect(chat.update('one',{text:'Race'},'client')).rejects.toThrow(/прочитано/)
+  await expect(chat.remove('one','client')).rejects.toThrow(/прочитано/)
+  expect(chat.read()[0].text).toBe('Own reading does not lock')
+  await chat.submit('two',{text:'Can delete'},'client','Клиент')
+  await chat.remove('two','client')
+  expect(chat.read().map(message=>message.id)).toEqual(['one'])
+})
+
+test('Work transition freezes old messages; NEW Work messages retain unread CRUD until recipient reads', async () => {
+  const chat = createLocalConversation()
+  await chat.submit('old',{text:'Before work'},'client','Клиент')
+  chat.setPhase('work')
+  await expect(chat.update('old',{text:'Forbidden'},'client')).rejects.toThrow(/зафиксировано/)
+  await expect(chat.remove('old','client')).rejects.toThrow(/зафиксировано/)
+  await chat.submit('new',{text:'After work'},'client','Клиент')
+  chat.setPhase('work') // Reopening another cabinet must not freeze new messages again.
+  await chat.update('new',{text:'Still unread'},'client')
+  expect(chat.read().find(message=>message.id==='new')?.text).toBe('Still unread')
+  chat.markRead(['new'],'manager')
+  await expect(chat.remove('new','client')).rejects.toThrow(/прочитано/)
+  await chat.submit('another',{text:'Another new message'},'manager','Менеджер')
+  await chat.remove('another','manager')
+  expect(chat.read().map(message=>message.id)).toEqual(['old','new'])
+})
+
+test('Payload/File update preserves ID, rejects empty and rechecks permission at commit', async () => {
+  const chat = createLocalConversation()
+  const original = new File(['original'],'first.txt',{type:'text/plain'})
+  const replacement = new File(['replacement'],'next.txt',{type:'text/plain'})
+  await chat.submit('file',{text:'',file:original},'client','Клиент')
+  await expect(chat.update('file',{text:' '},'client')).rejects.toThrow()
+  await chat.update('file',{text:'Caption',file:replacement},'client')
+  expect(chat.read()[0]).toMatchObject({id:'file',text:'Caption',file:replacement})
+  const draft = {text:'Unsaved edit',file:original}
+  chat.markRead(['file'],'manager')
+  await expect(chat.update('file',draft,'client')).rejects.toThrow(/прочитано/)
+  expect(chat.read()[0].file).toBe(replacement)
+  chat.setPhase('readonly')
+  await expect(chat.submit('forbidden',{text:'No'},'client','Клиент')).rejects.toThrow()
+})

@@ -14,6 +14,8 @@ export interface OrderListItem {
   detail?: OrderDetailContent
   /** Ephemeral UI-only processing fixture; never an API or 1C status. */
   demoProcessingState?: 'pending' | 'success' | 'error'
+  /** Explicit local communication fixture; never derive server ACL from a translated label. */
+  communication?: {canReply:boolean; phase:'open'|'work'|'readonly'}
 }
 
 export interface OrderItemSummaryView {
