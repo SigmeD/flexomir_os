@@ -1,34 +1,22 @@
 # Flexomir OS — передача работы
 
-CURRENT /13.11 — PR #46 MERGED по прямому поручению Owner «сделай merge в main/origin». SHA приложения `479c59188b5ee0b2bda4dd3150b75803cf3d3886`, проверенный PR head `ea3f2b858d661592948c76760be6459c6c2bde28`, CI **6/6 SUCCESS**. Дерево squash совпадает с PR head. Новые post-merge build PASS, smoke **8/8**, bundled production1440/320 **2/2 PASS**, pageerrors=[]. Remote head удалён автоматически, локальная feat/comm-docs-20261112 сохранена; рабочая ветка main. Последующая синхронизация Markdown — только метаданные, не новый код приложения. Duplicate payload, Owner visual/D09, physical devices и production API/read/ACL/1С остаются OPEN. [Отчёт](COMM_DOCS_2026-11-12.md). Для следующего инкремента создать обычную ветку от свежего origin/main; слитую ветку не переиспользовать. Vite127.0.0.1:5173 оставлен; временный preview остановлен. User PNG/owner-review browser не изменялись. Датированные pre-merge handoffs ниже — история.
+Обновлено 13.11.2026. Начать с [состояния](PROJECT_STATE.md), [очереди](DELIVERY_PLAN.md) и [решений](DECISIONS.md); здесь только сведения для продолжения.
 
-Owner /13.11: merge PR46 в main/origin разрешён. Pre-merge CI: OrderDetail blanket-readonly test обновлён под доступный Work chat; context adapter защищён от открывающего secondary/unpaired pointer-up (RED→GREEN). Source/test fix проверяются актуальным CI до merge. После merge сверить merged_at/SHA, локальный main=origin/main, удалить только remote head и оставить локальную ветку. [Отчёт](COMM_DOCS_2026-11-12.md); прежнее «merge отдельно» ниже — история, не новое требование разрешения.
+## Последняя поставка
 
-CURRENT /13.11 — продолжение PR46: общий unread CRUD/read guard/Work freeze прежней истории; новые Work сообщения CRUD до read; Support initial Save+More, clean Save disabled, inline Header Save, follow-up без флага, ticket delete с scoped purge. CRUD59 PASS/1 native SKIP, regression114/114, build/optics/production2/2 PASS; независимый read-only QA7/7 PASS WITH RISKS. Исправлен AudioReady inline edit bug; первый communication run188/11/1 имел только test-only hidden breadcrumb на mobile, исправление проверено3/1. [Единый отчёт](COMM_DOCS_2026-11-12.md). Duplicate disabled/OPEN: pending вопрос Owner, первое сообщение или вся история. Не выдумывать payload. Локалка127.0.0.1:5173, эта же ветка/PR; user PNG и owner-review browser не трогать. API/ACL/Owner visual/merge отдельно. Результаты12.11 ниже исторические.
+PR #46 слит: приложение `479c591`, последующая синхронизация Markdown `f2bb70d`. Результаты, SHA, CI и ограничения — [единый контракт](COMM_DOCS_2026-11-12.md). Завершённые №05/06/07 не возвращать в реализацию. Локальные ветки слитых PR не переиспользовать.
 
-CURRENT /12.11 — четыре Owner corrections в [draft PR #46](https://github.com/SigmeD/flexomir_os/pull/46). Реализованы корзина справа от download для local fileID, file-add в заголовке и dropzone только empty, готовый HeaderAction(save) с возвратом в поддержку и сохранением local history/draft, общий short tap→mode/hold300ms→record/release→ready без send. D03/D08 уточнены Owner. Свежий QA:130 PASS/10 native SKIP, regression58/58, build/optics/production2/2 PASS, независимый LIVE PASS WITH RISKS, [отчёт и ручной чек-лист](COMM_DOCS_2026-11-12.md). API/ACL/1С, D09/Owner acceptance и merge отдельно. Пользовательские PNG в корне не изменять и не коммитить.
+## Текущая документационная ревизия
 
-№06 слит в [PR #44](https://github.com/SigmeD/flexomir_os/pull/44) по поручению Owner «вливай в main/origin». Продуктовый main — `6d3fa83e14d1581017ae19a4451ec0181e9d126a`, проверенный PR head — `7c5b017228dbef58f7bb85d6211257b1519556f0`, CI **7/7 SUCCESS**. После merge выполнены новые проверки: build PASS, №06 **60/60**, frozen **2/2**, production Review **4/4**. [Контракт и доказательства](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md).
+Рабочая ветка `chore/docs-cleanup-20261113`, основная папка `D:\Projects\flexomir_os`. Запрос Owner: аудит и упрощение docs, удаление ненужного, проверка назначения Playwright-конфигов. Убраны выполненные планы и дубли статусов, парные контракты/отчёты объединены. [Вход в документацию](README.md) содержит карту документов и дату следующей ревизии.
 
-Из 13 пунктов **10 реализованы и слиты** (01/02/03/04/05/06/07/08/09/12), **№11 закрыт в этой итерации без реализации вложений**, **№10/13 в backlog** до backend/API Алексея. Полная M8 приёмка, согласованный срок менеджера и события1С остаются отдельными вопросами. PR #40 и CMP не входят в эту поставку.
+Код приложения, тесты, CI и конфиги не меняются. Пользовательские Screenshot_1.png и Screenshot_2.png сохраняются вне поставки. Merge этой ветки не выполнялся. Проверки приложения из прошлых поставок не считаются новыми проверками Markdown.
 
-## Что проверено
+Проверки ревизии: локальные ссылки/якоря без ошибок; все 134 ссылки на локальные артефакты доступны; frozen manifest совпадает с Git blob. Все 23 Playwright-конфига успешно проходят discovery, включая 60 тестов fos06. Build и браузерные сценарии для Markdown не запускались. Прежние SHA256 сохранены; эти проверки не означают новую приёмку приложения.
 
-- PR #44 слит squash 12.11.2026 в12:13:20UTC. Дерево поставки6d3fa83 совпадает с проверенным PR head: `6b6fc96a330761b548e36195557acceafb4f52bb`. Последующие документационные коммиты отделены от этого SHA приложения.
-- Post-merge FOS06 начат12:13:31.752UTC: 60/60 PASS, unexpected0/skipped0/flaky0. Отдельно frozen2/2 и production Review4/4, Client/Manager×1440/touch320, pageerror/API requests отсутствуют. Это новые результаты после merge, не переименование старых прогонов.
-- Независимая QA до merge: PASS WITH RISKS, 8 browser-сценариев +21 проверка модели; оба найденных P1 исправлены и перепроверены. CI фактического head7c5b017 —7/7SUCCESS.
-- Remote head `docs/scope-decisions-20261112` удалён автоматически, fetch --prune выполнен. Локальная ветка сохранена; её не переиспользовать для новой задачи.
-- Предыдущие поставки: №05/PR #43 merge76948df, №07/PR #41 mergee6a04fd. [Доказательства](PROJECT_STATE.md), [№05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md), [№07](FOS07_DATEPICKER_PILOT_2026-11-11.md).
+## Перед следующей задачей
 
-## Что остаётся
-
-1. Owner/UX: полная визуальная приёмка M8/issue #21; сроки не назначены. Технический merge №06 её не закрывает.
-2. Owner/PO и Алексей: действие менеджера для согласованного срока, публикация клиенту и событие перехода в «В работе». Клиентское readonly-отображение уже есть; backend/API/ACL/версии/1С — Алексей.
-3. №10/13 — backlog до API и решения Owner/PO. №11 снят с итерации: будущая доработка всего компонента поддержки, вложения не реализованы. PR #40 и CMP — отдельно.
-4. Восемь прежних ошибок полного набора More/Select учитывать по [контракту №05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md). Не объявлять их исправленными по focused-набору №06 и не обновлять snapshots ради зелёного результата.
-
-## Следующая сессия
-
-Сверить GitHub, свежий origin/main и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Новую ветку создавать от актуального main; не возвращать завершённый №06 в реализацию. Frozen FE11 reference f527bcb, manifest и материал сохраняются. Репозиторий PUBLIC: только синтетические данные.
-
-Артефакты `output/playwright/fos06/` локальные/ignored, не обещаются другому checkout. CI artifacts привязаны к соответствующим прогонам в [отчёте](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md). Общая ревизия была11.11.2026, следующая25.11.2026.
+- Сверить GitHub, git status, worktree list и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Drive прочитан при ревизии 13.11; Figma canvas и нормативные документы не менялись.
+- Состав дубликата тикета, Owner visual/D09, API/read/ACL/storage/1С и физические устройства остаются открытыми. M8 и 8 baseline failures — отдельная проверка, не автоматический fix.
+- Сохранить frozen reference f527bcb и [manifest](FE11_MOTION_FROZEN_V0_2.json). Репозиторий PUBLIC; только синтетические данные.
+- Артефакты output локальные и ignored; проверять их наличие. Серверы и браузерные сессии не считать запущенными по старому handoff.

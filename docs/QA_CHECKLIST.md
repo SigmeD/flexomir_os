@@ -1,12 +1,6 @@
-# Flexomir OS — независимый QA / Owner gate
+# Flexomir OS — проверка изменений
 
-CURRENT /13.11 — PR46 MERGED/main479c591, CI headea3f2b8 6/6SUCCESS. Полная финальная communication matrix193 PASS/11 native SKIP/0FAIL; дополнительно opening secondary/unpaired/cancel pointer-up не выбирает действие, последующий click/tap/keyboard работает. Новые post-merge smoke8/8, build и bundled production2/2 PASS. Это не whole-suite/physical/API/Owner visual acceptance. [Точные результаты](COMM_DOCS_2026-11-12.md).
-
-CURRENT /13.11 — tests/message-crud-model.spec.ts и tests/message-crud.spec.ts: own/foreign/self-read/other-read, stale commit guard, Work old/new/reopen, pending inline Header Save, text/File/recording replacement без нового ID, right-click/hold/swipe/Escape/Shift+F10, Copy/errors, clean Save/first Send/create header, follow-up без флага, first-message deletion без reseed и ticket-context purge. Client/Manager1440/768/390/320; popup/chat scoped axe отдельно от известных whole-page baseline findings. CRUD59 PASS/1 native SKIP, regression114/114, build/optics/production2/2 PASS; независимая QA7/7 PASS WITH RISKS. Первый200-run и test-only mobile navigation recheck — [отчёт](COMM_DOCS_2026-11-12.md). Duplicate OPEN, physical devices/API/ACL/Owner visual NOT RUN.
-
-CURRENT Owner corrections /12.11 — [отчёт и ручной чек-лист](COMM_DOCS_2026-11-12.md), tests/comm-docs-owner.spec.ts. Проверить delete по ID/same-name/last-file/lock/focus; REUSE HeaderAction(save)→own list→повторное открытие history/draft; file-add44/empty-only uploader/first/next/cancel; pointer focus без рамки+keyboard focus; short tap/crossfade/reduced-motion, pointer/key/touch hold/release без send, permission denial/late grant/cancel/tracks cleanup. Синтетический поток не считать физическим устройством. D03/D08 уточнены Owner, D09/API/whole-suite/merge отдельно; новые результаты не заменять первоначальными88/4.
-
-Заполнять для каждого значимого изменения. Если пункт невозможно проверить, отмечать `NOT RUN + причина`, не засчитывать автоматом.
+Для каждого значимого изменения отмечать PASS, FAIL или NOT RUN с причиной. FUNCTIONAL, VISUAL и TECHNICAL — отдельные гейты; зелёный CI не заменяет Owner-приёмку. Результаты конкретных поставок хранятся в [контрактах](README.md#контракты-и-доказательства).
 
 ## 0. Компонентный QA и необязательный HTML motion gate (OWNER уточнение 04.11)
 
@@ -17,7 +11,6 @@ CURRENT Owner corrections /12.11 — [отчёт и ручной чек-лист
 - [ ] Зафиксирован props/usage contract; один shared component используется Client и Manager, а не две копии.
 - [ ] Проверены 1440/1024/768/390/320, overflow, disabled, keyboard/focus, touch, reduced motion/forced colors, cross-browser/fallback где актуально.
 - [ ] React визуально сверен с Figma; после motion approval дополнительно с HTML oracle. Owner COMPONENT gate и SCREEN gate отмечены отдельно.
-- [ ] Первый пилот: [HeaderAction FE-01](https://drive.google.com/file/d/1zjVFLtIc-cDFXF0ZXyM5ld6mmAWS3HEi/view); package A без GL-01B и бизнес-логики, package B после Owner review. Client MyOrders mobile caption conflict OPEN.
 
 ## 1. Источники и продукт
 
@@ -37,7 +30,7 @@ CURRENT Owner corrections /12.11 — [отчёт и ручной чек-лист
 
 ## 3. Визуально/адаптивно
 
-- [ ] После HTML gate: снимки реального React в браузере **1440, 1024, 768, 390, 320** сопоставлены как с одобренным HTML, так и с Desktop/Tablet/Mobile CURRENT Figma.
+- [ ] Снимки реального React в браузере **1440, 1024, 768, 390, 320** сопоставлены с Desktop/Tablet/Mobile CURRENT Figma; для сложного эффекта — также с одобренным HTML.
 - [ ] Side-by-side сравнение с CURRENT Figma и принятыми material references; расхождения перечислены, самовольного redesign нет.
 - [ ] Сетка, типографика, токены, иконки, отступы, состояния, пустоты, длинные названия, overlay, sticky, scroll корректны.
 - [ ] Нет horizontal overflow, clipping, сломанных touch targets и перекрытий при 320 и 768.

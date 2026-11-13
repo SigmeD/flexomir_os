@@ -4,7 +4,7 @@
 
 **Поставка:** [PR #30](https://github.com/SigmeD/flexomir_os/pull/30), ветка feat/fe11-popup-unification-reaudit от a9ffa8a. PR #29 ранее слит в 03238af. Пилотный code/test checkpoint 4bc4a5d, CI пилотного head ef8d439 SUCCESS; это не CI нового rollout head.
 
-**Задание:** D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md. [План и этапы](superpowers/plans/2026-11-10-fe11-popup-reaudit.md).
+**Задание:** D:/downloads/FLEXOMIR_FE11_POPUP_UNIFICATION_REAUDIT_2026-11-09.md. [План и этапы](FE11_POPUP_REAUDIT_2026-11-10.md).
 
 ## 1. Что изменилось
 
