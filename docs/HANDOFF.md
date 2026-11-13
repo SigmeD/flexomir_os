@@ -2,13 +2,15 @@
 
 Обновлено 13.11.2026. Начать с [состояния](PROJECT_STATE.md), [очереди](DELIVERY_PLAN.md) и [решений](DECISIONS.md); здесь только сведения для продолжения.
 
+Сессия завершена по поручению Owner «конец сессии». Код подсветки — `40a15f1`, синхронизация документов — `d999bf0`; изменения отправлены в тот же draft PR #49, merge не выполнялся. На `d999bf0` проверки screen и communication SUCCESS, m7 ещё выполнялась. Это не финальный CI PASS: при возобновлении проверить точный новый head. Следующий зависимый этап — визуальная приёмка Owner одиночного U06 DocumentPreview preset, затем перенос материала по семействам и U07–U09. Во время закрытия сессии продуктовый код не менялся; Drive уже синхронизирован по результату исправления подсветки.
+
 ## Последняя поставка
 
 PR #46 слит: приложение `479c591`, последующая синхронизация Markdown `f2bb70d`. Результаты, SHA, CI и ограничения — [единый контракт](COMM_DOCS_2026-11-12.md). Завершённые №05/06/07 не возвращать в реализацию. Локальные ветки слитых PR не переиспользовать.
 
 ## Текущий инкремент · issue #21 U05 / U06 pilot
 
-Последнее уточнение Owner: подсветка Orders (Screenshot_1, Image #3) — единый эталон строк обеих ролей. Второй flat hover/pressed/focus профиль удалён из `fos-summary-row.css` в `40a15f1`; геометрические варианты сохраняются. Новый m7-row-highlight: 21 PASS, регрессия 78 PASS, независимый QA 3 PASS, build PASS. Оригиналы Screenshot_1/2.png untracked и защищены: не удалять/не stage автоматически. [Причина, референсы и evidence](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders). U06 material gate этим не принят и не отменён.
+Последнее уточнение Owner: подсветка Orders (Screenshot_1, Image #3) — единый эталон строк обеих ролей. Второй flat hover/pressed/focus профиль удалён из `fos-summary-row.css` в `40a15f1`; геометрические варианты сохраняются. Новый m7-row-highlight: 21 PASS, регрессия 78 PASS, независимый QA 3 PASS, build PASS. При закрытии сессии Screenshot_1/2.png в корне уже отсутствуют; агент их не удалял и причину отсутствия не устанавливал. Проверенные копии доступны в `output/ui-unification/row-highlight/references/`; сохранить их и контрольные суммы из контракта. [Причина, референсы и evidence](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders). U06 material gate этим не принят и не отменён.
 
 Рабочая ветка `refactor/ux-ui-unification-20261113`, основная папка `D:\Projects\flexomir_os`; база3b9a0aa, продолжение app/tests `c9d70e6`. Owner принял U03/U04 наfbd88ce (CI3/3SUCCESS). FosSummaryRow/Copy подключён ко всем4адаптерам и staticOrder; прежние визуальные копииCSS удалены. Один DocumentPreviewDialog → FosMaterialSurface document-preview. [Контракт, тесты и before/after](UI_UNIFICATION_2026-11-13.md). Это не merge и не закрытие всей M8/CMP.
 
