@@ -4,7 +4,7 @@
 
 ## Что поставлено
 
-Issue #21 / U01–U04 реализованы в рабочей ветке `refactor/ux-ui-unification-20261113`, [draft PR #49](https://github.com/SigmeD/flexomir_os/pull/49): общая роль Company title и стабильный list-каркас Client Orders/Layouts/Support. Контрольный targeted48/48 PASS; Owner visual OPEN, merge не выполнялся. [Причины, сравнения, регрессии и ограничения](UI_UNIFICATION_2026-11-13.md). Drive/issue синхронизированы; CI текущего head сверять в PR. Это текущая работа, не поставка в main и не завершение M8/CMP.
+Issue #21, [draft PR #49](https://github.com/SigmeD/flexomir_os/pull/49): Owner принял U03/U04 ответом «принято продолжай». Продолжение app/tests `c9d70e6`: общий FosSummaryRow/Copy подключён к Company/Order/Layout/Support, удалены перенесённые CSS-копии; один DocumentPreviewDialog использует semantic material preset. Targeted78/78 PASS,129 PNG-пар без отличий, независимый QA6 PASS. U06 material visual gate OPEN перед переносом остальных consumers; полного M8/merge нет. [Единый контракт с полным suite949/8/9, повторными проверками и OPEN](UI_UNIFICATION_2026-11-13.md). CI текущего head сверять в PR; предыдущий принятый headfbd88ce имел3/3SUCCESS.
 
 Приложение на React и TypeScript работает на синтетических данных. Доступны заказы и позиции Client/Manager, компании менеджера, макеты, поддержка и профиль. Общие формы, меню и навигация используются обеими ролями. Изменения живут в памяти вкладки и сбрасываются при перезагрузке; реального сервера и передачи в 1С нет.
 

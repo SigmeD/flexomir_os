@@ -4,6 +4,8 @@
 
 ## Как выбирать источник
 
+Продолжение после ответа Owner «принято продолжай»: read-only Figma OrderRow685:195 и LayoutRow1313:2182 (варианты Wide/Compact, Default/Hover/Pressed/Focus) сопоставлены с принятым runtime. Физика/материал сохранены по runtime/frozen reference, новые визуальные значения из Figma не переносились. Для виртуального времени тестов использована официальная Playwright1.64.1 Clock/Route документация через Context7. [Scope и доказательства](UI_UNIFICATION_2026-11-13.md#u05-и-контрольный-u06-после-приёмки).
+
 Для текущего issue #21 проверены первая вкладка [Frontend «Читать сначала»](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit?tab=t.aiwyg425dkrn) и [CMP t.0](https://docs.google.com/document/d/15MSDck4Ktrjn34xiWvFhkF77VpbM1DJZUvdKQ-Iu84Q/edit?tab=t.0), current SRS, первые вкладки инструкции агенту и клиентского статуса. Figma ClientRow634:316 прочитан read-only: старый Body14/20/400 отличается от более нового Owner поручения16/22/600; canvas не синхронизирован. [Точный scope чтения и недоступные вложения](UI_UNIFICATION_2026-11-13.md#источники-и-база).
 
 Требования и одобренные решения Owner/PO определяют логику, права и данные. Утверждённые Primary DS/FOS masters и CURRENT UX определяют компоненты и состояния. Новое подтверждённое решение важнее устаревшего кадра; CURRENT-кандидат сам по себе не является approval. Факты реализации/CI/merge проверяются в GitHub, очередность — в Drive CURRENT.

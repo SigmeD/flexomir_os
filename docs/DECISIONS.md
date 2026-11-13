@@ -4,7 +4,7 @@
 
 ## Актуальный индекс
 
-Owner13.11 / issue #21: U01–U04 разрешены к реализации; Company title16/22/600 и общий list-каркас — два контрольных варианта. Их визуальная приёмка OPEN; U05–U09 и merge не разрешены этой реализацией автоматически. Старый Figma ClientRow14/20/400 не переписан. [Контракт](UI_UNIFICATION_2026-11-13.md).
+Owner13.11 / issue#21: «принято продолжай» — U03/U04 OWNER ACCEPTED, U05–U09 разрешены по зависимостям. U05 общий row source реализован; U06 пока один material consumer с отдельным Owner gate перед rollout по исходномуissue. Frozen/business/№10/13 и отдельный merge gate сохраняются. Старый FigmaClientRow14/20/400 не переписан. [Контракт](UI_UNIFICATION_2026-11-13.md).
 
 | Решение | Текущий статус и основание |
 | --- | --- |
@@ -62,7 +62,7 @@ Owner13.11 / issue #21: U01–U04 разрешены к реализации; Co
 | Profile / Company Settings / Logout / Profile More | Owner: семантика и визуальная приёмка; API отдельно |
 | «Клиенты» vs «Компании» | Owner/PO: терминология, не переименовывать по догадке |
 | Реальные поиск/сортировка/queue и исторические summary-заказы | PO + Алексей: контракты данных, доступность, версии; не выдумывать отсутствующие поля |
-| Baseline №05 | Issue #21: before/after More2PASS, Select6snapshotFAIL одинаково; snapshots/asserts не менялись. Причина исторического snapshot drift — OPEN, [доказательства](UI_UNIFICATION_2026-11-13.md) |
+| Baseline №05 | Full949/8/9:6SelectsnapshotFAIL (257/261px),2staleMoreassert исправлены на принятуюhoverv0.3семантику (4PASS),1singletonpopupFAIL с5изолированнымиPASS. Snapshot drift и singletonпричинаOPEN; [точная классификация](UI_UNIFICATION_2026-11-13.md) |
 | Main protection / локальная уборка | Owner, issue #13: отдельная проверка и разрешения; прежняя удалённая уборка не доказывает полный cleanup |
 | Физические устройства, iPhone, NVDA/VoiceOver | Отдельная ручная проверка, не заменяется Playwright touch |
 

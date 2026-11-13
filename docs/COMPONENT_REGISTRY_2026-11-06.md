@@ -4,6 +4,8 @@
 
 ## Карта Figma → React → потребители
 
+U03/U04 приняты Owner13.11 ответом «принято продолжай», на headfbd88ce CI3/3SUCCESS. U05 implemented app/tests c9d70e6: ClientRow1189:984 / OrderRow685:195 / LayoutRow1313:2182 / Support → FosSummaryRow + FosSummaryRowCopy (CREATE minimal presentation; подходящего shared root не было). REUSE FosButtonRoot и ArtworkThumbnail. CompanyRow/OrderCard/LayoutRow/SupportTicketRow сохраняют props/data/handlers/IDs; density compact/regular, surface flat/card, staticOrder сохраняют прежний вид. Старые surface/copy/title/meta/state CSS-копии удалены, compatibility classes сохранены. U06 только DocumentPreviewDialog → FosMaterialSurface variant=document-preview, public style запрещён и отбрасывается; другие optical consumers KEEP до pilot gate. [Проверки и новый gate](UI_UNIFICATION_2026-11-13.md#u05-и-контрольный-u06-после-приёмки).
+
 | Мастер / источник | React и props/states | Потребители | Решение / контракт |
 | --- | --- | --- | --- |
 | DS shell, Drawer1962:3834 / Nav634:511 | AppShell, CabinetPage, CabinetNavigation, SidebarNav, NavigationDrawer; role/items/selection/open | Оба кабинета | REUSE; [Drawer](GL02B_NAVIGATION_DRAWER.md) |
