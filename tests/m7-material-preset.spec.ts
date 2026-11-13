@@ -1,0 +1,23 @@
+import { test, expect } from '@playwright/test'
+
+test('document preview chooses one semantic preset and preserves native modal/file actions', async ({ page }, info) => {
+  await page.goto('/?view=client-orders')
+  await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+  await page.getByLabel('Выбрать подписной бланк', { exact: true }).setInputFiles({ name:'preset.txt', mimeType:'text/plain', buffer:Buffer.from('original preset fixture') })
+  const opener = page.getByRole('button', { name:/Открыть документ Файл preset\.txt/ })
+  await opener.click()
+  const dialog = page.getByRole('dialog')
+  await expect(dialog).toBeVisible()
+  await expect(dialog.locator('[data-fos-glass-material]')).toHaveCount(1)
+  const shell = dialog.locator('.fos-document-shell')
+  await expect(shell).toHaveAttribute('data-material-ready', 'true')
+  expect.soft(await shell.getAttribute('data-material-preset')).toBe('document-preview')
+  await info.attach('preset-computed', { body:JSON.stringify(await shell.evaluate(n => ({ style:n.getAttribute('style'), rect:n.getBoundingClientRect().toJSON() }))), contentType:'application/json' })
+  const download = page.waitForEvent('download')
+  await dialog.getByRole('link', { name:'Скачать', exact:true }).click()
+  const { readFile } = await import('node:fs/promises')
+  expect(await readFile((await (await download).path())!, 'utf8')).toBe('original preset fixture')
+  await page.keyboard.press('Escape')
+  await expect(dialog).toHaveCount(0)
+  await expect(opener).toBeFocused()
+})

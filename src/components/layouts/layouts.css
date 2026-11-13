@@ -3,10 +3,6 @@
 .fos-layout-browser:not([data-mode=library]) { margin-top:16px; margin-left:17px; }
 .fos-layout-browser:not([data-mode=library]) .fos-layout-list { margin-top:24px; }
 .fos-orders-page:has(.fos-layout-browser:not([data-mode=library])) { background:var(--fos-v2-semantic-color-bg-page,#fafbfc); }
-.fos-layout-row { height:92px; gap:12px; }
-.fos-layout-row .fos-cabinet__row-copy { gap:4px; }
-.fos-layout-row strong { font:var(--fos-type-row-title); color:var(--fos-color-row-title); white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
-.fos-layout-row small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .fos-layout-detail { margin-top:24px; display:grid; grid-template-columns:minmax(0,340px) minmax(0,1fr); gap:24px; }
 .fos-layout-detail__preview { border:1px solid var(--fos-v2-semantic-color-border-default); border-radius:8px; padding:20px; min-height:232px; }
 .fos-layout-preview { display:flex; align-items:center; justify-content:center; min-height:188px; padding:20px; border-radius:8px; background:var(--fos-v2-semantic-color-bg-subtle); color:var(--fos-v2-semantic-color-text-secondary); font-size:12px; line-height:18px; }
@@ -36,7 +32,7 @@
 .fos-layout-preview-field__button > span { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .fos-layout-preview-field__button:focus-visible { outline:2px solid var(--fos-glass-focus,#1f3861); outline-offset:2px; }
 @media(max-width:1023px) { .fos-layout-detail { grid-template-columns:minmax(0,278px) minmax(0,1fr); } .fos-cabinet__main[data-section=artworks]:not(:has(> .fos-layout-browser[data-state=list])) { padding-top:40px; } .fos-cabinet__rows.fos-layout-list { margin-top:44px; } }
-@media(max-width:600px) { .fos-layout-row { height:104px; } .fos-cabinet__main[data-section=artworks]:not(:has(.fos-layout-browser[data-state=list])) { padding-top:24px; } .fos-cabinet__rows.fos-layout-list { gap:12px; } .fos-layout-detail { grid-template-columns:minmax(0,1fr); gap:16px; } .fos-layout-detail__preview { width:min(260px,100%); justify-self:center; min-height:200px; padding:17px; } .fos-layout-detail__preview .fos-layout-preview { min-height:164px; } .fos-layout-upload-form__metadata { grid-template-columns:minmax(0,1fr); } .fos-layout-upload-form { gap:80px; } .fos-layout-upload__desktop { display:none; } .fos-layout-upload__mobile { display:inline; } }
+@media(max-width:600px) { .fos-cabinet__main[data-section=artworks]:not(:has(.fos-layout-browser[data-state=list])) { padding-top:24px; } .fos-cabinet__rows.fos-layout-list { gap:12px; } .fos-layout-detail { grid-template-columns:minmax(0,1fr); gap:16px; } .fos-layout-detail__preview { width:min(260px,100%); justify-self:center; min-height:200px; padding:17px; } .fos-layout-detail__preview .fos-layout-preview { min-height:164px; } .fos-layout-upload-form__metadata { grid-template-columns:minmax(0,1fr); } .fos-layout-upload-form { gap:80px; } .fos-layout-upload__desktop { display:none; } .fos-layout-upload__mobile { display:inline; } }
 @media(min-width:601px) and (max-width:1023px) { .fos-cabinet__main[data-section=artworks]:not(:has(> .fos-layout-browser[data-state=list])) { padding-left:24px; padding-right:24px; } }
 @media(max-width:600px) { .fos-cabinet__main[data-section=artworks]:not(:has(> .fos-layout-browser[data-state=list])) { padding-left:16px; padding-right:16px; } .fos-layout-detail { margin-top:42px; } .fos-layout-upload-form { margin-top:32px; gap:60px; } .fos-layout-upload-form__description .fos-field__control--note { height:84px; min-height:84px; } }
 /* Picker is composed inside the approved New/Edit Item host (different gutters).
