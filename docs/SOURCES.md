@@ -4,6 +4,8 @@
 
 ## Как выбирать источник
 
+Для текущего issue #21 проверены первая вкладка [Frontend «Читать сначала»](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit?tab=t.aiwyg425dkrn) и [CMP t.0](https://docs.google.com/document/d/15MSDck4Ktrjn34xiWvFhkF77VpbM1DJZUvdKQ-Iu84Q/edit?tab=t.0), current SRS, первые вкладки инструкции агенту и клиентского статуса. Figma ClientRow634:316 прочитан read-only: старый Body14/20/400 отличается от более нового Owner поручения16/22/600; canvas не синхронизирован. [Точный scope чтения и недоступные вложения](UI_UNIFICATION_2026-11-13.md#источники-и-база).
+
 Требования и одобренные решения Owner/PO определяют логику, права и данные. Утверждённые Primary DS/FOS masters и CURRENT UX определяют компоненты и состояния. Новое подтверждённое решение важнее устаревшего кадра; CURRENT-кандидат сам по себе не является approval. Факты реализации/CI/merge проверяются в GitHub, очередность — в Drive CURRENT.
 
 Локальная точка входа: [состояние](PROJECT_STATE.md), [план](DELIVERY_PLAN.md), [решения](DECISIONS.md), [реестр компонентов](COMPONENT_REGISTRY_2026-11-06.md). Датированные источники ниже не означают, что каждый из них заново прочитан этой документационной правкой.

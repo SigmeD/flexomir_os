@@ -29,6 +29,8 @@
 
 ## Обязательные правила
 
+Issue #21 / U01–U04: CompanyRow634:316/1189:984 → EXTEND явной title ролью по более новому поручению Owner (старый Figma master14/20/400 сохраняется). Общие `--fos-type-row-title`, `--fos-type-row-meta`, `--fos-type-body` и `--fos-color-row-title` → CompanyRow, OrderCard/CompanyOrders, LayoutRow/library/picker, SupportTicketRow Client/Manager. Параметры, DOM/handlers, размеры и роли metadata сохранены. Структурный общий row primitive — DEFER U05. List shell → REUSE AppShell/CabinetPage/PageHeader + единый padding-контракт Orders; `:has` выбирает существующий library/list или Support slot без нового effect. Picker/detail/upload — KEEP. [Контракт и QA](UI_UNIFICATION_2026-11-13.md); Owner visual OPEN.
+
 - REUSE → EXTEND → CREATE; один Figma master не размножается на отдельные экранные кнопки/поля/меню. До JSX фиксировать props, состояния и потребителей.
 - Базовые FOSInput/Select/Textarea/Button и нативные элементы внутри них сохраняют доступность; экран собирает общие композиции.
 - Frozen Rows/GlassMaterial/glass-motion не менять без отдельного разрешения. [Manifest](FE11_MOTION_FROZEN_V0_2.json) и hashes сохраняются; hover v0.3 — разрешённый adapter/presence.

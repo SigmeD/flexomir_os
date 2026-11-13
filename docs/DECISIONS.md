@@ -4,6 +4,8 @@
 
 ## Актуальный индекс
 
+Owner13.11 / issue #21: U01–U04 разрешены к реализации; Company title16/22/600 и общий list-каркас — два контрольных варианта. Их визуальная приёмка OPEN; U05–U09 и merge не разрешены этой реализацией автоматически. Старый Figma ClientRow14/20/400 не переписан. [Контракт](UI_UNIFICATION_2026-11-13.md).
+
 | Решение | Текущий статус и основание |
 | --- | --- |
 | Hover/G-01 | Принят Account, затем общий adapter для popup; PR #36/#37 MERGED. 240 ms presence, прежние frozen physics/material. Desktop Sidebar не менялся |

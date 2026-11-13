@@ -5,10 +5,24 @@
 | Этап | Состояние | Следующий шаг и ответственный |
 | --- | --- | --- |
 | M4–M7 | Основные композиции и сквозные сценарии реализованы на fixtures | Использовать существующие компоненты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
-| M8 | Технические поставки слиты, полная приёмка открыта | Owner/UX: визуальная проверка Client/Manager и D09; frontend: диагностика подтверждённых дефектов после аудита |
+| M8 | U01–U04 issue #21 реализованы в рабочей ветке; полная приёмка открыта | Owner: два контрольных варианта Company title/list shell → разрешение U05–U09; остальная M8/D09 отдельно |
 | M9 | Зависит от готового согласованного API | Алексей: backend/ACL/1С; frontend: подключение клиента и интеграционный QA |
 
 ## Открытая очередь
+
+### Issue #21 · U01–U04 · контрольные исправления
+
+Owner поручил реализацию 13.11.2026. База `3b9a0aa424d98df709c724125b6aba83bef5ad38`, обычная ветка `refactor/ux-ui-unification-20261113`. Используется навык writing-plans; план ведётся здесь, без второго CURRENT.
+
+Статус контрольного инкремента: app/tests9f95198, targeted48/48 PASS, independent12 PASS, OWNER VISUAL OPEN / NOT MERGED. [Единый контракт с причинами, consumers, регрессиями и before/after](UI_UNIFICATION_2026-11-13.md). Шаги1–4 ниже выполнены в разрешённом контрольном охвате; gate и оставшиеся baseline/coverage ограничения сохраняются.
+
+1. U01: измерить Company title и anchors Orders/Layouts/Support после fonts.ready, сохранить JSON/PNG/video; написать RED-проверки и повторить исторические More/Select FAIL. Проверить scroll, Activity/remount и scrollbar.
+2. U02/U03: существующие Card/Body/Secondary и semantic colors → общие row title/meta aliases; CompanyRow получает явные роли. Высота80, ID, hit-area, search и linked orders сохраняются. Layout/Support/Order typography подключается к тем же ролям без изменения вычисляемого вида; объединение структуры строк — U05.
+3. U02/U04: существующий Orders list padding → общий list-контракт в orders-page.css. ClientOrders использует data-view=list, LayoutBrowser — существующие data-mode/data-state, Support — непосредственный list slot; :has выбирает геометрию в первом committed frame без callback/effect. Убрать только конфликтующие list overrides Layout/Support, сохранить picker/detail/upload. Toolbar — существующий filters slot; пустые spacers не добавлять.
+4. RED→GREEN; Chromium/Firefox/WebKit,1440/1024/768/390/320, кадры переключений, touch/key/focus, длинный текст, token propagation, соседние сценарии и frozen contracts. Независимый QA отдельным reviewer после фикса.
+5. Обновить LIVE docs и Drive, подготовить один PR и сравнения для Owner. U05–U09 после визуальной приёмки; merge отдельно.
+
+Figma ClientRow634:316 всё ещё Body14/20/400; более новое прямое поручение Owner / issue #21 задаёт контрольный title Card16/22/600. Это явное различие источников, не утверждение синхронизации Figma. Canvas не менять. Обе главные вкладки Drive прочитаны; screenshot/video из сообщения и отдельный MD-аудит пока не доступны как файлы, baseline воспроизводится на текущем SHA.
 
 1. Полная M8-проверка по [аудиту](M8_FINAL_AUDIT_2026-11-10.md) и issue #21. Включить диагностику 8 baseline failures №05; зелёные focused-наборы не закрывают полный suite.
 2. Owner/PO: определить состав дубликата обращения, действие менеджера по согласованному сроку, публикацию клиенту и событие «В работе». Не реализовывать неподтверждённые решения.
