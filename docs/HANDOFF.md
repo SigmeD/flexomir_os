@@ -8,6 +8,8 @@ PR #46 слит: приложение `479c591`, последующая синх
 
 ## Текущий инкремент · issue #21 U05 / U06 pilot
 
+Последнее уточнение Owner: подсветка Orders (Screenshot_1, Image #3) — единый эталон строк обеих ролей. Второй flat hover/pressed/focus профиль удалён из `fos-summary-row.css` в `40a15f1`; геометрические варианты сохраняются. Новый m7-row-highlight: 21 PASS, регрессия 78 PASS, независимый QA 3 PASS, build PASS. Оригиналы Screenshot_1/2.png untracked и защищены: не удалять/не stage автоматически. [Причина, референсы и evidence](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders). U06 material gate этим не принят и не отменён.
+
 Рабочая ветка `refactor/ux-ui-unification-20261113`, основная папка `D:\Projects\flexomir_os`; база3b9a0aa, продолжение app/tests `c9d70e6`. Owner принял U03/U04 наfbd88ce (CI3/3SUCCESS). FosSummaryRow/Copy подключён ко всем4адаптерам и staticOrder; прежние визуальные копииCSS удалены. Один DocumentPreviewDialog → FosMaterialSurface document-preview. [Контракт, тесты и before/after](UI_UNIFICATION_2026-11-13.md). Это не merge и не закрытие всей M8/CMP.
 
 [Draft PR #49](https://github.com/SigmeD/flexomir_os/pull/49); Drive Frontend/CMP/клиентский статус и issue синхронизированы и readback подтверждён. CI отслеживать по актуальному head. Стенд текущей сессии127.0.0.1:5173; в новой сессии проверить процесс, не предполагать, что он жив.

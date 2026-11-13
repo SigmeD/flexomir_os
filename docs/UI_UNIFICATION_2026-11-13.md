@@ -2,6 +2,8 @@
 
 Назначение: контракт, причины и доказательства issue#21. Ответственный: Codex/frontend; визуальная приёмка: Owner. Проверено 13.11.2026. **U03/U04 OWNER ACCEPTED** на headfbd88ce, Owner: «принято продолжай». CI3/3SUCCESS. U05–U09 разрешены по зависимостям; U06 сохраняет отдельный material pilot gate. NOT MERGED.
 
+Новое решение Owner по Screenshot_1/2: единственная подсветка всех строк — Orders из Image#3. Второй flat interaction profile удалён. Это порученное изменение прежнего вида; историческая U05-эквивалентность120PNG ниже относится к предыдущей версии, не доказывает неизменность нового hover. [Причина, контроль и доказательства текущей правки](#единая-подсветка-по-эталону-orders).
+
 [Draft PR #49](https://github.com/SigmeD/flexomir_os/pull/49). Контрольные U01–U04 поставлены app/tests9f95198, приняты Owner на headfbd88ce (CI3/3SUCCESS). Продолжение U05 и один U06 material pilot описаны ниже; перенос остальных material consumers ещё не выполнен. Merge/production не выполнялись. CI всегда сверять по конкретному текущему head, не по предыдущему принятому коммиту.
 
 ## Источники и база
@@ -82,6 +84,20 @@ npm run verify:material-optics
 ## Приёмка и продолжение
 
 Owner принял U03/U04. U05 реализован; U06 ограничен одним material consumer. Перенос других material consumers, полный U07/U08/U09 и merge зависят от отдельных gates. Ниже факты продолжения, а не объявление полной M8/production готовности.
+
+## Единая подсветка по эталону Orders
+
+Owner предоставил Screenshot_1.png (Image#1/#3 — эталон заказов) и Screenshot_2.png (отменённая серая подсветка макетов) и поручил унификацию для обеих ролей. Файлы теперь доступны, визуально просмотрены. Величины пикселей этих изображений не объявляются CSS px, их zoom/DPR не установлен. Оригиналы сохранены в корне без изменения; контрольные копии — ignored output/ui-unification/row-highlight/references.
+
+Причина: React-компонент уже был общим FosSummaryRow, но `data-row-surface=card` выбирал голубую рамку/полупрозрачный фон/тень Orders, а `flat` — серый фон без рамки и тени у Company/Layout/Support. U05 сознательно сохранил эти прежние состояния; новое прямое решение Owner заменяет это ограничение. Figma LayoutRow1313:2182 содержит прежний flat hover; canvas этой frontend-правкой не изменяется.
+
+Исправление находится только в общем `fos-summary-row.css`: один enabled-button профиль hover/active/focus-visible для всех6route consumers и связанных picker/company-order consumers. Orders является источником значений: hover rgba(248,251,255,.9), border rgba(188,209,236,.78), shadow0 6px18px rgba(53,70,91,.09); pressed#ebf0f7; keyboard focus — прежняя inset-рамка Orders. В forced-colors остаётся системная видимая рамка. Старые flat interaction rules и card-only hover/pressed tokens удалены, а не сохранены вторым alias или override. `surface`/`density` остаются только для обоснованной геометрии/типографики/переноса metadata; размеры80/92/104, padding, IDs, onOpen, права и DOM-семантика не менялись. Disabled/static исключены из подсветки.
+
+Карта потребителей: Client Orders → OrderCard; Manager Orders и linked Company orders → тот же OrderCard; Manager Clients → CompanyRow; Client Layout library/picker → LayoutRow; Support обеих ролей → SupportTicketRow. Все используют один FosSummaryRow. Frozen FE11 и material pilot не затронуты.
+
+App/tests commit: `40a15f1`. RED: 7/7 FAIL до исправления — five-width state equality, общий hover-token и отсутствие второго source; дополнительный keyboard RED 1/1. Точные computed значения и реальные before PNG сохранены. GREEN: **21/21 PASS**, Chromium/Firefox/WebKit × 1440/1024/768/390/320 плюс propagation/disabled/static/source checks. Bounds до/после hover/press/focus совпадают. Независимый QA: **3/3 PASS** — шесть routes, оригинальные Orders values, refs/events, keyboard/touch 320, reduced/forced-colors, no overflow/hit shift; normalized frozen 5/5 PASS. Build PASS. Регрессия Company/Layout/Support/SummaryRow и frozen contract: **78/78 PASS**, результат в row-highlight/regression.json. Зелёный полный suite этим не заявляется; прежние OPEN ниже сохраняются.
+
+[Визуальное сравнение](../output/ui-unification/row-highlight/review.html), [RED](../output/ui-unification/row-highlight/red.json), [GREEN](../output/ui-unification/row-highlight/green.json), [независимый отчёт](../output/ui-unification/row-highlight/independent/review.md). Новые контекстные PNG имеют24 CSS px поля вокруг строки для видимости тени. Исходные SHA256: Screenshot_1 `d84d43e586590794858c550735cc921c13b6b5d91b08788a2fc3b23749a72043`; Screenshot_2 `1490f844213295dc2b6e4b192b15f45ca2eb01dd4d04ff7f070ae633eac984a5`.
 
 ## U05 и контрольный U06 после приёмки
 

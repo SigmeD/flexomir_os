@@ -4,6 +4,8 @@
 
 ## Актуальный индекс
 
+Owner, Screenshot_1/2 и Image#3: единый эталон подсветки строк — Orders. Серый flat hover у Company/Layout/Support отменён для обеих ролей; исправление разрешено на общем источнике без изменения бизнес-логики и frozen FE11. Это уточняет прежнее U05 «сохранить flat/card states». Figma canvas не изменяется. [Причина и QA](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders).
+
 Owner13.11 / issue#21: «принято продолжай» — U03/U04 OWNER ACCEPTED, U05–U09 разрешены по зависимостям. U05 общий row source реализован; U06 пока один material consumer с отдельным Owner gate перед rollout по исходномуissue. Frozen/business/№10/13 и отдельный merge gate сохраняются. Старый FigmaClientRow14/20/400 не переписан. [Контракт](UI_UNIFICATION_2026-11-13.md).
 
 | Решение | Текущий статус и основание |

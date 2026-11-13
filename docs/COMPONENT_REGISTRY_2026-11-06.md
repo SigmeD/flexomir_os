@@ -31,6 +31,8 @@ U03/U04 приняты Owner13.11 ответом «принято продолж
 
 ## Обязательные правила
 
+Owner row-highlight correction: все Company/Order/Layout/Support строки Client/Manager используют один enabled hover/pressed/focus профиль Orders в `fos-summary-row.css`. Flat interaction implementation и card-only hover tokens удалены. Geometry/density variants сохраняются; они больше не выбирают подсветку. Новый `m7-row-highlight` контракт проверяет равенство всех consumers и запрет второй реализации. [Решение и доказательства](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders).
+
 Роли `--fos-type-row-title`, `--fos-type-row-meta`, `--fos-type-body` и `--fos-color-row-title` задаются один раз и применяются через FosSummaryRow/Copy. Company title и list shell приняты Owner; старый Figma master14/20/400 пока сохраняется. AppShell/CabinetPage/PageHeader и общий padding Orders — REUSE; `:has` выбирает существующий library/list или Support slot без нового effect. Picker/detail/upload — KEEP. [Контракт и QA](UI_UNIFICATION_2026-11-13.md). Открыта только отдельная приёмка U06 material pilot, а не повторное утверждение U03/U04.
 
 - REUSE → EXTEND → CREATE; один Figma master не размножается на отдельные экранные кнопки/поля/меню. До JSX фиксировать props, состояния и потребителей.
