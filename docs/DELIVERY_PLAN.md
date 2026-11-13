@@ -1,11 +1,11 @@
 # Flexomir OS — текущий план
 
-Обновлено 13.11.2026. Каноническая очередь — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); факты поставок — [PROJECT_STATE](PROJECT_STATE.md). Этот файл содержит только оставшуюся работу.
+Обновлено 14.11.2026. Каноническая очередь — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); факты поставок — [PROJECT_STATE](PROJECT_STATE.md). Ревизия структуры 13.11, следующая 27.11; ниже актуальная очередь и текущий проверяемый инкремент.
 
 | Этап | Состояние | Следующий шаг и ответственный |
 | --- | --- | --- |
 | M4–M7 | Основные композиции и сквозные сценарии реализованы на fixtures | Использовать существующие компоненты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
-| M8 | U03/U04 Owner accepted; U05 общий row source реализован; U06 один material pilot | Owner: принять U06 DocumentPreview preset перед переносом material family; общая M8/D09 отдельно |
+| M8 | U03/U04 и U06 pilot приняты; U05/U06 rollout и U07 cleanup реализованы, U08/U09 текущего переноса выполнены с OPEN | CI актуального head, причины исторических snapshot/timing FAIL, полная M8/D09 отдельно |
 | M9 | Зависит от готового согласованного API | Алексей: backend/ACL/1С; frontend: подключение клиента и интеграционный QA |
 
 ## Открытая очередь
@@ -14,7 +14,7 @@
 
 Новый запрос Owner со Screenshot_1/2: эталон — подсветка строки заказа (Image#3). Общий FosSummaryRow уже существует; расхождение создают два CSS-профиля card/flat, сохранённые в U05 для прежнего вида. Новое поручение заменяет это ограничение: один профиль hover/pressed/focus для всех интерактивных Company/Order/Layout/Support строк обеих ролей. Геометрия, данные и переходы сохраняются; readonly/disabled не подсвечиваются.
 
-Выполнено в `40a15f1`: RED 7 + keyboard 1 → общий Orders highlight; второй профиль удалён. Targeted 21/21, регрессия 78/78 и независимый QA 3/3 PASS, build PASS; before/after и исходные скриншоты сохранены. [Единый контракт](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders). CI сверять по текущему PR head; прежний отдельный U06 material gate сохраняется. Пользовательские PNG не перемещать/не удалять/не включать случайно в commit.
+Выполнено в `40a15f1`: RED 7 + keyboard 1 → общий Orders highlight; второй профиль удалён. Targeted 21/21, регрессия 78/78 и независимый QA 3/3 PASS, build PASS; before/after и исходные скриншоты сохранены. [Единый контракт](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders). CI сверять по текущему PR head. Последующая приёмка U06 и его rollout описаны ниже. Копии пользовательских PNG в ignored evidence сохранять.
 
 ### Issue #21 · U05–U09 · после принятия контрольных вариантов
 
@@ -22,12 +22,26 @@ Owner13.11: «принято продолжай» — U03/U04 OWNER ACCEPTED, р
 
 - [x] U05: общий FosSummaryRow/Copy, четыре доменных адаптера, readonly variant; RED→GREEN,120PNG до/после без отличий.
 - [x] U06 pilot: карта владельцев motion, существующие контроллеры REUSE; одна настройка action profile достигает3consumers (6PASS). Внешний preset только DocumentPreviewDialog,9PNG без отличий. API style override найден независимым QA и закрыт во внешнем адаптере.
-- [ ] U06 family: **Owner material pilot gate** перед другими consumers; frozen files и их checksum не менять.
-- [x] U07 rows: удалены только перенесённые CSS-копии; compatibility hooks и drift checks сохранены. Material cleanup после его gate.
-- [x] U08 текущего блока: build/optics/frozen,78targeted,129image pairs,6independentPASS; full949PASS/8SKIP/9FAIL,4touch в реальных профиляхPASS, Morecurrent4PASS, popupisolated5PASS. Полный чистый suite и точная причина singleton popup FAIL остаютсяOPEN;6snapshots не обновлены.
-- [ ] U09 финальный объём: материал после gate, финальная регрессия и отчёт; контрольная доставка этого блока сопровождается LIVE docs/Drive/issue/PR сейчас. Merge отдельно.
+- [x] U06 family: Owner принял DocumentPreview pilot ответом «да, принято»; `b689487` переносит остальные незамороженные consumers. 135 PNG/computed пар exact, targeted 24/24, независимый повтор 5/5, build/optics/frozen PASS. Прямые frozen Rows и optics lab — KEEP.
+- [x] U07 перенесённых consumers: row CSS-копии и прежние inline material props удалены; compatibility hooks, drift checks, геометрия и обоснованные CSS-контуры сохранены. Frozen/raw optics lab исключения проверены по usages.
+- [x] U08 проверка текущего переноса: U06 targeted 24/24, 135 image/computed pairs exact, независимый повтор 5/5, build/optics/frozen PASS. Новый full 980 PASS / 8 SKIP / 6 FAIL; шесть прежних Select snapshots с теми же 257/261 pixels, новых FAIL нет. Четыре touch-сценария отдельно 4/4 PASS. Snapshot baseline не обновлялись; M8/причины исторических timing/snapshot FAIL остаются OPEN.
+- [x] U09 текущая передача: итог полного прогона и OPEN, контракт/LIVE docs/Drive/issue/PR синхронизированы. Это не закрытие полной M8 и не разрешение merge. Принятый material gate не открывать повторно.
 
-Выбран минимальный общий presentation слой вместо универсальной domain-row или CSS-only объединения: первый сохраняет данные/права у адаптеров и устраняет повтор структуры; CSS-only оставил бы четыре JSX-копии. Styles старого Card/flat различаются обоснованно и сохраняются вариантами. Source mapping: ClientRow1189:984 → CompanyRow(compact/flat); OrderRow685:195 → OrderCard(regular/card + static); LayoutRow1313:2182 → LayoutRow(regular/flat + ArtworkThumbnail); SupportRequester → SupportTicketRow(regular/flat), обе роли. Все → FosSummaryRow/FosSummaryRowCopy, props: slots/density/surface/native attrs, title/meta tags и compatibility classes; никаких бизнес-данных в primitive.
+Выбран минимальный общий presentation слой вместо универсальной domain-row или CSS-only объединения: первый сохраняет данные/права у адаптеров и устраняет повтор структуры; CSS-only оставил бы четыре JSX-копии. Обоснованная геометрия Card/flat сохраняется вариантами; подсветка у них теперь одна, по Orders. Source mapping: ClientRow1189:984 → CompanyRow(compact/flat); OrderRow685:195 → OrderCard(regular/card + static); LayoutRow1313:2182 → LayoutRow(regular/flat + ArtworkThumbnail); SupportRequester → SupportTicketRow(regular/flat), обе роли. Все → FosSummaryRow/FosSummaryRowCopy, props: slots/density/surface/native attrs, title/meta tags и compatibility classes; никаких бизнес-данных в primitive.
+
+### U06: выполнение после приёмки пилота
+
+Owner: «да, принято» после описания U06 и ссылки на DocumentPreview comparison. Пилот принят; повторно этот gate не запрашивать. База продолжения: `3676502`, свежий origin/main `3b9a0aa`, тот же PR #49. Цель — сохранить утверждённые optics/motion/DOM и вынести параметры потребителей в уже существующий FosMaterialSurface.
+
+Карта до JSX: Sidebar Nav634:511 → SidebarNav (`navigation`/reference, controlled top/travel/callback) → оба кабинета; GL03 → GlassPillTabs (`segment`/reference) → status filters; Action835:259/Header1953:4168 → FosActionMaterial (`action`, round/quiet/header variants) → Header/Plus/Secondary; popup masters1914 → FosPopupSurface (`popup`) → Drawer/Account/More/Select; Account3042:2806 → AccountMenu (`account-trigger`) → desktop footer; Date1169 → FosDatePickerDay (`date-cell`) → общий календарь; existing demo panel → OrderDemoWorkspace (`demo-panel`). Все EXTEND существующий preset owner, native semantics и текущие CSS REUSE. Frozen FosPopupRows и GlassMaterial/motion — KEEP; GlassMaterialLab — KEEP как сырой стенд параметров, не экранный consumer.
+
+Выбор: расширить принятый внешний adapter. Дубли preset на каждом экране оставили бы проблему; перенос внутрь frozen engine нарушил бы freeze. Публичные optical/style overrides остаются закрыты. Для Sidebar разрешить только конкретную геометрию top и существующий travel observer, без второго RAF/масштабирования. Существующие action controllers уже имеют один источник; менять их ради миграции материала не требуется.
+
+1. [x] Снять before PNG/computed: девять сценариев, обе роли, пять размеров и три движка; 135 пар до/после exact.
+2. [x] RED runtime contract: 3 FAIL / 1 PASS; отдельный inherited-key bypass RED 1 FAIL → own-property guard. Native props/children и navigation travel сохранены.
+3. [x] Перенести семь адаптеров в принятый общий source (`b689487`), удалить прежние inline optical copies. Targeted 24/24 PASS, независимый повтор 5/5 PASS; обоснованные контуры CSS не удалять.
+4. [x] Регрессия существующих navigation/popup/action/date/document suites, build/optics/frozen и независимый QA. Full 980/8/6 с точной классификацией; touch 4/4 отдельно. Известные OPEN и непринятая полная M8 сохраняются.
+5. [x] Обновить тот же контракт, реестр, HANDOFF, Drive CURRENT/CMP/клиентский статус и PR; readback подтверждён. CI сверять по новому head, merge отдельно.
 
 ### Принятые U01–U04
 
@@ -37,7 +51,7 @@ Owner поручил реализацию 13.11.2026. База `3b9a0aa424d98df7
 
 Figma ClientRow634:316 всё ещё Body14/20/400; более новое прямое поручение Owner / issue #21 задаёт контрольный title Card16/22/600. Это явное различие источников, не утверждение синхронизации Figma. Canvas не менять. Обе главные вкладки Drive прочитаны; screenshot/video из сообщения и отдельный MD-аудит пока не доступны как файлы, baseline воспроизводится на текущем SHA.
 
-1. U06 material pilot gate в [PR #49](https://github.com/SigmeD/flexomir_os/pull/49) → перенос следующего consumer/семейства. Полная M8-проверка и причины6snapshot mismatches/единичного popup FAIL остаются открытыми. Устаревший More assertion приведён к уже принятому hoverv0.3 без runtime fix; это не обновление snapshot baseline.
+1. U06 pilot принят, rollout и проверка U07–U09 текущего переноса выполнены в [PR #49](https://github.com/SigmeD/flexomir_os/pull/49). Далее — CI актуального head и причины шести исторических snapshot mismatches/единичных timing FAIL; полная M8/D09 отдельно. Snapshot baseline не менять ради зелёного отчёта.
 2. Owner/PO: определить состав дубликата обращения, действие менеджера по согласованному сроку, публикацию клиенту и событие «В работе». Не реализовывать неподтверждённые решения.
 3. №10/13 — отдельный backlog до backend/API Алексея и подтверждения Owner/PO. №11 исходной итерации снят без реализации; позднейшие решения COMM-DOCS учитываются отдельно. [Основания исходных 13 пунктов](NEXT_SCOPE_13_2026-11-10.md).
 4. После появления API — согласовать fixtures, ошибки и capabilities; подключить frontend, проверить реальные права, read, файлы и переходы. Сервер и 1С не реализуются в нашем потоке.

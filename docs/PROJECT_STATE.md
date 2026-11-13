@@ -1,12 +1,14 @@
 # Flexomir OS — состояние проекта
 
-Актуализировано 13.11.2026. Очерёдность работ — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), открытые решения — [DECISIONS](DECISIONS.md).
+Актуализировано 14.11.2026. Очерёдность работ — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), открытые решения — [DECISIONS](DECISIONS.md).
 
 ## Что поставлено
 
+Owner принял U06 DocumentPreview pilot ответом «да, принято». Последующий rollout реализован в `b689487`: семь адаптеров используют общий FosMaterialSurface; прямые frozen Rows и optics lab сохранены как явные исключения. Targeted 24/24, независимый повтор 5/5, 135 PNG/computed пар exact, build/optics/frozen PASS. Новый full: 980 PASS / 8 SKIP / 6 прежних Select snapshot FAIL (те же 257/261 pixels), touch отдельно 4/4 PASS. Новых FAIL переноса нет; полного M8/merge нет. [Контракт и доказательства](UI_UNIFICATION_2026-11-13.md#u06-перенос-семейств-после-приёмки-пилота).
+
 По новому указанию Owner подсветка всех интерактивных строк Client/Manager приведена к Orders (`40a15f1`). В общем FosSummaryRow удалён второй flat interaction profile; размеры и переходы сохранены. Новые targeted 21/21, регрессия 78/78 и independent 3/3 PASS, build PASS. Это продолжение того же PR #49, не merge. [Сравнение и точный охват](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders).
 
-Issue #21, [draft PR #49](https://github.com/SigmeD/flexomir_os/pull/49): Owner принял U03/U04 ответом «принято продолжай». Продолжение app/tests `c9d70e6`: общий FosSummaryRow/Copy подключён к Company/Order/Layout/Support, удалены перенесённые CSS-копии; один DocumentPreviewDialog использует semantic material preset. Targeted78/78 PASS,129 PNG-пар без отличий, независимый QA6 PASS. U06 material visual gate OPEN перед переносом остальных consumers; полного M8/merge нет. [Единый контракт с полным suite949/8/9, повторными проверками и OPEN](UI_UNIFICATION_2026-11-13.md). CI текущего head сверять в PR; предыдущий принятый headfbd88ce имел3/3SUCCESS.
+Issue #21, [draft PR #49](https://github.com/SigmeD/flexomir_os/pull/49): Owner принял U03/U04 ответом «принято продолжай». Продолжение app/tests `c9d70e6`: общий FosSummaryRow/Copy подключён к Company/Order/Layout/Support, удалены перенесённые CSS-копии; один DocumentPreviewDialog использует semantic material preset. Targeted78/78 PASS,129 PNG-пар без отличий, независимый QA6 PASS. Это историческое состояние до последующей приёмки U06 и rollout, описанных выше; полного M8/merge нет. [Единый контракт с полным suite949/8/9, повторными проверками и OPEN](UI_UNIFICATION_2026-11-13.md). CI текущего head сверять в PR; предыдущий принятый headfbd88ce имел3/3SUCCESS.
 
 Приложение на React и TypeScript работает на синтетических данных. Доступны заказы и позиции Client/Manager, компании менеджера, макеты, поддержка и профиль. Общие формы, меню и навигация используются обеими ролями. Изменения живут в памяти вкладки и сбрасываются при перезагрузке; реального сервера и передачи в 1С нет.
 

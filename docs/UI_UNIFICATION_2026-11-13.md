@@ -1,10 +1,10 @@
 # Issue #21 · унификация UX/UI и контрольные варианты
 
-Назначение: контракт, причины и доказательства issue#21. Ответственный: Codex/frontend; визуальная приёмка: Owner. Проверено 13.11.2026. **U03/U04 OWNER ACCEPTED** на headfbd88ce, Owner: «принято продолжай». CI3/3SUCCESS. U05–U09 разрешены по зависимостям; U06 сохраняет отдельный material pilot gate. NOT MERGED.
+Назначение: контракт, причины и доказательства issue #21. Ответственный: Codex/frontend; визуальная приёмка: Owner. Проверено 14.11.2026. **U03/U04 OWNER ACCEPTED** на head fbd88ce, Owner: «принято продолжай», CI 3/3 SUCCESS. **U06 DocumentPreview pilot OWNER ACCEPTED** ответом «да, принято»; перенос остальных material consumers разрешён. Frozen FE11 и отдельный merge gate сохраняются. NOT MERGED.
 
 Новое решение Owner по Screenshot_1/2: единственная подсветка всех строк — Orders из Image#3. Второй flat interaction profile удалён. Это порученное изменение прежнего вида; историческая U05-эквивалентность120PNG ниже относится к предыдущей версии, не доказывает неизменность нового hover. [Причина, контроль и доказательства текущей правки](#единая-подсветка-по-эталону-orders).
 
-[Draft PR #49](https://github.com/SigmeD/flexomir_os/pull/49). Контрольные U01–U04 поставлены app/tests9f95198, приняты Owner на headfbd88ce (CI3/3SUCCESS). Продолжение U05 и один U06 material pilot описаны ниже; перенос остальных material consumers ещё не выполнен. Merge/production не выполнялись. CI всегда сверять по конкретному текущему head, не по предыдущему принятому коммиту.
+[Draft PR #49](https://github.com/SigmeD/flexomir_os/pull/49). Контрольные U01–U04 поставлены app/tests 9f95198, приняты Owner на head fbd88ce (CI 3/3 SUCCESS). U05 и последующая единая подсветка реализованы; принятый U06 pilot распространён на остальные незамороженные material consumers, результаты ниже. Merge/production не выполнялись. CI всегда сверять по конкретному текущему head, не по предыдущему принятому коммиту.
 
 ## Источники и база
 
@@ -99,7 +99,38 @@ App/tests commit: `40a15f1`. RED: 7/7 FAIL до исправления — five-
 
 [Визуальное сравнение](../output/ui-unification/row-highlight/review.html), [RED](../output/ui-unification/row-highlight/red.json), [GREEN](../output/ui-unification/row-highlight/green.json), [независимый отчёт](../output/ui-unification/row-highlight/independent/review.md). Новые контекстные PNG имеют24 CSS px поля вокруг строки для видимости тени. Исходные SHA256: Screenshot_1 `d84d43e586590794858c550735cc921c13b6b5d91b08788a2fc3b23749a72043`; Screenshot_2 `1490f844213295dc2b6e4b192b15f45ca2eb01dd4d04ff7f070ae633eac984a5`.
 
+## U06: перенос семейств после приёмки пилота
+
+Owner принял DocumentPreview preset ответом «да, принято» после описания U06 и ссылки на сравнение пилота. Это разрешение на последовательный перенос; повторная приёмка того же пилота не требуется. База продолжения `3676502`, app/tests `b689487`, свежий origin/main `3b9a0aa` не изменился; работа в том же PR #49. Drive CURRENT/CMP, инструкция агенту и клиентский статус прочитаны. CURRENT Figma HeaderAction1953:4168 прочитан вместе с component descriptions и screenshot; новые assets/JSX из него не копировались: сценарий сохраняет существующие masters/components и более поздние решения Owner.
+
+| Назначение preset | React consumer / состояния | Сохранённый контракт |
+| --- | --- | --- |
+| navigation / navigation-reference | SidebarNav, Client/Manager, neutral/reference | radius 14, прежний top/target/onTravelFrame; один существующий spring и та же key/anchor policy |
+| segment / segment-reference | GlassPillTabs, оба фильтра Manager и Client | radius 19; прежний горизонтальный adapter владеет transform, preset статичен |
+| action / action-round / action-quiet / action-quiet-round / header-action | FosActionMaterial → Header/Plus/Secondary | прежняя геометрия 22/17/24, neutral/reference styling, native input и общий press owner сохраняются |
+| popup | FosPopupSurface → Drawer/Account/More/Select | radius 20, blur 20; прежний внешний ref/inert/content, одна оболочка плюс прежняя frozen moving lens |
+| account-trigger | AccountMenu desktop footer | radius 15, strength 0, blur 9; ref и Radix lifecycle выше material слоя |
+| date-cell | FosDatePickerDay | radius 14, selected/hover; DayPicker сохраняет native day props и события |
+| demo-panel | OrderDemoWorkspace | прежние region/role/reset handlers, radius 18, menu shadow и opacity .76 |
+| document-preview | DocumentPreviewDialog, принятый пилот | без изменений относительно принятого варианта |
+
+Реализация: существующий FosMaterialSurface расширен внутренними presets; все прежние default values явно закреплены. Публичного style/optical API нет. Только navigation-варианты принимают `layoutTop`, `travelY`, `onTravelFrame`; остальные отбрасывают эти поля и style при runtime-вызове из JS. Нет новой оболочки DOM, оптической формулы, RAF, spring, материалов или бизнес-переходов. Все заменённые inline optical props удалены у семи адаптеров. Низкоуровневые прямые вызовы остаются только в frozen FosPopupRows и преднамеренном GlassMaterialLab; менять freeze ради единообразия API запрещено. Обоснованные CSS-контуры и геометрия потребителей сохранены, не объявляются дублями оптики.
+
+RED перед production: 3 FAIL / 1 PASS — отсутствовали semantic consumer/profile/navigation contract; уже защищённый DocumentPreview override тест проходил. Первые harness-попытки сохранены отдельно: неверный путь stylesheet и ожидание top:auto исправлены на существующие styles.css/top:0; два Manager filters проверяются оба; Vite cache-busting query учитывается перехватом. Это изменения подготовки теста, не ослабление контракта.
+
+Независимый QA нашёл P2: truthiness-проверка `presets[variant]` принимала унаследованные `toString`/`constructor`/`__proto__`, пропуская JS optical overrides. Авторский renderer regression с ErrorBoundary подтвердил RED 1 FAIL; `Object.hasOwn(presets, variant)` перед lookup закрывает обход без изменения optics/frozen. Независимый повтор теми же assertions: **5/5 PASS**, плюс отдельная проверка navigation observer 1/1 PASS; неподтверждённых source findings нет. Все 12 static variants сохраняют защиту, native content и DOM identity.
+
+Финальный targeted: **24/24 PASS**, 0 FAIL/SKIP, Chromium/Firefox/WebKit — presets, shared quiet-profile propagation Header/Plus/Secondary, действующий action contact profile, download/modal/Escape/focus и guard. **135/135 before/after PNG-пар точные**, computed styles/rect/layers/transform также равны: девять сценариев × пять размеров 1440/1024/768/390/320 × три движка. Независимый reviewer отдельно пересчитал decoded PNG/computed. Снимки сняты с reduced-motion; реальное motion-поведение проверялось отдельными suites и runtime QA. Header/sidebar/main/popup regions в зафиксированных состояниях не отличаются. Build PASS после guard fix, optics errors=[], frozen 5/5 и manifest без diff. Публичный API не расширяет frozen контракт.
+
+Предварительный green-final: 17 PASS / 4 FAIL — три ошибки test interception и единичный WebKit contact-profile timing FAIL. После исправления перехвата без production-motion edits green-complete 21/21, после guard final-targeted 24/24. Точная причина единственного timing FAIL остаётся OPEN; повтор не отменяет исходный факт.
+
+Новый полный default suite на `b689487`: **980 PASS / 8 SKIP / 6 FAIL**, 994 теста, 15.5 минут, 0 flaky. Все шесть FAIL — прежние light/dark/matte GlassSelect visual snapshots: 257 отличающихся pixels desktop и 261 mobile, те же имена/проекты и величины, что в историческом U05 full. Baseline и thresholds не менялись. Новых FAIL в мигрировавших семействах нет; прежний popup-dismissal singleton в полном прогоне не повторился, но его историческая точная причина не объявлена найденной. Восемь SKIP — четыре touch-сценария в двух desktop-проектах. Отдельный touch context 390: **4/4 PASS**, 0 FAIL/SKIP (Drawer, Account, More/Select/navigation, Profile trigger). Проверка физического устройства этим не заменяется. [Классификация full FAIL/SKIP](../output/ui-unification/u06-family/full-disposition.json), [touch report](../output/ui-unification/u06-family/touch.json). SHA256 full.json: `69d469817e02b49668f837cb68baf05107a27020143716d4f68698cd48688543`. Полный suite остаётся красным из-за шести исторических snapshot mismatch; полная M8-приёмка этим не закрывается.
+
+[Сравнение семейств](../output/ui-unification/review-u06-family.html), [135 результатов](../output/ui-unification/u06-family/visual/comparison.json), [RED](../output/ui-unification/u06-family/red-final.json), [guard RED](../output/ui-unification/u06-family/guard-red.json), [финальный targeted](../output/ui-unification/u06-family/final-targeted.json), [независимый QA](../output/ui-unification/u06-family/independent/review.md), [полный suite](../output/ui-unification/u06-family/full.json). SHA256 comparison.json: `3209ca6a97dd8fa912ceca2b51f17a96bde555008090852097ee731de2284f20`; final-targeted.json: `113d1f75fc32c8c1169f7e415647d29f9fc79801505c725087f48c98bc291e15`; independent/final-results.json: `022cb47d24de6fe787017ad9d9b28b0f2d459283898d3ce532291ddb71ec8a01`. Артефакты локальные/ignored; при переносе checkout сохранить пакет доказательств либо выполнить новые проверки. Полная M8/D09, физические устройства, screen readers/classic scrollbars и backend/API/ACL/1С остаются отдельными OPEN. Merge не поручен и не выполнялся.
+
 ## U05 и контрольный U06 после приёмки
+
+Этот раздел сохраняет историю исходного U05 и одиночного U06 pilot до последующей приёмки Owner. Его прежние gate/проверки не заменяют актуальный U06 rollout и результаты раздела выше.
 
 Проверенный app/tests commit продолжения: `c9d70e6`. Финальный targeted на перезапущенном стенде: **78/78 PASS**, Chromium/Firefox/WebKit,0FAIL/SKIP. Build PASS; optics errors=[]; frozen5/5 unchanged. Independent6PASS. Все4touch-сценария из8desktopSKIP отдельно прошли в соответствующихtouch-профилях: Drawer/Profile2PASS,Account1PASS,Popup1PASS. Touch-эмуляция не заменяет физические устройства.
 
