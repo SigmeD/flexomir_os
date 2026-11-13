@@ -5,10 +5,19 @@
 | Этап | Состояние | Следующий шаг и ответственный |
 | --- | --- | --- |
 | M4–M7 | Основные композиции и сквозные сценарии реализованы на fixtures | Использовать существующие компоненты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
-| M8 | U03/U04 и U06 pilot приняты; U05/U06 rollout и U07 cleanup реализованы, U08/U09 текущего переноса выполнены с OPEN | CI актуального head, причины исторических snapshot/timing FAIL, полная M8/D09 отдельно |
+| M8 | U03/U04 и U06 pilot приняты; U05/U06 rollout и U07 cleanup реализованы; U08 Select references исправлены, full990/8/0 | CI актуального head и полная M8/D09 отдельно; исторические одиночные timing-наблюдения сохранены |
 | M9 | Зависит от готового согласованного API | Алексей: backend/ACL/1С; frontend: подключение клиента и интеграционный QA |
 
 ## Открытая очередь
+
+### U08: закрытие прежних Select snapshot FAIL
+
+Owner: «правильно нужно искать причину», затем «так а как пофиксить?». Причина подтверждена в одинаковом браузере: baseline `03238af` содержит движущуюся линзу даже в закрытом popup; принятое изменение PR #37 (`3317d50`) убрало её. Невидимый backdrop/SVG слой менял растеризацию текста окружающего стенда. Обратимые DOM-пробы воспроизводят старый и новый кадр во всех шести closed-сценариях; CSS/геометрия/фактические шрифты текста прежние. Восстановление линзы — только диагностическая мутация, в приложение её не возвращать.
+
+1. [x] Сравнить исторический код и текущий в одном окружении без switch/worktree; найти первый изменивший поведение merge. Доказательства: output/ui-unification/select-cause/{commit-probe,matrix,compositing-confirmed}.json.
+2. [x] Проверить все 14 кадров: шесть open совпадают точно; устарели шесть closed и два focus, до которых исходные тесты не доходили после первого FAIL.
+3. [x] `9a0603c`: прежние 14 PNG+SHA сохранены; behavioral closed/selection/Escape guard и отрицательный возврат obsolete lens добавлены. Обновлены только closed6/focus2; open6 byte-identical, maxDiffPixels40/threshold.15/fullPage прежние. Targeted12/12, независимые causal/semantic/negative проверки PASS.
+4. [x] Targeted38/38, motion/material24/24 в трёх движках, touch4/4, независимый QA и full990PASS/8SKIP/0FAIL из998. Первый full989/8/1 и repeat5/5 сохранены отдельно, причина единичного timeout не выдумана. `403f06f` сохраняет диагностический trace+PNG на первом FAIL при retries0; фактическая intentional probe проверена отдельно. UI/frozen без изменений. Синхронизация в том же PR; merge отдельно.
 
 ### Owner: единая подсветка строк по эталону «Заказы»
 
@@ -24,7 +33,7 @@ Owner13.11: «принято продолжай» — U03/U04 OWNER ACCEPTED, р
 - [x] U06 pilot: карта владельцев motion, существующие контроллеры REUSE; одна настройка action profile достигает3consumers (6PASS). Внешний preset только DocumentPreviewDialog,9PNG без отличий. API style override найден независимым QA и закрыт во внешнем адаптере.
 - [x] U06 family: Owner принял DocumentPreview pilot ответом «да, принято»; `b689487` переносит остальные незамороженные consumers. 135 PNG/computed пар exact, targeted 24/24, независимый повтор 5/5, build/optics/frozen PASS. Прямые frozen Rows и optics lab — KEEP.
 - [x] U07 перенесённых consumers: row CSS-копии и прежние inline material props удалены; compatibility hooks, drift checks, геометрия и обоснованные CSS-контуры сохранены. Frozen/raw optics lab исключения проверены по usages.
-- [x] U08 проверка текущего переноса: U06 targeted 24/24, 135 image/computed pairs exact, независимый повтор 5/5, build/optics/frozen PASS. Новый full 980 PASS / 8 SKIP / 6 FAIL; шесть прежних Select snapshots с теми же 257/261 pixels, новых FAIL нет. Четыре touch-сценария отдельно 4/4 PASS. Snapshot baseline не обновлялись; M8/причины исторических timing/snapshot FAIL остаются OPEN.
+- [x] U08 проверка текущего переноса: U06 targeted 24/24, 135 image/computed pairs exact, независимый повтор 5/5, build/optics/frozen PASS. Исходный U06 full980/8/6 сохранён в истории. После причинного U08 исправления closed/focus references полный контрольный suite990/8/0; touch4/4 отдельно. Полная M8 и исторические одиночные timing-наблюдения остаются отдельно.
 - [x] U09 текущая передача: итог полного прогона и OPEN, контракт/LIVE docs/Drive/issue/PR синхронизированы. Это не закрытие полной M8 и не разрешение merge. Принятый material gate не открывать повторно.
 
 Выбран минимальный общий presentation слой вместо универсальной domain-row или CSS-only объединения: первый сохраняет данные/права у адаптеров и устраняет повтор структуры; CSS-only оставил бы четыре JSX-копии. Обоснованная геометрия Card/flat сохраняется вариантами; подсветка у них теперь одна, по Orders. Source mapping: ClientRow1189:984 → CompanyRow(compact/flat); OrderRow685:195 → OrderCard(regular/card + static); LayoutRow1313:2182 → LayoutRow(regular/flat + ArtworkThumbnail); SupportRequester → SupportTicketRow(regular/flat), обе роли. Все → FosSummaryRow/FosSummaryRowCopy, props: slots/density/surface/native attrs, title/meta tags и compatibility classes; никаких бизнес-данных в primitive.
@@ -51,7 +60,7 @@ Owner поручил реализацию 13.11.2026. База `3b9a0aa424d98df7
 
 Figma ClientRow634:316 всё ещё Body14/20/400; более новое прямое поручение Owner / issue #21 задаёт контрольный title Card16/22/600. Это явное различие источников, не утверждение синхронизации Figma. Canvas не менять. Обе главные вкладки Drive прочитаны; screenshot/video из сообщения и отдельный MD-аудит пока не доступны как файлы, baseline воспроизводится на текущем SHA.
 
-1. U06 pilot принят, rollout и проверка U07–U09 текущего переноса выполнены в [PR #49](https://github.com/SigmeD/flexomir_os/pull/49). Далее — CI актуального head и причины шести исторических snapshot mismatches/единичных timing FAIL; полная M8/D09 отдельно. Snapshot baseline не менять ради зелёного отчёта.
+1. U06 pilot принят, rollout и проверка U07–U09 текущего переноса выполнены в [PR #49](https://github.com/SigmeD/flexomir_os/pull/49). Причина шести snapshot FAIL доказана и references актуализированы в U08. Далее — CI актуального head и полная M8/D09; исторические единичные timing-наблюдения сохранены. Baseline не менять без причины и проверки.
 2. Owner/PO: определить состав дубликата обращения, действие менеджера по согласованному сроку, публикацию клиенту и событие «В работе». Не реализовывать неподтверждённые решения.
 3. №10/13 — отдельный backlog до backend/API Алексея и подтверждения Owner/PO. №11 исходной итерации снят без реализации; позднейшие решения COMM-DOCS учитываются отдельно. [Основания исходных 13 пунктов](NEXT_SCOPE_13_2026-11-10.md).
 4. После появления API — согласовать fixtures, ошибки и capabilities; подключить frontend, проверить реальные права, read, файлы и переходы. Сервер и 1С не реализуются в нашем потоке.

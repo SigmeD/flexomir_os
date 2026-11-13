@@ -38,6 +38,7 @@ Owner row-highlight correction: все Company/Order/Layout/Support строки
 - REUSE → EXTEND → CREATE; один Figma master не размножается на отдельные экранные кнопки/поля/меню. До JSX фиксировать props, состояния и потребителей.
 - Базовые FOSInput/Select/Textarea/Button и нативные элементы внутри них сохраняют доступность; экран собирает общие композиции.
 - Frozen Rows/GlassMaterial/glass-motion не менять без отдельного разрешения. [Manifest](FE11_MOTION_FROZEN_V0_2.json) и hashes сохраняются; hover v0.3 — разрешённый adapter/presence.
+- Закрытый `FosPopup` передаёт undefined visual target: moving lens отсутствует, а выбранное значение сохраняет доменный adapter. Не восстанавливать скрытую линзу ради старых screenshot references. `glass-select-visual.spec.ts` проверяет closed→open→selection→Escape и отрицательный возврат obsolete lens; closed/focus эталоны актуализированы под принятый PR #37, open сохранены. [Причина и доказательства](UI_UNIFICATION_2026-11-13.md#u08-причина-прежних-select-snapshot-fail).
 - Manrope14/18/500 — общая роль menu/navigation/popup; не задавать размеры локально в потребителях. Heading/identity/trigger — отдельные роли.
 - ConfirmDialog, More, фокус/Escape/outside-click и guards едины. Для shared change проверить обе роли, 1440/1024/768/390/320, keyboard/touch/reduced-motion.
 - Fixtures не являются API/ACL/1С. Семантику и доступность действий определяют утверждённые требования и более поздние решения Owner.
