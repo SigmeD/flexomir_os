@@ -1,4 +1,5 @@
-/* Existing flat navigation and card state profiles, with one layout/type owner. */
+/* One interactive highlight, based on Orders (Owner screenshot #3).
+   Surface/density affect geometry only, never the interaction profile. */
 .fos-summary-row {
   --fos-row-profile-copy-gap:4px;
   display:flex; align-items:center; justify-content:space-between; width:100%; min-width:0;
@@ -17,16 +18,14 @@ button.fos-summary-row { cursor:pointer; }
 .fos-summary-row__meta { font:var(--fos-type-row-meta); color:var(--fos-v2-semantic-color-text-secondary,#586d7c); }
 .fos-summary-row[data-row-surface=flat]:not([data-row-density=compact]) .fos-summary-row__meta { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .fos-summary-row__chevron { width:20px; height:20px; flex-shrink:0; }
-button.fos-summary-row[data-row-surface=flat]:not(:disabled):hover { background:var(--fos-v2-semantic-color-bg-subtle,#f6f7f9); }
-button.fos-summary-row[data-row-surface=flat]:focus-visible { outline:2px solid var(--fos-glass-focus,#1f3861); outline-offset:3px; }
-button.fos-summary-row[data-row-surface=card]:hover { background:var(--fos-row-card-hover-bg,rgba(248,251,255,.9)); border-color:var(--fos-row-card-hover-border,rgba(188,209,236,.78)); box-shadow:var(--fos-row-card-hover-shadow,0 6px 18px rgba(53,70,91,.09)); }
-button.fos-summary-row[data-row-surface=card]:active { background:var(--fos-row-card-pressed-bg,#ebf0f7); }
-button.fos-summary-row[data-row-surface=card]:focus-visible { outline:none; border-color:#1f3861; box-shadow:inset 0 0 0 1px #1f3861; }
+button.fos-summary-row:not(:disabled):hover { background:var(--fos-row-hover-background,rgba(248,251,255,.9)); border-color:var(--fos-row-hover-border,rgba(188,209,236,.78)); box-shadow:var(--fos-row-hover-shadow,0 6px 18px rgba(53,70,91,.09)); }
+button.fos-summary-row:not(:disabled):active { background:var(--fos-row-pressed-background,#ebf0f7); }
+button.fos-summary-row:not(:disabled):focus-visible { outline:none; border-color:#1f3861; box-shadow:inset 0 0 0 1px #1f3861; }
 @media(max-width:600px) {
   .fos-summary-row[data-row-surface=flat]:not([data-row-density=compact]) { height:104px; }
   .fos-summary-row[data-row-surface=card] { min-height:104px; }
 }
 @media(forced-colors:active) {
-  .fos-summary-row[data-row-surface=card] { background:Canvas; color:CanvasText; border-color:ButtonText; }
-  button.fos-summary-row[data-row-surface=card]:focus-visible { outline:2px solid Highlight; }
+  .fos-summary-row { background:Canvas; color:CanvasText; border-color:ButtonText; }
+  button.fos-summary-row:not(:disabled):focus-visible { outline:2px solid Highlight; }
 }
