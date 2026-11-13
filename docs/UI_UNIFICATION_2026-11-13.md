@@ -23,7 +23,7 @@
 | Library detail/upload, nested picker/select/replace; Profile/Composer/Detail | KEEP отдельные bounds. Artwork overrides ограничены non-list состояниями; picker margins/подзаголовки не менялись |
 | React Activity, usePreviewNavigation, OrderDemoWorkspace, guards/history/scroll | KEEP: источники состояния и handlers без изменений; сохранность проверяется существующими и новыми сценариями. Профилирование не доказало бы проблему из одного видео; memo/Suspense не добавлялись |
 | FosButtonRoot/FosActionSurface/GlassMaterial/GlassLens/Rows/popup/nav | KEEP. Frozen sources5/5 и optics проверены; материал, spring, hoverv0.3, menu14/18/500 и GL03 не менялись |
-| Объединение структуры строк, material API, motion presets, legacy cleanup | DEFER U05–U09 до Owner reference acceptance. Доменные адаптеры не удалены, новые универсальные строки не создавались |
+| Объединение структуры строк, material API, motion presets, legacy cleanup | После Owner acceptance U05 реализован, U06 ограничен одним preset consumer; подробности ниже. Другие material consumers ждут нового gate. Доменные адаптеры не удалены |
 
 Company title: `--fos-type-row-title` → existing Card size/line/weight/family; meta → Secondary; `--fos-color-row-title` на production shell → existing semantic primary. Лабораторная Onest-тема и body portals не получают новую row-роль. Изменение menu alias и порталов отдельно проверяет существующий typography suite.
 

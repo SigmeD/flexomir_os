@@ -29,12 +29,6 @@ Owner поручил реализацию 13.11.2026. База `3b9a0aa424d98df7
 
 Статус: app/tests9f95198, Owner accepted на headfbd88ce (CI3/3SUCCESS), NOT MERGED. [Исторические причины, RED/GREEN и доказательства](UI_UNIFICATION_2026-11-13.md). Выполненные шаги не возвращаются в очередь.
 
-1. U01: измерить Company title и anchors Orders/Layouts/Support после fonts.ready, сохранить JSON/PNG/video; написать RED-проверки и повторить исторические More/Select FAIL. Проверить scroll, Activity/remount и scrollbar.
-2. U02/U03: существующие Card/Body/Secondary и semantic colors → общие row title/meta aliases; CompanyRow получает явные роли. Высота80, ID, hit-area, search и linked orders сохраняются. Layout/Support/Order typography подключается к тем же ролям без изменения вычисляемого вида; объединение структуры строк — U05.
-3. U02/U04: существующий Orders list padding → общий list-контракт в orders-page.css. ClientOrders использует data-view=list, LayoutBrowser — существующие data-mode/data-state, Support — непосредственный list slot; :has выбирает геометрию в первом committed frame без callback/effect. Убрать только конфликтующие list overrides Layout/Support, сохранить picker/detail/upload. Toolbar — существующий filters slot; пустые spacers не добавлять.
-4. RED→GREEN; Chromium/Firefox/WebKit,1440/1024/768/390/320, кадры переключений, touch/key/focus, длинный текст, token propagation, соседние сценарии и frozen contracts. Независимый QA отдельным reviewer после фикса.
-5. Обновить LIVE docs и Drive, подготовить один PR и сравнения для Owner. U05–U09 после визуальной приёмки; merge отдельно.
-
 Figma ClientRow634:316 всё ещё Body14/20/400; более новое прямое поручение Owner / issue #21 задаёт контрольный title Card16/22/600. Это явное различие источников, не утверждение синхронизации Figma. Canvas не менять. Обе главные вкладки Drive прочитаны; screenshot/video из сообщения и отдельный MD-аудит пока не доступны как файлы, baseline воспроизводится на текущем SHA.
 
 1. U06 material pilot gate в [PR #49](https://github.com/SigmeD/flexomir_os/pull/49) → перенос следующего consumer/семейства. Полная M8-проверка и причины6snapshot mismatches/единичного popup FAIL остаются открытыми. Устаревший More assertion приведён к уже принятому hoverv0.3 без runtime fix; это не обновление snapshot baseline.
