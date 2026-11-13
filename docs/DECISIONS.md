@@ -62,7 +62,7 @@ Owner13.11 / issue #21: U01–U04 разрешены к реализации; Co
 | Profile / Company Settings / Logout / Profile More | Owner: семантика и визуальная приёмка; API отдельно |
 | «Клиенты» vs «Компании» | Owner/PO: терминология, не переименовывать по догадке |
 | Реальные поиск/сортировка/queue и исторические summary-заказы | PO + Алексей: контракты данных, доступность, версии; не выдумывать отсутствующие поля |
-| 8 baseline failures №05 | Frontend QA: диагностика More-hover/GlassSelect snapshots; не объявлены исправленными |
+| Baseline №05 | Issue #21: before/after More2PASS, Select6snapshotFAIL одинаково; snapshots/asserts не менялись. Причина исторического snapshot drift — OPEN, [доказательства](UI_UNIFICATION_2026-11-13.md) |
 | Main protection / локальная уборка | Owner, issue #13: отдельная проверка и разрешения; прежняя удалённая уборка не доказывает полный cleanup |
 | Физические устройства, iPhone, NVDA/VoiceOver | Отдельная ручная проверка, не заменяется Playwright touch |
 

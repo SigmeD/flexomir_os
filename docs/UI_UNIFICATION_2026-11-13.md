@@ -2,6 +2,8 @@
 
 Назначение: контракт, причины и доказательства двух контрольных исправлений. Ответственный: Codex/frontend; визуальная приёмка: Owner. Проверено 13.11.2026. Статус: **IMPLEMENTED / OWNER VISUAL OPEN / NOT MERGED**. U05–U09 не начаты; QA и документация этого контрольного инкремента выполняются сейчас.
 
+[Draft PR #49](https://github.com/SigmeD/flexomir_os/pull/49). Frontend «Читать сначала», CMP (включая CMP01/02/06/07), клиентский статус и issue #21 обновлены и прочитаны обратно13.11.2026. CI текущего PR выполняется; его результат проверять по конкретному head в GitHub. App/tests9f95198, далее только документы; merge/production не выполнялись.
+
 ## Источники и база
 
 - [Issue #21](https://github.com/SigmeD/flexomir_os/issues/21), [Frontend / Читать сначала](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit?tab=t.aiwyg425dkrn), [CMP](https://docs.google.com/document/d/15MSDck4Ktrjn34xiWvFhkF77VpbM1DJZUvdKQ-Iu84Q/edit?tab=t.0), актуальные первые вкладки клиентского статуса и инструкции агенту, SRS прочитаны.
@@ -63,6 +65,15 @@ npm run verify:material-optics
 [Страница before/after](../output/ui-unification/review.html), [геометрия](../output/ui-unification/geometry.json), [SHA256 файлов сравнения](../output/ui-unification/checksums.json), [final report](../output/ui-unification/final.json), [независимый review](../output/ui-unification/independent/review.md). Тяжёлые файлы ignored/local, в другом checkout нужны CI artifacts либо новый прогон; их отсутствие не заменять старыми результатами.
 
 Проверка локальных ссылок затронутых LIVE docs:172/172 доступны, включая anchors. Дата ревизии13.11 и следующая27.11 сохраняются; повторная полная уборка не требовалась.
+
+Контрольные SHA256 основных материалов (остальные — в JSON выше):
+
+| Файл review-assets | SHA256 |
+| --- | --- |
+| after-companies-1440.png | `8f3643b1a8d38dfe696e89b674c7c7b564711d2a6acaa795819c976cc647d70e` |
+| after-client-layouts-768.png | `727ebbcd9c284cfd4596fccb01e7bf4fa293671c0c5aa53dd8d82ca8f060c024` |
+| before-navigation.webm | `110653f01898d8900609f059bb2b4b72ceefde59ea6d7e957c37f752760b7ec6` |
+| after-navigation.webm | `63c18a9689f9bd4493c9b1ab3831fcd3613670762dbd1a002ff788cb56912cf8` |
 
 Видимая разница: company content — только title size/weight/line; header/search/sidebar/row bounds/metadata прежние. Layout/Support header и content смещаются к Orders gutters/top; естественные list margins сохранены, floating actions/safe area прежние. Orders/control typography и anchors выглядят как before. Равенство Figma и всего приложения не заявляется: изменение ClientRow требует Owner review, соседние ранее открытые расхождения не исправлялись.
 
