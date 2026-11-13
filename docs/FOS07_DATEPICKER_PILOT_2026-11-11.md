@@ -35,21 +35,11 @@ Figma read-only session c31bae2e-08a1-47a8-88ea-057e57b78f2d, Date Field context
 
 Ручной ввод ДД.ММ.ГГГГ; дата хранится YYYY-MM-DD без UTC/toISOString. Некорректный или выходящий за min/max ввод не эмитит дату и блокирует form validity; очистка эмитит пустую строку. Native date proxy сохраняет FormData/min/max/required. Readonly/disabled не открывают popup; reset и внешнее controlled value обновляют отображение. Действующий controlled родитель — источник истины.
 
-## B2.7 — проверяемый план
-
-- [x] RED: tests/fos07-datepicker.spec.ts и playwright.fos07.config.ts. Открытие RU grid на отдельном /fos07-datepicker.html, выбор ISO, readonly/disabled и min/max. Запустить Chromium, сохранить исходный FAIL отсутствующего пилота.
-- [x] GREEN: src/components/ui/fos-date-picker.tsx + date-only.ts + fos-date-picker.css. DayPicker9.14.0; existing FOSInput/FosPopup/FosButtonRoot. Форма и focus lifecycle в adapter, без изменения frozen или FOSDateField.
-- [x] Стенд: fos07-datepicker.html + src/Fos07DatePickerLab.tsx + scoped lab CSS. Client/Manager fixtures, native comparison, readonly/disabled/error/bounds/controlled rejection/reset. DEV-only отдельная Vite entry; App и обычные формы не меняются.
-- [x] Проверки: Chromium/Firefox/WebKit/touch; ISO/invalid/leap/year crossing/minmax/keyboard/focus/outside/required/FormData/reset; пять ширин1440/1024/768/390/320, zoom200%, reduced-motion/forced-colors и axe. Снимки и видео сохранять в output/playwright/fos07.
-- [x] npm run build; действующие date/order regressions и fingerprints5/5. Независимое review перед сдачей. Для новых browser API обращаться к Context7.
-- [x] LIVE docs обновлены в той же ветке, открыт [PR #41](https://github.com/SigmeD/flexomir_os/pull/41); ссылка и визуальные доказательства подготовлены для Owner. Исторический gate пилота впоследствии закрыт приёмкой Owner; обычный rollout слит в PR #41.
-
 ## B2.8 — критерии приёмки
 
 FUNCTIONAL: выбор одной даты всеми видами ввода, корректные bounds/readonly/disabled/required/reset/controlled rejection, нет изменения даты от навигации или Escape.
 TECHNICAL: build, browser QA, axe, frozen fingerprints; статус CI только по фактическому head.
 VISUAL: закрытое поле сверяется с1169:437; открытый popup — изолированный кандидат на существующей поверхности. Owner выбирает принять/доработать/оставить native. Полная визуальная приёмка M8 и backend-ready не заявляются.
-
 
 ## Проверки и открытая приёмка
 

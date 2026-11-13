@@ -81,14 +81,6 @@ The browser audit is a targeted set of representative components, not a claim th
 | TY-09 | Sidebar and pill-tab type weights/scales encode approved Liquid Glass lens behavior. | PRESERVED EXCEPTION: lens weights and optical transforms unchanged. |
 | TY-10 | Active cabinet controls declare different family fallback stacks. | FIXED for active cabinet components and GlassSelect portal via shared token; standalone labs isolated. |
 
-## Implementation plan
-
-1. Add the scoped canonical FOS font token and apply it to cabinet roots and shared active primitives; explicitly set the token on GlassSelect trigger and body portal.
-2. Remove Profile PageHeader H1 type overrides and photo-action 13/12px overrides without changing action hit geometry.
-3. Remove the Composer empty-copy 15px override; retain approved Support Body SM, nav/tabs lens states, Account/Menu popup styling, and unresolved 15/22 subheadings.
-4. Add computed-style regression coverage for shared roles, responsive PageHeader, the Select portal, profile actions, and empty copy. Check Client/Manager and lab consumers.
-5. Build, responsive computed-style tests, screenshot baselines and full regression have been run. See final QA below. Owner visual gate remains separate; do not merge.
-
 ## Component mapping
 
 | Figma master / role | React component | Consumers | Action |

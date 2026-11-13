@@ -1,24 +1,6 @@
 # Flexomir OS — источники проекта
 
-COMM-DOCS post-merge /13.11: [PR #46](https://github.com/SigmeD/flexomir_os/pull/46) merged_at12.11.2026 23:03:03UTC; application SHA479c59188b5ee0b2bda4dd3150b75803cf3d3886, проверенный PR headea3f2b858d661592948c76760be6459c6c2bde28 и CI6/6SUCCESS. Tree equality и новые post-merge проверки подтверждены локально. [Единый отчёт](COMM_DOCS_2026-11-12.md). Owner merger-поручение13.11 по Minsk; SRS/Scope/Figma не менялись.
-
-COMM-DOCS follow-up /13.11: источник — прямые Owner-правки со Screenshot_2/3/4 и уточнение «Можно CRUD, до момента пока не прочитает пользователь» для новых сообщений в Work. PNG просмотрены, не менялись/не коммитятся. CURRENT перечитан; Figma3388:3329 read-only подтверждает существующие composer variants, shared Glass master переиспользован без canvas/engine writes. Context7 /radix-ui/primitives: controlled menu/Trigger asChild/position/focus lifecycle. [Карта компонентов и доказательства](COMM_DOCS_2026-11-12.md), [PR46](https://github.com/SigmeD/flexomir_os/pull/46). Scope/SRS/API не переписаны; Duplicate payload OPEN.
-
-COMM-DOCS Owner corrections /12.11: источник изменения — четыре прямые правки Owner в текущем чате и уточнение «Поменяй на кнопку сохранить…» / «Кнопка сохранить уже есть… переиспользуй». Owner PNG refs просмотрены из основной папки и не изменены. Figma3441:3719 повторно прочитан read-only (session f0e1d783-d65d-4d7b-9391-f85480d8ce9f); совместимый SectionAddItem(file)/local SVG из PR40/a61a5b0, без merge. [CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) перечитан; новые Owner decisions уточняют local UI, SRS/Scope/Figma не менялись. Исходные документы/Figma refs и QA — [отчёт и ручной чек-лист](COMM_DOCS_2026-11-12.md), [draft PR #46](https://github.com/SigmeD/flexomir_os/pull/46).
-
-Owner 12.11 после статуса 13 правок: №11 закрыть в текущей итерации без реализации вложений, вернуться к компоненту поддержки целиком позже; №10/13 оставить в backlog; по №06 задать вопросы. [Фиксация и Q1–Q3](FOS06_ITEM_ACTIONS_DECISIONS_2026-11-12.md). SRS CURRENT перечитан адресно по FR-ORD-ACTOR-004, pre-1С lock и 1..N позиций: общие правила не пересогласовываются молча. Последующий ответ Owner принят ниже; SRS/Scope не менялись.
-
-Последующий ответ Owner 12.11: «1 — да; 2 — редактор; 3 — да». Q1–Q3 теперь APPROVED: обе роли в доступных заказах «Черновик»/«На рассмотрении» до начала передачи в1С, копия через редактор и явное сохранение, удаление с подтверждением; пустой черновик допустим, последнюю позицию в «На рассмотрении» удалить нельзя. Предыдущая запись о вопросах — история их постановки, не текущий статус. API/ACL отдельно; PR #44 слит в main6d3fa83 по последующему поручению Owner «вливай в main/origin». Фактический head7c5b017 проверен, CI7/7SUCCESS; новые post-merge проверки PASS.
-
-FOS06 /12.11: Owner поручил «правила утверждены, реализация предстоит. Приступай к реализации задачи №6». CURRENT Figma More1914:668, Draft More1914:663 и Client Review1838:6511 прочитаны через design context со скриншотами, session b7571cce-9daa-4936-ba03-b1c92f0c4cc2, file7rvIYc6yj3OA7gxmf1xJbv. Canvas не менялась; более новое решение Owner управляет доступностью действий. [Результат, карта и QA](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md). Существующий Drive CURRENT синхронизирован и прочитан обратно: main6d3fa83, PR head7c5b017, merge12.11 и новые post-merge результаты №06; параллельная очередь M8 сохранена.
-
-FOS05 / 12.11: Owner выбрал «А- вариант. Только у полей показывают причина блокировки». G-02 APPROVED, `dirty && valid` сохраняется. [PR #43](https://github.com/SigmeD/flexomir_os/pull/43) MERGED, main76948df; проверенный код `848dbc6`, [контракт и CI](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md#доставка-и-ci). Drive CURRENT синхронизирован 12.11; Figma634:445/1782:6025 ранее прочитаны metadata-only, canvas не менялась. Текущее уточнение обновляет документы и не является новым UI-QA. №10/13 отложены по более позднему решению выше.
-
-Owner FOS07 rollout /11.11: «да, отлично применяй» после просмотра компактного календаря и Account-style линзы. Это приёмка G-04 и разрешение общего подключения. Figma не менялась; [контракт/consumer map](FOS07_DATEPICKER_PILOT_2026-11-11.md), поставка [PR #41](https://github.com/SigmeD/flexomir_os/pull/41) MERGED, merge `e6a04fd748dbb16702610b3d7898b8ba1d3f87a5`, проверенный head `85ad6ef147a246b03652b92e70e50925d948870d`, CI5/5SUCCESS.
-
-№07 /11.11: новое поручение Owner реализовать B2.5–B2.8. CURRENT Date Field1169:437 и popup1914:655 перечитаны с context/screenshot; metadata FOS Masters1688:532 не содержит отдельного календарного мастера. Figma read-only session c31bae2e-08a1-47a8-88ea-057e57b78f2d; canvas не менялась. Context7 /gpbl/react-day-picker/v9.14.0 и APG DatePicker dialog использованы для библиотечной/keyboard части. [Карта, ссылки и ограничения](FOS07_DATEPICKER_PILOT_2026-11-11.md).
-
-Ревизия сводок: 11.11.2026. Следующая — 25.11.2026. Этой правкой сверены GitHub, локальный Git и существующий Drive CURRENT; нормативные SRS/Scope/Governance и Figma canvas не изменялись.
+Проверка Drive CURRENT: 13.11.2026. Подтверждены поставка PR #46 и открытые M8/API-гейты. Figma и нормативные документы при уборке не изменялись; старые чтения не считаются повторной проверкой.
 
 ## Как выбирать источник
 
@@ -26,23 +8,14 @@ Owner FOS07 rollout /11.11: «да, отлично применяй» после
 
 Локальная точка входа: [состояние](PROJECT_STATE.md), [план](DELIVERY_PLAN.md), [решения](DECISIONS.md), [реестр компонентов](COMPONENT_REGISTRY_2026-11-06.md). Датированные источники ниже не означают, что каждый из них заново прочитан этой документационной правкой.
 
-Последние подтверждённые источники изменений:
-
-- Owner принял hover Account и сглаживание, затем прямо поручил распространение на dropdown. PR #36/#37 MERGED. CURRENT Figma11.11: Account3042:2806, More1914:655, Select1148:311, Drawer1962:3834 с Nav634:511/Lens1578:493. Геометрия/материал сохранены; runtime adapter уточнён новым решением. [Контракт и доказательства](POPUP_HOVER_ROLLOUT_2026-11-11.md).
-- Owner по Screenshot_3 подтвердил placeholder только в пустом поле. CURRENT Select1148:311/292 перечитан11.11; PR #38 MERGED. Пустые значения фильтров отделены от placeholder явным existing contract. [Контракт](SELECT_PLACEHOLDER_2026-11-11.md).
-- Owner принял ArtworkSource на f509eba и поручил rollout FOS03/FOS12; PR #35 MERGED. [Результат](ACCEPTED_UI_ROLLOUT_2026-11-11.md).
-- Клиентские даты и общие размеры полей приняты в PR #31; manager commit/event→status остаются OPEN. Date Field1169:437, Default1169:383 и Readonly1169:433 проверялись10.11. [Аудит M8](M8_FINAL_AUDIT_2026-11-10.md).
-- [Исходная декомпозиция 13 пунктов](NEXT_SCOPE_13_2026-11-10.md) хранит основания и варианты; актуальные статусы — в DELIVERY_PLAN, не в старой очереди.
-- [Очистка Git](GIT_BRANCH_CLEANUP_2026-11-11.md) подтверждена PR/head/merge ancestry, совпадением дерева PR #7/#8, bundle verify и ls-remote. Исторические ветки повторно не сливались.
-
-Frozen reference f527bcb, hashes и необходимая доказательная база сохраняются в [manifest](FE11_MOTION_FROZEN_V0_2.json) и профильных контрактах. Материалы output — локальные, исключены из Git; наличие машинного пути проверяется перед использованием.
+Источники конкретных изменений и доказательства находятся в [контрактах поставок](README.md#контракты-и-доказательства). Frozen reference и hashes — в [manifest](FE11_MOTION_FROZEN_V0_2.json).
 
 ## Google Drive / документы
 
 | Приоритет | Источник | Для чего читать |
 | --- | --- | --- |
 | 0 | [Основная папка Flexomir-V](https://drive.google.com/drive/folders/1-0UKiK1h1MT2lXS8oy5NL89_0MUuYcnn) | Общая рабочая база |
-| 0 | [Frontend Development Plan CURRENT M0–M9](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) | Действующая очередь, поставки PR #37/#38 и следующий DatePicker07 |
+| 0 | [Frontend Development Plan CURRENT M0–M9](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) | Действующая очередь, владельцы, зависимости и гейты |
 | 1 | [00_CURRENT — Baseline](https://docs.google.com/document/d/1pHzQ2J75AZyT24Qg-HyZof79cASTXFOhqWIEDW_vVqU/edit) | Состояние и приоритет решений |
 | 1 | [07_CURRENT — Project Governance](https://docs.google.com/document/d/1m0TmticLfJYsnNG2aXt4tH6dNrjozMvRIahlCOhlicM/edit) | Решения, согласования, ограничения |
 | 1 | [03_CURRENT — SRS v0.5](https://docs.google.com/document/d/1EwjqQ3z_lO2lyDCQHhm-NIiDxgZzPrKOXAWR3tC-C4M/edit) | Функции, роли, статусы, MVP-поведение |

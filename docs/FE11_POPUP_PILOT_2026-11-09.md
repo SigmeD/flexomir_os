@@ -1,5 +1,7 @@
 # FE-11 — пилот общих Liquid Glass popup
 
+Frozen v0.2 принят Owner; последующие rollout и hover v0.3 уточняют потребителей и adapter. Пилотные «More excluded», LAB ONLY и OWNER OPEN ниже не задают текущий охват. Действующие ограничения — [решения](DECISIONS.md), hashes — [manifest](FE11_MOTION_FROZEN_V0_2.json).
+
 ## CURRENT — post-FE11 dismissal/focus QA / 09.11.2026
 
 Owner поручил закрыть оставшиеся QA-сбои после freeze и подготовить PR #29 к экранной приёмке. Это отдельное разрешение на lifecycle-исправления More; визуальная миграция More на FE11-v0.2 по-прежнему не выполнялась.

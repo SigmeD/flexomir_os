@@ -79,16 +79,6 @@ Chromium desktop, обычный Client UI; три полных пути LOCAL /
 4. 1440/1024/768/390/320, keyboard/touch/reduced-motion, a11y, Chromium/Firefox/WebKit, Orders/Artwork/Select/DatePicker и frozen regression; build, независимый review.
 5. Отдельно FUNCTIONAL / VISUAL / TECHNICAL; приёмка результата, один PR с LIVE docs, CI фактического head. После разрешённого merge — сверка main/SHA и Drive CURRENT. G-02 approved не означает автоматическую приёмку ещё не проверенного результата.
 
-## План реализации (writing-plans, inline)
-
-Цель: объяснить каждую текущую причину invalid только у соответствующего поля, без изменения принимаемых данных. Стек React/TypeScript/Vite и существующий Playwright; зависимости не добавляются. Уровень изменения — локальная demo-валидация и общая форма, не заказ/API.
-
-- [x] RED: `tests/fos05-save.spec.ts`, конфиг `playwright.fos05.config.ts`; `FOS_QA_PHASE=red npx playwright test --config=playwright.fos05.config.ts --project=chromium-profile --grep 'LOCAL clears|client: all' --workers=1`. Обе проверки упали на отсутствии причин у макета/наименования, до изменения source.
-- [x] GREEN: `order-compose-model.ts` — объект ошибок тех же условий; `validDemoItem` возвращает отсутствие ошибок. `OrderItemForm` передаёт error общим полям. `PrintingMethodControl`/`ArtworkSource` связывают свои локальные сообщения через ARIA. Никакого summary или изменения HeaderAction/CSS/модели данных.
-- [x] Проверить один Client Repeat screenshot против baseline, затем весь `playwright.fos05.config.ts` (три движка + touch, пять ширин, обе роли, guards, save/cancel, validation boundaries, axe).
-- [x] `npm run build`, существующие Orders/Artwork/Select/DatePicker/frozen проверки; набор FOS05 подключён в существующий Artwork QA workflow. Независимое read-only QA без code-blockers. Общий suite не зелёный: восемь прежних failures подтверждены отдельно на main, детали ниже.
-- [x] LIVE docs синхронизированы с решением Owner и локальными доказательствами. Доставка — один Draft PR этой ветки; фактический head/CI проверяются в GitHub. Гейт разрешения на merge закрыт прямым поручением Owner 12.11; полная M8 приёмка отдельно.
-
 ## QA реализации
 
 - `npm run build`: PASS, 1603 modules. Сохраняется предупреждение Vite о chunk >500 kB; зависимости и split в этот fix не входят.
