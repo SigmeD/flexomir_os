@@ -1,7 +1,7 @@
 .fos-support-list { margin-top:35px; }
 .fos-support-row { height:92px; gap:12px; }
 .fos-support-row .fos-cabinet__row-copy { gap:4px; }
-.fos-support-row strong { font-size:16px; line-height:22px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.fos-support-row strong { font:var(--fos-type-row-title); color:var(--fos-color-row-title); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .fos-support-row small { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .fos-support-form { display:grid; gap:24px; max-width:720px; margin-top:28px; }
 .fos-support-form .fos-field__control--note { height:120px; min-height:120px; }
@@ -13,4 +13,4 @@
 .fos-support-message p { margin:0 0 16px; white-space:pre-wrap; font-size:12px; line-height:18px; }
 .fos-support-message small { font-size:12px; line-height:18px; color:var(--fos-v2-semantic-color-text-secondary); }
 .fos-support-message--team > div { background:var(--fos-v2-support-reply-bg,#eaf0f7); }
-@media(max-width:600px) { .fos-support-row { height:104px; } .fos-cabinet[data-testid=client-support-screen] .fos-cabinet__main:has(.fos-support-list) { padding:40px 16px 36px; } .fos-cabinet__rows.fos-support-list { margin-top:32px; gap:12px; } .fos-support-detail { margin-top:26px; } }
+@media(max-width:600px) { .fos-support-row { height:104px; } .fos-cabinet__rows.fos-support-list { margin-top:32px; gap:12px; } .fos-support-detail { margin-top:26px; } }

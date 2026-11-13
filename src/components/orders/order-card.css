@@ -4,8 +4,8 @@
 button.fos-order-card__open { cursor: pointer; }
 .fos-order-card__thumbnail { display: grid; place-items: center; flex: none; width: 60px; height: 60px; border-radius: 8px; background: #f6f7f9; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: 10px; line-height: 14px; font-weight: 600; }
 .fos-order-card__content { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 4px; }
-.fos-order-card__number { overflow: hidden; text-overflow: ellipsis; font-size: var(--fos-type-card-size); line-height: var(--fos-type-card-line-height); font-weight: 600; white-space: nowrap; }
-.fos-order-card__meta { color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: var(--fos-type-secondary-size); line-height: var(--fos-type-secondary-line-height); }
+.fos-order-card__number { overflow: hidden; text-overflow: ellipsis; font: var(--fos-type-row-title); color: var(--fos-color-row-title); white-space: nowrap; }
+.fos-order-card__meta { color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font: var(--fos-type-row-meta); }
 .fos-order-card__chevron { flex: none; width: 20px; height: 20px; }
 button.fos-order-card__open:hover { background: rgba(248,251,255,.9); border-color: rgba(188,209,236,.78); box-shadow: 0 6px 18px rgba(53,70,91,.09); }
 button.fos-order-card__open:active { background: #ebf0f7; }

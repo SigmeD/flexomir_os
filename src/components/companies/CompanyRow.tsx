@@ -7,7 +7,7 @@ import './companies.css'
 export function CompanyRow({ company, onOpen }: { company: DemoCompany; onOpen: () => void }) {
   return <FosButtonRoot family="row" type="button" className="fos-cabinet__row fos-company-row" data-testid={'company-row-' + company.id}
     data-focus-key={company.id} onClick={onOpen}>
-    <span className="fos-cabinet__row-copy"><span>{company.name}</span><small>Карточка клиента · заказы</small></span>
+    <span className="fos-cabinet__row-copy"><span className="fos-cabinet__row-title">{company.name}</span><small>Карточка клиента · заказы</small></span>
     <img className="fos-cabinet__chevron" src={chevron} alt="" />
   </FosButtonRoot>
 }
