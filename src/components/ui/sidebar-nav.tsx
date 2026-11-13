@@ -1,6 +1,6 @@
 import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import { useCallback, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
-import { FosGlassMaterial } from './fos-glass-material'
+import { FosMaterialSurface } from './fos-material-surface'
 import { SidebarNavIcon, type SidebarNavIconName } from './sidebar-nav-icons'
 import './sidebar-nav.css'
 
@@ -89,24 +89,13 @@ export function SidebarNav({
     >
       <div className="fos-sidebar-nav__list">
         {activeIndex >= 0 && (
-          <FosGlassMaterial
+          <FosMaterialSurface
             key={anchor + ':' + activeId}
             aria-hidden="true"
             data-testid="sidebar-selected-lens"
             className="fos-sidebar-nav__lens"
-            style={{ top: anchor * 48 }}
-            radius={14}
-            blur={1.5}
-            strength={0.1}
-            shadow="reference"
-            lighting="sidebar"
-            tone={glassTone}
-            centerOpacity={glassTone === 'neutral' ? 0.12 : 0.16}
-            centerColor={glassTone === 'neutral'
-              ? 'var(--fos-neutral-glass-rgb, 248 248 248)'
-              : '220 240 247'}
-            rimWidth={12}
-            motion="travel"
+            variant={glassTone === 'neutral' ? 'navigation' : 'navigation-reference'}
+            layoutTop={anchor * 48}
             travelY={(lensIndex - anchor) * 48}
             onTravelFrame={syncLabelMagnification}
           />

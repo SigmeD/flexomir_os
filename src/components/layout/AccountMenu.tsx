@@ -2,7 +2,7 @@ import { FosButtonRoot } from '@/components/ui/fos-button-root'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useRef } from 'react'
 import type { DemoProfileIdentity } from '@/demo/profile-model'
-import { FosGlassMaterial } from '@/components/ui/fos-glass-material'
+import { FosMaterialSurface } from '@/components/ui/fos-material-surface'
 import { FosPopup } from '@/components/ui/fos-popup'
 import './account-menu.css'
 
@@ -24,7 +24,7 @@ export function AccountMenu({
   const triggerLabel = `${identity.displayName} — открыть меню аккаунта`
   const trigger = placement === 'sidebar'
     ? <FosButtonRoot family="navigation" ref={triggerRef} type="button" className="fos-account-footer" data-testid="account-menu-trigger">
-        <FosGlassMaterial aria-hidden="true" className="fos-account-footer__glass" radius={15} strength={0} blur={9} tone="neutral" shadow="none" centerOpacity={0.24} centerColor="255 255 255" />
+        <FosMaterialSurface aria-hidden="true" className="fos-account-footer__glass" variant="account-trigger" />
         <span className="fos-account-avatar" aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
         <span className="fos-account-footer__name">{identity.displayName}</span>
       </FosButtonRoot>

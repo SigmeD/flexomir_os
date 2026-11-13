@@ -3,7 +3,7 @@ import {
   useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState,
   type CSSProperties, type KeyboardEvent, type PointerEvent,
 } from 'react'
-import { FosGlassMaterial } from './fos-glass-material'
+import { FosMaterialSurface } from './fos-material-surface'
 import { Track, spring, type Stop } from './glass-motion'
 import './glass-pill-tabs.css'
 
@@ -225,21 +225,11 @@ export function GlassPillTabs({
             data-target-id={value}
             aria-hidden="true"
             hidden={!items.some(item => item.id === value)}>
-            <FosGlassMaterial
+            <FosMaterialSurface
               className="fos-glass-pill-tabs__lens"
               data-testid="glass-pill-lens"
               aria-hidden="true"
-              radius={19}
-              blur={1.5}
-              strength={0.1}
-              shadow="reference"
-              lighting="sidebar"
-              tone={glassTone}
-              centerOpacity={glassTone === 'neutral' ? 0.12 : 0.16}
-              centerColor={glassTone === 'neutral'
-                ? 'var(--fos-neutral-glass-rgb, 248 248 248)'
-                : '220 240 247'}
-              rimWidth={12}
+              variant={glassTone === 'neutral' ? 'segment' : 'segment-reference'}
             />
           </div>
           {items.map(item => (
