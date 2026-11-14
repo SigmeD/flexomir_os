@@ -1,4 +1,3 @@
-.fos-company-row { height:80px; }
 .fos-companies__search { max-width:525px; margin-top:28px; margin-bottom:52px; }
 .fos-company-orders { display:grid; gap:28px; margin-top:28px; }
 .fos-company-orders__filters { display:grid; grid-template-columns:minmax(0,2.1fr) minmax(0,1fr) minmax(0,1fr); gap:16px; }

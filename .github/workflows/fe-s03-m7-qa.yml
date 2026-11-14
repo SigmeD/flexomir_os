@@ -29,8 +29,9 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.64.1-noble@sha256:2f05f8a734509a7b3f26a912639488ee08f58a7b292d14d62271bcff9038768f
       options: --user 1001 --ipc=host --init
-    # The full cross-browser sequence exceeded 20 minutes in run42988302669.
-    timeout-minutes: 25
+    # Run43526796318 hit 25 minutes after seven passing suites, during buttons.
+    # Reserve time for the complete sequence and evidence upload.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

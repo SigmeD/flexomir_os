@@ -1,6 +1,6 @@
-import { FosButtonRoot } from '@/components/ui/fos-button-root'
+import { FosSummaryRow, FosSummaryRowCopy } from '@/components/ui/fos-summary-row'
+import { ArtworkThumbnail } from '@/components/ui/artwork-thumbnail'
 import './order-card.css'
-import chevron from '@/assets/orders/chevron.svg'
 
 /**
  * Pure order summary. No knowledge of Manager/Client role, 1C enums or API.
@@ -15,10 +15,13 @@ export interface OrderCardProps {
 }
 
 export function OrderCard({ number, title, company, statusLabel, onOpen }: OrderCardProps) {
-  const content = <><span className="fos-order-card__thumbnail" aria-hidden="true">МАКЕТ</span><span className="fos-order-card__content"><strong className="fos-order-card__number">Заказ {number}</strong><span className="fos-order-card__meta"><span className="fos-order-card__status">{statusLabel}</span> · <span className="fos-order-card__company">{company}</span></span><span className="fos-sr-only">{title}</span></span><span className="fos-sr-only">Открыть заказ {number}</span><img className="fos-order-card__chevron" src={chevron} alt="" /></>
+  const content = <><FosSummaryRowCopy className="fos-order-card__content" title={<>Заказ {number}</>} metadataAs="span"
+    metadata={<><span className="fos-order-card__status">{statusLabel}</span> · <span className="fos-order-card__company">{company}</span></>}
+    classes={{ title:'fos-order-card__number', metadata:'fos-order-card__meta' }}><span className="fos-sr-only">{title}</span></FosSummaryRowCopy><span className="fos-sr-only">Открыть заказ {number}</span></>
+  const leading = <ArtworkThumbnail className="fos-order-card__thumbnail" />
   return (
     <article className="fos-order-card" data-testid={'order-card-' + number}>
-      {onOpen ? <FosButtonRoot family="row" type="button" className="fos-order-card__open" onClick={onOpen} data-order-open={number}>{content}</FosButtonRoot> : <div className="fos-order-card__open">{content}</div>}
+      {onOpen ? <FosSummaryRow surface="card" leading={leading} type="button" className="fos-order-card__open" onClick={onOpen} data-order-open={number}>{content}</FosSummaryRow> : <FosSummaryRow readOnly surface="card" leading={leading} className="fos-order-card__open">{content}</FosSummaryRow>}
     </article>
   )
 }

@@ -157,3 +157,92 @@ test('nested Client and Manager states keep the shared workspace centered throug
     await expectCenteredWorkspace(page, width, 'Manager support form')
   }
 })
+
+test('order list, draft, item editor and detail share one content axis', async ({ page }) => {
+  const rect = async (selector: string) => {
+    const box = await page.locator(selector).first().boundingBox()
+    expect(box, selector).not.toBeNull()
+    return box!
+  }
+  const aligned = async (selector: string, reference: { x: number; width: number }, width: number) => {
+    const box = await rect(selector)
+    expect(Math.abs(box.x - reference.x), `${selector} left at ${width}px`).toBeLessThanOrEqual(1)
+    expect(Math.abs(box.width - reference.width), `${selector} width at ${width}px`).toBeLessThanOrEqual(1)
+  }
+
+  for (const width of [320, 1024, 1440, 1920, 2560]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/?view=client-orders')
+    const clientList = await rect('.fos-orders-page__list')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    await aligned('.fos-page-header__row', clientList, width)
+    await aligned('.fos-order-composer__body', clientList, width)
+    await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
+    await aligned('.fos-item-form__body', clientList, width)
+    await aligned('.fos-item-form__fields', clientList, width)
+
+    await page.goto('/?view=client-orders')
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
+    await aligned('.fos-order-detail__body', clientList, width)
+
+    await page.goto('/?view=manager-orders')
+    const managerList = await rect('.fos-orders-page__list')
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
+    await aligned('.fos-order-detail__body', managerList, width)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
+  }
+})
+
+test('order upload zones and both date fields use the shared form column width', async ({ page }) => {
+  const box = async (selector: string) => {
+    const result = await page.locator(selector).first().boundingBox()
+    expect(result, selector).not.toBeNull()
+    return result!
+  }
+  const sameColumn = (actual: { x: number; width: number }, expected: { x: number; width: number }, name: string) => {
+    expect(Math.abs(actual.x - expected.x), `${name} left`).toBeLessThanOrEqual(1)
+    expect(Math.abs(actual.width - expected.width), `${name} width`).toBeLessThanOrEqual(1)
+  }
+
+  for (const width of [320, 768, 1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/?view=client-orders')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    const wanted = await box('.fos-order-date-fields > :first-child')
+    const agreed = await box('.fos-order-date-fields > :last-child')
+    const documents = await box('.fos-file-dropzone')
+
+    await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
+    const material = await box('.fos-item-form__material')
+    const quantity = await box('.fos-item-form__quantity')
+    const artwork = await box('.fos-item-form__artwork')
+    sameColumn(artwork, material, `ArtworkSource at ${width}px`)
+    sameColumn(documents, material, `signed documents upload at ${width}px`)
+    sameColumn(wanted, material, `requested date at ${width}px`)
+    sameColumn(agreed, width <= 600 ? material : quantity, `agreed date at ${width}px`)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
+  }
+})
+
+test('item form three-column rows keep the same column width on desktop and tablet', async ({ page }) => {
+  for (const width of [768, 1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/?view=client-orders')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
+    const production = await page.locator('.fos-item-form__production > *').evaluateAll(nodes => nodes.map(node => {
+      const { x, width } = node.getBoundingClientRect()
+      return { x, width }
+    }))
+    const dimensions = await page.locator('.fos-item-form__dimensions > *').evaluateAll(nodes => nodes.map(node => {
+      const { x, width } = node.getBoundingClientRect()
+      return { x, width }
+    }))
+    expect(production).toHaveLength(3)
+    expect(dimensions).toHaveLength(3)
+    for (let column = 0; column < 3; column++) {
+      expect(Math.abs(production[column].x - dimensions[column].x), `column ${column + 1} left at ${width}px`).toBeLessThanOrEqual(1)
+      expect(Math.abs(production[column].width - dimensions[column].width), `column ${column + 1} width at ${width}px`).toBeLessThanOrEqual(1)
+    }
+  }
+})

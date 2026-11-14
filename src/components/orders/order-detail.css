@@ -1,7 +1,7 @@
 /* Shared immutable Item Summary and readonly field composition. */
 .fos-order-detail { min-width: 0; overflow-wrap: anywhere; }
-.fos-order-detail__body { max-width: 1050px; margin-top: 26px; }
-.fos-order-detail__products > h2,.fos-order-detail__general > h2 { margin: 0; color: #273343; font-size: 20px; font-weight: 600; line-height: 28px; }
+.fos-order-detail__body { margin-top: 26px; }
+.fos-order-detail__products > h2,.fos-order-detail__general > h2 { color: #273343; }
 .fos-order-detail__products > h2 { margin-bottom: 30px; }
 .fos-order-detail__company { margin-bottom: 30px; }
 .fos-order-detail__general { margin-top: 36px; }
@@ -17,7 +17,7 @@
 .fos-manager-intake p { margin: 0; color: #586d7c; font-size: 12px; line-height: 18px; }
 .fos-manager-intake .fos-action { min-width: 160px; }
 .fos-manager-intake__demo-controls { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
-.fos-order-detail[data-role=manager] .fos-order-detail__body { max-width: 1056px; margin-top: 24px; }
+.fos-order-detail[data-role=manager] .fos-order-detail__body { margin-top: 24px; }
 .fos-order-detail[data-role=manager] .fos-order-detail__company { margin-bottom: 32px; }
 .fos-order-detail[data-role=manager] .fos-order-detail__products > h2 { margin-bottom: 17px; }
 .fos-order-detail[data-role=manager] .fos-order-detail__items { gap: 14px; }
@@ -27,7 +27,6 @@
 @media(max-width:1023px) {
   .fos-order-detail__body { margin-top: 30px; }
   .fos-order-detail__products > h2 { margin-bottom: 45px; }
-  .fos-order-detail__products > h2,.fos-order-detail__general > h2 { font-size: 18px; line-height: 26px; }
   .fos-order-detail__general > h2 { margin-bottom: 12px; }
   .fos-order-detail[data-role=manager] .fos-order-detail__body { margin-top: 29px; }
   .fos-order-detail[data-role=manager] .fos-order-detail__company { margin-bottom: 26px; }
@@ -36,7 +35,6 @@
   .fos-order-detail[data-role=manager] .fos-order-detail__dates { margin-bottom: 27px; }
 }
 @media(max-width:600px) {
-  .fos-order-detail__products > h2,.fos-order-detail__general > h2 { font-size: 16px; line-height: 24px; }
   .fos-order-detail__general > h2 { margin-bottom: 14px; }
   .fos-order-detail__products > h2 { margin-bottom: 47px; }
   .fos-order-detail[data-role=manager] .fos-order-detail__products > h2 { margin-bottom: 19px; }

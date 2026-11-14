@@ -37,6 +37,11 @@ test('More popup uses the shared Liquid Glass surface and closes on Escape', asy
   const firstAction = menu.getByRole('menuitem').first()
   await firstAction.hover()
   await expect(firstAction).not.toHaveAttribute('data-lens-active')
+  // Owner-approved hover v0.3 creates one transient shared lens. It is not
+  // semantic activation and must disappear again on pointer leave.
+  await expect(menu).toHaveAttribute('data-hover-preview', 'v0.3')
+  await expect(menu.locator('[data-motion="travel"]')).toHaveCount(1)
+  await page.mouse.move(0, 0)
   await expect(menu.locator('[data-motion="travel"]')).toHaveCount(0)
   await page.keyboard.press('Escape')
   await expect(menu).toHaveCount(0)

@@ -60,7 +60,7 @@ for (const width of widths) {
       await expect(page.getByLabel('Желаемый срок', { exact: true })).toHaveCSS('height', '44px')
       await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveCount(0)
       const dateWidth = await page.getByLabel('Желаемый срок', { exact: true }).evaluate(node => node.getBoundingClientRect().width)
-      if (width >= 1440) expect(dateWidth).toBe(506)
+      if (width >= 1440) expect(dateWidth).toBe((layout.general.width - 26)/2)
       if (width <= 390) expect(dateWidth).toBe(width - 40)
       await expect(page.getByRole('button', { name: 'Добавить позицию', exact: true })).toHaveCSS('width', '44px')
     }

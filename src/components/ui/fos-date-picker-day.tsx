@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 import { Day, type DayProps } from 'react-day-picker'
-import { FosGlassMaterial } from './fos-glass-material'
+import { FosMaterialSurface } from './fos-material-surface'
 import { dateToISO } from './date-only'
 
 export const DateLensContext = createContext<{
@@ -20,10 +20,7 @@ export function FosDatePickerDay({ day, modifiers, children, ...props }: DayProp
       if ((event.pointerType === 'mouse' || event.pointerType === 'pen') && event.buttons === 0) setPreview(available ? dateToISO(day.date) : undefined)
     }}
     onPointerLeave={event => { props.onPointerLeave?.(event); setPreview(undefined) }}>
-    {active && <FosGlassMaterial aria-hidden="true" data-date-lens="" className="fos-date-picker__day-lens"
-      radius={14} blur={1.5} strength={.1} shadow="reference" lighting="sidebar"
-      tone="neutral" centerOpacity={.12} centerColor="var(--fos-neutral-glass-rgb, 248 248 248)"
-      rimWidth={12} />}
+    {active && <FosMaterialSurface aria-hidden="true" data-date-lens="" className="fos-date-picker__day-lens" variant="date-cell" />}
     {children}
   </Day>
 }

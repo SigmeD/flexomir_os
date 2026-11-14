@@ -9,15 +9,13 @@ import { DateLensContext, FosDatePickerDay } from './fos-date-picker-day'
 import { dateFromISO, dateToISO, displayDate, inputDate, russianDate } from './date-only'
 import './fos-date-picker.css'
 
-export interface FOSDatePickerProps {
+interface DatePickerBaseProps {
   label: string
   value: string
-  onValueChange: (value: string) => void
   min?: string
   max?: string
   name?: string
   id?: string
-  readOnly?: boolean
   disabled?: boolean
   required?: boolean
   error?: string
@@ -27,6 +25,10 @@ export interface FOSDatePickerProps {
   onInputDraftChange?: (text: string) => void
   onValidityChange?: (valid: boolean) => void
 }
+export type FOSDatePickerProps = DatePickerBaseProps & (
+  | { readOnly?: false; onValueChange: (value: string) => void }
+  | { readOnly: true; onValueChange?: (value: string) => void }
+)
 /** Owner-approved shared calendar; ISO data and an optional uncommitted UI draft stay separate. */
 export function FOSDatePicker({ label, value, onValueChange, min, max, name, id: suppliedId, readOnly, disabled, required, error, helper, inputDraft, onInputDraftChange, onValidityChange }: FOSDatePickerProps) {
   const generated = useId(), id = suppliedId || generated
@@ -71,7 +73,7 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
       // Reconcile against the accepted controlled prop after the callback,
       // including a parent's rejection of this reset request.
       setResetVersion(version => version + 1); setOpen(false)
-      onChangeRef.current(initialValue.current)
+      onChangeRef.current?.(initialValue.current)
     }) }
     form?.addEventListener('reset', reset)
     return () => form?.removeEventListener('reset', reset)
@@ -144,8 +146,8 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
       onChange={event => {
         const next = event.target.value
         setDraft(next)
-        if (next === '') onValueChange('')
-        else { const iso = inputDate(next); if (iso && withinBounds(iso)) onValueChange(iso) }
+        if (next === '') onValueChange?.('')
+        else { const iso = inputDate(next); if (iso && withinBounds(iso)) onValueChange?.(iso) }
       }}
       onBlur={() => {
         setTouched(true)
@@ -196,7 +198,7 @@ export function FOSDatePicker({ label, value, onValueChange, min, max, name, id:
                 // Also discard an invalid manual draft when selecting the same
                 // accepted date, or when the parent rejects the proposed date.
                 setDraft(displayDate(value)); setTouched(false)
-                onValueChange(dateToISO(day)); dismiss()
+                onValueChange?.(dateToISO(day)); dismiss()
               }
             }} />
           </DateLensContext.Provider>
