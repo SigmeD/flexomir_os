@@ -4,6 +4,8 @@
 
 ## Как выбирать источник
 
+14.11, прямое уточнение Owner по Screenshot_7: тонкие линии сохранять в DEV-пилоте, но проверить также светло-серые заливки полей позади DocumentPreview. [Read-only оптический аудит](UI_UNIFICATION_2026-11-13.md#documentpreview-физика-стекла-и-светлая-заливка-полей--аудит-14112026) опирается на [RP Photonics / Fresnel](https://www.rp-photonics.com/fresnel_equations.html), [W3C Filter Effects](https://www.w3.org/TR/filter-effects/) и [W3C Backdrop Filters](https://drafts.fxtf.org/filter-effects-2/), текущий React/CSS и обратимые DOM-пробы настоящего заказа. Новых решений о frozen/production нет, Figma canvas не менялся.
+
 14.11, прямое уточнение Owner по Screenshot_5/6: критерием DocumentPreview служит видимость **линий реальных полей и строк**, пересекающих обе боковые грани, а не только текста/фона. [Изолированная проба и DEV-кандидат](UI_UNIFICATION_2026-11-13.md#documentpreview-тонкие-линии-настоящих-полей--dev-проба-14112026) используют существующий FOSInput и FosSummaryRow; Owner visual acceptance и production approval не получены. [liquid-glass-react](https://github.com/rdev/liquid-glass-react) прочитан как внешний референс по указанию Owner, зависимость не добавлена.
 
 14.11, прямое решение Owner в текущем диалоге: **DEV PILOT APPROVED / PRODUCTION NOT APPROVED** для полупрозрачного фона DocumentPreview60/75/85% при сохранении непрозрачных PDF-страниц, текста и controls. [Локальный контракт и доказательства](UI_UNIFICATION_2026-11-13.md#documentpreview-dev-пилот-полупрозрачной-панели--14112026). Принятый Figma viewport3534:3630 и frozen FE11 не менялись; Owner visual acceptance новой версии не получена.
