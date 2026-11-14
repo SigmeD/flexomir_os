@@ -169,3 +169,50 @@ test('Composer empty product copy uses the shared 14/20 body role', async ({ pag
   await expect(emptyCopy).toHaveCSS('font-size', '14px')
   await expect(emptyCopy).toHaveCSS('line-height', '20px')
 })
+
+test('order fields and both upload helpers follow the shared label and secondary text roles', async ({ page }) => {
+  for (const width of [1920, 768, 320]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/?view=client-orders')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+
+    const dateLabel = page.locator('.fos-order-date-fields .fos-field__label').first()
+    const documentHint = page.locator('.fos-file-dropzone small')
+    await expect(dateLabel).toHaveCSS('font-family', /Manrope/)
+    await expect(dateLabel).toHaveCSS('font-size', '13px')
+    await expect(dateLabel).toHaveCSS('line-height', '18px')
+    await expect(documentHint).toHaveCSS('font-family', /Manrope/)
+    await expect(documentHint).toHaveCSS('font-size', '12px')
+    await expect(documentHint).toHaveCSS('line-height', '18px')
+    await expect(page.locator('.fos-order-date-fields .fos-field').first()).toHaveCSS('gap', '8px')
+    await page.evaluate(() => document.documentElement.style.setProperty('--fos-type-secondary-line-height', '19px'))
+    await expect(documentHint).toHaveCSS('line-height', '19px')
+    await page.evaluate(() => document.documentElement.style.removeProperty('--fos-type-secondary-line-height'))
+
+    await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
+    const itemLabel = page.locator('.fos-item-form__name .fos-field__label')
+    const printingLabel = page.locator('.fos-printing legend')
+    const artworkHint = page.locator('.fos-artwork-source__dropzone small')
+    const artworkOption = page.locator('.fos-artwork-source__options label')
+    for (const label of [itemLabel, printingLabel, artworkOption]) {
+      await expect(label).toHaveCSS('font-family', /Manrope/)
+      await expect(label).toHaveCSS('font-size', '13px')
+      await expect(label).toHaveCSS('line-height', '18px')
+    }
+    await expect(artworkHint).toHaveCSS('font-size', '12px')
+    await expect(artworkHint).toHaveCSS('line-height', '18px')
+    await expect(printingLabel).toHaveCSS('margin-bottom', '8px')
+    await expect(page.locator('.fos-item-form__fields')).toHaveCSS('row-gap', '24px')
+
+    await page.evaluate(() => {
+      document.documentElement.style.setProperty('--fos-type-label-size', '14px')
+      document.documentElement.style.setProperty('--fos-type-label-line-height', '19px')
+      document.documentElement.style.setProperty('--fos-type-secondary-line-height', '19px')
+    })
+    for (const label of [itemLabel, printingLabel, artworkOption]) {
+      await expect(label).toHaveCSS('font-size', '14px')
+      await expect(label).toHaveCSS('line-height', '19px')
+    }
+    await expect(artworkHint).toHaveCSS('line-height', '19px')
+  }
+})
