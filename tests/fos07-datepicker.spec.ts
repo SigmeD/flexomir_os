@@ -283,9 +283,42 @@ for (const role of ['client', 'manager'] as const) {
     await expect(action).toBeEnabled()
     await action.click()
     if (role === 'client') {
-      await expect(page.getByTestId('order-detail').getByLabel('Желаемый срок', { exact: true })).toHaveValue('2026-11-18')
+      await expect(page.getByTestId('order-detail').getByLabel('Желаемый срок', { exact: true })).toHaveValue('18.11.2026')
       await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveAttribute('readonly', '')
     } else await expect(action).toBeDisabled()
     expect(errors).toEqual([])
   })
 }
+
+test('order dates share the DatePicker display contract in editable and readonly states', async ({ page }, info) => {
+  for (const width of [1440, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/?view=client-orders')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    const composer = page.getByTestId('order-composer')
+    const wanted = composer.getByLabel('Желаемый срок', { exact: true })
+    const agreed = composer.getByLabel('Согласованный срок', { exact: true })
+    await expect(wanted).toHaveAttribute('placeholder', 'ДД.ММ.ГГГГ')
+    await expect(agreed).toHaveAttribute('placeholder', 'ДД.ММ.ГГГГ')
+    await expect(agreed).toHaveAttribute('type', 'text')
+    await expect(agreed).toHaveAttribute('readonly', '')
+    await expect(composer.getByRole('button', { name: /Открыть календарь: Согласованный срок/ })).toHaveCount(0)
+    await expect(agreed).toHaveCSS('background-color', 'rgb(246, 247, 249)')
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    if (width === 1440 || width === 320) await composer.locator('.fos-order-composer__general').screenshot({ path: info.outputPath(`date-fields-${width}.png`) })
+
+    for (const role of ['client', 'manager']) {
+      await page.goto(`/?view=${role}-orders`)
+      await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
+      const detail = page.getByTestId('order-detail')
+      const date = detail.getByLabel('Согласованный срок', { exact: true })
+      await expect(date).toHaveAttribute('type', 'text')
+      await expect(date).toHaveAttribute('placeholder', 'ДД.ММ.ГГГГ')
+      await expect(date).toHaveValue('20.11.2026')
+      await expect(date).toHaveAttribute('readonly', '')
+      await expect(detail.getByRole('button', { name: /Открыть календарь:/ })).toHaveCount(0)
+      await expect(detail.locator('input[type=date][aria-hidden=true]')).toHaveCount(2)
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    }
+  }
+})

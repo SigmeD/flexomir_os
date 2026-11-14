@@ -3,7 +3,8 @@ import { PageHeader } from '@/components/ui/page-header'
 import { FosSectionHeading } from '@/components/ui/fos-section-heading'
 import { HeaderAction } from '@/components/ui/header-action'
 import { MoreAction, OverflowMenu } from '@/components/ui/overflow-menu'
-import { FOSDateField, FOSInput } from '@/components/ui/fos-controls'
+import { FOSInput } from '@/components/ui/fos-controls'
+import { FOSDatePicker } from '@/components/ui/fos-date-picker'
 import { OrderItemSummary } from './OrderItemSummary'
 import { OrderDateFields } from './OrderDateFields'
 import { ManagerDemoIntake } from './ManagerDemoIntake'
@@ -42,8 +43,8 @@ export function OrderDetail({ order, detail, onBack, actions, role = 'client', m
       </section>
       <section className="fos-order-detail__general" aria-labelledby="order-detail-general-title"><FosSectionHeading id="order-detail-general-title">Общие данные заказа</FosSectionHeading>
         <OrderDateFields className="fos-order-detail__dates">
-          <FOSDateField label="Желаемый срок" value={dateValue(detail.requestedDate)} readOnly />
-          <FOSDateField label="Согласованный срок" value={dateValue(detail.agreedDate)} readOnly />
+          <FOSDatePicker label="Желаемый срок" value={dateValue(detail.requestedDate)} readOnly />
+          <FOSDatePicker label="Согласованный срок" value={dateValue(detail.agreedDate)} readOnly />
         </OrderDateFields>
       </section>
       <SignedDocumentsSection key={'docs'+JSON.stringify([order.company,order.id])} context={JSON.stringify(['order',order.company,order.id])} canAdd={false} />

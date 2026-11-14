@@ -15,7 +15,7 @@ U03/U04 приняты Owner13.11 ответом «принято продолж
 | Action835:259 / SectionAdd1986:774 | FosButtonRoot → FOSAction/FosActionSurface; hierarchy/size/shape, disabled, press | Все действия; SectionAddItem, HeaderAction | REUSE; [кнопки](FOS08_09_REPORT_2026-11-10.md) |
 | More1914:650/655/668 | OverflowMenu → FosPopup/Surface/Rows; items/rights/open, context point, keyboard/focus/Esc | More, Account, Select, message context | REUSE; [hover](POPUP_HOVER_ROLLOUT_2026-11-11.md), [CRUD](COMM_DOCS_2026-11-12.md) |
 | Select1148:311/292 | FOSSelect/FOSSelectPopup, GlassSelect; value/onChange, emptyIsPlaceholder, disabled/error | Формы, фильтры, компания, shape/material | REUSE; [placeholder](SELECT_PLACEHOLDER_2026-11-11.md) |
-| Date Field1169:437/383/433 | FOSDatePicker, FOSDateField, OrderDateFields; controlled value, raw draft/validity, readonly | Composer/Detail Client/Manager | REUSE; [даты](FOS07_DATEPICKER_PILOT_2026-11-11.md) |
+| Date Field1169:437/383/433 | FOSDatePicker(editable/readonly), OrderDateFields; controlled ISO value, raw draft/validity, formatted display | Composer/Detail Client/Manager | REUSE одного display contract; FOSDateField остаётся только в lab/native comparison. [Readonly-аудит](FOS07_DATEPICKER_PILOT_2026-11-11.md#повторный-аудит-readonly-полей--14112026) |
 | GL03 / DS status controls | GlassPillTabs; selection/filter | Списки заказов Client/Manager | REUSE; [GL03](GL03_Compact_Pill_Tabs_Contract_2026-11-04.md) |
 | Item1791:6130/1782:6025; Printing2315:9747 | OrderItemForm, PrintingMethodControl; dirty/errors/valid, duplicate seed/delete | Client New/Repeat/Edit, Manager New/Edit | EXTEND существующий редактор; [№05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md), [№06](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md) |
 | Item Summary2025:6608 / Owner shared row profile | OrderItemSummary(article), OrderItemRow → FosSummaryRow(overlay,card); disabled/onOpen | Composer Client/Manager; readonly Detail использует один OrderItemSummary | EXTEND общей строки: hover/pressed/focus/token в одном FosSummaryRow; overlay-кнопка сохраняет article и доступное имя. [UA-01 и QA](UI_UNIFICATION_2026-11-13.md#ua-01--строка-позиции-и-общий-fossummaryrow--14112026) |
@@ -81,7 +81,7 @@ FosButtonRoot — единственное место создания native bu
 
 | Источник → компонент | Решение | Props / состояния / потребители |
 | --- | --- | --- |
-| Owner screenshot: Client New справа от желаемого срока; существующий Manager Date Readonly1169:433 → FOSDateField в OrderDateFields | REUSE | Client OrderComposer: пустое value, readOnly; Client/Manager OrderDetail: существующее detail.agreedDate либо пустое, readOnly. Общие размеры44px / desktop до506px, адаптивная строка |
+| Owner screenshot: Client New справа от желаемого срока; Date Readonly1169:433 → FOSDatePicker readOnly в OrderDateFields | REUSE | Client OrderComposer: пустое value, readOnly; Client/Manager OrderDetail: существующее detail.agreedDate либо пустое, readOnly. Общий формат ДД.ММ.ГГГГ, серый readonly фон, размеры44px / desktop до506px, адаптивная строка |
 
 Это отображение существующей даты и пустого места до согласования; новые данные, статусные события и команды подтверждения не добавляются. Дата повторного/нового заказа не наследует согласованный срок исходника. Предыдущая правка размеров сама по себе поле клиенту не добавляла; эта правка устраняет пропуск.
 
@@ -89,7 +89,7 @@ FosButtonRoot — единственное место создания native bu
 
 | Figma/master → React | Решение | Consumers / контракт |
 | --- | --- | --- |
-| Date Field 1169:437, Default1169:383 / Readonly1169:433 → FOSDateField | REUSE | Общая высота44px, состояния и native date input сохранены |
+| Date Field 1169:437, Default1169:383 / Readonly1169:433 → FOSDatePicker | REUSE | Общая высота44px, формат display; hidden native ISO proxy сохраняет модель, readonly без календарной кнопки. Исторический FOSDateField доступен в lab |
 | Client New1810:12510, Manager draft2569:24648 → OrderDateFields | CREATE layout composition | OrderComposer и OrderDetail обеих ролей; desktop колонки до506px, сужаются вместе с контейнером; tablet две равные колонки или одиночное поле на всю ширину; mobile одна колонка |
 | Client Detail1838:6565 date720px → Owner instruction10.11 | EXTEND shared layout | Новый эталон ширины — поле Client New506px, а не старый readonly frame720px; Figma не изменена |
 

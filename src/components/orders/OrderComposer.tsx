@@ -4,7 +4,7 @@ import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
 import { FosSectionHeading } from '@/components/ui/fos-section-heading'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
-import { FOSDateField, FOSInput, FOSSelect } from '@/components/ui/fos-controls'
+import { FOSInput, FOSSelect } from '@/components/ui/fos-controls'
 import { FOSDatePicker } from '@/components/ui/fos-date-picker'
 import { displayDate } from '@/components/ui/date-only'
 import { OrderItemForm } from './OrderItemForm'
@@ -138,7 +138,7 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
           <OrderDateFields className="fos-order-composer__dates">
             <FOSDatePicker label="Желаемый срок" value={value.requestedDate} inputDraft={requestedDateInput} onInputDraftChange={setRequestedDateInput} onValidityChange={setDateInputValid}
               error={!dateInputValid || !validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onValueChange={requestedDate => save({ ...value, requestedDate })} />
-            {value.ownerRole === 'client' && <FOSDateField label="Согласованный срок" value="" readOnly />}
+            {value.ownerRole === 'client' && <FOSDatePicker label="Согласованный срок" value="" readOnly />}
           </OrderDateFields>
         </section>
         <SignedDocumentsSection key={'docs'+JSON.stringify([value.company,value.id])} context={JSON.stringify(['order',value.company,value.id])} canAdd={editable} />
