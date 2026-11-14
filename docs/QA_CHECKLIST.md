@@ -2,6 +2,22 @@
 
 Для каждого значимого изменения отмечать PASS, FAIL или NOT RUN с причиной. FUNCTIONAL, VISUAL и TECHNICAL — отдельные гейты; зелёный CI не заменяет Owner-приёмку. Результаты конкретных поставок хранятся в [контрактах](README.md#контракты-и-доказательства).
 
+Корневые 23 конфигурации `playwright.*.config.ts` — исполняемые настройки проверок, не отчёты. Большинство вызываются GitHub Actions; profile и fe11 также служат базами наследования. Их удаление требует отдельной проверки CI, импортов и команд. В ревизии 13.11 все 23 прошли discovery (`--list`); это исторический факт, а не результат текущих тестов.
+
+| Конфиги | Назначение |
+| --- | --- |
+| Основной `playwright.config.ts` | Chromium 1440/390; материал исключён |
+| profile | Chromium/Firefox/WebKit desktop и Chromium touch; база тематических проверок |
+| fe11, reaudit, popup-qa | Frozen motion, popup adapters и lifecycle |
+| fos02, fos02-regression, popup-hover | Account, общий hover и production |
+| buttons, neutral-actions, plus-motion | Кнопки, поверхности и press |
+| fos03, order-spacing | Отступы и заголовок |
+| fos05, fos06, fos07, fos12 | Save, операции позиции, календарь и макеты |
+| comm-docs | Переписка, PDF и media |
+| m7, next-scope | Сквозные сценарии и scope |
+| orders, workspace | Заказы и рабочая область |
+| material | Glass: `npm run test:material` |
+
 ## 0. Компонентный QA и необязательный HTML motion gate (OWNER уточнение 04.11)
 
 - [ ] Найдены CURRENT Client UX V2 / Manager UX V2, Figma master ID, props, состояния, реальные роли/контексты; ARCHIVE / SUPERSEDED исключены, CANDIDATE ≠ APPROVED.

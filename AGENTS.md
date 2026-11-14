@@ -14,11 +14,11 @@
 
 ## CURRENT / 13.11.2026 — COMM-DOCS merged
 
-PR #46 MERGED по прямому поручению Owner «сделай merge в main/origin». SHA приложения `479c59188b5ee0b2bda4dd3150b75803cf3d3886`, проверенный PR head `ea3f2b858d661592948c76760be6459c6c2bde28`, CI **6/6 SUCCESS**. Дерево squash совпадает с PR head. Новые post-merge build PASS, smoke **8/8**, bundled production1440/320 **2/2 PASS**, pageerrors=[]. Remote head удалён автоматически, локальная feat/comm-docs-20261112 сохранена; рабочая ветка main. Последующая синхронизация Markdown — только метаданные, не новый код приложения. Duplicate payload, Owner visual/D09, physical devices и production API/read/ACL/1С остаются OPEN. [Отчёт](docs/COMM_DOCS_2026-11-12.md), [состояние](docs/PROJECT_STATE.md). Датированные pre-merge записи ниже — история.
+PR #46 MERGED по прямому поручению Owner «сделай merge в main/origin». SHA приложения `479c59188b5ee0b2bda4dd3150b75803cf3d3886`, проверенный PR head `ea3f2b858d661592948c76760be6459c6c2bde28`, CI **6/6 SUCCESS**. Дерево squash совпадает с PR head. Новые post-merge build PASS, smoke **8/8**, bundled production1440/320 **2/2 PASS**, pageerrors=[]. Remote head удалён автоматически, локальная feat/comm-docs-20261112 сохранена; рабочая ветка main. Последующая синхронизация Markdown — только метаданные, не новый код приложения. Duplicate payload, Owner visual/D09, physical devices и production API/read/ACL/1С остаются OPEN. [Отчёт](docs/CONTRACTS_AND_EVIDENCE.md#evidence-comm-docs-2026-11-12), [состояние](docs/PROJECT_STATE.md). Датированные pre-merge записи ниже — история.
 
 ## CURRENT / 12.11.2026 — №06 merged
 
-PR #44 слит по прямому поручению Owner «вливай в main/origin». Продуктовый main `6d3fa83e14d1581017ae19a4451ec0181e9d126a`, проверенный PR head `7c5b017228dbef58f7bb85d6211257b1519556f0`, CI7/7SUCCESS. Новые post-merge проверки: build PASS, FOS06 60/60, frozen2/2, production Review4/4. Remote head удалён; локальная ветка сохранена. Из13пунктов10 реализованы и слиты, №11 закрыт без реализации, №10/13 backlog. Полная M8 приёмка, backend/API/ACL/1С, PR #40 и CMP отдельно. [Состояние](docs/PROJECT_STATE.md), [отчёт №06](docs/FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md). Датированные SHA ниже — история, не текущая очередь.
+PR #44 слит по прямому поручению Owner «вливай в main/origin». Продуктовый main `6d3fa83e14d1581017ae19a4451ec0181e9d126a`, проверенный PR head `7c5b017228dbef58f7bb85d6211257b1519556f0`, CI7/7SUCCESS. Новые post-merge проверки: build PASS, FOS06 60/60, frozen2/2, production Review4/4. Remote head удалён; локальная ветка сохранена. Из13пунктов10 реализованы и слиты, №11 закрыт без реализации, №10/13 backlog. Полная M8 приёмка, backend/API/ACL/1С, PR #40 и CMP отдельно. [Состояние](docs/PROJECT_STATE.md), [отчёт №06](docs/CONTRACTS_AND_EVIDENCE.md#evidence-fos06-item-actions-delivery-2026-11-12). Датированные SHA ниже — история, не текущая очередь.
 
 ## Состояние после merge / 10.11.2026
 
@@ -30,7 +30,7 @@ PR #31 слит по прямому поручению Owner; продуктов
 
 - `navigation/item` и `popup/item` используют одну базовую роль Manrope 14px/18px Medium 500. React source: `--fos-type-menu-item`; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item`. Не дублировать font-size/line-height/font-weight в CSS потребителей и не создавать локальные исключения.
 - Это разрешение на базовую типографику пунктов Sidebar/Drawer/Account/More/GlassSelect, не на изменение утверждённых GlassLens/Motion Engine, optical scale или материалов. Заголовки, подписи, профильные identity/data и trigger typography имеют отдельные роли.
-- Owner принял пилот и action-adapter ответом «да подтверждаю»; разрешены rollout/cleanup и синхронизация затронутых Figma masters в PR #30. Все popup consumers подключаются через `FosPopup`, form fields — через канонический `FOSSelect`. Figma menu role14/18/500 синхронизирована; закрытые field/identity roles сохранены. Это не приёмка всех экранов и не разрешение merge. [Охват, QA и оставшиеся gates](docs/FE11_POPUP_REAUDIT_2026-11-10.md).
+- Owner принял пилот и action-adapter ответом «да подтверждаю»; разрешены rollout/cleanup и синхронизация затронутых Figma masters в PR #30. Все popup consumers подключаются через `FosPopup`, form fields — через канонический `FOSSelect`. Figma menu role14/18/500 синхронизирована; закрытые field/identity roles сохранены. Это не приёмка всех экранов и не разрешение merge. [Охват, QA и оставшиеся gates](docs/CONTRACTS_AND_EVIDENCE.md#evidence-fe11-popup-reaudit-2026-11-10).
 
 ## CURRENT / 09.11.2026 — FE-11 Motion approval and freeze (Owner instruction)
 
@@ -126,7 +126,7 @@ Flexomir OS — система типографии для клиента и м�
 
 ## 4. Superpowers и режим углублённого анализа
 
-- Проверяй доступность Superpowers по `docs/CODEX_SETUP.md`. На 04.11.2026 навыки из `C:/Users/Max/.codex/skills/superpowers/` доступны в текущей сессии; переустановка не нужна. Это не доказывает marketplace-установку или загрузку новой сессией.
+- Проверяй доступность Superpowers по [историческому снимку окружения](docs/CONTRACTS_AND_EVIDENCE.md#evidence-codex-setup). На 04.11.2026 навыки из `C:/Users/Max/.codex/skills/superpowers/` были доступны; наличие сейчас проверять заново. Это не доказывает marketplace-установку или загрузку новой сессией.
 - Если активен — используй соответствующие навыки **Superpowers**: `brainstorming` (неясная задача / новая концепция), `writing-plans` (существенный план), `using-git-worktrees` (изоляция), `test-driven-development` (логика), `systematic-debugging` (дефект), `verification-before-completion` (доказательства), `requesting-code-review` (независимый ревью), `finishing-a-development-branch` (передача). Подчиняй навыки текущим решениям проекта и доступным инструментам.
 - **Think before code:** в сложной задаче проверь предположения, зависимости, альтернативы, отказы, границы и негативные сценарии. Показывай краткие основания и выводы, не скрытые рассуждения.
 - В `.codex/config.toml` предусмотрен `model_reasoning_effort = "high"`. Реальный уровень зависит от выбранной модели/клиента; при несовместимости исправить конфигурацию, а не считать параметр работающим.

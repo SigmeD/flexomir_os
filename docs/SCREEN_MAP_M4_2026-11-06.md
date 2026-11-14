@@ -23,7 +23,7 @@
 
 ## Визуальные доказательства M8
 
-Issue#21: U03/U04 приняты Owner; U05 общие presentation строки Company/Order/Layout/Support и readonlyOrder подключены, U06 один material preset в DocumentPreviewDialog. [Текущая карта consumers,78targeted/129PNGpairs и gate](UI_UNIFICATION_2026-11-13.md). U06 visual OPEN, таблица10.11 ниже историческая. Сценарии и доменные права не менялись.
+Issue#21: U03/U04 приняты Owner; U05 общие presentation строки Company/Order/Layout/Support и readonlyOrder подключены, U06 один material preset в DocumentPreviewDialog. [Текущая карта consumers,78targeted/129PNGpairs и gate](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13). U06 visual OPEN, таблица10.11 ниже историческая. Сценарии и доменные права не менялись.
 
 Следующая матрица — конкретный набор сравнения 10.11, а не снимки текущего приложения. Более поздние №03/05/06/07/12 и COMM-DOCS проверяются по собственным контрактам. Исходные Figma IDs и ссылки сохранены для повторного QA; output-файлы локальные/ignored. Отсутствие локального файла означает, что доказательство нужно получить из соответствующего CI или воспроизвести, а не объявлять актуальным.
 
@@ -57,7 +57,7 @@ Issue#21: U03/U04 приняты Owner; U05 общие presentation строки
 | layouts-select-upload | 1440:5059 / 1440:5275 / 1440:5486 | LayoutUploadForm / OrderItemForm | local file/name → select → same Item | [D](../output/m8-final/compare/chromium-layouts-select-upload-d.png) / [T](../output/m8-final/compare/chromium-layouts-select-upload-t.png) / [M](../output/m8-final/compare/chromium-layouts-select-upload-m.png) | UI-only scoped picker; no server success |
 | manager-detail | 2560:10872 / 2560:10911 / 2560:10947 | OrderDetail / OrderDemoWorkspace | read-only details/demo pending/success/error → back | [D](../output/m8-final/compare/chromium-manager-detail-d.png) / [T](../output/m8-final/compare/chromium-manager-detail-t.png) / [M](../output/m8-final/compare/chromium-manager-detail-m.png) | PILOT demo state/1С contract OPEN |
 
-На 69 capture не обнаружены horizontal overflow/pageerror/unloaded assets; все titles теперь Flexomir OS. Функциональные L1024/M320, короткие высоты, keyboard/touch/forced-colors/reduced-motion, negative states и axe проверяются suites, а не выдаются за несуществующие Figma frames. M7 final159/159 PASS. Full regression520 PASS/4 expected skips/0 FAIL; independent review PASS WITH RISKS(12 пар), CI отправленного head — [итоговый аудит M8](M8_FINAL_AUDIT_2026-11-10.md).
+На 69 capture не обнаружены horizontal overflow/pageerror/unloaded assets; все titles теперь Flexomir OS. Функциональные L1024/M320, короткие высоты, keyboard/touch/forced-colors/reduced-motion, negative states и axe проверяются suites, а не выдаются за несуществующие Figma frames. M7 final159/159 PASS. Full regression520 PASS/4 expected skips/0 FAIL; independent review PASS WITH RISKS(12 пар), CI отправленного head — [итоговый аудит M8](CONTRACTS_AND_EVIDENCE.md#evidence-m8-final-audit-2026-11-10).
 
 Общие явные различия: поздние Owner 14/18/500, sharedGlass/GL03/FE11, responsive dock и Account/header имеют приоритет над устаревшими screen instances; синтетические данные/число строк не подгоняются. Sidebar icons, Manager agreed-date/publication/search и Auth design остаются OPEN. Client Support breadcrumb исправлен по FOS, Manager label сохранён. P0/P1 не закрываются без конкретного evidence/reviewer решения.
 

@@ -65,6 +65,6 @@ npx playwright test --config=playwright.comm-docs.config.ts --workers=2
 
 Native recording tests отдельно пропускаются в движках без MediaRecorder с указанной причиной; unsupported fallback проверяется. Физические устройства и настоящий iPhone этим не проверяются. Доказательства сохраняются в `output/comm-docs/` и CI artifact `comm-docs-evidence`.
 
-Дополнительные проверки компонентов и визуальных эффектов описаны в [критериях проверки](docs/QA_CHECKLIST.md), [отчёте по материалу Glass](docs/fos-glass-material.md) и [проверке Select](docs/glass-select-check.md). Снимки и видео тестовых прогонов сохраняются локально и не входят в репозиторий.
+Дополнительные проверки компонентов и визуальных эффектов описаны в [критериях проверки](docs/QA_CHECKLIST.md), [отчёте по материалу Glass](docs/CONTRACTS_AND_EVIDENCE.md#evidence-fos-glass-material) и [проверке Select](docs/CONTRACTS_AND_EVIDENCE.md#evidence-glass-select-check). Снимки и видео тестовых прогонов сохраняются локально и не входят в репозиторий.
 
 Документация: [начать здесь](docs/README.md). Правила работы: [AGENTS.md](AGENTS.md).

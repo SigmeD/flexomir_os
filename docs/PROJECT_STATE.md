@@ -4,22 +4,24 @@
 
 ## Текущий инкремент
 
-Рабочая ветка `refactor/ux-ui-unification-20261113`, [PR #49](https://github.com/SigmeD/flexomir_os/pull/49) — draft, merge не выполнялся. Код приложения на head `228b226` прошёл CI 9/9 SUCCESS. Следующий head `392a10f` менял только документацию; его CI проверять отдельно по PR. Owner ответил «Визуальная приемка принята» для показанной локальной версии заказа на `228b226`. Это приёмка данного вида, а не полной M8/D09 или релиза.
+Рабочая ветка `refactor/ux-ui-unification-20261113`, [PR #49](https://github.com/SigmeD/flexomir_os/pull/49) — draft, merge не выполнялся. Код приложения на head `228b226` прошёл CI 9/9 SUCCESS. Owner ответил «Визуальная приемка принята» для показанной локальной версии заказа на этом head. Это приёмка данного вида, а не полной M8/D09 или релиза. Последний документационный head `d9853c2` дал CI 8/9: Communication WebKit повторил известный timeout при выборе «Копировать»; код приложения в нём не менялся, причина нестабильности OPEN. CI нового head проверять отдельно.
 
-Список, создание, позиция и детали заказа используют общий рабочий контур. Зоны загрузки макета и бланков, «Материал», желаемый и согласованный сроки занимают одинаковую колонку на одном viewport: 635px при 1920px и 280px при 320px. На планшете выровнены трёхколоночные строки позиции. Формы используют Manrope: подпись 13/18, ввод 14/20, подсказка 12/18, расстояние от подписи до поля 8px. Разная ширина по числу колонок и высота многострочного комментария сохраняют назначение. [Причина, размеры, кадры и QA](UI_UNIFICATION_2026-11-13.md#контроль-всех-полей-заказа--14112026).
+Документация: 22 отдельных контракта и отчёта собраны в [единый документ](CONTRACTS_AND_EVIDENCE.md), исходные SHA256 и адресные разделы сохранены, старые Markdown-пути удалены. Frozen manifest и исходные доказательства не удалялись. Это изменение навигации по документам, не поведения приложения.
 
-DocumentPreview Latest включён по умолчанию в DEV и production build через общий `GlassLens` и `DocumentGlassMaterial`. Pilot/original доступны только для DEV-сравнения. PDF, скачивание, управление окном и возврат фокуса проверены; кадры принятого DEV Latest и production совпали на пяти ширинах. Замороженный FE11 engine не менялся. [Rollout и проверки](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026).
+Список, создание, позиция и детали заказа используют общий рабочий контур. Зоны загрузки макета и бланков, «Материал», желаемый и согласованный сроки занимают одинаковую колонку на одном viewport: 635px при 1920px и 280px при 320px. На планшете выровнены трёхколоночные строки позиции. Формы используют Manrope: подпись 13/18, ввод 14/20, подсказка 12/18, расстояние от подписи до поля 8px. Разная ширина по числу колонок и высота многострочного комментария сохраняют назначение. [Причина, размеры, кадры и QA](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13-контроль-всех-полей-заказа--14112026).
 
-Общие строки, кнопки, поля, календарь, загрузка и popup описаны в [реестре компонентов](COMPONENT_REGISTRY_2026-11-06.md). U03/U04 приняты, U05/U06/U08 внедрены в рамках PR #49; точные результаты, исходные PNG и SHA сохранены в [контракте M8](UI_UNIFICATION_2026-11-13.md).
+DocumentPreview Latest включён по умолчанию в DEV и production build через общий `GlassLens` и `DocumentGlassMaterial`. Pilot/original доступны только для DEV-сравнения. PDF, скачивание, управление окном и возврат фокуса проверены; кадры принятого DEV Latest и production совпали на пяти ширинах. Замороженный FE11 engine не менялся. [Rollout и проверки](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13-documentpreview--production-rollout-14112026).
+
+Общие строки, кнопки, поля, календарь, загрузка и popup описаны в [реестре компонентов](COMPONENT_REGISTRY_2026-11-06.md). U03/U04 приняты, U05/U06/U08 внедрены в рамках PR #49; точные результаты, исходные PNG и SHA сохранены в [контракте M8](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13).
 
 ## Ранее поставлено
 
 | Область | Действующий контракт |
 | --- | --- |
-| Переписка, поддержка, PDF, media · PR #46 | [COMM-DOCS](COMM_DOCS_2026-11-12.md) |
-| Позиции, сохранение · PR #43/#44 | [№05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md), [№06](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md) |
-| Даты, согласованный срок readonly · PR #31/#41 | [№07](FOS07_DATEPICKER_PILOT_2026-11-11.md) |
-| Popup, Select, кнопки и отступы · PR #34–38 | [Hover](POPUP_HOVER_ROLLOUT_2026-11-11.md), [Select](SELECT_PLACEHOLDER_2026-11-11.md), [rollout](ACCEPTED_UI_ROLLOUT_2026-11-11.md) |
+| Переписка, поддержка, PDF, media · PR #46 | [COMM-DOCS](CONTRACTS_AND_EVIDENCE.md#evidence-comm-docs-2026-11-12) |
+| Позиции, сохранение · PR #43/#44 | [№05](CONTRACTS_AND_EVIDENCE.md#evidence-fos05-repeat-item-save-2026-11-12), [№06](CONTRACTS_AND_EVIDENCE.md#evidence-fos06-item-actions-delivery-2026-11-12) |
+| Даты, согласованный срок readonly · PR #31/#41 | [№07](CONTRACTS_AND_EVIDENCE.md#evidence-fos07-datepicker-pilot-2026-11-11) |
+| Popup, Select, кнопки и отступы · PR #34–38 | [Hover](CONTRACTS_AND_EVIDENCE.md#evidence-popup-hover-rollout-2026-11-11), [Select](CONTRACTS_AND_EVIDENCE.md#evidence-select-placeholder-2026-11-11), [rollout](CONTRACTS_AND_EVIDENCE.md#evidence-accepted-ui-rollout-2026-11-11) |
 
 ## Открыто
 
