@@ -5,7 +5,7 @@
 | Этап | Состояние | Следующий шаг и ответственный |
 | --- | --- | --- |
 | M4–M7 | Основные композиции и сквозные сценарии реализованы на fixtures | Использовать существующие компоненты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
-| M8 | Принятые U03/U04 и U06 rollout сохранены; строки, шрифты и Date Field объединены. В тестовой копии DocumentPreview есть варианты панели60/75/85%, линий и серой заливки без `brightness(1.05)` | [Сравнение Original / Lines / Fill](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html) подготовлено на реальном заказе/CSV/PDF; следующий шаг — Owner visual линии+заливки. Непрозрачный PDF-лист физически закрывает поле под ним. Frozen/production и merge только после отдельного поручения. Полная M8/D09 и UA-03/04 отдельно |
+| M8 | Принятые U03/U04 и U06 rollout сохранены; строки, шрифты и Date Field объединены. В DEV DocumentPreview остались только `pilot` и `latest` | [Сравнение на реальном заказе](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html) с CSV/PDF; следующий шаг — Owner visual. Профильные Chromium19/19, build/optics/production isolation PASS. PDF-лист физически закрывает поле под ним. Frozen/production и merge только после отдельного поручения. Полная M8/D09 и UA-03/04 отдельно |
 | M9 | Зависит от готового согласованного API | Алексей: backend/ACL/1С; frontend: подключение клиента и интеграционный QA |
 
 ## Открытая очередь
@@ -18,6 +18,7 @@
 4. [x] По Screenshot_3 проведён повторный аудит шрифтов: SignedDocuments Row+Copy+ArtworkThumbnail, FosSectionHeading в Compose/Detail/Conversation/Signed/Artwork; UA-02 tablet-расхождение закрыто. RED→GREEN, build и focused114/114 PASS; [точная причина](UI_UNIFICATION_2026-11-13.md#повторный-аудит-типографики-по-screenshot_3--14112026). Glass original/frozen не менялись.
 5. [x] UA-01: OrderItemRow Client/Manager использует FosSummaryRow overlay/card вместо локального border-only hover. `article` и нативная кнопка сохранены; RED→GREEN, три движка row30/30, FOS06 15/15, build PASS. [Причина и контракт](UI_UNIFICATION_2026-11-13.md#ua-01--строка-позиции-и-общий-fossummaryrow--14112026). UA-03/04 пока OPEN candidates, не утверждённый общий redesign; сроки не назначены. Merge отдельно.
 6. [x] Screenshot_4: readonly согласованный срок и даты Detail переведены с native FOSDateField на общий FOSDatePicker readOnly. Формат ДД.ММ.ГГГГ, серый readonly фон и скрытый ISO proxy проверены; cross-browser/touch4/4, соседние30/30+27/27, independent60/60. [Контракт](FOS07_DATEPICKER_PILOT_2026-11-11.md#повторный-аудит-readonly-полей--14112026). Новый CI head и Owner visual отдельно.
+7. [x] По Screenshot_8/9 активные стеклянные варианты сокращены до `pilot` и `latest`; диагностические `documentOptics`/`documentPanel` удалены. DEV-дубль упрощён до одного адаптера DocumentPreview и одной SVG-карты со старым и новым профилями края. Последний профиль проверен на настоящих FOSInput с SVG-смещением и без него; PDF, действия, фокус и production isolation сохранены. [Аудит](UI_UNIFICATION_2026-11-13.md#documentpreview--текущий-dev-кандидат-14112026). Owner visual OPEN.
 
 ### CI PR #49 завершён; далее приёмка M8
 

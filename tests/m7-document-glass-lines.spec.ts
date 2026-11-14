@@ -13,11 +13,11 @@ function changedPixels(before: PNG, after: PNG, rect: {x:number;y:number;width:n
   return count
 }
 
-test('DEV line trial refracts the real FOSInput border at both sides of the document popup', async ({ page, browserName }, info) => {
+test('Pilot refracts the real FOSInput border at both sides of the document popup', async ({ page, browserName }, info) => {
   test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
   await page.setViewportSize({ width: 1440, height: 1000 })
-  await page.goto('/tests/fixtures/document-glass-pilot.html?pattern=fields&documentGlass=pilot&documentOptics=lines')
+  await page.goto('/tests/fixtures/document-glass-pilot.html?pattern=fields&documentGlass=pilot')
   await expect(page.locator('.fos-document-shell')).toHaveAttribute('data-material-ready', 'true')
   await page.evaluate(() => document.fonts.ready)
   const viewport = (await page.locator('.fos-document-viewport').boundingBox())!
@@ -39,11 +39,11 @@ test('DEV line trial refracts the real FOSInput border at both sides of the docu
   await info.attach('line-trial-pixels', { body: JSON.stringify(results), contentType: 'application/json' })
 })
 
-test('DEV line trial carries date and signed-document row borders through the real order screen', async ({ page, browserName }, info) => {
+test('Pilot carries date and signed-document row borders through the real order screen', async ({ page, browserName }, info) => {
   test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
   await page.setViewportSize({ width: 1440, height: 1000 })
-  await page.goto('/?view=client-orders&documentGlass=pilot&documentOptics=lines')
+  await page.goto('/?view=client-orders&documentGlass=pilot')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByLabel('Выбрать подписной бланк', { exact: true }).setInputFiles({ name: 'synthetic.csv', mimeType: 'text/csv', buffer: Buffer.from('a,b\n1,2\n') })
   await page.getByRole('button', { name: /Открыть документ Файл synthetic/ }).click()
@@ -72,11 +72,11 @@ test('DEV line trial carries date and signed-document row borders through the re
   await info.attach('real-order-line-pixels', { body: JSON.stringify(results), contentType: 'application/json' })
 })
 
-test('DEV fill trial carries the normal grey FOSInput background through both glass rims', async ({ page, browserName }, info) => {
+test('Latest carries the normal grey FOSInput background through both glass rims', async ({ page, browserName }, info) => {
   test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
   await page.setViewportSize({ width: 1440, height: 1000 })
-  await page.goto('/tests/fixtures/document-glass-pilot.html?pattern=fields&documentGlass=pilot&documentOptics=fill')
+  await page.goto('/tests/fixtures/document-glass-pilot.html?pattern=fields&documentGlass=latest')
   await expect(page.locator('.fos-document-shell')).toHaveAttribute('data-material-ready', 'true')
   await page.evaluate(() => document.fonts.ready)
   const shell = (await page.locator('.fos-document-shell').boundingBox())!
@@ -100,11 +100,11 @@ test('DEV fill trial carries the normal grey FOSInput background through both gl
   await info.attach('fill-trial-pixels', { body: JSON.stringify(results), contentType: 'application/json' })
 })
 
-test('DEV fill trial shows the real order date fill while keeping its border and the document viewport opaque', async ({ page, browserName }, info) => {
+test('Latest shows the real order date fill and border through its rim', async ({ page, browserName }, info) => {
   test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
   await page.setViewportSize({ width: 1440, height: 1000 })
-  await page.goto('/?view=client-orders&documentGlass=pilot&documentOptics=fill')
+  await page.goto('/?view=client-orders&documentGlass=latest')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByLabel('Выбрать подписной бланк', { exact: true }).setInputFiles({ name: 'synthetic.csv', mimeType: 'text/csv', buffer: Buffer.from('a,b\n1,2\n') })
   await page.getByRole('button', { name: /Открыть документ Файл synthetic/ }).click()
@@ -116,7 +116,7 @@ test('DEV fill trial shows the real order date fill while keeping its border and
   const dateBox = (await date.boundingBox())!
   const fillRect = { x: viewport.x + viewport.width, y: dateBox.y + 5, width: shell.x + shell.width - viewport.x - viewport.width - 2, height: dateBox.height - 10 }
   await expect(date).toHaveCSS('background-color', 'rgb(246, 247, 249)')
-  await expect(page.locator('.fos-document-viewport')).toHaveCSS('background-color', 'rgb(250, 251, 252)')
+  await expect(page.locator('.fos-document-viewport')).toHaveCSS('background-color', 'rgba(250, 251, 252, 0.88)')
   const baseline = PNG.sync.read(await page.screenshot({ path: info.outputPath('real-order-fill.png') }))
   await date.evaluate(node => { node.style.backgroundColor = 'white' })
   const withoutGrey = PNG.sync.read(await page.screenshot())

@@ -2,9 +2,15 @@
 
 Обновлено 14.11.2026. Начать с [состояния](PROJECT_STATE.md), [очереди](DELIVERY_PLAN.md) и [решений](DECISIONS.md); здесь только сведения для продолжения.
 
-## Основные прогрессы
+## Сейчас продолжать с этого
 
-Screenshot_7 / уточнение Owner: **вариант с линиями сохранён**, в том же тестовом дубле добавлен `documentOptics=fill` без множителя `brightness(1.05)`. Он проявляет светло-серую заливку FOSInput в обеих боковых гранях и поле даты на реальном заказе справа; обводки сохраняются. [Original / Lines / Fill и PDF](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html), [причина и тесты](UI_UNIFICATION_2026-11-13.md#documentpreview-физика-стекла-и-светлая-заливка-полей--аудит-14112026). RED→GREEN2/2, совместный Glass15/15, build/optics/production isolation PASS. Следующий шаг: Owner visual по реальному заказу; original/frozen, production и merge OPEN.
+DocumentPreview в PR #49 остаётся DEV-пилотом. Для приёмки доступны только `documentGlass=pilot` и `documentGlass=latest` на [сравнительном стенде](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html); открыть реальный заказ и CSV/PDF можно по ссылкам на нём. Старые query-варианты `documentOptics`/`documentPanel` удалены из приложения. Последняя версия сохраняет физическое SVG-смещение по видимому краю; на настоящих FOSInput проверена разница кадров с ним и без него слева и справа. Для CSV панель сообщения компактная и полупрозрачная; PDF-страницы непрозрачны. Chromium19/19, build, frozen optics, production isolation PASS. Production по-прежнему использует original. Следующее действие — Owner visual; перенос в frozen источник и merge OPEN. [Текущий аудит](UI_UNIFICATION_2026-11-13.md#documentpreview--текущий-dev-кандидат-14112026).
+
+## Исторические пробы и другие поставки
+
+Следующие абзацы описывают прежние промежуточные версии и результаты; ссылки с удалёнными query-параметрами не задают текущий DEV-режим.
+
+Screenshot_7 / уточнение Owner: **вариант с линиями сохранён**, в том же тестовом дубле добавлен `documentOptics=fill` без множителя `brightness(1.05)`. Он проявляет светло-серую заливку FOSInput в обеих боковых гранях и поле даты на реальном заказе справа; обводки сохраняются. [Pilot / последняя версия и PDF](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html), [причина и тесты](UI_UNIFICATION_2026-11-13.md#documentpreview-физика-стекла-и-светлая-заливка-полей--аудит-14112026). RED→GREEN2/2, совместный Glass15/15, build/optics/production isolation PASS. Следующий шаг: Owner visual по реальному заказу; original/frozen, production и merge OPEN.
 
 Последнее уточнение Owner по Screenshot_5/6: нужна видимая **штатная линия** `input` и строки документа через обе боковые грани. Прежние 60/75/85% панели меняли фон, но не выводили обводку. В той же DEV-копии новый `documentGlass=pilot&documentOptics=lines` уменьшает blur внешней линзы5→0,5px и отдельно размывает только области заголовка/действий для читаемости. На настоящем заказе изолированный вклад обводки даты38px справа, строки50px слева/38px справа; [кадры, сравнение и точный предел](UI_UNIFICATION_2026-11-13.md#documentpreview-тонкие-линии-настоящих-полей--dev-проба-14112026) на [стенде](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html). RED→GREEN, новые2/2, совместные13/13, build/optics/production isolation PASS. Визуально текст за узкой полосой резче; **Owner visual OPEN**, Firefox/WebKit SVG-refraction не поддерживают, перенос в frozen оригинал/merge не выполнялся.
 
