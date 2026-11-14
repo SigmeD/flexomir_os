@@ -8,6 +8,12 @@
 
 U08: причина прежних шести Select snapshot FAIL найдена и воспроизведена. Эталоны от PR #29 сохранили движущуюся линзу в закрытом popup; принятый PR #37 убрал её. Невидимый backdrop/SVG слой влиял на растеризацию окружающего текста. В `9a0603c` обновлены только восемь устаревших closed/focus PNG; шесть open не менялись. Исходные14 изображений и SHA сохранены. Полный прогон998:990PASS/8SKIP/0FAIL; целевые38/38, motion/material24/24, touch4/4 и независимый QA PASS. `403f06f` сохраняет trace/PNG первого FAIL при retries0; diagnostic self-check проверен отдельно. Первый единичный timeout сохранён в истории, его причина не объявлена исправленной. [Подробная причинная проверка](#u08-причина-прежних-select-snapshot-fail).
 
+## Продолжение CI · 14.11.2026
+
+На head `103a55915ef7747c223c43fb8cb4942ab29644c0` восемь checks завершились SUCCESS, M7 — CANCELLED. GitHub annotation run [43526796318](https://github.com/SigmeD/flexomir_os/actions/runs/43526796318) подтверждает причину: `The job has exceeded the maximum execution time of 25m0s`. До остановки прошли M7 273/273, popup 35/35, typography 32/32, reaudit 128/128, spacing 48/48, neutral actions 36/36 и Plus motion 54 PASS / 2 SKIP. ButtonRoot прерван, next-scope не запускался. Это инфраструктурный лимит всей последовательности, не доказательство падения теста.
+
+Минимальное изменение: только общий M7 job timeout 25 → 35 минут. Команды, workers, индивидуальные таймауты, assertions, runner image и artifact upload сохранены. Приложение, Figma и frozen не меняются. Codex выполняет новый полный M7 CI; результат до его завершения OPEN. Затем — синхронизация фактов в LIVE docs и Drive. Полная M8/D09, устройства/A11y и merge остаются отдельными gates; сроки Owner не назначены.
+
 ## Источники и база
 
 - [Issue #21](https://github.com/SigmeD/flexomir_os/issues/21), [Frontend / Читать сначала](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit?tab=t.aiwyg425dkrn), [CMP](https://docs.google.com/document/d/15MSDck4Ktrjn34xiWvFhkF77VpbM1DJZUvdKQ-Iu84Q/edit?tab=t.0), актуальные первые вкладки клиентского статуса и инструкции агенту, SRS прочитаны.
