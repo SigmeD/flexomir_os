@@ -4,6 +4,8 @@
 
 ## Карта Figma → React → потребители
 
+Дополнение DocumentPreview: `DocumentPreviewDialog` сохраняет `FosMaterialSurface` и сплошной `.fos-document-viewport`; DEV `documentGlass=pilot` использует прежний тестовый дубль. `tests/fixtures/document-glass-pilot.tsx?pattern=fields` добавляет **реальные FOSInput только для диагностики** левой/правой прозрачных граней и перекрытой внутренней области. Нового production компонента или общего визуального варианта для PDF не создано; [геометрия и доказательства](UI_UNIFICATION_2026-11-13.md#documentpreview-реальные-поля-под-стеклом--14112026), Owner OPEN.
+
 U03/U04 приняты Owner13.11 ответом «принято продолжай», на headfbd88ce CI3/3SUCCESS. U05 implemented app/tests c9d70e6: ClientRow1189:984 / OrderRow685:195 / LayoutRow1313:2182 / Support → FosSummaryRow + FosSummaryRowCopy (CREATE minimal presentation; подходящего shared root не было). REUSE FosButtonRoot и ArtworkThumbnail. CompanyRow/OrderCard/LayoutRow/SupportTicketRow сохраняют props/data/handlers/IDs; Геометрия density compact/regular, surface flat/card и static Order сохранена; интерактивная подсветка единая по Orders. Старые surface/copy/title/meta/state CSS-копии удалены, compatibility classes сохранены. U06 pilot принят Owner; FosMaterialSurface теперь объединяет DocumentPreview, Sidebar, segment filters, Action/Header/Plus, popup shell, Account footer, Date cell и demo panel. Public optical/style overrides закрыты; только navigation имеет top/travel/observer. Frozen Rows и optics lab — KEEP. [Контракт и текущий перенос](UI_UNIFICATION_2026-11-13.md#u06-перенос-семейств-после-приёмки-пилота).
 
 | Мастер / источник | React и props/states | Потребители | Решение / контракт |
