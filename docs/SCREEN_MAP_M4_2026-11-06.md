@@ -1,6 +1,6 @@
 # Flexomir OS — экраны и переходы
 
-Обновлено 13.11.2026. Реализация — React на синтетических данных; backend-ready и полная visual acceptance не присвоены. [Статус](PROJECT_STATE.md), [компоненты](COMPONENT_REGISTRY_2026-11-06.md), [решения](DECISIONS.md).
+Назначение: действующая карта экранов и переходов React на синтетических данных. Ответственный: Codex/frontend. Статус: рабочая карта, без backend-ready и полной visual acceptance. Содержательная проверка: 14.11.2026. [Статус продукта](PROJECT_STATE.md), [компоненты](COMPONENT_REGISTRY_2026-11-06.md), [решения](DECISIONS.md).
 
 ## Действующие композиции
 

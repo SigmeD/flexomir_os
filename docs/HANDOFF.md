@@ -1,6 +1,6 @@
 # Flexomir OS — передача работы
 
-Ответственный: Codex/frontend. Актуализировано 14.11.2026. Начать с [состояния](PROJECT_STATE.md), [очереди](DELIVERY_PLAN.md), [решений](DECISIONS.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit?tab=t.aiwyg425dkrn).
+Назначение: короткая передача следующей сессии. Ответственный: Codex/frontend. Статус: актуальный handoff. Содержательная проверка: 14.11.2026. Начать с [состояния](PROJECT_STATE.md), [очереди](DELIVERY_PLAN.md), [решений](DECISIONS.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit?tab=t.aiwyg425dkrn).
 
 ## Продолжить с этого
 
