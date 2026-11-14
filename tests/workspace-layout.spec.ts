@@ -223,3 +223,26 @@ test('order upload zones and both date fields use the shared form column width',
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
   }
 })
+
+test('item form three-column rows keep the same column width on desktop and tablet', async ({ page }) => {
+  for (const width of [768, 1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/?view=client-orders')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
+    const production = await page.locator('.fos-item-form__production > *').evaluateAll(nodes => nodes.map(node => {
+      const { x, width } = node.getBoundingClientRect()
+      return { x, width }
+    }))
+    const dimensions = await page.locator('.fos-item-form__dimensions > *').evaluateAll(nodes => nodes.map(node => {
+      const { x, width } = node.getBoundingClientRect()
+      return { x, width }
+    }))
+    expect(production).toHaveLength(3)
+    expect(dimensions).toHaveLength(3)
+    for (let column = 0; column < 3; column++) {
+      expect(Math.abs(production[column].x - dimensions[column].x), `column ${column + 1} left at ${width}px`).toBeLessThanOrEqual(1)
+      expect(Math.abs(production[column].width - dimensions[column].width), `column ${column + 1} width at ${width}px`).toBeLessThanOrEqual(1)
+    }
+  }
+})

@@ -42,7 +42,7 @@ test('Pilot refracts the real FOSInput border at both sides of the document popu
 test('Pilot carries date and signed-document row borders through the real order screen', async ({ page, browserName }, info) => {
   test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
-  await page.setViewportSize({ width: 1440, height: 1000 })
+  await page.setViewportSize({ width: 1920, height: 1000 })
   await page.goto('/?view=client-orders&documentGlass=pilot')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByLabel('Выбрать подписной бланк', { exact: true }).setInputFiles({ name: 'synthetic.csv', mimeType: 'text/csv', buffer: Buffer.from('a,b\n1,2\n') })
