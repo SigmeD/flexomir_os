@@ -22,6 +22,12 @@
 .fos-document-dialog[data-document-glass=pilot][data-document-panel="75"] .fos-document-viewport { background-color: rgb(250 251 252 / .75); }
 .fos-document-dialog[data-document-glass=pilot][data-document-panel="85"] .fos-document-viewport { background-color: rgb(250 251 252 / .85); }
 
+/* DEV line trial: preserve legibility where the popup title and actions sit. */
+.fos-document-dialog[data-document-glass=pilot] .fos-document-shell[data-document-optics=lines] .fos-document-content header,
+.fos-document-dialog[data-document-glass=pilot] .fos-document-shell[data-document-optics=lines] .fos-document-content footer {
+  backdrop-filter: blur(5px);
+}
+
 @media (forced-colors: active) {
   .fos-document-dialog[data-document-glass=pilot] .fos-document-shell {
     background: Canvas;

@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:,">
-<title>DocumentPreview — Original, Pilot и прозрачность панели</title>
+<title>DocumentPreview — Original и DEV-кандидаты</title>
 <style>
 body{margin:0;font:15px/1.5 system-ui;background:#f5f7fa;color:#273343}
 header{padding:16px 24px;background:white;border-bottom:1px solid #d6d9e0}
@@ -23,7 +23,7 @@ iframe{width:100%;height:1000px;border:0;background:white}
 </style>
 <header>
   <h1>DocumentPreview · тестовый дубль</h1>
-  <p>Оригинал сохранён. Текущий пилот исправляет край SVG и световой контур. Новые DEV-варианты меняют только фон внутренней панели: 60%, 75% или 85% непрозрачности. Для визуального сравнения выделен 75%; штатные обводка и скругление поля пока не различаются, решение Owner остаётся открытым.</p>
+  <p>Оригинал сохранён. Текущий пилот исправляет край SVG и световой контур. DEV-варианты панели проверяют 60%, 75% и 85%. Отдельный DEV-вариант «Линии» уменьшает размытие внешней линзы до 0,5 px, чтобы тонкая штатная обводка поля и карточки проходила через стекло. Это кандидат на визуальную проверку, не production.</p>
   <nav>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html">Оригинал</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot">Текущий пилот</a>
@@ -33,10 +33,12 @@ iframe{width:100%;height:1000px;border:0;background:white}
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;pattern=checker">Пилот · четыре стороны</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?pattern=fields">Оригинал · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;pattern=fields">Текущий пилот · настоящие поля</a>
+    <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentOptics=lines&amp;pattern=fields">DEV линии · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentPanel=60&amp;pattern=fields">DEV 60% · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentPanel=75&amp;pattern=fields">DEV 75% · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentPanel=85&amp;pattern=fields">DEV 85% · настоящие поля</a>
     <a href="/?view=client-orders&amp;documentGlass=pilot&amp;documentPanel=75">Открыть настоящий заказ · DEV 75%</a>
+    <a href="/?view=client-orders&amp;documentGlass=pilot&amp;documentOptics=lines">Открыть настоящий заказ · DEV линии</a>
   </nav>
   <p>Ниже — два кадра настоящего экрана заказа с одинаковым файлом и viewport 1440×1000. Нажмите на кадр для полного размера.</p>
 </header>
@@ -46,6 +48,18 @@ iframe{width:100%;height:1000px;border:0;background:white}
     <figure><figcaption>Текущий Pilot · реальный экран</figcaption><a href="/tests/fixtures/document-glass-review/real-candidate-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/real-candidate-1440.png" alt="Текущий тестовый DocumentPreview с ровным световым контуром на том же экране"></a></figure>
   </div>
   <p>Интерактивное сравнение компонента ниже. Переключатели выше сохраняют размер и содержимое окна; Escape закрывает просмотр.</p>
+</section>
+<section class="review" aria-label="DEV-кандидат с видимыми границами полей">
+  <h2>Линии полей через боковые грани · DEV</h2>
+  <p>На настоящем заказе сохранён сплошной фон предпросмотра. Обводка поля даты и строки документа даёт вклад в пиксели стеклянной полосы: справа 38, у строки слева 50 и справа 38. Более слабое размытие делает текст за узкой боковой полосой резче; заголовок и действия имеют отдельное размытие для читаемости. Оценка внешнего вида Owner остаётся открытой.</p>
+  <div class="pairs">
+    <figure><figcaption>Текущий Pilot · 5 px<small>Тонкие границы теряются в размытии</small></figcaption><a href="/tests/fixtures/document-glass-review/dgp-pilot-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/dgp-pilot-1440.png" alt="Текущий тестовый просмотр поверх заказа, тонкие границы полей в стекле неразличимы"></a></figure>
+    <figure><figcaption>DEV линии · 0,5 px<small>Штатные границы поля и карточки проходят через боковую полосу</small></figcaption><a href="/tests/fixtures/document-glass-review/lines-csv-real-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/lines-csv-real-1440.png" alt="DEV-кандидат поверх настоящего заказа: линии поля и карточки видны через боковые грани"></a></figure>
+  </div>
+  <div class="pairs">
+    <figure><figcaption>PDF · исходный Pilot</figcaption><a href="/tests/fixtures/document-glass-review/panel-pdf-original-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/panel-pdf-original-1440.png" alt="Исходный PDF в просмотре"></a></figure>
+    <figure><figcaption>PDF · DEV линии</figcaption><a href="/tests/fixtures/document-glass-review/lines-pdf-real-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/lines-pdf-real-1440.png" alt="PDF остаётся на непрозрачном белом листе в DEV-кандидате"></a></figure>
+  </div>
 </section>
 <section class="review" aria-label="Тестовые варианты прозрачности на настоящем заказе">
   <h2>Внутренняя панель на настоящем экране заказа</h2>
