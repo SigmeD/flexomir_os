@@ -23,7 +23,7 @@ iframe{width:100%;height:1000px;border:0;background:white}
 </style>
 <header>
   <h1>DocumentPreview · тестовый дубль</h1>
-  <p>Оригинал сохранён. Текущий пилот исправляет край SVG и световой контур. DEV-варианты панели проверяют 60%, 75% и 85%. Отдельный DEV-вариант «Линии» уменьшает размытие внешней линзы до 0,5 px, чтобы тонкая штатная обводка поля и карточки проходила через стекло. Это кандидат на визуальную проверку, не production.</p>
+  <p>Оригинал сохранён. Текущий пилот исправляет край SVG и световой контур. DEV-варианты панели проверяют 60%, 75% и 85%. «Линии» уменьшают размытие внешней линзы до 0,5 px. Новый вариант «Заливка» сохраняет эти линии и убирает множитель яркости, который превращал светло-серый фон полей в белый. Это кандидаты на визуальную проверку, не production.</p>
   <nav>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html">Оригинал</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot">Текущий пилот</a>
@@ -34,11 +34,13 @@ iframe{width:100%;height:1000px;border:0;background:white}
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?pattern=fields">Оригинал · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;pattern=fields">Текущий пилот · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentOptics=lines&amp;pattern=fields">DEV линии · настоящие поля</a>
+    <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentOptics=fill&amp;pattern=fields">DEV заливка · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentPanel=60&amp;pattern=fields">DEV 60% · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentPanel=75&amp;pattern=fields">DEV 75% · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentPanel=85&amp;pattern=fields">DEV 85% · настоящие поля</a>
     <a href="/?view=client-orders&amp;documentGlass=pilot&amp;documentPanel=75">Открыть настоящий заказ · DEV 75%</a>
     <a href="/?view=client-orders&amp;documentGlass=pilot&amp;documentOptics=lines">Открыть настоящий заказ · DEV линии</a>
+    <a href="/?view=client-orders&amp;documentGlass=pilot&amp;documentOptics=fill">Открыть настоящий заказ · DEV заливка</a>
   </nav>
   <p>Ниже — два кадра настоящего экрана заказа с одинаковым файлом и viewport 1440×1000. Нажмите на кадр для полного размера.</p>
 </header>
@@ -59,6 +61,19 @@ iframe{width:100%;height:1000px;border:0;background:white}
   <div class="pairs">
     <figure><figcaption>PDF · исходный Pilot</figcaption><a href="/tests/fixtures/document-glass-review/panel-pdf-original-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/panel-pdf-original-1440.png" alt="Исходный PDF в просмотре"></a></figure>
     <figure><figcaption>PDF · DEV линии</figcaption><a href="/tests/fixtures/document-glass-review/lines-pdf-real-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/lines-pdf-real-1440.png" alt="PDF остаётся на непрозрачном белом листе в DEV-кандидате"></a></figure>
+  </div>
+</section>
+<section class="review" aria-label="DEV-кандидат с видимой заливкой полей">
+  <h2>Светло-серый фон полей через стекло · DEV</h2>
+  <p>В реальном заказе меняется только оптическая яркость внешней линзы тестового дубля; фон поля, геометрия окна и непрозрачный предпросмотр прежние. Пиксельная проба настоящего FOSInput подтверждает вклад серого фона в стекло с обеих сторон; на заказе фон поля даты виден в правой полосе, где он действительно находится под окном.</p>
+  <div class="experiments">
+    <figure><figcaption>Original · реальный заказ</figcaption><a href="/tests/fixtures/document-glass-review/dgp-original-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/dgp-original-1440.png" alt="Исходный просмотр поверх настоящего заказа"></a></figure>
+    <figure><figcaption>DEV линии · 0,5 px<small>Светло-серый фон поля теряется после повышения яркости</small></figcaption><a href="/tests/fixtures/document-glass-review/lines-csv-real-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/lines-csv-real-1440.png" alt="Вариант с видимыми линиями, но слабым фоном поля"></a></figure>
+    <figure><figcaption>DEV заливка · яркость 1<small>Линии и фон поля проходят через боковую грань</small></figcaption><a href="/tests/fixtures/document-glass-review/fill-csv-real-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/fill-csv-real-1440.png" alt="Вариант с видимыми линиями и серым фоном поля"></a></figure>
+  </div>
+  <div class="pairs">
+    <figure><figcaption>PDF · DEV линии</figcaption><a href="/tests/fixtures/document-glass-review/lines-pdf-real-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/lines-pdf-real-1440.png" alt="PDF в варианте линий"></a></figure>
+    <figure><figcaption>PDF · DEV заливка<small>Лист и элементы управления остаются непрозрачными</small></figcaption><a href="/tests/fixtures/document-glass-review/fill-pdf-real-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/fill-pdf-real-1440.png" alt="PDF в варианте с видимой заливкой поля"></a></figure>
   </div>
 </section>
 <section class="review" aria-label="Тестовые варианты прозрачности на настоящем заказе">

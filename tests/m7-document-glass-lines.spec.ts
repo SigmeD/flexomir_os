@@ -71,3 +71,62 @@ test('DEV line trial carries date and signed-document row borders through the re
   }
   await info.attach('real-order-line-pixels', { body: JSON.stringify(results), contentType: 'application/json' })
 })
+
+test('DEV fill trial carries the normal grey FOSInput background through both glass rims', async ({ page, browserName }, info) => {
+  test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
+  await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  await page.goto('/tests/fixtures/document-glass-pilot.html?pattern=fields&documentGlass=pilot&documentOptics=fill')
+  await expect(page.locator('.fos-document-shell')).toHaveAttribute('data-material-ready', 'true')
+  await page.evaluate(() => document.fonts.ready)
+  const shell = (await page.locator('.fos-document-shell').boundingBox())!
+  const viewport = (await page.locator('.fos-document-viewport').boundingBox())!
+  const results = []
+  for (const side of ['left', 'right'] as const) {
+    const input = page.locator(`[data-dgp=edge-${side}]`)
+    const box = (await input.boundingBox())!
+    const rect = side === 'left'
+      ? { x: shell.x + 2, y: box.y + 5, width: viewport.x - shell.x - 2, height: box.height - 10 }
+      : { x: viewport.x + viewport.width, y: box.y + 5, width: shell.x + shell.width - viewport.x - viewport.width - 2, height: box.height - 10 }
+    await expect(input).toHaveCSS('background-color', 'rgb(246, 247, 249)')
+    const grey = PNG.sync.read(await page.screenshot({ path: info.outputPath(`fill-${side}.png`) }))
+    await input.evaluate(node => { node.style.backgroundColor = 'white' })
+    const white = PNG.sync.read(await page.screenshot())
+    await input.evaluate(node => { node.style.backgroundColor = '' })
+    const changed = changedPixels(grey, white, rect)
+    results.push({ side, changed })
+    expect(changed, `${side} normal grey fill should affect the visible glass rim`).toBeGreaterThan(100)
+  }
+  await info.attach('fill-trial-pixels', { body: JSON.stringify(results), contentType: 'application/json' })
+})
+
+test('DEV fill trial shows the real order date fill while keeping its border and the document viewport opaque', async ({ page, browserName }, info) => {
+  test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
+  await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  await page.goto('/?view=client-orders&documentGlass=pilot&documentOptics=fill')
+  await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+  await page.getByLabel('Выбрать подписной бланк', { exact: true }).setInputFiles({ name: 'synthetic.csv', mimeType: 'text/csv', buffer: Buffer.from('a,b\n1,2\n') })
+  await page.getByRole('button', { name: /Открыть документ Файл synthetic/ }).click()
+  await expect(page.locator('.fos-document-shell')).toHaveAttribute('data-material-ready', 'true')
+  await page.evaluate(() => document.fonts.ready)
+  const date = page.getByLabel('Согласованный срок', { exact: true }).first()
+  const shell = (await page.locator('.fos-document-shell').boundingBox())!
+  const viewport = (await page.locator('.fos-document-viewport').boundingBox())!
+  const dateBox = (await date.boundingBox())!
+  const fillRect = { x: viewport.x + viewport.width, y: dateBox.y + 5, width: shell.x + shell.width - viewport.x - viewport.width - 2, height: dateBox.height - 10 }
+  await expect(date).toHaveCSS('background-color', 'rgb(246, 247, 249)')
+  await expect(page.locator('.fos-document-viewport')).toHaveCSS('background-color', 'rgb(250, 251, 252)')
+  const baseline = PNG.sync.read(await page.screenshot({ path: info.outputPath('real-order-fill.png') }))
+  await date.evaluate(node => { node.style.backgroundColor = 'white' })
+  const withoutGrey = PNG.sync.read(await page.screenshot())
+  await date.evaluate(node => { node.style.backgroundColor = '' })
+  const fillPixels = changedPixels(baseline, withoutGrey, fillRect)
+  expect(fillPixels, 'real grey date field must affect the visible right rim').toBeGreaterThan(100)
+  await date.evaluate(node => { node.style.borderColor = 'transparent' })
+  const withoutBorder = PNG.sync.read(await page.screenshot())
+  await date.evaluate(node => { node.style.borderColor = '' })
+  const borderPixels = changedPixels(baseline, withoutBorder, { ...fillRect, y: dateBox.y - 2, height: dateBox.height + 4 })
+  expect(borderPixels, 'real date field border remains visible').toBeGreaterThan(5)
+  await info.attach('real-order-fill-pixels', { body: JSON.stringify({ fillPixels, borderPixels }), contentType: 'application/json' })
+})

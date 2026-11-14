@@ -386,6 +386,7 @@ export interface GlassLensProps extends ComponentProps<"div"> {
   radius?: number;
   strength?: number;
   blur?: number;
+  brightness?: number;
   dome?: number;
 }
 
@@ -395,6 +396,7 @@ export function GlassLens({
   radius = 9999,
   strength = 0.55,
   blur = 2,
+  brightness = 1.05,
   dome = 0.15,
   className,
   style,
@@ -420,7 +422,7 @@ export function GlassLens({
   const displace = 8 + strength * 60;
   const backdrop =
     supported && map
-      ? `url(#${filterId}) blur(${blur}px) saturate(1.5) brightness(1.05)`
+      ? `url(#${filterId}) blur(${blur}px) saturate(1.5)${brightness === 1 ? '' : ` brightness(${brightness})`}`
       : `blur(${Math.max(blur, 6)}px) saturate(1.5)`;
 
   const css: CSSProperties = {

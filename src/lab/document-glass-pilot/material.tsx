@@ -10,6 +10,7 @@ export interface FosGlassMaterialProps extends Omit<ComponentProps<'div'>, 'chil
   strength?: number
   radius?: number
   blur?: number
+  brightness?: number
   dome?: number
   lighting?: 'native' | 'sidebar'
   /** Color treatment only; same GlassLens, geometry, refraction and spring.
@@ -42,7 +43,7 @@ const mediaSnapshot = () => `${matchMedia(reducedQuery).matches}:${matchMedia(fo
 
 /** One adapter of Website Glass; all displacement maps and SVG filters stay in the library. */
 export function FosGlassMaterial({
-  children, className, contentClassName, strength = 0.1, radius = 18, blur = 1.5, dome = 0,
+  children, className, contentClassName, strength = 0.1, radius = 18, blur = 1.5, brightness = 1.05, dome = 0,
   lighting = 'sidebar', tone = 'reference', shadow = 'reference', centerOpacity = 0.16, centerColor = '220 240 247', rimWidth = 12,
   motion = 'none', travelY = 0, onTravelFrame,
   style, ...props
@@ -134,7 +135,7 @@ export function FosGlassMaterial({
   }, [tracks, motion, reduced, forced])
 
   // Native strength0 still has scale8. The supported style prop provides a true neutral control.
-  const neutral = canRefract ? `blur(${blur}px) saturate(1.5) brightness(1.05)`
+  const neutral = canRefract ? `blur(${blur}px) saturate(1.5)${brightness === 1 ? '' : ` brightness(${brightness})`}`
     : `blur(${Math.max(blur, 6)}px) saturate(1.5)`
   const opticStyle: CSSProperties = {
     position: 'absolute', top: 0, left: 0, pointerEvents: 'none',
@@ -154,7 +155,7 @@ export function FosGlassMaterial({
     data-travel-target={motion === 'travel' && Number.isFinite(travelY) ? travelY : 0}
     data-lighting={lighting} data-tone={tone} data-motion={motion} data-motion-state={reduced || forced ? 'off' : 'settled'}>
     {!forced && box.width > 0 && box.height > 0 && <GlassLens
-      width={box.width} height={box.height} radius={radius} strength={s} blur={blur} dome={dome}
+      width={box.width} height={box.height} radius={radius} strength={s} blur={blur} brightness={brightness} dome={dome}
       className="fos-glass-optics" style={opticStyle} aria-hidden="true"
     />}
     {children !== undefined && <div className={cn('fos-glass-content', contentClassName)}>{children}</div>}

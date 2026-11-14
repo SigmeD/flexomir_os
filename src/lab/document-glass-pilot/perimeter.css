@@ -24,7 +24,9 @@
 
 /* DEV line trial: preserve legibility where the popup title and actions sit. */
 .fos-document-dialog[data-document-glass=pilot] .fos-document-shell[data-document-optics=lines] .fos-document-content header,
-.fos-document-dialog[data-document-glass=pilot] .fos-document-shell[data-document-optics=lines] .fos-document-content footer {
+.fos-document-dialog[data-document-glass=pilot] .fos-document-shell[data-document-optics=lines] .fos-document-content footer,
+.fos-document-dialog[data-document-glass=pilot] .fos-document-shell[data-document-optics=fill] .fos-document-content header,
+.fos-document-dialog[data-document-glass=pilot] .fos-document-shell[data-document-optics=fill] .fos-document-content footer {
   backdrop-filter: blur(5px);
 }
 
