@@ -5,7 +5,7 @@
 | Этап | Состояние | Следующий шаг и ответственный |
 | --- | --- | --- |
 | M4–M7 | Основные композиции и сквозные сценарии реализованы на fixtures | Использовать существующие компоненты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
-| M8 | Принятые U03/U04 и U06 rollout сохранены; строки, шрифты и Date Field объединены. В DEV DocumentPreview остались только `pilot` и `latest`; Latest визуально принят Owner | [Сравнение на реальном заказе](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html) с CSV/PDF. Минимальный CSS-рефакторинг дал максимальное отличие 3 RGB; 18PASS/6 ожидаемых SKIP, build/optics PASS. Для переноса принятой оптики в общий GlassLens нужно отдельное разрешение на frozen FE11, затем регрессия потребителей. Production и merge отдельно; полная M8/D09 и UA-03/04 OPEN |
+| M8 | Принятые U03/U04 и U06 rollout сохранены; строки, шрифты и Date Field объединены. В DEV DocumentPreview остались только `pilot` и `latest`; Latest визуально принят Owner | [Сравнение на реальном заказе](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html) с CSV/PDF. CSS сокращён без заметного изменения, DEV Lens 314→199 строк с pixel-exact Pilot/Latest; 46PASS/14 ожидаемых SKIP, build/optics PASS. Для переноса принятой оптики в общий GlassLens нужно отдельное разрешение на frozen FE11, затем регрессия потребителей. Production и merge отдельно; полная M8/D09 и UA-03/04 OPEN |
 | M9 | Зависит от готового согласованного API | Алексей: backend/ACL/1С; frontend: подключение клиента и интеграционный QA |
 
 ## Открытая очередь

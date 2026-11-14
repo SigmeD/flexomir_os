@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState, useSyncExternalStore, type ComponentProps, type CSSProperties, type ReactNode } from 'react'
-import { GlassLens, refractionSupported, useHydrated } from './glass'
+import { GlassLens } from './glass'
+import { refractionSupported, useHydrated } from '@/components/ui/glass'
 import { cn } from '@/lib/utils'
 import '@/components/ui/fos-glass-material.css'
 
@@ -54,9 +55,7 @@ export function DocumentGlassMaterial({ children, className, contentClassName, v
     data-travel-target={0} data-lighting="sidebar" data-tone="neutral"
     data-motion="none" data-motion-state={forced ? 'off' : 'settled'}>
     {!forced && box.width > 0 && box.height > 0 && <GlassLens
-      width={box.width} height={box.height} radius={22} strength={.022} blur={.5}
-      brightness={latest ? 1 : 1.05} edgeBand={latest ? 24 : undefined}
-      edgeProfile={latest ? 'tapered' : 'rim'} dome={0}
+      width={box.width} height={box.height} version={version} refract={mode === 'refraction'}
       className="fos-glass-optics"
       style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none', boxShadow: 'none' }}
       aria-hidden="true"
