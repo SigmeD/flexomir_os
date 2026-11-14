@@ -4,6 +4,8 @@
 
 ## Сейчас продолжать с этого
 
+По Screenshot_1/2 Owner указал на суженную рабочую область «Новой позиции» относительно списка. Причина: при общем внешнем `main` у клиентской формы был отступ слева55px против72px списка и внутренние desktop caps1050/1038px; у Detail/Composer аналогичные caps1050/1056px. Теперь все экраны заказа используют одну ось и ширину, а размеры отдельных Date Field и ArtworkSource сохранены. На1920px общий контур x432/width1296, на320px x20/width280; Chromium/Firefox/WebKit без горизонтального overflow. Новый browser contract и visual evidence — в [аудите](UI_UNIFICATION_2026-11-13.md#единая-рабочая-ширина-заказов--14112026). Нужны CI нового head и визуальный ответ Owner; merge отдельно.
+
 По прямому ответу Owner «принято загружай последнюю версию DocumentPreview» принят `Latest` как обычный материал окна в DEV и production build. Адаптер перенесён в `src/components/documents/DocumentGlassMaterial.tsx`; общий `GlassLens`, PDF и modal actions сохранены. Старый `original` и Pilot доступны только по DEV query для сравнения. Production build игнорирует `documentGlass=pilot`: на 1440/1024/768/390/320 он и DEV Latest дали одинаковый кадр окна (0 разных пикселей), скачивание и возврат фокуса прошли. M7: 326 PASS / 14 ожидаемых SKIP / 2 посторонних WebKit FAIL, оба повторены отдельно 2/2 PASS; повтор не доказывает устранение причины. По текущему head проверить CI; PR #49 остаётся draft, полная M8/D09 и merge OPEN. [Rollout и QA](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026).
 
 ## Предыдущий handoff до разрешения переноса

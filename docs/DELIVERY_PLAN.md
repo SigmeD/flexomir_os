@@ -5,7 +5,7 @@
 | Этап | Состояние | Следующий шаг и ответственный |
 | --- | --- | --- |
 | M4–M7 | Основные композиции и сквозные сценарии реализованы на fixtures | Использовать существующие компоненты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
-| M8 | Принятые U03/U04 и U06 rollout сохранены; строки, шрифты и Date Field объединены. По новому решению Owner DocumentPreview Latest включён по умолчанию в DEV и production build; `Pilot`/`original` остаются только DEV-сравнением | Проверить CI текущего head и [rollout](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026). Defaults остальных consumers и FE11 manifest сохранить. Внешняя выкладка, полная M8/D09, UA-03/04 и merge OPEN |
+| M8 | Принятые U03/U04 и U06 rollout сохранены; строки, шрифты и Date Field объединены. DocumentPreview Latest включён по умолчанию. По Screenshot_1/2 рабочая ширина списка, формы позиции, состава и деталей заказа унифицирована в общем `fos-orders-page__main` | Проверить CI текущего head, [контур заказов](UI_UNIFICATION_2026-11-13.md#единая-рабочая-ширина-заказов--14112026) и [DocumentPreview](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026). Defaults Glass/FE11 сохранить. Owner visual нового контура, внешняя выкладка, полная M8/D09, UA-03/04 и merge OPEN |
 | M9 | Зависит от готового согласованного API | Алексей: backend/ACL/1С; frontend: подключение клиента и интеграционный QA |
 
 ## Открытая очередь

@@ -2,6 +2,10 @@
 
 Актуализировано 14.11.2026. Очерёдность работ — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), открытые решения — [DECISIONS](DECISIONS.md).
 
+## Текущая рабочая ширина экранов заказа
+
+По Screenshot_1/2 и прямому замечанию Owner убраны несовпадающие ограничения внутренней ширины формы позиции, состава заказа и деталей. Внешний контейнер уже был общим; на desktop различались левый отступ списка `72px` и клиентской формы `55px`, а внутренние блоки формы ограничивались `1050/1038px`. Теперь список, заголовок, состав, позиция и детали обеих ролей занимают одну рабочую ширину. При окне1920px их контур `x=432`, `width=1296`; при320px `x=20`, `width=280`. Сохранены responsive grid, отдельные размеры Date Field/ArtworkSource и действия. Browser QA и открытая визуальная приёмка — в [контракте](UI_UNIFICATION_2026-11-13.md#единая-рабочая-ширина-заказов--14112026). PR #49 остаётся draft; merge OPEN.
+
 ## Текущий DocumentPreview
 
 Owner принял перенос `Latest` в обычный DocumentPreview ответом «принято загружай последнюю версию DocumentPreview». Теперь `DocumentGlassMaterial` из `src/components/documents` использует общий `GlassLens` по умолчанию в DEV и production build; старый `FosMaterialSurface` для этого окна доступен только через DEV `documentGlass=original`, Pilot — через DEV `documentGlass=pilot`. PDF, действия, фокус и defaults других стеклянных компонентов сохранены. Собранный production совпал с принятым DEV Latest на пяти ширинах 1440/1024/768/390/320 — 0 отличающихся пикселей окна; CSV скачивается, Escape возвращает фокус. M7 дал два сбоя WebKit в других сценариях, отдельный повтор 2/2 PASS; CI текущего head, полная M8/D09 и merge PR #49 OPEN. [Код и QA](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026).

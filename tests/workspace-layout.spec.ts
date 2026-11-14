@@ -157,3 +157,38 @@ test('nested Client and Manager states keep the shared workspace centered throug
     await expectCenteredWorkspace(page, width, 'Manager support form')
   }
 })
+
+test('order list, draft, item editor and detail share one content axis', async ({ page }) => {
+  const rect = async (selector: string) => {
+    const box = await page.locator(selector).first().boundingBox()
+    expect(box, selector).not.toBeNull()
+    return box!
+  }
+  const aligned = async (selector: string, reference: { x: number; width: number }, width: number) => {
+    const box = await rect(selector)
+    expect(Math.abs(box.x - reference.x), `${selector} left at ${width}px`).toBeLessThanOrEqual(1)
+    expect(Math.abs(box.width - reference.width), `${selector} width at ${width}px`).toBeLessThanOrEqual(1)
+  }
+
+  for (const width of [320, 1024, 1440, 1920, 2560]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/?view=client-orders')
+    const clientList = await rect('.fos-orders-page__list')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    await aligned('.fos-page-header__row', clientList, width)
+    await aligned('.fos-order-composer__body', clientList, width)
+    await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
+    await aligned('.fos-item-form__body', clientList, width)
+    await aligned('.fos-item-form__fields', clientList, width)
+
+    await page.goto('/?view=client-orders')
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
+    await aligned('.fos-order-detail__body', clientList, width)
+
+    await page.goto('/?view=manager-orders')
+    const managerList = await rect('.fos-orders-page__list')
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
+    await aligned('.fos-order-detail__body', managerList, width)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
+  }
+})

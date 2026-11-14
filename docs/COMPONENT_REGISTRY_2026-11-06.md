@@ -15,6 +15,7 @@ U03/U04 приняты Owner13.11 ответом «принято продолж
 | Мастер / источник | React и props/states | Потребители | Решение / контракт |
 | --- | --- | --- | --- |
 | DS shell, Drawer1962:3834 / Nav634:511 | AppShell, CabinetPage, CabinetNavigation, SidebarNav, NavigationDrawer; role/items/selection/open | Оба кабинета | REUSE; [Drawer](GL02B_NAVIGATION_DRAWER.md) |
+| Owner Screenshot_1/2 · рабочий контур заказа | `fos-orders-page__main` + PageHeader, OrdersList, OrderComposer, OrderItemForm, OrderDetail; list/draft/item/detail | Client и Manager заказы | REUSE одной оси и ширины; внутренние caps форм сняты по замечанию Owner, отдельные Date Field/ArtworkSource сохраняют размеры. [Замеры и QA](UI_UNIFICATION_2026-11-13.md#единая-рабочая-ширина-заказов--14112026); Figma visual OPEN |
 | Account3042:2806 | AccountMenu; sidebar/header, identity, disabled, open | AppShell Client/Manager | REUSE; [popup](POPUP_HOVER_ROLLOUT_2026-11-11.md) |
 | Header2302:2138, Status Default/Compact | PageHeader; subtitleRole, subtitlePlacement | OrderComposer/Detail, LayoutBrowser | REUSE; status below-title, [rollout](ACCEPTED_UI_ROLLOUT_2026-11-11.md) |
 | HeaderAction1953:4168 / 2173:1425 | HeaderAction; action, disabled, onAction; desktop68 / compact48 | Заголовки обоих кабинетов, Support Save | REUSE, не копировать Save/Add по экранам |

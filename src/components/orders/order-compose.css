@@ -46,7 +46,7 @@
 @media(max-width:1023px) {
   .fos-demo-workspace__show { top: auto; right: auto; bottom: calc(24px + env(safe-area-inset-bottom)); left: 12px; }
 }
-.fos-order-composer__body { max-width: 1050px; margin-top: var(--fos-compose-body-offset, 25px); }
+.fos-order-composer__body { margin-top: var(--fos-compose-body-offset, 25px); }
 .fos-order-composer__section-heading { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 23px; }
 .fos-order-composer[data-order-role=client] .fos-order-composer__section-heading { justify-content: space-between; }
 .fos-order-composer__section-heading > button { flex: none; }
