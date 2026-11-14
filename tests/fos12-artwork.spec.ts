@@ -202,7 +202,8 @@ for (const width of [1440, 1024, 768, 390, 320]) {
     const artwork = source(page), box = artwork.locator('.fos-artwork-source__dropzone')
     const original = await box.boundingBox()
     expect(original!.height).toBe(183)
-    if (width >= 1024) expect(original!.width).toBe(506)
+    const material = await page.locator('.fos-item-form__material').boundingBox()
+    expect(original!.width).toBe(material!.width)
     const upload = artwork.getByRole('button', { name: 'Загрузить', exact: true })
     const actionBox = (await upload.boundingBox())!
     expect(actionBox.width).toBe(164)

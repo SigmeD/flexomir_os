@@ -1,4 +1,4 @@
-.fos-file-dropzone { display: flex; box-sizing: border-box; flex-direction: column; align-items: center; justify-content: center; gap: 16px; width: min(506px,100%); min-height: 183px; padding: 24px 16px; border: 1px dashed var(--fos-v2-semantic-color-border-default,#c4d1e0); border-radius: 12px; background: var(--fos-v2-semantic-color-bg-page,#fafbfc); text-align: center; overflow-wrap: anywhere; font: 400 var(--fos-type-body-size)/var(--fos-type-body-line-height) var(--fos-font-family); }
+.fos-file-dropzone { display: flex; box-sizing: border-box; flex-direction: column; align-items: center; justify-content: center; gap: 16px; width: var(--fos-order-half-column-width, 100%); min-height: 183px; padding: 24px 16px; border: 1px dashed var(--fos-v2-semantic-color-border-default,#c4d1e0); border-radius: 12px; background: var(--fos-v2-semantic-color-bg-page,#fafbfc); text-align: center; overflow-wrap: anywhere; font: 400 var(--fos-type-body-size)/var(--fos-type-body-line-height) var(--fos-font-family); }
 .fos-file-dropzone p { margin: 0; }
 .fos-file-dropzone small { color: var(--fos-v2-semantic-color-text-secondary,#737781); font-size: var(--fos-type-secondary-size); max-width: 180px; }
 .fos-file-dropzone img { width: 20px; height: 20px; }
@@ -23,5 +23,4 @@
 .fos-document-actions { display: flex; align-items: center; gap: 8px; }
 .fos-document-actions > button { width: 44px; min-width: 44px; height: 44px; color: var(--fos-v2-semantic-color-text-brand,#1f3861); }
 .fos-document-content footer a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--fos-v2-semantic-color-text-brand,#1f3861); font: 600 var(--fos-type-body-size)/var(--fos-type-body-line-height) var(--fos-font-family); }
-@media(max-width:1023px) { .fos-file-dropzone { width: min(350px,100%); } }
 @media(max-width:600px) { .fos-document-content { padding: 16px; gap: 12px; } .fos-document-viewport { padding: 8px; } }

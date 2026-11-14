@@ -192,3 +192,34 @@ test('order list, draft, item editor and detail share one content axis', async (
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
   }
 })
+
+test('order upload zones and both date fields use the shared form column width', async ({ page }) => {
+  const box = async (selector: string) => {
+    const result = await page.locator(selector).first().boundingBox()
+    expect(result, selector).not.toBeNull()
+    return result!
+  }
+  const sameColumn = (actual: { x: number; width: number }, expected: { x: number; width: number }, name: string) => {
+    expect(Math.abs(actual.x - expected.x), `${name} left`).toBeLessThanOrEqual(1)
+    expect(Math.abs(actual.width - expected.width), `${name} width`).toBeLessThanOrEqual(1)
+  }
+
+  for (const width of [320, 768, 1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/?view=client-orders')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    const wanted = await box('.fos-order-date-fields > :first-child')
+    const agreed = await box('.fos-order-date-fields > :last-child')
+    const documents = await box('.fos-file-dropzone')
+
+    await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
+    const material = await box('.fos-item-form__material')
+    const quantity = await box('.fos-item-form__quantity')
+    const artwork = await box('.fos-item-form__artwork')
+    sameColumn(artwork, material, `ArtworkSource at ${width}px`)
+    sameColumn(documents, material, `signed documents upload at ${width}px`)
+    sameColumn(wanted, material, `requested date at ${width}px`)
+    sameColumn(agreed, width <= 600 ? material : quantity, `agreed date at ${width}px`)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width)
+  }
+})
