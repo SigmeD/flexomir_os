@@ -1,6 +1,14 @@
 # FosGlassMaterial — исходники и критерии
 
-Работа: 2026-11-03. Реализован общий адаптер и подключён к Select после отдельной проверки оптики. Визуальная приёмка пользователем OPEN.
+Назначение: низкоуровневый материал, исходники и исторические доказательства. Ответственный: Codex/frontend. Актуальная проверка 14.11.2026. Frozen engine FE11-v0.2 принят Owner; текущие consumers и приёмка U06 описаны в [едином контракте](UI_UNIFICATION_2026-11-13.md#u06-перенос-семейств-после-приёмки-пилота). Доказательства от 03.11 ниже — история, не текущая очередь.
+
+## Текущий API потребителей
+
+Экраны и общие адаптеры выбирают назначение через `FosMaterialSurface variant=...`: navigation/reference, segment/reference, popup, account-trigger, date-cell, action/round/quiet/header и demo-panel. Принятый DocumentPreview Latest использует собственный `DocumentGlassMaterial` поверх общего `GlassLens`; прежний `FosMaterialSurface variant=document-preview` доступен только в DEV-сравнении. Optical values/defaults остальных потребителей принадлежат одному внутреннему preset source; публичные `style`, blur/strength/rim и другие optical overrides отсутствуют. Варианты navigation дополнительно принимают только существующие `layoutTop`, `travelY`, `onTravelFrame`. Нативные class/ARIA/data/content сохраняются. Неизвестные и унаследованные имена presets отклоняются до рендера материала.
+
+Прямой `FosGlassMaterial` остаётся внутри semantic adapter, frozen `FosPopupRows` и низкоуровневого `GlassMaterialLab`. Это явные границы ответственности: optics lab проверяет сырой engine API, а frozen источник нельзя менять ради миграции. Физика, формулы и manifest прежние. Подробные props/states/consumers и before/after находятся в едином контракте выше.
+
+Повторный аудит после переноса DocumentPreview подтвердил: `Glass` и `GlassSurface` не имели потребителей в приложении, тестах или скриптах и удалены из `glass.tsx`. Актуальный низкоуровневый оптический API — `GlassLens`; fallback blur уже обрабатывается им и общим материалом. Историческое описание исходного Website Glass ниже сохранено как основание выбора, а не как перечень действующих экспортов.
 
 ## Хранение доказательств
 
@@ -58,9 +66,9 @@ flexomir_glass_2_1_4.html
 BC8356BF2DB31AC242AF039CDB9AFEF5843530A16BC88C6D86FFB22D72F5C958
 ```
 
-## Установленный Website Glass
+## История Website Glass · 03.11.2026
 
-`Glass` даёт автоматическое измерение размера и встроенный фон/кромку; `GlassLens` — отдельную линзу заданного размера со стандартным `style`; `GlassSurface` — frosted fallback без displacement. Все используют существующий `glass.tsx`. Native Canvas строит только карту смещений, не изображение DOM. Источник `feDisplacementMap` — live backdrop.
+На момент выбора исходник содержал `Glass` для автоматического измерения и встроенного фона, `GlassLens` для отдельной линзы заданного размера и `GlassSurface` для frosted fallback. В текущем коде после аудита остаётся только используемый `GlassLens`. Native Canvas строит только карту смещений, не изображение DOM. Источник `feDisplacementMap` — live backdrop.
 
 Выбран `GlassLens`: размер адаптер получает от ResizeObserver; резкое содержимое располагает поверх него отдельным DOM-слотом. Внешний свет/тени задаются общим материалом. Никаких собственных SVG-фильтров, displacement-карт или Canvas-сцен.
 

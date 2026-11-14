@@ -1,26 +1,37 @@
 # Flexomir OS — реестр React-компонентов
 
-Обновлено 13.11.2026. Это карта переиспользования, не журнал поставок. Текущий статус приёмки — в [решениях](DECISIONS.md); полный контракт, variants, Figma refs и проверки — по ссылкам ниже. Карта сверена с существующими путями src; новая визуальная приёмка не проводилась.
+Обновлено 14.11.2026. Это карта переиспользования, не журнал поставок. Текущий статус приёмки — в [решениях](DECISIONS.md); полный контракт, variants, Figma refs и проверки — по ссылкам ниже. Owner принял U06 DocumentPreview pilot; карта ниже отражает последующий перенос с сохранением вида.
+
+Общий `GlassLens` → `FosGlassMaterial` (Sidebar, popup shell/rows, сегменты и другие принятые consumers) + `DocumentGlassMaterial` (DocumentPreview Latest по умолчанию): **REUSE + EXTEND opt-in**. По прямому решению Owner Latest включён в обычном приложении и production build. Новые `brightness`, `edgeBand`, `edgeProfile`, `filterOutset` используются только документным адаптером; прежние defaults сохраняют остальных потребителей. `Pilot` и `original` доступны только в DEV для сравнения. Локальный движок и старый lab-wrapper удалены; `GlassSelect` и `GlassPillTabs` сохраняют пары TSX/CSS как поведение и стили. Merge и полная M8-приёмка OPEN. [Решение и QA](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026).
+
+Повторная проверка импортов: старые экспорты `Glass` и `GlassSurface` не имели потребителей в `src`, `tests` и `scripts`; они удалены. Действующая точка повторного использования оптики — `GlassLens`. Названия тестов Pilot уточнены; проверки игнорирования снятых параметров `documentPanel`/`documentOptics` сохранены как отрицательный контракт.
 
 ## Карта Figma → React → потребители
+
+Дополнение DocumentPreview 14.11: `DocumentPreviewDialog` использует `DocumentGlassMaterial` и общий `GlassLens` с узким профилем Latest; DEV `documentGlass=pilot` сохраняет предыдущую широкую карту, `documentGlass=original` выбирает старый `FosMaterialSurface` только для сравнения. В собранном приложении любой query сохраняет Latest. Внутренняя панель и PDF непрозрачны; имя файла имеет размытую подложку по ширине текста. PDF canvas, текст и controls сохранены. Меню, фильтры и select используют прежние общие компоненты. [Карта и QA](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026).
+
+U03/U04 приняты Owner13.11 ответом «принято продолжай», на headfbd88ce CI3/3SUCCESS. U05 implemented app/tests c9d70e6: ClientRow1189:984 / OrderRow685:195 / LayoutRow1313:2182 / Support → FosSummaryRow + FosSummaryRowCopy (CREATE minimal presentation; подходящего shared root не было). REUSE FosButtonRoot и ArtworkThumbnail. CompanyRow/OrderCard/LayoutRow/SupportTicketRow сохраняют props/data/handlers/IDs; Геометрия density compact/regular, surface flat/card и static Order сохранена; интерактивная подсветка единая по Orders. Старые surface/copy/title/meta/state CSS-копии удалены, compatibility classes сохранены. U06 pilot принят Owner; FosMaterialSurface теперь объединяет DocumentPreview, Sidebar, segment filters, Action/Header/Plus, popup shell, Account footer, Date cell и demo panel. Public optical/style overrides закрыты; только navigation имеет top/travel/observer. Frozen Rows и optics lab — KEEP. [Контракт и текущий перенос](UI_UNIFICATION_2026-11-13.md#u06-перенос-семейств-после-приёмки-пилота).
 
 | Мастер / источник | React и props/states | Потребители | Решение / контракт |
 | --- | --- | --- | --- |
 | DS shell, Drawer1962:3834 / Nav634:511 | AppShell, CabinetPage, CabinetNavigation, SidebarNav, NavigationDrawer; role/items/selection/open | Оба кабинета | REUSE; [Drawer](GL02B_NAVIGATION_DRAWER.md) |
+| Owner Screenshot_1/2 · рабочий контур заказа | `fos-orders-page__main` + PageHeader, OrdersList, OrderComposer, OrderItemForm, OrderDetail; list/draft/item/detail | Client и Manager заказы | REUSE одной оси и ширины; внутренние caps форм сняты по замечанию Owner, отдельные Date Field/ArtworkSource сохраняют размеры. [Замеры и QA](UI_UNIFICATION_2026-11-13.md#единая-рабочая-ширина-заказов--14112026); Figma visual OPEN |
 | Account3042:2806 | AccountMenu; sidebar/header, identity, disabled, open | AppShell Client/Manager | REUSE; [popup](POPUP_HOVER_ROLLOUT_2026-11-11.md) |
 | Header2302:2138, Status Default/Compact | PageHeader; subtitleRole, subtitlePlacement | OrderComposer/Detail, LayoutBrowser | REUSE; status below-title, [rollout](ACCEPTED_UI_ROLLOUT_2026-11-11.md) |
 | HeaderAction1953:4168 / 2173:1425 | HeaderAction; action, disabled, onAction; desktop68 / compact48 | Заголовки обоих кабинетов, Support Save | REUSE, не копировать Save/Add по экранам |
 | Action835:259 / SectionAdd1986:774 | FosButtonRoot → FOSAction/FosActionSurface; hierarchy/size/shape, disabled, press | Все действия; SectionAddItem, HeaderAction | REUSE; [кнопки](FOS08_09_REPORT_2026-11-10.md) |
 | More1914:650/655/668 | OverflowMenu → FosPopup/Surface/Rows; items/rights/open, context point, keyboard/focus/Esc | More, Account, Select, message context | REUSE; [hover](POPUP_HOVER_ROLLOUT_2026-11-11.md), [CRUD](COMM_DOCS_2026-11-12.md) |
 | Select1148:311/292 | FOSSelect/FOSSelectPopup, GlassSelect; value/onChange, emptyIsPlaceholder, disabled/error | Формы, фильтры, компания, shape/material | REUSE; [placeholder](SELECT_PLACEHOLDER_2026-11-11.md) |
-| Date Field1169:437/383/433 | FOSDatePicker, FOSDateField, OrderDateFields; controlled value, raw draft/validity, readonly | Composer/Detail Client/Manager | REUSE; [даты](FOS07_DATEPICKER_PILOT_2026-11-11.md) |
+| Date Field1169:437/383/433 | FOSDatePicker(editable/readonly), OrderDateFields; controlled ISO value, raw draft/validity, formatted display | Composer/Detail Client/Manager | REUSE одного display contract; FOSDateField остаётся только в lab/native comparison. [Readonly-аудит](FOS07_DATEPICKER_PILOT_2026-11-11.md#повторный-аудит-readonly-полей--14112026) |
 | GL03 / DS status controls | GlassPillTabs; selection/filter | Списки заказов Client/Manager | REUSE; [GL03](GL03_Compact_Pill_Tabs_Contract_2026-11-04.md) |
 | Item1791:6130/1782:6025; Printing2315:9747 | OrderItemForm, PrintingMethodControl; dirty/errors/valid, duplicate seed/delete | Client New/Repeat/Edit, Manager New/Edit | EXTEND существующий редактор; [№05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md), [№06](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md) |
+| Item Summary2025:6608 / Owner shared row profile | OrderItemSummary(article), OrderItemRow → FosSummaryRow(overlay,card); disabled/onOpen | Composer Client/Manager; readonly Detail использует один OrderItemSummary | EXTEND общей строки: hover/pressed/focus/token в одном FosSummaryRow; overlay-кнопка сохраняет article и доступное имя. [UA-01 и QA](UI_UNIFICATION_2026-11-13.md#ua-01--строка-позиции-и-общий-fossummaryrow--14112026) |
 | Artwork634:445 | ArtworkSource + LocalFileControl; empty/local/library/unavailable/help, error/ARIA | Все OrderItemForm; picker/native chooser | REUSE; [состояния](FOS12_ARTWORK_STATES_PILOT_2026-11-11.md) |
 | Composer1782:6074 / Review1838:6511 | OrderComposer, OrderDetail, ConfirmDialog; Draft/Review, dirty guard, transfer lock | Полные локальные заказы обеих ролей | REUSE; исторический summary readonly; [№06](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md) |
 | Message3388:3329/3397:3561 | MessageThread(actions/ref.commit/onEditStateChange), MessageComposer(intent/ref.submit/onBusyChange), ConversationPanel(phase/ref.commit/onStateChange) | OrderComposer/Detail, SupportTicketDetail, media pilot | EXTEND; author/readBy/locked, dirty/canSave/busy; [COMM-DOCS](COMM_DOCS_2026-11-12.md) |
 | Принятые Owner gestures | useMessageContext + RecordButton | Shared composer/thread | Gesture adapter, hold300ms, crossfade180ms/reduced-motion; не новый motion engine |
-| Signed documents3441:3719 | SignedDocumentsSection, FileDropzone, DocumentPreviewDialog(onDelete), PdfPages | Composer, readonly Detail | REUSE; header file-add, empty-only dropzone, local ID delete; [документы](COMM_DOCS_2026-11-12.md) |
+| Signed documents3391:3551 / accepted frame3534:5364, row instance3534:5383 / action3441:3719 | SignedDocumentsSection → FosSummaryRow(card) + FosSummaryRowCopy + ArtworkThumbnail, FileDropzone, DocumentPreviewDialog(onDelete), PdfPages | Composer Client/Manager, readonly Detail; DEV glass comparison fixture | REUSE общей строки, copy16/22/600 + metadata12/18/400 + badge10/14/600; document-specific остаются только bounds/wrap. Native disabled/click/focus, fileID и действия сохранены; [причина и QA](UI_UNIFICATION_2026-11-13.md#повторный-аудит-типографики-по-screenshot_3--14112026) |
+| Accepted order section labels3534:5373–5386 / responsive order compositions | FosSectionHeading (`h2` + `--fos-type-section-heading`) | OrderComposer, OrderDetail, SignedDocumentsSection, OrderConversation, ArtworkSource; DEV glass fixture | REUSE одной роли20/28→18/26→16/24, 600/Manrope. Отступы/цвет/действия принадлежат композиции; modal title, ConfirmDialog, Support message и Layout upload имеют отдельные роли; [аудит](UI_UNIFICATION_2026-11-13.md#повторный-аудит-типографики-по-screenshot_3--14112026) |
 | Support CURRENT Client/Manager | SupportScreen, SupportTicketForm/Detail/Row, HeaderAction(save), ConfirmDialog | Свои обращения обеих ролей | REUSE; own list, follow-up, scoped purge; Duplicate OPEN |
 | Layout CURRENT | ClientLayoutsScreen, LayoutBrowser/picker, LayoutUploadPanel | Client, OrderItemForm | REUSE demo UI; real storage/versions/ACL №10/13 OPEN |
 | Companies2634:20095 | ManagerCompaniesScreen, общие OrdersList/карточки | Manager | REUSE fixtures; создание компании не добавлять |
@@ -29,9 +40,16 @@
 
 ## Обязательные правила
 
+Аудит14.11 после SignedDocuments обнаружил отдельный hover OrderItemRow; **UA-01 закрыт** подключением overlay-варианта FosSummaryRow. UA-02 заголовки секций тоже закрыт; UA-03/04 остаются OPEN candidates. Остальные native controls, popup consumers и прямые material exceptions — в [едином аудите](UI_UNIFICATION_2026-11-13.md#дополнительный-аудит-унификации--14112026). Принятый DocumentPreview Latest подключён в обычном приложении через `DocumentGlassMaterial`; код из `src/lab/document-glass-pilot/` перенесён или удалён. [Текущий rollout](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026).
+
+Owner row-highlight correction: все Company/Order/Layout/Support строки Client/Manager используют один enabled hover/pressed/focus профиль Orders в `fos-summary-row.css`. Flat interaction implementation и card-only hover tokens удалены. Geometry/density variants сохраняются; они больше не выбирают подсветку. Новый `m7-row-highlight` контракт проверяет равенство всех consumers и запрет второй реализации. [Решение и доказательства](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders).
+
+Роли `--fos-type-row-title`, `--fos-type-row-meta`, `--fos-type-body`, `--fos-color-row-title` и `--fos-type-section-heading` задаются один раз и применяются через FosSummaryRow/Copy/SectionHeading. Company title и list shell приняты Owner; старый Figma master14/20/400 пока сохраняется. AppShell/CabinetPage/PageHeader и общий padding Orders — REUSE; `:has` выбирает существующий library/list или Support slot без нового effect. Picker/detail/upload — KEEP. [Контракт и QA](UI_UNIFICATION_2026-11-13.md). U06 pilot принят Owner; полная M8 и merge остаются отдельными этапами.
+
 - REUSE → EXTEND → CREATE; один Figma master не размножается на отдельные экранные кнопки/поля/меню. До JSX фиксировать props, состояния и потребителей.
 - Базовые FOSInput/Select/Textarea/Button и нативные элементы внутри них сохраняют доступность; экран собирает общие композиции.
 - Frozen Rows/GlassMaterial/glass-motion не менять без отдельного разрешения. [Manifest](FE11_MOTION_FROZEN_V0_2.json) и hashes сохраняются; hover v0.3 — разрешённый adapter/presence.
+- Закрытый `FosPopup` передаёт undefined visual target: moving lens отсутствует, а выбранное значение сохраняет доменный adapter. Не восстанавливать скрытую линзу ради старых screenshot references. `glass-select-visual.spec.ts` проверяет closed→open→selection→Escape и отрицательный возврат obsolete lens; closed/focus эталоны актуализированы под принятый PR #37, open сохранены. [Причина и доказательства](UI_UNIFICATION_2026-11-13.md#u08-причина-прежних-select-snapshot-fail).
 - Manrope14/18/500 — общая роль menu/navigation/popup; не задавать размеры локально в потребителях. Heading/identity/trigger — отдельные роли.
 - ConfirmDialog, More, фокус/Escape/outside-click и guards едины. Для shared change проверить обе роли, 1440/1024/768/390/320, keyboard/touch/reduced-motion.
 - Fixtures не являются API/ACL/1С. Семантику и доступность действий определяют утверждённые требования и более поздние решения Owner.
@@ -70,7 +88,7 @@ FosButtonRoot — единственное место создания native bu
 
 | Источник → компонент | Решение | Props / состояния / потребители |
 | --- | --- | --- |
-| Owner screenshot: Client New справа от желаемого срока; существующий Manager Date Readonly1169:433 → FOSDateField в OrderDateFields | REUSE | Client OrderComposer: пустое value, readOnly; Client/Manager OrderDetail: существующее detail.agreedDate либо пустое, readOnly. Общие размеры44px / desktop до506px, адаптивная строка |
+| Owner screenshot: Client New справа от желаемого срока; Date Readonly1169:433 → FOSDatePicker readOnly в OrderDateFields | REUSE | Client OrderComposer: пустое value, readOnly; Client/Manager OrderDetail: существующее detail.agreedDate либо пустое, readOnly. Общий формат ДД.ММ.ГГГГ, серый readonly фон, размеры44px / desktop до506px, адаптивная строка |
 
 Это отображение существующей даты и пустого места до согласования; новые данные, статусные события и команды подтверждения не добавляются. Дата повторного/нового заказа не наследует согласованный срок исходника. Предыдущая правка размеров сама по себе поле клиенту не добавляла; эта правка устраняет пропуск.
 
@@ -78,7 +96,7 @@ FosButtonRoot — единственное место создания native bu
 
 | Figma/master → React | Решение | Consumers / контракт |
 | --- | --- | --- |
-| Date Field 1169:437, Default1169:383 / Readonly1169:433 → FOSDateField | REUSE | Общая высота44px, состояния и native date input сохранены |
+| Date Field 1169:437, Default1169:383 / Readonly1169:433 → FOSDatePicker | REUSE | Общая высота44px, формат display; hidden native ISO proxy сохраняет модель, readonly без календарной кнопки. Исторический FOSDateField доступен в lab |
 | Client New1810:12510, Manager draft2569:24648 → OrderDateFields | CREATE layout composition | OrderComposer и OrderDetail обеих ролей; desktop колонки до506px, сужаются вместе с контейнером; tablet две равные колонки или одиночное поле на всю ширину; mobile одна колонка |
 | Client Detail1838:6565 date720px → Owner instruction10.11 | EXTEND shared layout | Новый эталон ширины — поле Client New506px, а не старый readonly frame720px; Figma не изменена |
 

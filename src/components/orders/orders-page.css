@@ -1,9 +1,19 @@
 /* Shared screen composition; accepted Glass controls keep their own surface/motion. */
 .fos-orders-page { --fos-v2-semantic-color-text-secondary: #586d7c; display: flex; min-width: 0; min-height: 100vh; background: #fff; color: #253144; font-family: var(--fos-font-family); }
 .fos-orders-page:has(main[data-view=list]),.fos-orders-page:has(main[data-role=manager]) { background: #fafbfc; }
-.fos-orders-page__main { box-sizing: border-box; min-width: 0; width: 100%; margin-inline: auto; padding: 52px 72px 64px 55px; }
+.fos-orders-page__main { box-sizing: border-box; min-width: 0; width: 100%; margin-inline: auto; padding: 52px 72px 64px; }
 .fos-orders-page__main[data-layout=standard] { max-width: 1440px; }
-@media(min-width:1024px) { .fos-orders-page__main[data-view=list],.fos-orders-page__main[data-role=manager],.fos-orders-page__main.fos-cabinet__main { padding-left: 72px; } }
+/* One list-shell contract, anchored to accepted Client Orders. Nested library
+   state is selected in CSS so its first committed frame uses the correct bounds.
+   Picker/detail/upload retain their separate approved geometry. */
+.fos-orders-page {
+  --fos-list-padding-top: 52px;
+  --fos-list-padding-inline: 72px;
+  --fos-list-padding-bottom: 64px;
+}
+.fos-orders-page__main:is([data-view=list], :has(> .fos-layout-browser[data-mode=library][data-state=list]), :has(> .fos-support-list)) {
+  padding: var(--fos-list-padding-top) var(--fos-list-padding-inline) var(--fos-list-padding-bottom);
+}
 .fos-orders-page__filters { width: 100%; min-width: 0; margin-top: 12px; margin-bottom: 12px; overflow: visible; }
 .fos-orders-page__list { min-width: 0; }
 .fos-orders-page__list-header { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -13,3 +23,4 @@
 @media(max-width:1023px) { .fos-orders-page__main { padding: 26px 20px 48px; } .fos-orders-page__filters { margin-top: 20px; } }
 @media(max-width:600px) { .fos-orders-page__main { padding: 26px 20px 36px; } }
 @media(max-width:1023px) { .fos-orders-page__main:has(.fos-page-header__actions--floating) { padding-bottom: 96px; } }
+@media(max-width:1023px) { .fos-orders-page { --fos-list-padding-top:26px; --fos-list-padding-inline:20px; --fos-list-padding-bottom:96px; } }

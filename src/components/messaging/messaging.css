@@ -33,5 +33,5 @@
 .fos-message-prepared span { min-width: 0; }
 .fos-message-prepared button { flex: none; min-width: 44px; min-height: 44px; }
 .fos-order-conversation { margin-top: var(--fos-v2-semantic-space-section-gap,32px); }
-.fos-order-conversation h2 { font: 600 20px/28px var(--fos-font-family); margin: 0 0 16px; color: var(--fos-v2-semantic-color-text-primary,#1f2228); }
-@media(max-width:600px) { .fos-comments { padding: 20px 16px; } .fos-message { width: 90%; } .fos-order-conversation h2 { font-size: 16px; line-height: 24px; } }
+.fos-order-conversation h2 { margin: 0 0 16px; color: var(--fos-v2-semantic-color-text-primary,#1f2228); }
+@media(max-width:600px) { .fos-comments { padding: 20px 16px; } .fos-message { width: 90%; } }

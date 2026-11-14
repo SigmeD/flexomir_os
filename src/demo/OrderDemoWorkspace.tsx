@@ -17,7 +17,7 @@ import { ClientLayoutsScreen } from '@/screens/layouts/ClientLayoutsScreen'
 import { DEMO_COMPANIES } from './company-fixtures'
 import { DEMO_PROFILE_IDENTITIES, isProfileDraftDirty, useLocalPhotoPreview, type DemoProfileDraft, type DemoProfileIdentity, type ProfileRole } from './profile-model'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
-import { FosGlassMaterial } from '@/components/ui/fos-glass-material'
+import { FosMaterialSurface } from '@/components/ui/fos-material-surface'
 import { resetLocalCommunication } from '@/components/messaging/local-communication'
 
 export interface OrderDemoController {
@@ -219,7 +219,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
   const showPresentation = import.meta.env.DEV && presentationMode
   const showDemoTools = import.meta.env.DEV && demoTools
   return <div className="fos-demo-workspace">
-    {showPresentation && (presentationVisible ? <FosGlassMaterial className="fos-demo-workspace__controls fos-demo-workspace__presentation" role="region" aria-label="Демонстрация кабинета" data-testid="demo-presentation-controls" radius={18} tone="neutral" shadow="menu" centerOpacity={0.76} centerColor="248 250 252">
+    {showPresentation && (presentationVisible ? <FosMaterialSurface className="fos-demo-workspace__controls fos-demo-workspace__presentation" role="region" aria-label="Демонстрация кабинета" data-testid="demo-presentation-controls" variant="demo-panel">
       <div className="fos-demo-workspace__toolbar">
         <div className="fos-demo-workspace__intro"><strong>Демонстрация кабинета</strong><span>Учебные данные · сохраняются только до перезагрузки страницы</span></div>
         <div className="fos-demo-workspace__role" role="group" aria-label="Роль кабинета">
@@ -245,7 +245,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
         <span>Инструменты только для проверки демо</span>
         <FOSAction disabled={editorOpen} onClick={resetDemo}>Сбросить демо</FOSAction>
       </div>}
-    </FosGlassMaterial> : <FosButtonRoot family="utility" ref={presentationTrigger} type="button" className="fos-demo-workspace__show" aria-label="Демо — показать панель демонстрации" onClick={() => setPresentationVisible(true)}>Демо</FosButtonRoot>)}
+    </FosMaterialSurface> : <FosButtonRoot family="utility" ref={presentationTrigger} type="button" className="fos-demo-workspace__show" aria-label="Демо — показать панель демонстрации" onClick={() => setPresentationVisible(true)}>Демо</FosButtonRoot>)}
     <CabinetNavigation.Provider value={{
       ready: currentRole === 'client' ? ['orders', 'artworks', 'support'] : ['orders', 'clients', 'support'],
       navigate: navigateSection,

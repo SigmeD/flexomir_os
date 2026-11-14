@@ -148,7 +148,7 @@ test('C: private draft→submit→same Manager record; readonly contracts, role 
   await setDemoRole(page, 'manager')
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   expect(await detailData(page)).toEqual(client)
-  await expect(page.getByLabel('Желаемый срок')).toHaveValue('2026-12-03')
+  await expect(page.getByLabel('Желаемый срок')).toHaveValue('03.12.2026')
   await expect(page.getByTestId('message-thread')).toContainText('Единый комментарий DEMO')
   await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveAttribute('readonly', '')
   await expect(page.getByRole('button', { name: 'Создать заказ', exact: true })).toBeDisabled()

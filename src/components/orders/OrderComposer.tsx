@@ -2,8 +2,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { canEditDemoItems, canSendDemo, itemSummary, validDemoDate, validDemoItem, validDemoReview, type DemoDraft, type DemoItem } from '@/demo/order-compose-model'
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
+import { FosSectionHeading } from '@/components/ui/fos-section-heading'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
-import { FOSDateField, FOSInput, FOSSelect } from '@/components/ui/fos-controls'
+import { FOSInput, FOSSelect } from '@/components/ui/fos-controls'
 import { FOSDatePicker } from '@/components/ui/fos-date-picker'
 import { displayDate } from '@/components/ui/date-only'
 import { OrderItemForm } from './OrderItemForm'
@@ -128,16 +129,16 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
           <option value="">Выберите компанию</option>{managerCompanies.map(company => <option key={company.id} value={company.id}>{company.name}</option>)}
         </FOSSelect>}
         <section className="fos-order-composer__products" data-empty={value.items.length === 0 || undefined} aria-labelledby="compose-products-title">
-          <div className="fos-order-composer__section-heading"><h2 id="compose-products-title">Продукция</h2>{editable && <SectionAddItem onClick={addItem} />}</div>
+          <div className="fos-order-composer__section-heading"><FosSectionHeading id="compose-products-title">Продукция</FosSectionHeading>{editable && <SectionAddItem onClick={addItem} />}</div>
           {value.items.length ? <ul className="fos-order-detail__items">{value.items.map((item, index) => <li key={item.id} data-item-id={item.id}>
             <OrderItemRow item={itemSummary(item)} position={index + 1} onOpen={() => { returnFocus.current = '[data-item-id="' + item.id + '"] button'; setEditing(item.id) }} />
           </li>)}</ul> : <p className="fos-order-detail__empty">Позиция ещё не добавлена. Добавьте первую позицию.</p>}
         </section>
-        <section className="fos-order-composer__general" aria-labelledby="compose-general-title"><h2 id="compose-general-title">Общие данные заказа</h2>
+        <section className="fos-order-composer__general" aria-labelledby="compose-general-title"><FosSectionHeading id="compose-general-title">Общие данные заказа</FosSectionHeading>
           <OrderDateFields className="fos-order-composer__dates">
             <FOSDatePicker label="Желаемый срок" value={value.requestedDate} inputDraft={requestedDateInput} onInputDraftChange={setRequestedDateInput} onValidityChange={setDateInputValid}
               error={!dateInputValid || !validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onValueChange={requestedDate => save({ ...value, requestedDate })} />
-            {value.ownerRole === 'client' && <FOSDateField label="Согласованный срок" value="" readOnly />}
+            {value.ownerRole === 'client' && <FOSDatePicker label="Согласованный срок" value="" readOnly />}
           </OrderDateFields>
         </section>
         <SignedDocumentsSection key={'docs'+JSON.stringify([value.company,value.id])} context={JSON.stringify(['order',value.company,value.id])} canAdd={editable} />

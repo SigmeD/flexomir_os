@@ -22,6 +22,7 @@
 
 | Область | Документ |
 | --- | --- |
+| Issue #21 · принятые исправления, общие строки и U06 material rollout | [UI unification](UI_UNIFICATION_2026-11-13.md) |
 | Переписка, поддержка, запись, подписные PDF | [COMM-DOCS](COMM_DOCS_2026-11-12.md) |
 | Save и причины блокировки | [№05](FOS05_REPEAT_ITEM_SAVE_2026-11-12.md) |
 | Копирование и удаление позиции: правила, карта, QA | [№06](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md) |
