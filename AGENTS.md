@@ -12,11 +12,11 @@
 - **Сохранность.** Папку «Встречи» и всё её содержимое не трогать. Исходники, вложения, записи, изображения, HTML/ZIP-прототипы, контрольные суммы и доказательства приёмки не удалять, включая старые версии. Работать с генерируемыми документами: объединять повторы, сокращать устаревшие инструкции; удалять только подтверждённые избыточные копии после проверки уникального текста, таблиц, объектов, комментариев и входящих ссылок. Уникальные решения и основания сохранять; действующие требования и защищённые области не переписывать под видом уборки. При переносе сохранять ID/URL, проверять конечную папку и ссылки. Новые результаты не подменять историческими.
 - **Ответственность.** Агент поддерживает структуру и проверяемые факты; Owner/PO утверждают продуктовые решения и приёмку; Алексей подтверждает backend/API-контракты. В финале кратко указать, что обновлено, что проверено и какая синхронизация осталась OPEN.
 
-## CURRENT / 13.11.2026 — COMM-DOCS merged
+## CURRENT / 14.11.2026 — M8/CMP merged
 
-PR #46 MERGED по прямому поручению Owner «сделай merge в main/origin». SHA приложения `479c59188b5ee0b2bda4dd3150b75803cf3d3886`, проверенный PR head `ea3f2b858d661592948c76760be6459c6c2bde28`, CI **6/6 SUCCESS**. Дерево squash совпадает с PR head. Новые post-merge build PASS, smoke **8/8**, bundled production1440/320 **2/2 PASS**, pageerrors=[]. Remote head удалён автоматически, локальная feat/comm-docs-20261112 сохранена; рабочая ветка main. Последующая синхронизация Markdown — только метаданные, не новый код приложения. Duplicate payload, Owner visual/D09, physical devices и production API/read/ACL/1С остаются OPEN. [Отчёт](docs/CONTRACTS_AND_EVIDENCE.md#evidence-comm-docs-2026-11-12), [состояние](docs/PROJECT_STATE.md). Датированные pre-merge записи ниже — история.
+PR #49 MERGED по прямому поручению Owner «давай мердж обновления в origin/main». Squash поставки `858615c10675208568c1e50852b4b3cd6a44a9d3`, проверенный PR head `028c05fe8598a4b548bb33645ffba41d34560b61`, CI **10/10 SUCCESS**. Дерево squash совпадает с PR head; post-merge build PASS, 187 локальных ссылок и 242 якоря без ошибок. Remote head удалён автоматически, локальная ветка сохранена; рабочая ветка `main`. Owner визуально принял показанный заказ; полная M8/D09, физические устройства, Auth/WIP UX, production API/ACL/1С и внешняя выкладка остаются OPEN. [Состояние](docs/PROJECT_STATE.md), [контракты и доказательства](docs/CONTRACTS_AND_EVIDENCE.md). Датированные записи ниже — история решений и действующие правила, не новая очередь.
 
-## CURRENT / 12.11.2026 — №06 merged
+## История / 12.11.2026 — №06 merged
 
 PR #44 слит по прямому поручению Owner «вливай в main/origin». Продуктовый main `6d3fa83e14d1581017ae19a4451ec0181e9d126a`, проверенный PR head `7c5b017228dbef58f7bb85d6211257b1519556f0`, CI7/7SUCCESS. Новые post-merge проверки: build PASS, FOS06 60/60, frozen2/2, production Review4/4. Remote head удалён; локальная ветка сохранена. Из13пунктов10 реализованы и слиты, №11 закрыт без реализации, №10/13 backlog. Полная M8 приёмка, backend/API/ACL/1С, PR #40 и CMP отдельно. [Состояние](docs/PROJECT_STATE.md), [отчёт №06](docs/CONTRACTS_AND_EVIDENCE.md#evidence-fos06-item-actions-delivery-2026-11-12). Датированные SHA ниже — история, не текущая очередь.
 
@@ -26,13 +26,13 @@ PR #31 слит по прямому поручению Owner; продуктов
 
 Датированные SHA и статусы прошлых поставок ниже — исторические факты. Действующие правила, роли, frozen FE11 и Owner-решения сохраняют силу. Краткое состояние — [PROJECT_STATE](docs/PROJECT_STATE.md), порядок дальнейшей работы — [DELIVERY_PLAN](docs/DELIVERY_PLAN.md).
 
-## CURRENT / 10.11.2026 — Owner popup pilot accepted / rollout
+## Принятое решение / 10.11.2026 — Owner popup pilot accepted / rollout
 
 - `navigation/item` и `popup/item` используют одну базовую роль Manrope 14px/18px Medium 500. React source: `--fos-type-menu-item`; алиасы `--fos-type-navigation-item` и `--fos-type-popup-item`. Не дублировать font-size/line-height/font-weight в CSS потребителей и не создавать локальные исключения.
 - Это разрешение на базовую типографику пунктов Sidebar/Drawer/Account/More/GlassSelect, не на изменение утверждённых GlassLens/Motion Engine, optical scale или материалов. Заголовки, подписи, профильные identity/data и trigger typography имеют отдельные роли.
 - Owner принял пилот и action-adapter ответом «да подтверждаю»; разрешены rollout/cleanup и синхронизация затронутых Figma masters в PR #30. Все popup consumers подключаются через `FosPopup`, form fields — через канонический `FOSSelect`. Figma menu role14/18/500 синхронизирована; закрытые field/identity roles сохранены. Это не приёмка всех экранов и не разрешение merge. [Охват, QA и оставшиеся gates](docs/CONTRACTS_AND_EVIDENCE.md#evidence-fe11-popup-reaudit-2026-11-10).
 
-## CURRENT / 09.11.2026 — FE-11 Motion approval and freeze (Owner instruction)
+## Действующее правило / 09.11.2026 — FE-11 Motion approval and freeze (Owner instruction)
 
 - Сначала доработать и показать Motion Engine / GlassLens на тестовом стенде. Перенос в общие Liquid Glass компоненты и подключение каждого типа меню — только после явного подтверждения Owner и с регрессией.
 - Новый сценарий `FLEXOMIR_FE11_NAVIGATION_DRAWER_LENS_SCENARIO_2026-11-09.md` заменяет прежнее popup hover-preview направление: hover/focus не двигают линзу; выбор по click/Enter/Space/tap; оптический scale определяется фактическим пересечением движущейся линзы с подписью.
@@ -40,7 +40,7 @@ PR #31 слит по прямому поручению Owner; продуктов
 - Замороженные Motion Engine, GlassLens, параметры физики/материала, hover/click и типографические трансформации запрещено менять без отдельного разрешения Owner. При дефекте сначала показать первопричину, влияние и предлагаемый fix; не обходить эталон локальными CSS и копиями движка.
 - Owner явно подтвердил v0.2: «да теперь все верно, подтверждаю». Эталон — commit `f527bcb`, статус `OWNER APPROVED / FROZEN`; [freeze manifest](docs/FE11_MOTION_FROZEN_V0_2.json). Контроллер перенесён без изменения формулы и физики в `FosPopupRows`; временный lab-контроллер и render-slot удалены. Для Drawer/Account/GlassSelect выполняются отдельные адаптерные проверки; это не автоматическая приёмка всех экранов. Нативный FOSSelect и исключённый Order More требуют отдельного этапа.
 
-## CURRENT / 06.11.2026 — Git hygiene: ветки, PR и завершение инкремента (Owner APPROVED)
+## Действующее правило / 06.11.2026 — Git hygiene: ветки, PR и завершение инкремента (Owner APPROVED)
 
 - **Одна бизнес-задача / функциональный инкремент = одна рабочая ветка + один PR** с React-кодом, тестами и необходимыми LIVE-документами. Внутри допустимы несколько коротких этапов/коммитов и короткий handoff между ними. Не создавать новую ветку/PR только потому, что добавился экран, компонент или обновился документ. FE-S01 завершён в PR #14 (main 884e78f); действующий FE-S02 / issue #15 — одна ветка `feat/fe-s02-order-compose-flow` и один PR A/B/C. Пожелания встречи 06.11 (CR-REP, подписной, новые реквизиты/файлы/audio/video) отложены до согласования PO/заказчика/Алексея и в FE-S02 не входят. Актуальный номер PR сверять в GitHub/Drive.
 - **Ветка только от свежего `origin/main`** после `fetch` и read-only проверки `git status --short --branch`, `git worktree list`, активных PR и remote. Старую ветку от MERGED PR не переиспользовать и не сливать повторно для «синхронизации».
@@ -52,14 +52,14 @@ PR #31 слит по прямому поручению Owner; продуктов
 - **Один отчёт по инкременту:** `готово / QA / Owner / merged / какие ветки удалены / что осталось`. Документацию синхронизировать в том же PR, а post-merge статус в существующем Drive CURRENT. Не дробить процесс на самостоятельные документационные PR.
 - **Разовая уборка имеющихся исторических веток:** [GIT-01 / issue #13](https://github.com/SigmeD/flexomir_os/issues/13). Пока проверка и удаление не выполнены, НЕ заявлять, что репозиторий очищен.
 
-## CURRENT 06.11.2026 — SDLC от общего к частному и LIVE-документация
+## Действующее правило / 06.11.2026 — SDLC от общего к частному и LIVE-документация
 
 - **Фактическая база:** `origin/main` `89b043f9ae7e70a36a1eea8f5c98cd621e037aa9`; PR #5, #9 и #10 MERGED. PR #9 — первый частичный Manager Orders на React, НЕ готовый весь кабинет. Подробный актуальный порядок M4–M9 — [CURRENT Drive-план](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit).
 - **Новый порядок Owner:** M4 инвентаризация готовых DS/архитектуры/экранов Client+Manager и единая карта → M5 каркасы/основные React-экраны обеих ролей → M6 сквозной демосценарий заказа → M7 оставшиеся подтверждённые MVP-разделы → M8 системная UX/UI-полировка и рефакторинг → M9 интеграционная готовность/общий QA. Минимальная корректность, адаптивность, доступность и регрессия обязательны на каждом этапе; некритичная «оптика» не блокирует охват.
 - **LIVE DOCS / Definition of Done:** изменения в React/UX/архитектуре и их документационные правки — одна поставка. Обнови `docs/PROJECT_STATE.md` (что сделано/сейчас/далее), `docs/DELIVERY_PLAN.md` + [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit) (актуальный этап), `docs/COMPONENT_REGISTRY_2026-11-06.md` (изменённые shared components), `docs/HANDOFF.md` (незакрытое/следующий шаг), `docs/DECISIONS.md` (только подтверждённые решения и OPEN), `docs/SOURCES.md` (если изменены источники). Обновляй только относящееся к задаче; не создавай второй CURRENT-план. Синхронизируй GitHub SHA/PR/CI и Drive после merge. Не помечай ACCEPTED/RELEASED без соответствующего gate.
 - Не меняй утверждённые SRS/Scope/Governance/дизайн-мастера без решения их владельца. Backend, API и 1С — зона Алексея; наша зона только React/frontend и подключение к готовому контрактному API.
 
-## CURRENT / 06.11.2026 — Frontend-only ownership and execution plan (Owner instruction)
+## Действующее правило / 06.11.2026 — Frontend-only ownership and execution plan (Owner instruction)
 
 **Canonical frontend execution plan:** [Drive / 09_FRONTEND_CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit). Before selecting the next frontend task, read its stage, status, owner, gate and blockers; use GitHub for actual code/CI/PR state. This replaces older 04.11 FE-08=TODO and Figma-frame-first descriptions as the ACTIVE work sequence without erasing historical notes.
 
