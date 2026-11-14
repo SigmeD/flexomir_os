@@ -22,7 +22,7 @@ U03/U04 приняты Owner13.11 ответом «принято продолж
 | Composer1782:6074 / Review1838:6511 | OrderComposer, OrderDetail, ConfirmDialog; Draft/Review, dirty guard, transfer lock | Полные локальные заказы обеих ролей | REUSE; исторический summary readonly; [№06](FOS06_ITEM_ACTIONS_DELIVERY_2026-11-12.md) |
 | Message3388:3329/3397:3561 | MessageThread(actions/ref.commit/onEditStateChange), MessageComposer(intent/ref.submit/onBusyChange), ConversationPanel(phase/ref.commit/onStateChange) | OrderComposer/Detail, SupportTicketDetail, media pilot | EXTEND; author/readBy/locked, dirty/canSave/busy; [COMM-DOCS](COMM_DOCS_2026-11-12.md) |
 | Принятые Owner gestures | useMessageContext + RecordButton | Shared composer/thread | Gesture adapter, hold300ms, crossfade180ms/reduced-motion; не новый motion engine |
-| Signed documents3441:3719 | SignedDocumentsSection, FileDropzone, DocumentPreviewDialog(onDelete), PdfPages | Composer, readonly Detail | REUSE; header file-add, empty-only dropzone, local ID delete; [документы](COMM_DOCS_2026-11-12.md) |
+| Signed documents3391:3551 / action3441:3719 | SignedDocumentsSection → FosSummaryRow(surface=card, прежняя document geometry/copy), FileDropzone, DocumentPreviewDialog(onDelete), PdfPages | Composer Client/Manager, readonly Detail | EXTEND подключения общего row: native disabled/click/focus, leading PDF/File и прежнее имя/metadata; hovered/pressed/focus из единого owner. File-add/drop/delete — REUSE; [документы](COMM_DOCS_2026-11-12.md) |
 | Support CURRENT Client/Manager | SupportScreen, SupportTicketForm/Detail/Row, HeaderAction(save), ConfirmDialog | Свои обращения обеих ролей | REUSE; own list, follow-up, scoped purge; Duplicate OPEN |
 | Layout CURRENT | ClientLayoutsScreen, LayoutBrowser/picker, LayoutUploadPanel | Client, OrderItemForm | REUSE demo UI; real storage/versions/ACL №10/13 OPEN |
 | Companies2634:20095 | ManagerCompaniesScreen, общие OrdersList/карточки | Manager | REUSE fixtures; создание компании не добавлять |
@@ -30,6 +30,8 @@ U03/U04 приняты Owner13.11 ответом «принято продолж
 | Auth CURRENT не утверждён | AuthCandidateScreen | Изолированный кандидат | DEFER утверждение UX; реальная auth OPEN |
 
 ## Обязательные правила
+
+Аудит14.11 после SignedDocuments: OrderItemRow пока использует собственный hit-overlay и border-only hover; это **UA-01 GAP**, общий охват строк не завершён. Остальные native controls, popup consumers, прямые material exceptions и кандидаты ролей UA-02–04 — в [едином аудите](UI_UNIFICATION_2026-11-13.md#дополнительный-аудит-унификации--14112026). Временный `src/lab/document-glass-pilot/` — явное исключение по поручению Owner, выбирается только DEV `documentGlass=pilot`; не заменяет approved original до отдельной приёмки.
 
 Owner row-highlight correction: все Company/Order/Layout/Support строки Client/Manager используют один enabled hover/pressed/focus профиль Orders в `fos-summary-row.css`. Flat interaction implementation и card-only hover tokens удалены. Geometry/density variants сохраняются; они больше не выбирают подсветку. Новый `m7-row-highlight` контракт проверяет равенство всех consumers и запрет второй реализации. [Решение и доказательства](UI_UNIFICATION_2026-11-13.md#единая-подсветка-по-эталону-orders).
 
