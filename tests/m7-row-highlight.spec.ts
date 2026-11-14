@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { readFileSync } from 'node:fs'
+import { chooseMore } from './helpers/orders'
 
 const rows = [
   ['client-orders', '[data-order-open="DEMO-003"]'],
@@ -79,6 +80,56 @@ test('highlight has no second surface-specific implementation', () => {
   const css=readFileSync('src/components/ui/fos-summary-row.css','utf8')
   expect(css).not.toMatch(/data-row-surface[^{}]*:(?:hover|active|focus-visible)/)
   expect(css).not.toContain('--fos-row-card-hover-')
+})
+
+test('editable order item uses the shared row interaction while retaining article semantics', async ({ page }) => {
+  for (const role of ['client', 'manager']) {
+    await page.goto(`/?view=${role}-orders&fixture=item-actions-review&demoTools=1`)
+    await page.evaluate(() => document.fonts.ready)
+    const reference = page.locator('[data-order-open="DEMO-003"]')
+    await reference.hover()
+    const expected = await reference.evaluate(node => {
+      const css = getComputedStyle(node)
+      return { background: css.backgroundColor, border: css.borderColor, shadow: css.boxShadow }
+    })
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-REVIEW-001' }).click()
+    await chooseMore(page, 'Изменить')
+    const row = page.locator('.fos-order-item-row').first()
+    const button = row.getByRole('button', { name: 'Изменить позицию 1' })
+    await expect(row.locator('article.fos-order-item-summary h3')).toBeVisible()
+    await expect(button).toBeVisible()
+    for (const width of [1440, 1024, 768, 390, 320]) {
+      await page.setViewportSize({ width, height: 900 })
+      await button.evaluate(node => (node as HTMLElement).blur())
+      await button.hover()
+      const actual = await row.evaluate(node => {
+        const css = getComputedStyle(node)
+        return { background: css.backgroundColor, border: css.borderColor, shadow: css.boxShadow }
+      })
+      expect(actual, `${role} ${width}px hover`).toEqual(expected)
+      await page.mouse.down()
+      await expect(row).toHaveCSS('background-color', 'rgb(235, 240, 247)')
+      await page.mouse.move(0, 0)
+      await page.mouse.up()
+      await button.focus()
+      await page.keyboard.press('Tab')
+      await page.keyboard.press('Shift+Tab')
+      await expect(button).toBeFocused()
+      await expect(row).toHaveCSS('box-shadow', 'rgb(31, 56, 97) 0px 0px 0px 1px inset')
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${role} ${width}px fits`).toBe(true)
+    }
+    await button.evaluate(node => (node as HTMLElement).blur())
+    await page.evaluate(() => document.documentElement.style.setProperty('--fos-row-hover-background', 'rgb(230, 240, 250)'))
+    await button.hover()
+    await expect(row).toHaveCSS('background-color', 'rgb(230, 240, 250)')
+    await button.evaluate(node => (node as HTMLButtonElement).disabled = true)
+    await expect(row).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+    await expect(row).toHaveCSS('box-shadow', 'none')
+    await button.evaluate(node => (node as HTMLButtonElement).disabled = false)
+    await page.evaluate(() => document.documentElement.style.removeProperty('--fos-row-hover-background'))
+    await button.click()
+    await expect(page.getByRole('heading', { level: 1, name: /позици/i })).toBeVisible()
+  }
 })
 
 test('signed document typography follows the shared row title, metadata and badge roles', async ({ page }) => {

@@ -5,7 +5,7 @@
 | Этап | Состояние | Следующий шаг и ответственный |
 | --- | --- | --- |
 | M4–M7 | Основные композиции и сквозные сценарии реализованы на fixtures | Использовать существующие компоненты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
-| M8 | Принятые U03/U04 и U06 rollout сохранены; подписные строки и типографика секций объединены; новый glass duplicate готов | Owner: новый glass candidate и полная M8/D09; Codex: UA-01 ItemRow. Исполнитель ручных устройств/A11y не назначен |
+| M8 | Принятые U03/U04 и U06 rollout сохранены; подписные и item-строки, типографика секций объединены; новый glass duplicate готов | Owner: новый glass candidate и полная M8/D09; UA-03/04 кандидаты аудита. Исполнитель ручных устройств/A11y не назначен |
 | M9 | Зависит от готового согласованного API | Алексей: backend/ACL/1С; frontend: подключение клиента и интеграционный QA |
 
 ## Открытая очередь
@@ -16,7 +16,7 @@
 2. [x] По поручению Owner подготовлен **тестовый дубль** материала DocumentPreview: сначала точная копия0pixel diff, затем расширение SVG filter region только в кандидате. DEV `documentGlass=pilot`; оригинал/frozen и production сохранены. [Переключаемый стенд](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html) готов. **Owner review OPEN**, перенос исправления в оригинал пока не разрешён.
 3. [x] Дополнительный read-only аудит унификации выполнен: фактические consumers → реестр → общие owners → пропуски/дубли/KEEP/OPEN. [Полный факт](UI_UNIFICATION_2026-11-13.md#дополнительный-аудит-унификации--14112026); независимый reviewer подтвердил UA-01 обеих ролей.
 4. [x] По Screenshot_3 проведён повторный аудит шрифтов: SignedDocuments Row+Copy+ArtworkThumbnail, FosSectionHeading в Compose/Detail/Conversation/Signed/Artwork; UA-02 tablet-расхождение закрыто. RED→GREEN, build и focused114/114 PASS; [точная причина](UI_UNIFICATION_2026-11-13.md#повторный-аудит-типографики-по-screenshot_3--14112026). Glass original/frozen не менялись.
-5. [ ] UA-01: OrderItemRow сохраняет отдельный border-only hover. Следующий технический пункт Codex — карта общего presentation/interaction owner с сохранением item semantics и keyboard/disabled, затем исправление/RED/GREEN/регрессия. UA-03/04 пока OPEN candidates, не утверждённый общий redesign; сроки не назначены. Merge отдельно.
+5. [x] UA-01: OrderItemRow Client/Manager использует FosSummaryRow overlay/card вместо локального border-only hover. `article` и нативная кнопка сохранены; RED→GREEN, три движка row30/30, FOS06 15/15, build PASS. [Причина и контракт](UI_UNIFICATION_2026-11-13.md#ua-01--строка-позиции-и-общий-fossummaryrow--14112026). UA-03/04 пока OPEN candidates, не утверждённый общий redesign; сроки не назначены. Merge отдельно.
 
 ### CI PR #49 завершён; далее приёмка M8
 

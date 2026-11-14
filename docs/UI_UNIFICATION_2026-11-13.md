@@ -35,7 +35,7 @@ Owner PNG сохранены в `output/ui-unification/documents-fix/references/
 | Область | Проверенный факт | Результат |
 | --- | --- | --- |
 | Summary rows | Company/Order/Layout/Support и теперь SignedDocuments используют FosSummaryRow; Order static отдельно, общая hover-роль проверена | Исправлено подключение подписных бланков; остальные перечисленные consumers REUSE |
-| Строки позиций | OrderItemRow.tsx:9 и order-item-row.css:6 сохраняют отдельный hit-overlay и border-only hover | **UA-01 / P2 / CONFIRMED GAP**. Client и Manager: фон остаётся белым, тени нет, меняется только border. Orders даёт общий светлый фон и тень. Runtime PNG/скрипт в independent; строка не исправлялась под видом аудита |
+| Строки позиций | Первичный аудит выявил отдельный hit-overlay и border-only hover у OrderItemRow обеих ролей | **UA-01 / FIXED последующим инкрементом ниже**. Общий FosSummaryRow теперь владеет overlay-вариантом и всеми состояниями; article/действие позиции сохранены |
 | Buttons/actions | Единственный native button в product source — FosButtonRoot; Header/Plus/FOSAction используют существующие controllers, actionPressPower и ACTION_PRESS_CONTACT_MS | KEEP. MessageComposer/Record/PreparedMedia — специальные gesture/composition controls; одинаковый master с обычной action не установлен |
 | Поля | Native select — proxy внутри канонического FOSSelect; date proxy внутри DatePicker. Обычные экранные поля используют FOSInput/Select/Textarea | Подтверждённого screen-level Select bypass не найдено. MessageComposer textarea, styled printing radio и Artwork checkbox имеют отдельные контракты; KEEP |
 | Меню | Все шесть product popup consumers проходят через FosPopup; action data/права остаются у адаптеров | REUSE; отдельной подтверждённой реализации меню не найдено |
@@ -44,7 +44,15 @@ Owner PNG сохранены в `output/ui-unification/documents-fix/references/
 | Загрузчики | ArtworkSource/LayoutUploadPanel/FileDropzone переиспользуют LocalFileControl, но сохраняют разные presentation/state contracts и Figma refs | **UA-03 / OPEN candidate** для общей visual основы; не сводить HELP/library/signed semantics к одному сценарию |
 | Profile photo | Скрытый file input внутри ProfileSettingsScreen повторяет часть выбора/сброса LocalFileControl | **UA-04 / OPEN candidate**: проверить перенос без изменения фото validation/focus; это не отдельный видимый file control |
 
-Подтверждённый дополнительный пропуск **UA-01** остаётся открытым. UA-02 закрыт в последующем поручении Owner после проверки Figma и runtime; UA-03/04 остаются кандидатами и не объявлены общим redesign. Владельцы: Codex — следующий технический инкремент; Owner — optical/спорные visual решения; сроки не назначены. Backend/ACL/1С и №10/13 вне этого аудита.
+Подтверждённые пропуски **UA-01/02 закрыты** последующими инкрементами ниже. UA-03/04 остаются кандидатами и не объявлены общим redesign. Owner решает optical/спорные visual вопросы; сроки не назначены. Backend/ACL/1С и №10/13 вне этого аудита.
+
+### UA-01 · строка позиции и общий FosSummaryRow · 14.11.2026
+
+**Источник → компонент → состояния → потребители.** Figma Item Summary `2025:6608` → `OrderItemSummary` как `article` с `h3`/описанием → `OrderItemRow` в Composer Client/Manager. Ранее поверх article лежал отдельный `FosButtonRoot`, а локальный CSS менял только цвет рамки при hover. В отличие от остальных кликабельных строк Orders не было общего фона и тени. Причина — карта U05 включала только четыре типа строк, а последующая проверка добавила SignedDocuments, но не ItemRow. В принятом сценарии вся строка открывает редактор; readonly Detail продолжает использовать сам `OrderItemSummary` без интеракции.
+
+**Исправление.** `FosSummaryRow` расширен вариантом `overlay`: общий root задаёт поверхность и hover/pressed/focus, нативная кнопка поверх строки сохраняет aria-label/disabled/click и семантику article, не вкладывая `article` внутрь `button`. `OrderItemRow` использует этот вариант; его CSS описывает только геометрию/chevron и disabled opacity. Профиль взаимодействия задаётся один раз в `fos-summary-row.css` для прямой кнопки и overlay. Frozen FE11, Glass, backend и readonly Item Summary не затронуты.
+
+**RED → GREEN.** Новый browser test сначала показал прозрачный фон/no shadow вместо Orders hover. После исправления проверяет Client/Manager × 1440/1024/768/390/320: равенство computed hover, общий pressed/focus, shared token propagation, disabled, сохранение article и открытие редактора. Полный `m7-row-highlight` в Chromium/Firefox/WebKit **30/30 PASS**; FOS06 item actions Chromium **15/15 PASS**; build PASS, material optics errors=[]. Независимый reviewer подтвердил **24/24 PASS** с keyboard duplicate/delete, axe и frozen-контрактом; в браузере проверил обе роли на1440/320, Enter/Space, disabled и отсутствие overflow. [Четыре контрольных снимка](../output/ui-unification/documents-fix/independent/ua01-client-1440.png) сохранены локально вместе с остальными размерами. Это focused regression, не полная M8 и не Owner visual acceptance. Новый glass candidate и merge остаются OPEN.
 
 ### Повторный аудит типографики по Screenshot_3 · 14.11.2026
 

@@ -11,8 +11,9 @@ interface Presentation {
   surface?: 'flat' | 'card'
 }
 type SummaryRowProps = Presentation & (
-  | ({ readOnly?: false } & Omit<FosButtonRootProps, 'children' | 'family'>)
-  | ({ readOnly: true } & Omit<ComponentProps<'div'>, 'children'>)
+  | ({ readOnly?: false; overlay?: false } & Omit<FosButtonRootProps, 'children' | 'family'>)
+  | ({ readOnly: true; overlay?: false } & Omit<ComponentProps<'div'>, 'children'>)
+  | ({ readOnly?: false; overlay: true } & Omit<FosButtonRootProps, 'children' | 'family'>)
 )
 
 /** Presentation only. Native attributes/refs pass through; no domain data or state. */
@@ -21,10 +22,14 @@ export function FosSummaryRow(props: SummaryRowProps) {
   const className = ['fos-summary-row', props.className].filter(Boolean).join(' ')
   const content = <>{props.leading}{props.children}{props.trailing ?? <img className="fos-summary-row__chevron" src={chevron} alt="" />}</>
   if (props.readOnly) {
-    const { readOnly, leading, trailing, children, density: _density, surface: _surface, className: _className, ...attrs } = props
+    const { readOnly, overlay: _overlay, leading, trailing, children, density: _density, surface: _surface, className: _className, ...attrs } = props
     return <div {...attrs} className={className} data-summary-row="static" data-row-density={density} data-row-surface={surface}>{content}</div>
   }
-  const { readOnly, leading, trailing, children, density: _density, surface: _surface, className: _className, ...attrs } = props
+  const { readOnly, overlay, leading, trailing, children, density: _density, surface: _surface, className: _className, ...attrs } = props
+  if (overlay) return <div className={className} data-summary-row="interactive" data-row-interaction="overlay" data-row-density={density} data-row-surface={surface}>
+    {content}
+    <FosButtonRoot {...attrs} family="row" className="fos-summary-row__hit" />
+  </div>
   return <FosButtonRoot {...attrs} family="row" className={className} data-summary-row="interactive" data-row-density={density} data-row-surface={surface}>{content}</FosButtonRoot>
 }
 
