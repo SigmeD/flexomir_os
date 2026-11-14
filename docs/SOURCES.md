@@ -4,6 +4,8 @@
 
 ## Как выбирать источник
 
+14.11, прямое решение Owner в текущем диалоге: **DEV PILOT APPROVED / PRODUCTION NOT APPROVED** для полупрозрачного фона DocumentPreview60/75/85% при сохранении непрозрачных PDF-страниц, текста и controls. [Локальный контракт и доказательства](UI_UNIFICATION_2026-11-13.md#documentpreview-dev-пилот-полупрозрачной-панели--14112026). Принятый Figma viewport3534:3630 и frozen FE11 не менялись; Owner visual acceptance новой версии не получена.
+
 14.11, новое [задание Owner по полям под DocumentPreview в PR #49](https://github.com/SigmeD/flexomir_os/pull/49#issuecomment-6876775202) уточняет прежний визуальный критерий: проверять настоящие поля, геометрию и перекрытие, сохранять сплошной PDF viewport до решения Owner. [Новый аудит](UI_UNIFICATION_2026-11-13.md#documentpreview-реальные-поля-под-стеклом--14112026) основан на текущем коде, runtime DOM и собственных кадрах 1440×1000; Figma/Drive canvas этим шагом не изменялись.
 
 14.11, повторный аудит шрифтов: Owner [Screenshot_3](../output/ui-unification/documents-fix/references/owner-typography.png), SHA256 `afde58bac1a92246152a101de4d5a12046513676187eef0bfab0c35c1d9e02a5`; исходник в корне сохранён. Figma read-only: accepted DocumentPreview3534:5364, signed section instance3534:5383 и row3534:5383;3464:3731, OrderRow685:195, order-compose1782:6074. В принятом кадре signed title16/22/600, meta12/18/400, badge10/14/600, heading20/28/600. Внешние документы и Figma canvas не менялись. [Карта, измерения, QA](UI_UNIFICATION_2026-11-13.md#повторный-аудит-типографики-по-screenshot_3--14112026).

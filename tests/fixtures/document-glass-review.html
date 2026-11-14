@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="data:,">
-<title>DocumentPreview — оригинал и тестовый дубль</title>
+<title>DocumentPreview — Original, Pilot и прозрачность панели</title>
 <style>
 body{margin:0;font:15px/1.5 system-ui;background:#f5f7fa;color:#273343}
 header{padding:16px 24px;background:white;border-bottom:1px solid #d6d9e0}
@@ -23,7 +23,7 @@ iframe{width:100%;height:1000px;border:0;background:white}
 </style>
 <header>
   <h1>DocumentPreview · тестовый дубль</h1>
-  <p>Оригинал сохранён. Текущий пилот расширяет область SVG-фильтра и выравнивает световой контур внешней стеклянной оболочки. Проверка настоящих полей ниже отделяет эти результаты от нового визуального критерия.</p>
+  <p>Оригинал сохранён. Текущий пилот исправляет край SVG и световой контур. Новые DEV-варианты меняют только фон внутренней панели: 60%, 75% или 85% непрозрачности. Для визуального сравнения выделен 75%; штатные обводка и скругление поля пока не различаются, решение Owner остаётся открытым.</p>
   <nav>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html">Оригинал</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot">Текущий пилот</a>
@@ -33,6 +33,10 @@ iframe{width:100%;height:1000px;border:0;background:white}
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;pattern=checker">Пилот · четыре стороны</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?pattern=fields">Оригинал · настоящие поля</a>
     <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;pattern=fields">Текущий пилот · настоящие поля</a>
+    <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentPanel=60&amp;pattern=fields">DEV 60% · настоящие поля</a>
+    <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentPanel=75&amp;pattern=fields">DEV 75% · настоящие поля</a>
+    <a target="preview" href="/tests/fixtures/document-glass-pilot.html?documentGlass=pilot&amp;documentPanel=85&amp;pattern=fields">DEV 85% · настоящие поля</a>
+    <a href="/?view=client-orders&amp;documentGlass=pilot&amp;documentPanel=75">Открыть настоящий заказ · DEV 75%</a>
   </nav>
   <p>Ниже — два кадра настоящего экрана заказа с одинаковым файлом и viewport 1440×1000. Нажмите на кадр для полного размера.</p>
 </header>
@@ -43,6 +47,22 @@ iframe{width:100%;height:1000px;border:0;background:white}
   </div>
   <p>Интерактивное сравнение компонента ниже. Переключатели выше сохраняют размер и содержимое окна; Escape закрывает просмотр.</p>
 </section>
+<section class="review" aria-label="Тестовые варианты прозрачности на настоящем заказе">
+  <h2>Внутренняя панель на настоящем экране заказа</h2>
+  <p>Во всех кадрах один и тот же локальный CSV, viewport 1440×1000. Меняется только фон панели; шрифт, кнопки и внешнее стекло прежние. При 60% заметнее фон поля и фоновые надписи; при 85% они слабее. Отдельные пробы настоящего input в Chromium не выявили его штатную линию обводки и скругление ни на одном уровне. Полный визуальный критерий пока не выполнен.</p>
+  <div class="experiments">
+    <figure><figcaption>Original<small>Сплошная панель и исходное стекло</small></figcaption><a href="/tests/fixtures/document-glass-review/dgp-original-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/dgp-original-1440.png" alt="Исходное окно на экране заказа"></a></figure>
+    <figure><figcaption>DEV 60%<small>Фон поля проявляется сильнее, обводка и скругление неразличимы</small></figcaption><a href="/tests/fixtures/document-glass-review/panel-real-60-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/panel-real-60-1440.png" alt="Настоящий заказ под панелью с 60 процентами непрозрачности"></a></figure>
+    <figure><figcaption>Candidate 75%<small>Середина диапазона для проверки; полный критерий не достигнут</small></figcaption><a href="/tests/fixtures/document-glass-review/panel-real-75-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/panel-real-75-1440.png" alt="Настоящий заказ под тестовой панелью с 75 процентами непрозрачности"></a></figure>
+    <figure><figcaption>DEV 85%<small>Меньше фоновых деталей, поверхность поля слабее</small></figcaption><a href="/tests/fixtures/document-glass-review/panel-real-85-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/panel-real-85-1440.png" alt="Настоящий заказ под панелью с 85 процентами непрозрачности"></a></figure>
+  </div>
+  <h2>Настоящий PDF</h2>
+  <p>Лист PDF остаётся белым и непрозрачным, текст читается. На этом экране лист физически закрывает левую границу поля даты, поэтому она не появится даже при прозрачном фоне вокруг листа. Это открытый предел варианта.</p>
+  <div class="pairs">
+    <figure><figcaption>Original PDF</figcaption><a href="/tests/fixtures/document-glass-review/panel-pdf-original-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/panel-pdf-original-1440.png" alt="Исходный просмотр PDF на настоящем экране заказа"></a></figure>
+    <figure><figcaption>Candidate PDF 75%</figcaption><a href="/tests/fixtures/document-glass-review/panel-pdf-75-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/panel-pdf-75-1440.png" alt="Тестовый просмотр PDF с полупрозрачным фоном вокруг непрозрачного листа"></a></figure>
+  </div>
+</section>
 <section class="review" aria-label="Диагностика полей формы под стеклом">
   <h2>Поля формы под DocumentPreview</h2>
   <p>На настоящем экране заказа нижележащее поле даты пересекает только 21 px внешней стеклянной полосы. Его боковые границы находятся под непрозрачным предпросмотром или за пределами окна. Нажмите на кадр для полного размера.</p>
@@ -50,7 +70,7 @@ iframe{width:100%;height:1000px;border:0;background:white}
     <figure><figcaption>Original<small>Исходный фильтр и непрозрачный предпросмотр</small></figcaption><a href="/tests/fixtures/document-glass-review/dgp-original-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/dgp-original-1440.png" alt="Исходное окно поверх настоящих полей заказа"></a></figure>
     <figure><figcaption>Текущий Pilot<small>Исправлен SVG-region и выровнен световой контур</small></figcaption><a href="/tests/fixtures/document-glass-review/dgp-pilot-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/dgp-pilot-1440.png" alt="Текущий тестовый пилот поверх тех же полей"></a></figure>
     <figure><figcaption>Эксперимент: шире внешняя полоса<small>PDF остаётся непрозрачным; видимость поля не выросла — вариант отклонён</small></figcaption><a href="/tests/fixtures/document-glass-review/dgp-solid-rim-experiment-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/dgp-solid-rim-experiment-1440.png" alt="Проба более широкой стеклянной полосы с непрозрачным предпросмотром"></a></figure>
-    <figure><figcaption>Диагностика: фон предпросмотра .92<small>Формы становятся видны под панелью; это не включено в кандидат и требует решения Owner</small></figcaption><a href="/tests/fixtures/document-glass-review/dgp-translucent-diagnostic-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/dgp-translucent-diagnostic-1440.png" alt="Обратимая проба полупрозрачного предпросмотра, не продуктовый вариант"></a></figure>
+    <figure><figcaption>Прежняя диагностика: фон .92<small>Обратимая DOM-проба перед новым DEV-вариантом; не продуктовый код</small></figcaption><a href="/tests/fixtures/document-glass-review/dgp-translucent-diagnostic-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/dgp-translucent-diagnostic-1440.png" alt="Прежняя обратимая проба полупрозрачного предпросмотра"></a></figure>
     <figure><figcaption>Эксперимент: без blur<small>Граница поля виднее, но текст страницы мешает читать окно — вариант отклонён</small></figcaption><a href="/tests/fixtures/document-glass-review/dgp-no-blur-rejected-1440.png" target="_blank"><img src="/tests/fixtures/document-glass-review/dgp-no-blur-rejected-1440.png" alt="Обратимая проба преломления без размытия, признанная нечитаемой"></a></figure>
   </div>
   <p>В переключаемом fixture ниже используются настоящие React-компоненты FOSInput. Их границы специально пересекают внешнюю полосу слева и справа; вторая пара лежит под непрозрачной частью предпросмотра.</p>

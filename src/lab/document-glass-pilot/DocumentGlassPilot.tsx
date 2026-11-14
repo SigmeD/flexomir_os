@@ -4,7 +4,7 @@ import perimeterCss from './perimeter.css?inline'
 
 /** Temporary Owner-requested duplicate. Never selected in a production build.
  * Keep the original material/engine frozen until the Owner accepts this pilot.
- * Candidate tests a wider filter region and balanced document-only lighting. */
+ * Candidate tests a wider filter region, balanced lighting, and DEV-only viewport backgrounds. */
 export default function DocumentGlassPilot(props: Omit<ComponentProps<'div'>,'style'> & {contentClassName?:string; variant:'document-preview'}) {
   const {variant: _variant,...attrs}=props
   return <><style>{perimeterCss}</style><FosGlassMaterial {...attrs} radius={22} blur={5} strength={.022} dome={0}

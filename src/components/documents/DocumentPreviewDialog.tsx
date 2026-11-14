@@ -11,6 +11,9 @@ import './documents.css'
 const PdfPages = lazy(() => import('./PdfPages'))
 export function DocumentPreviewDialog({ file, canDownload, onClose, onDelete }: { file: File; canDownload: boolean; onClose: () => void; onDelete?: () => void }) {
   const useGlassPilot = import.meta.env.DEV && new URLSearchParams(location.search).get('documentGlass') === 'pilot'
+  const panelQuery = useGlassPilot ? new URLSearchParams(location.search).get('documentPanel') : null
+  const panelVariant = panelQuery === '60' || panelQuery === '75' || panelQuery === '85' ? panelQuery : undefined
+  const panelAttr = import.meta.env.DEV && panelVariant ? { 'data-document-panel': panelVariant } : {}
   const Material = useGlassPilot ? DocumentGlassPilot : FosMaterialSurface
   const dialog = useRef<HTMLDialogElement>(null), id = useId()
   const [url, setUrl] = useState(''), [count, setCount] = useState(0)
@@ -22,7 +25,7 @@ export function DocumentPreviewDialog({ file, canDownload, onClose, onDelete }: 
     const next = URL.createObjectURL(file); setUrl(next)
     return () => { URL.revokeObjectURL(next); root?.close(); document.documentElement.style.overflow = oldOverflow; previous?.focus({ preventScroll: true }) }
   }, [file])
-  return createPortal(<dialog ref={dialog} className="fos-document-dialog" data-document-glass={useGlassPilot ? 'pilot' : 'original'} aria-labelledby={id} onCancel={event => { event.preventDefault(); event.stopPropagation(); onClose() }}>
+  return createPortal(<dialog ref={dialog} className="fos-document-dialog" data-document-glass={useGlassPilot ? 'pilot' : 'original'} {...panelAttr} aria-labelledby={id} onCancel={event => { event.preventDefault(); event.stopPropagation(); onClose() }}>
     <Material variant="document-preview" className="fos-document-shell" contentClassName="fos-document-content">
       <header><div><h2 id={id} tabIndex={0} title={file.name}>{file.name}</h2><p>Подписной бланк · выбран локально</p></div><FOSAction hierarchy="tertiary" shape="icon" className="fos-document-close" aria-label="Закрыть" onClick={onClose}><img src={closeIcon} alt="" /></FOSAction></header>
       <div className="fos-document-viewport" tabIndex={0} role="region" aria-label="Страницы документа">

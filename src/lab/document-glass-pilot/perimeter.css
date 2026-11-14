@@ -17,6 +17,11 @@
     linear-gradient(180deg, rgba(255,255,255,.35) 0%, rgba(255,255,255,.08) 5%, transparent 18%, transparent 82%, rgba(255,255,255,.08) 95%, rgba(255,255,255,.35) 100%) !important;
 }
 
+/* DEV-only viewport background trials. PDF canvases and controls retain opacity: 1. */
+.fos-document-dialog[data-document-glass=pilot][data-document-panel="60"] .fos-document-viewport { background-color: rgb(250 251 252 / .60); }
+.fos-document-dialog[data-document-glass=pilot][data-document-panel="75"] .fos-document-viewport { background-color: rgb(250 251 252 / .75); }
+.fos-document-dialog[data-document-glass=pilot][data-document-panel="85"] .fos-document-viewport { background-color: rgb(250 251 252 / .85); }
+
 @media (forced-colors: active) {
   .fos-document-dialog[data-document-glass=pilot] .fos-document-shell {
     background: Canvas;
@@ -24,4 +29,5 @@
     border-color: ButtonText;
     box-shadow: none;
   }
+  .fos-document-dialog[data-document-glass=pilot][data-document-panel] .fos-document-viewport { background-color: Canvas; }
 }
