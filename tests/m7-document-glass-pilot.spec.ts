@@ -29,7 +29,7 @@ test('glass comparison fixture keeps the shared signed-row typography behind the
   }
 })
 
-test('pilot copy keeps the document surface contract and expands only its clipped SVG region',async({page,browserName},info)=>{
+test('pilot copy keeps document geometry and actions while expanding its clipped SVG region',async({page,browserName},info)=>{
   if(browserName==='chromium')await page.addInitScript(()=>Object.defineProperty(navigator,'userAgent',{value:navigator.userAgent.replace('HeadlessChrome','Chrome')}))
   for(const width of [1440,768,390,320]){
     const samples=[]
@@ -49,7 +49,7 @@ test('pilot copy keeps the document surface contract and expands only its clippe
       await page.screenshot({path:info.outputPath(`${pilot?'pilot':'original'}-${width}.png`)})
       await page.keyboard.press('Escape');await expect(opener).toBeFocused()
     }
-    expect(samples[1],`unchanged material/layout ${width}`).toEqual(samples[0])
+    expect(samples[1],`same geometry and optical props ${width}`).toEqual(samples[0])
   }
 })
 
@@ -69,6 +69,95 @@ test('Chromium pilot filters the edge stripes while original stays a reproducibl
   await info.attach('edge-contrast',{body:JSON.stringify(contrasts),contentType:'application/json'})
   expect(contrasts[0],'original still reproduces visible stripes').toBeGreaterThan(40)
   expect(contrasts[1],'candidate no longer exposes sharp edge stripes').toBeLessThan(12)
+})
+
+test('Chromium candidate has balanced left and right material on identical backgrounds',async({page,browserName},info)=>{
+  test.skip(browserName!=='chromium','SVG backdrop refraction is Chromium-only; fallback is checked separately')
+  await page.addInitScript(()=>Object.defineProperty(navigator,'userAgent',{value:navigator.userAgent.replace('HeadlessChrome','Chrome')}))
+  await openPreview(page,true,1440)
+  await page.evaluate(()=>{
+    const pattern=document.createElement('div')
+    pattern.id='equal-edge-pattern'
+    pattern.style.cssText='position:fixed;inset:0;z-index:99999;background:repeating-linear-gradient(0deg,#000 0 1px,#fff 1px 8px);pointer-events:none'
+    document.body.append(pattern)
+  })
+  const box=(await page.locator('.fos-document-shell').boundingBox())!
+  const png=PNG.sync.read(await page.screenshot({path:info.outputPath('candidate-equal-background.png')}))
+  const sample=(x:number)=>{
+    const values=[]
+    for(let y=Math.ceil(box.y+120);y<box.y+box.height-120;y++){
+      const i=(y*png.width+x)*4
+      values.push((png.data[i]+png.data[i+1]+png.data[i+2])/3)
+    }
+    const mean=values.reduce((a,b)=>a+b,0)/values.length
+    const deviation=Math.sqrt(values.reduce((a,b)=>a+(b-mean)**2,0)/values.length)
+    return {mean,deviation}
+  }
+  const left=sample(Math.round(box.x+4)),right=sample(Math.round(box.x+box.width-4))
+  const outsideLeft=sample(Math.round(box.x-10)),outsideRight=sample(Math.round(box.x+box.width+10))
+  await info.attach('equal-background-edge-values',{body:JSON.stringify({left,right,outsideLeft,outsideRight}),contentType:'application/json'})
+  expect(Math.abs(outsideLeft.mean-outsideRight.mean)).toBeLessThan(1)
+  expect(left.deviation).toBeLessThan(3)
+  expect(right.deviation).toBeLessThan(3)
+  expect(Math.abs(left.mean-right.mean),'balanced material brightness on identical backgrounds').toBeLessThanOrEqual(3)
+})
+
+test('Chromium candidate has balanced top and bottom material on identical backgrounds',async({page,browserName},info)=>{
+  test.skip(browserName!=='chromium','SVG backdrop refraction is Chromium-only; fallback is checked separately')
+  await page.addInitScript(()=>Object.defineProperty(navigator,'userAgent',{value:navigator.userAgent.replace('HeadlessChrome','Chrome')}))
+  await openPreview(page,true,1440)
+  await page.evaluate(()=>{
+    const pattern=document.createElement('div')
+    pattern.style.cssText='position:fixed;inset:0;z-index:99999;background:repeating-linear-gradient(90deg,#000 0 1px,#fff 1px 8px);pointer-events:none'
+    document.body.append(pattern)
+  })
+  const box=(await page.locator('.fos-document-shell').boundingBox())!
+  const png=PNG.sync.read(await page.screenshot({path:info.outputPath('candidate-equal-top-bottom.png')}))
+  const sample=(y:number)=>{
+    const values=[]
+    for(let x=Math.ceil(box.x+120);x<box.x+box.width-120;x++){
+      const i=(y*png.width+x)*4
+      values.push((png.data[i]+png.data[i+1]+png.data[i+2])/3)
+    }
+    const mean=values.reduce((a,b)=>a+b,0)/values.length
+    const deviation=Math.sqrt(values.reduce((a,b)=>a+(b-mean)**2,0)/values.length)
+    return {mean,deviation}
+  }
+  const top=sample(Math.round(box.y+4)),bottom=sample(Math.round(box.y+box.height-4))
+  const outsideTop=sample(Math.round(box.y-30)),outsideBottom=sample(Math.round(box.y+box.height+30))
+  await info.attach('equal-background-top-bottom',{body:JSON.stringify({top,bottom,outsideTop,outsideBottom}),contentType:'application/json'})
+  expect(Math.abs(outsideTop.mean-outsideBottom.mean)).toBeLessThan(1)
+  expect(top.deviation).toBeLessThan(3)
+  expect(bottom.deviation).toBeLessThan(3)
+  expect(Math.abs(top.mean-bottom.mean),'balanced top/bottom material brightness on identical backgrounds').toBeLessThanOrEqual(3)
+})
+
+test('Chromium candidate has one material level across all four edges on a checkerboard',async({page,browserName},info)=>{
+  test.skip(browserName!=='chromium','SVG backdrop refraction is Chromium-only; fallback is checked separately')
+  await page.addInitScript(()=>Object.defineProperty(navigator,'userAgent',{value:navigator.userAgent.replace('HeadlessChrome','Chrome')}))
+  await openPreview(page,true,1440)
+  await page.evaluate(()=>{
+    const pattern=document.createElement('div')
+    pattern.style.cssText='position:fixed;inset:0;z-index:99999;background:repeating-conic-gradient(#111 0% 25%,#eee 0% 50%) 50%/8px 8px;pointer-events:none'
+    document.body.append(pattern)
+  })
+  const box=(await page.locator('.fos-document-shell').boundingBox())!
+  const png=PNG.sync.read(await page.screenshot({path:info.outputPath('candidate-checker-four-edges.png')}))
+  const sample=(edge:'left'|'right'|'top'|'bottom')=>{
+    const values=[]
+    const side=edge==='left'||edge==='right'
+    const start=Math.ceil((side?box.y:box.x)+120),end=Math.floor((side?box.y+box.height:box.x+box.width)-120)
+    for(let at=start;at<end;at++){
+      const x=side?Math.round(edge==='left'?box.x+4:box.x+box.width-4):at
+      const y=side?at:Math.round(edge==='top'?box.y+4:box.y+box.height-4)
+      const i=(y*png.width+x)*4
+      values.push((png.data[i]+png.data[i+1]+png.data[i+2])/3)
+    }
+    return values.reduce((a,b)=>a+b,0)/values.length
+  }
+  const levels={left:sample('left'),right:sample('right'),top:sample('top'),bottom:sample('bottom')}
+  await info.attach('checker-four-edge-levels',{body:JSON.stringify(levels),contentType:'application/json'})
+  expect(Math.max(...Object.values(levels))-Math.min(...Object.values(levels)),'same material level on every edge').toBeLessThanOrEqual(5)
 })
 
 test('Chromium pilot covers all four straight edges at desktop tablet and narrow widths',async({page,browserName},info)=>{
