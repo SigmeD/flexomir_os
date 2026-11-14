@@ -4,7 +4,7 @@
 
 ## Сейчас продолжать с этого
 
-Owner 14.11 отдельно разрешил перенос принятого DEV-профиля в общий `GlassLens` ответом «применяй». Общий движок используется `DocumentGlassMaterial`; локальный Lens удалён. Повторный аудит удалил неиспользуемые `Glass`/`GlassSurface`, `adaptiveResolution`, остаточные `splay`/`resolution`; старые параметры DocumentPreview остались только в отрицательных тестах. Defaults остальных consumers и замороженные `FosPopupRows`/`FosGlassMaterial` сохранены. Build/optics, целевые Chromium 12/12 и M7 Chromium/Firefox/WebKit прошли; карты Pilot/Latest сохранили прежние SHA-256. Точный итог material-suite и visual evidence — в [едином контракте](UI_UNIFICATION_2026-11-13.md#documentpreview--текущий-dev-кандидат-14112026). PR #49 остаётся draft; production выбирает original, полная M8/Owner screen acceptance и merge OPEN. Далее — сверить CI текущего head после push.
+По прямому ответу Owner «принято загружай последнюю версию DocumentPreview» принят `Latest` как обычный материал окна в DEV и production build. Адаптер перенесён в `src/components/documents/DocumentGlassMaterial.tsx`; общий `GlassLens`, PDF и modal actions сохранены. Старый `original` и Pilot доступны только по DEV query для сравнения. Production build игнорирует `documentGlass=pilot`: на 1440/1024/768/390/320 он и DEV Latest дали одинаковый кадр окна (0 разных пикселей), скачивание и возврат фокуса прошли. M7: 326 PASS / 14 ожидаемых SKIP / 2 посторонних WebKit FAIL, оба повторены отдельно 2/2 PASS; повтор не доказывает устранение причины. По текущему head проверить CI; PR #49 остаётся draft, полная M8/D09 и merge OPEN. [Rollout и QA](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026).
 
 ## Предыдущий handoff до разрешения переноса
 
@@ -50,11 +50,11 @@ U06 targeted 24/24 PASS в трёх движках; 135/135 PNG/computed pairs e
 
 ## Что в процессе
 
-Owner проверяет новый DocumentPreview candidate; перенос в оригинал и полная M8/D09 остаются OPEN, сроки не назначены. Предыдущие row21/21, glass4PASS/2SKIP плюс четыре края1PASS, frozen2/2 и независимые18+12 PASS — в контракте; типографические focused114/114, glass10/10, cross-browser38PASS/4SKIP и UA-01 row30/30 + item actions15/15 — выше. Это не новый полный default suite и не CI будущего head. UA-01/02 закрыты; UA-03/04 остаются candidates карты ролей. Ручные physical devices/screen readers: исполнитель не назначен. Алексей — backend/API/ACL/1С, срок не утверждён. Исходные Screenshot_1/2/3.png и все evidence сохранены; root PNG не включать в коммит. Стенд5173 и production-preview4173 проверить при новом старте; production сохраняет original даже при pilot-параметре.
+DocumentPreview Latest включён в собранное приложение по поручению Owner; новая проверка CI текущего head и полная M8/D09 остаются OPEN. UA-01/02 закрыты; UA-03/04 остаются кандидатами карты ролей. Ручные physical devices/screen readers: исполнитель не назначен. Алексей — backend/API/ACL/1С, срок не утверждён. Исторические Screenshot_1/2/3.png и остальные доказательства сохранены. Локальные стенды 5173/4173 при новом старте запускаются заново.
 
 ## Основные договорённости
 
-- Тестовый дубль стекла — явное временное исключение по прямому поручению Owner. До его приёмки не менять original/frozen, checksum и остальные optics consumers; после решения перенести принятую минимальную правку и убрать временное разветвление отдельным проверяемым шагом того же инкремента. Owner review и merge — разные решения; сроков нет.
+- Принятый DocumentPreview Latest использует общий GlassLens; Pilot и original остаются только DEV-сравнением. Frozen FE11, остальные optics consumers и manifest менять только по отдельному решению Owner. Merge — отдельное решение; сроков нет.
 
 - Codex при следующем старте сверяет GitHub, git status, worktree list и [Drive CURRENT, вкладка «Читать сначала»](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit?tab=t.aiwyg425dkrn). Утверждённые U03/U04 и U06 pilot повторно не согласовывать; merge — только по отдельному прямому поручению Owner. Срок следующей сессии не назначен.
 - Owner/PO определяют состав дубликата тикета и остальные открытые продуктовые решения; срока нет. Полная M8/D09 отделена от исправленной причины Select; прежние More/timing наблюдения не выдавать за доказанно исправленные по одному PASS.

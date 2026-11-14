@@ -13,7 +13,7 @@ function changedPixels(before: PNG, after: PNG, rect: { x: number; y: number; wi
   return changed
 }
 
-test('latest DEV unsupported preview fills the pilot viewport and masks fields beneath it', async ({ page, browserName }, info) => {
+test('latest preview keeps its opaque viewport and masks fields beneath it', async ({ page, browserName }, info) => {
   test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
   await page.setViewportSize({ width: 1440, height: 1000 })
@@ -48,7 +48,7 @@ test('latest DEV unsupported preview fills the pilot viewport and masks fields b
   await info.attach('field-masking', { body: JSON.stringify({ visiblePixels }), contentType: 'application/json' })
 })
 
-test('latest DEV title has a blurred backdrop that grows with the visible filename', async ({ page, browserName }, info) => {
+test('latest preview title backdrop grows with the visible filename', async ({ page, browserName }, info) => {
   if (browserName === 'chromium') await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
   await page.setViewportSize({ width: 1440, height: 1000 })
   const widths = []
@@ -72,7 +72,7 @@ test('latest DEV title has a blurred backdrop that grows with the visible filena
   await info.attach('filename-backdrop-width', { body: JSON.stringify(widths), contentType: 'application/json' })
 })
 
-test('latest DEV lens bends inside its visible rim and tapers at the outside edge', async ({ page, browserName }) => {
+test('latest preview lens bends inside its visible rim and tapers at the outside edge', async ({ page, browserName }) => {
   test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
   await page.setViewportSize({ width: 1440, height: 1000 })
@@ -91,7 +91,7 @@ test('latest DEV lens bends inside its visible rim and tapers at the outside edg
   expect(Math.abs(red(map.width - 3) - 128)).toBeGreaterThan(edge + 20)
 })
 
-test('latest DEV lens visibly refracts real input edges on both sides', async ({ page, browserName }, info) => {
+test('latest preview lens refracts real input edges on both sides', async ({ page, browserName }, info) => {
   test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
   await page.setViewportSize({ width: 1440, height: 1000 })

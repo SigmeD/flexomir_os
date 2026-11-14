@@ -4,7 +4,7 @@
 
 ## Текущий API потребителей
 
-Экраны и общие адаптеры выбирают назначение через `FosMaterialSurface variant=...`: document-preview, navigation/reference, segment/reference, popup, account-trigger, date-cell, action/round/quiet/header и demo-panel. Optical values/defaults принадлежат одному внутреннему preset source; публичные `style`, blur/strength/rim и другие optical overrides отсутствуют. Варианты navigation дополнительно принимают только существующие `layoutTop`, `travelY`, `onTravelFrame`. Нативные class/ARIA/data/content сохраняются. Неизвестные и унаследованные имена presets отклоняются до рендера материала.
+Экраны и общие адаптеры выбирают назначение через `FosMaterialSurface variant=...`: navigation/reference, segment/reference, popup, account-trigger, date-cell, action/round/quiet/header и demo-panel. Принятый DocumentPreview Latest использует собственный `DocumentGlassMaterial` поверх общего `GlassLens`; прежний `FosMaterialSurface variant=document-preview` доступен только в DEV-сравнении. Optical values/defaults остальных потребителей принадлежат одному внутреннему preset source; публичные `style`, blur/strength/rim и другие optical overrides отсутствуют. Варианты navigation дополнительно принимают только существующие `layoutTop`, `travelY`, `onTravelFrame`. Нативные class/ARIA/data/content сохраняются. Неизвестные и унаследованные имена presets отклоняются до рендера материала.
 
 Прямой `FosGlassMaterial` остаётся внутри semantic adapter, frozen `FosPopupRows` и низкоуровневого `GlassMaterialLab`. Это явные границы ответственности: optics lab проверяет сырой engine API, а frozen источник нельзя менять ради миграции. Физика, формулы и manifest прежние. Подробные props/states/consumers и before/after находятся в едином контракте выше.
 

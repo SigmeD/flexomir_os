@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises'
 
 async function openPreview(page:Page,pilot:boolean,width:number) {
   await page.setViewportSize({width,height:1000})
-  await page.goto('/?view=client-orders'+(pilot?'&documentGlass=pilot':''))
+  await page.goto(`/?view=client-orders&documentGlass=${pilot?'pilot':'original'}`)
   await page.getByRole('button',{name:'Добавить заказ',exact:true}).click()
   await page.getByLabel('Выбрать подписной бланк',{exact:true}).setInputFiles({name:'synthetic.csv',mimeType:'text/csv',buffer:Buffer.from('id,value\n1,synthetic\n')})
   const opener=page.getByRole('button',{name:/Открыть документ Файл synthetic/})

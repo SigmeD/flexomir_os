@@ -17,7 +17,7 @@ function changedPixels(first:PNG,second:PNG,rect:Rect):number {
 }
 async function openFixture(page:Page,pilot:boolean,width:number) {
   await page.setViewportSize({width,height:1000})
-  await page.goto(`/tests/fixtures/document-glass-pilot.html?pattern=fields${pilot?'&documentGlass=pilot':''}`)
+  await page.goto(`/tests/fixtures/document-glass-pilot.html?pattern=fields&documentGlass=${pilot?'pilot':'original'}`)
   await expect(page.getByRole('dialog')).toHaveAttribute('data-document-glass',pilot?'pilot':'original')
   await expect(page.locator('.fos-document-shell')).toHaveAttribute('data-material-ready','true')
   await page.evaluate(()=>document.fonts.ready)

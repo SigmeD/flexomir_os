@@ -2,9 +2,9 @@
 
 Актуализировано 14.11.2026. Очерёдность работ — [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), открытые решения — [DECISIONS](DECISIONS.md).
 
-## Текущий перенос общей оптики DocumentPreview
+## Текущий DocumentPreview
 
-Owner отдельно разрешил перенос принятой DEV-оптики в общий `GlassLens` ответом «применяй». Рабочий `DocumentGlassMaterial` теперь использует этот компонент; локальная копия движка удалена. Повторный аудит удалил неиспользуемые `Glass`/`GlassSurface` и остаточные параметры карты с постоянными значениями. Для остальных стеклянных компонентов сохранены прежние значения оптики и замороженный контракт FE11. Сборка, проверка оптики и профильные браузерные проверки прошли; точные результаты и открытые гейты — в [контракте](UI_UNIFICATION_2026-11-13.md#documentpreview--текущий-dev-кандидат-14112026). Latest остаётся только DEV-вариантом: production, полная визуальная приёмка M8 и merge PR #49 OPEN.
+Owner принял перенос `Latest` в обычный DocumentPreview ответом «принято загружай последнюю версию DocumentPreview». Теперь `DocumentGlassMaterial` из `src/components/documents` использует общий `GlassLens` по умолчанию в DEV и production build; старый `FosMaterialSurface` для этого окна доступен только через DEV `documentGlass=original`, Pilot — через DEV `documentGlass=pilot`. PDF, действия, фокус и defaults других стеклянных компонентов сохранены. Собранный production совпал с принятым DEV Latest на пяти ширинах 1440/1024/768/390/320 — 0 отличающихся пикселей окна; CSV скачивается, Escape возвращает фокус. M7 дал два сбоя WebKit в других сценариях, отдельный повтор 2/2 PASS; CI текущего head, полная M8/D09 и merge PR #49 OPEN. [Код и QA](UI_UNIFICATION_2026-11-13.md#documentpreview--production-rollout-14112026).
 
 ## История DEV-кандидата DocumentPreview
 

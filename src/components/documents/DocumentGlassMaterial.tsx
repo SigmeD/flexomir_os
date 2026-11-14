@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState, useSyncExternalStore, type Component
 import { GlassLens, refractionSupported, useHydrated } from '@/components/ui/glass'
 import { cn } from '@/lib/utils'
 import '@/components/ui/fos-glass-material.css'
+import documentGlassCss from './document-glass.css?inline'
 
 type Version = 'pilot' | 'latest'
 interface DocumentGlassMaterialProps extends Omit<ComponentProps<'div'>, 'children' | 'ref' | 'style'> {
@@ -18,7 +19,7 @@ function subscribeForced(notify: () => void) {
 }
 const forcedSnapshot = () => matchMedia(forcedQuery).matches
 
-/** DocumentPreview-only adapter. The approved shared material remains unchanged. */
+/** DocumentPreview material; Pilot is available for DEV comparison only. */
 export function DocumentGlassMaterial({ children, className, contentClassName, version, ...attrs }: DocumentGlassMaterialProps) {
   const root = useRef<HTMLDivElement>(null)
   const [box, setBox] = useState({ width: 0, height: 0 })
@@ -48,8 +49,9 @@ export function DocumentGlassMaterial({ children, className, contentClassName, v
     borderRadius: 22,
   } as CSSProperties
 
-  return <div {...attrs} ref={root} className={cn('fos-glass-material', className)} style={materialStyle}
+  return <><style>{documentGlassCss}</style><div {...attrs} ref={root} className={cn('fos-glass-material', className)} style={materialStyle}
     data-fos-glass-material="" data-optics-mode={mode} data-strength={.022}
+    data-material-preset="document-preview"
     data-material-ready={hydrated && box.width > 0 && box.height > 0}
     data-travel-target={0} data-lighting="sidebar" data-tone="neutral"
     data-motion="none" data-motion-state={forced ? 'off' : 'settled'}>
@@ -63,5 +65,5 @@ export function DocumentGlassMaterial({ children, className, contentClassName, v
     />}
     {latest && <div className="fos-document-frost" aria-hidden="true" />}
     {children !== undefined && <div className={cn('fos-glass-content', contentClassName)}>{children}</div>}
-  </div>
+  </div></>
 }

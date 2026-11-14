@@ -38,7 +38,7 @@ test('retired panel parameters do not create extra DEV variants',async({page,bro
   }
 })
 
-test('candidate preserves opaque PDF pages, actions and focus on a short mobile viewport',async({page,browserName},info)=>{
+test('latest preserves opaque PDF pages, actions and focus on a short mobile viewport',async({page,browserName},info)=>{
   if(browserName==='chromium')await page.addInitScript(()=>Object.defineProperty(navigator,'userAgent',{value:navigator.userAgent.replace('HeadlessChrome','Chrome')}))
   await page.setViewportSize({width:320,height:390})
   const {bytes,opener}=await openOrderPreview(page,'pdf','latest')

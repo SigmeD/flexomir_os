@@ -1,4 +1,4 @@
-/* DocumentPreview Owner candidate only. Keep the shared/frozen material intact. */
+/* DocumentPreview material. Keep shared GlassLens defaults intact. */
 .fos-document-dialog:is([data-document-glass=pilot],[data-document-glass=latest]) .fos-document-shell {
   --fos-key-x: 50%;
   border-color: rgb(125 150 168 / .72);
