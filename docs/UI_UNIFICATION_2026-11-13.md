@@ -12,7 +12,7 @@ U08: причина прежних шести Select snapshot FAIL найден�
 
 На head `103a55915ef7747c223c43fb8cb4942ab29644c0` восемь checks завершились SUCCESS, M7 — CANCELLED. GitHub annotation run [43526796318](https://github.com/SigmeD/flexomir_os/actions/runs/43526796318) подтверждает причину: `The job has exceeded the maximum execution time of 25m0s`. До остановки прошли M7 273/273, popup 35/35, typography 32/32, reaudit 128/128, spacing 48/48, neutral actions 36/36 и Plus motion 54 PASS / 2 SKIP. ButtonRoot прерван, next-scope не запускался. Это инфраструктурный лимит всей последовательности, не доказательство падения теста.
 
-Минимальное изменение: только общий M7 job timeout 25 → 35 минут. Команды, workers, индивидуальные таймауты, assertions, runner image и artifact upload сохранены. Приложение, Figma и frozen не меняются. Codex выполняет новый полный M7 CI; результат до его завершения OPEN. Затем — синхронизация фактов в LIVE docs и Drive. Полная M8/D09, устройства/A11y и merge остаются отдельными gates; сроки Owner не назначены.
+Минимальное изменение `eab307a`: только общий M7 job timeout 25 → 35 минут. Команды, workers, индивидуальные таймауты, assertions, runner image и artifact upload сохранены. Приложение, Figma и frozen не меняются. [Результат текущего head](https://github.com/SigmeD/flexomir_os/pull/49/checks) проверяется после завершения всей последовательности; точный итог продолжения, head/run и оставшиеся gates ведутся в существующем [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit), без дублирования полного факта в локальных сводках. Полная M8/D09, устройства/A11y и merge остаются отдельными gates; сроки Owner не назначены.
 
 ## Источники и база
 
