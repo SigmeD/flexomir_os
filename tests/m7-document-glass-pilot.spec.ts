@@ -28,7 +28,7 @@ test('glass comparison fixture keeps the shared signed-row typography behind the
   }
 })
 
-test('pilot copy keeps document geometry and actions while expanding its clipped SVG region',async({page,browserName},info)=>{
+test('pilot adapter keeps document geometry and actions while expanding its clipped SVG region',async({page,browserName},info)=>{
   if(browserName==='chromium')await page.addInitScript(()=>Object.defineProperty(navigator,'userAgent',{value:navigator.userAgent.replace('HeadlessChrome','Chrome')}))
   for(const width of [1440,768,390,320]){
     const samples=[]

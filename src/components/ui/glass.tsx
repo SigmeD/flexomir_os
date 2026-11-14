@@ -3,12 +3,9 @@
 import {
   type ComponentProps,
   type CSSProperties,
-  type ReactNode,
-  type RefObject,
   useEffect,
   useId,
   useLayoutEffect,
-  useRef,
   useState,
   useSyncExternalStore,
 } from "react";
@@ -84,18 +81,15 @@ interface LensMapOptions {
   band: number;
   /** centre-to-rim bulge, 0 = flat centre */
   dome: number;
-  /** 1 = bend outward (magnify), -1 = bend inward */
-  splay: number;
-  /** rendered map resolution (longest side) */
-  resolution: number;
   profile?: 'rim' | 'tapered';
 }
 
 const mapCache = new Map<string, string>();
 const MAP_CACHE_MAX = 80;
+const MAP_RESOLUTION = 200;
 
 function mapKey(o: LensMapOptions): string {
-  return `${o.w}x${o.h}|r${o.radius}|b${o.band}|d${o.dome}|s${o.splay}|q${o.resolution}|p${o.profile ?? 'rim'}`;
+  return `${o.w}x${o.h}|r${o.radius}|b${o.band}|d${o.dome}|p${o.profile ?? 'rim'}`;
 }
 
 /**
@@ -112,8 +106,8 @@ function buildLensMap(o: LensMapOptions): string | null {
 
   if (o.w < 1 || o.h < 1) return null;
   const aspect = o.w / o.h;
-  const mw = aspect >= 1 ? o.resolution : Math.round(o.resolution * aspect);
-  const mh = aspect >= 1 ? Math.round(o.resolution / aspect) : o.resolution;
+  const mw = aspect >= 1 ? MAP_RESOLUTION : Math.round(MAP_RESOLUTION * aspect);
+  const mh = aspect >= 1 ? Math.round(MAP_RESOLUTION / aspect) : MAP_RESOLUTION;
   // Degenerate (zero-pixel) maps would throw in createImageData; bail to fallback.
   if (mw < 1 || mh < 1) return null;
 
@@ -171,7 +165,6 @@ function buildLensMap(o: LensMapOptions): string | null {
             mag = ramp * ramp * (3 - 2 * ramp);
           }
         }
-        mag *= o.splay;
         nx = dirX * mag;
         ny = dirY * mag;
 
@@ -207,11 +200,7 @@ function clampByte(v: number): number {
   return v < 0 ? 0 : v > 255 ? 255 : Math.round(v);
 }
 
-function clamp01(v: number): number {
-  return v < 0 ? 0 : v > 1 ? 1 : v;
-}
-
-/** Shared SVG markup; map generation and each lens's geometry stay with its owner. */
+/** Keep the SVG filter markup separate from lens sizing and map generation. */
 function LensDisplacementFilter({
   id, map, width, height, scale, region,
 }: {
@@ -232,139 +221,6 @@ function LensDisplacementFilter({
       </filter>
     </defs>
   </svg>;
-}
-
-// ── Glass ─────────────────────────────────────────────────────────────────────
-
-export interface GlassProps {
-  children?: ReactNode;
-  /** Lens overlay. Elements marked `data-glass-lens` refract the content. */
-  lens?: ReactNode;
-  className?: string;
-  contentClassName?: string;
-  /** Refraction strength 0–1. Drives displacement px + rim band. */
-  strength?: number;
-  /** Backdrop blur inside the lens, px. */
-  blur?: number;
-  /** Tint 0 (clear) – 1 (frosted). Defaults from strength. */
-  tint?: number;
-  /** Tint colour as "r,g,b". Defaults to theme. */
-  tintColor?: string;
-  /** Lens dome bulge, 0 = flat. */
-  dome?: number;
-  /** Corner radius for the implicit single-lens mode, px. */
-  radius?: number;
-  as?: keyof React.JSX.IntrinsicElements;
-}
-
-/**
- * Glass refracts content placed in `children` through lens regions in `lens`.
- * If no `lens` is given, the whole rounded box becomes a single lens.
- */
-export function Glass({
-  children,
-  lens,
-  className,
-  contentClassName,
-  strength = 0.5,
-  blur = 4,
-  tint,
-  tintColor,
-  dome = 0,
-  radius = 24,
-  as: Tag = "div",
-}: GlassProps) {
-  const rootRef = useRef<HTMLElement>(null);
-  const filterId = useId().replace(/[^a-z0-9]/gi, "");
-  const dark = useGlassDark();
-  const supported = useHydrated() && refractionSupported();
-
-  const [map, setMap] = useState<string | null>(null);
-  const [box, setBox] = useState({ w: 0, h: 0 });
-
-  const t = tint ?? clamp01(strength * 0.45);
-  const rgb = tintColor ?? (dark ? "70,72,78" : "255,255,255");
-  const displace = 8 + strength * 60;
-
-  // Generate / refresh the single-lens map on resize.
-  useEffect(() => {
-    if (!supported || lens) return;
-    const el = rootRef.current;
-    if (!el) return;
-    const refresh = () => {
-      const w = el.clientWidth;
-      const h = el.clientHeight;
-      if (w < 4 || h < 4) return;
-      setBox({ w, h });
-      const cs = getComputedStyle(el);
-      const r = parseFloat(cs.borderTopLeftRadius) || radius;
-      setMap(
-        buildLensMap({
-          w,
-          h,
-          radius: r,
-          band: Math.max(6, Math.min(w, h) * (0.12 + strength * 0.16)),
-          dome,
-          splay: 1,
-          resolution: 220,
-        }),
-      );
-    };
-    refresh();
-    const ro = new ResizeObserver(refresh);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [supported, lens, strength, dome, radius]);
-
-  const singleLens = !lens;
-  const backdrop =
-    singleLens && supported && map
-      ? `url(#${filterId}) blur(${blur}px) saturate(1.6)`
-      : `blur(${Math.max(blur, 8)}px) saturate(1.6)`;
-
-  const El = Tag as React.ElementType;
-  return (
-    <El
-      ref={rootRef}
-      className={cn("relative isolate overflow-hidden", className)}
-      style={{ borderRadius: radius }}
-    >
-      {singleLens && supported && map && (
-        <LensDisplacementFilter id={filterId} map={map} width={box.w} height={box.h} scale={displace} />
-      )}
-
-      {/* content the lens refracts */}
-      {children !== undefined && (
-        <div className={cn("relative", contentClassName)}>{children}</div>
-      )}
-
-      {/* single-lens backdrop + tint + rim */}
-      {singleLens && (
-        <>
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[inherit]"
-            style={{ backdropFilter: backdrop, WebkitBackdropFilter: backdrop }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[inherit]"
-            style={{ background: `rgba(${rgb},${Math.max(t * 0.4, 0.04)})` }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[inherit]"
-            style={{ boxShadow: rimShadow(dark), background: sheen(dark) }}
-          />
-        </>
-      )}
-
-      {/* explicit lens layer */}
-      {lens && (
-        <div className="pointer-events-none absolute inset-0">{lens}</div>
-      )}
-    </El>
-  );
 }
 
 // ── shared chrome ──────────────────────────────────────────────────────────
@@ -418,12 +274,12 @@ export function GlassLens({
   const supported = useHydrated() && refractionSupported();
   const r = Math.min(radius, width / 2, height / 2);
   const band = edgeBand ?? Math.max(5, Math.min(width, height) * (0.18 + strength * 0.2));
-  const key = supported ? mapKey({ w: width, h: height, radius: r, band, dome, splay: 1, resolution: 200, profile: edgeProfile }) : '';
+  const key = supported ? mapKey({ w: width, h: height, radius: r, band, dome, profile: edgeProfile }) : '';
   const [mapState, setMapState] = useState<{ key: string; url: string | null }>({ key: '', url: null });
 
   useLayoutEffect(() => {
     if (!supported) return;
-    const url = buildLensMap({ w: width, h: height, radius: r, band, dome, splay: 1, resolution: 200, profile: edgeProfile });
+    const url = buildLensMap({ w: width, h: height, radius: r, band, dome, profile: edgeProfile });
     setMapState(previous => previous.key === key && previous.url === url ? previous : { key, url });
   }, [supported, key, width, height, r, band, dome, edgeProfile]);
   const map = mapState.key === key ? mapState.url : null;
@@ -459,98 +315,6 @@ export function GlassLens({
         className="pointer-events-none absolute inset-0 rounded-[inherit]"
         style={{ background: sheen(dark) }}
       />
-    </div>
-  );
-}
-
-// ── GlassSurface ────────────────────────────────────────────────────────────
-//
-// A frosted, tinted panel for floating UI (popover / dialog / tooltip / button)
-// where there is nothing behind it for the engine to refract. Pure
-// backdrop-filter, so it renders the same in every browser.
-
-export interface GlassSurfaceHandle {
-  setTintLift(delta: number): void;
-}
-
-export interface GlassSurfaceProps extends ComponentProps<"div"> {
-  tint?: number;
-  tintColor?: string;
-  blur?: number;
-  saturation?: number;
-  radius?: number;
-  specular?: boolean;
-  handleRef?: RefObject<GlassSurfaceHandle | null>;
-  /** Classes for the inner content wrapper — put layout (flex/grid) here. */
-  contentClassName?: string;
-}
-
-export function GlassSurface({
-  tint = 0.5,
-  tintColor,
-  blur = 14,
-  saturation = 1.6,
-  radius = 16,
-  specular = true,
-  handleRef,
-  className,
-  contentClassName,
-  style,
-  children,
-  ...props
-}: GlassSurfaceProps) {
-  const dark = useGlassDark();
-  const t = clamp01(tint);
-  const rgb = tintColor ?? (dark ? "60,62,68" : "255,255,255");
-  const tintRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!handleRef) return;
-    handleRef.current = {
-      setTintLift(delta: number) {
-        const el = tintRef.current;
-        if (el)
-          el.style.background = `rgba(${rgb},${Math.max(0.04, Math.min(0.55, t * 0.42 + delta))})`;
-      },
-    };
-  }, [handleRef, rgb, t]);
-
-  const blurPx = Math.max(3, blur * (0.4 + t * 0.6));
-  const sat = 1 + (saturation - 1) * Math.max(t, 0.25);
-  const backdrop = `blur(${blurPx}px) saturate(${sat})`;
-
-  return (
-    <div
-      className={cn("relative", className)}
-      style={{ borderRadius: radius, ...style }}
-      {...props}
-    >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-[inherit]"
-        style={{ backdropFilter: backdrop, WebkitBackdropFilter: backdrop }}
-      />
-      <div
-        aria-hidden
-        ref={tintRef}
-        className="pointer-events-none absolute inset-0 rounded-[inherit]"
-        style={{ background: `rgba(${rgb},${Math.max(0.04, t * 0.42)})` }}
-      />
-      {specular && (
-        <>
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[inherit]"
-            style={{ background: sheen(dark) }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-[inherit]"
-            style={{ boxShadow: rimShadow(dark) }}
-          />
-        </>
-      )}
-      <div className={cn("relative h-full w-full rounded-[inherit]", contentClassName)}>{children}</div>
     </div>
   );
 }

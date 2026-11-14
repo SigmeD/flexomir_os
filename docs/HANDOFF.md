@@ -4,7 +4,7 @@
 
 ## Сейчас продолжать с этого
 
-Owner 14.11 отдельно разрешил перенос принятого DEV-профиля в общий `GlassLens` ответом «применяй». Общий движок используется `DocumentGlassMaterial`; локальный Lens удалён, лишний `adaptiveResolution` и его искусственный стенд убраны. Defaults остальных consumers и замороженные `FosPopupRows`/`FosGlassMaterial` сохранены. Build/optics и M7 Chromium/Firefox/WebKit прошли; точный итог material-suite и visual evidence сверять в [едином контракте](UI_UNIFICATION_2026-11-13.md#documentpreview--текущий-dev-кандидат-14112026). PR #49 остаётся draft; production выбирает original, полная M8/Owner screen acceptance и merge OPEN. Далее — сверить итог CI PR после push, не объявлять DEV Latest production-ready.
+Owner 14.11 отдельно разрешил перенос принятого DEV-профиля в общий `GlassLens` ответом «применяй». Общий движок используется `DocumentGlassMaterial`; локальный Lens удалён. Повторный аудит удалил неиспользуемые `Glass`/`GlassSurface`, `adaptiveResolution`, остаточные `splay`/`resolution`; старые параметры DocumentPreview остались только в отрицательных тестах. Defaults остальных consumers и замороженные `FosPopupRows`/`FosGlassMaterial` сохранены. Build/optics, целевые Chromium 12/12 и M7 Chromium/Firefox/WebKit прошли; карты Pilot/Latest сохранили прежние SHA-256. Точный итог material-suite и visual evidence — в [едином контракте](UI_UNIFICATION_2026-11-13.md#documentpreview--текущий-dev-кандидат-14112026). PR #49 остаётся draft; production выбирает original, полная M8/Owner screen acceptance и merge OPEN. Далее — сверить CI текущего head после push.
 
 ## Предыдущий handoff до разрешения переноса
 
