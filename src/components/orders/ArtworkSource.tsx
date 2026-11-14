@@ -1,5 +1,6 @@
 import { useId, type DragEvent } from 'react'
 import { FOSAction } from '@/components/ui/fos-controls'
+import { FosSectionHeading } from '@/components/ui/fos-section-heading'
 import { LocalFileControl } from '@/components/ui/local-file-control'
 import uploadIcon from '@/assets/orders/upload.svg'
 import './artwork-source.css'
@@ -35,7 +36,7 @@ export function ArtworkSource({ value, onChange, disabled = false, error, onOpen
     <small id={id + '-hint'}>{state === 'unavailable' ? 'Выберите файл заново, макет из библиотеки или запросите помощь.' : value.artworkMode === 'LIBRARY' ? 'Только демосессия · сервер не подключён' : value.fileName ? 'Файл не загружен на сервер' : 'Форматы и размер файла уточняются'}</small>
   </>
   return <section className="fos-artwork-source" aria-labelledby={id + '-title'} data-artwork-presentation="states" data-artwork-state={state}>
-    <h2 id={id + '-title'}>Макет этой позиции</h2>
+    <FosSectionHeading id={id + '-title'}>Макет этой позиции</FosSectionHeading>
       <LocalFileControl label="Выбрать файл макета" disabled={disabled || value.artworkMode === 'HELP'} onFile={selectFile} className="fos-artwork-source__control" state={controlState}>
         {open => <>{value.artworkMode !== 'HELP' && <div className="fos-artwork-source__dropzone" data-state={controlState}>{content(open)}</div>}{options(open)}</>}
       </LocalFileControl>

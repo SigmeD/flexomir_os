@@ -12,8 +12,10 @@
   --fos-type-row-title: var(--fos-type-card-weight) var(--fos-type-card-size)/var(--fos-type-card-line-height) var(--fos-font-family);
   --fos-type-row-meta: 400 var(--fos-type-secondary-size)/var(--fos-type-secondary-line-height) var(--fos-font-family);
   --fos-type-body: 400 var(--fos-type-body-size)/var(--fos-type-body-line-height) var(--fos-font-family);
+  --fos-type-section-heading: 600 20px/28px var(--fos-font-family);
 }
-@media(max-width:1023px) { :root { --fos-type-order-status-size: 12px; } }
+@media(max-width:1023px) { :root { --fos-type-order-status-size: 12px; --fos-type-section-heading: 600 18px/26px var(--fos-font-family); } }
+@media(max-width:600px) { :root { --fos-type-section-heading: 600 16px/24px var(--fos-font-family); } }
 :root{--fos-font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;--fos-type-page-size:30px;--fos-type-page-line-height:40px;--fos-type-card-size:16px;--fos-type-card-line-height:22px;--fos-type-body-size:14px;--fos-type-body-line-height:20px;--fos-type-label-size:13px;--fos-type-label-line-height:18px;--fos-type-secondary-size:12px;--fos-type-secondary-line-height:18px;font-family:Onest,Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-synthesis:none;color:#244356;background:#f4f8fa}
 @media(max-width:1023px){:root{--fos-type-page-size:26px;--fos-type-page-line-height:36px}}
 @media(max-width:600px){:root{--fos-type-page-size:22px;--fos-type-page-line-height:30px}}

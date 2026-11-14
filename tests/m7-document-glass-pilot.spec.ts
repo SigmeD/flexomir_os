@@ -14,6 +14,21 @@ async function openPreview(page:Page,pilot:boolean,width:number) {
   return opener
 }
 
+test('glass comparison fixture keeps the shared signed-row typography behind the dialog',async({page})=>{
+  await page.goto('/tests/fixtures/document-glass-pilot.html?documentGlass=pilot')
+  await page.getByRole('button',{name:'Закрыть',exact:true}).click()
+  const rows=page.locator('.fos-document-row')
+  await expect(rows).toHaveCount(2)
+  for(const row of await rows.all()){
+    const badge=row.locator('.fos-artwork-thumbnail')
+    await expect(badge).toHaveCSS('width','60px')
+    await expect(badge).toHaveCSS('height','60px')
+    await expect(badge).toHaveCSS('font-size','10px')
+    await expect(row.locator('.fos-summary-row__title')).toHaveCSS('font-size','16px')
+    await expect(row.locator('.fos-summary-row__meta')).toHaveCSS('line-height','18px')
+  }
+})
+
 test('pilot copy keeps the document surface contract and expands only its clipped SVG region',async({page,browserName},info)=>{
   if(browserName==='chromium')await page.addInitScript(()=>Object.defineProperty(navigator,'userAgent',{value:navigator.userAgent.replace('HeadlessChrome','Chrome')}))
   for(const width of [1440,768,390,320]){

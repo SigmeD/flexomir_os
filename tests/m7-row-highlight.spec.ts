@@ -80,3 +80,65 @@ test('highlight has no second surface-specific implementation', () => {
   expect(css).not.toMatch(/data-row-surface[^{}]*:(?:hover|active|focus-visible)/)
   expect(css).not.toContain('--fos-row-card-hover-')
 })
+
+test('signed document typography follows the shared row title, metadata and badge roles', async ({ page }) => {
+  for (const role of ['client','manager']) {
+    await page.goto('/?view=' + role + '-orders')
+    await page.evaluate(() => document.fonts.ready)
+    const reference = await page.locator('[data-order-open="DEMO-003"]').evaluate(row => {
+      const style = (selector:string) => getComputedStyle(row.querySelector(selector)!)
+      return {
+        title: style('.fos-summary-row__title').font,
+        meta: style('.fos-summary-row__meta').font,
+        badge: style('.fos-artwork-thumbnail').font,
+      }
+    })
+    await page.getByRole('button',{name:'Добавить заказ',exact:true}).click()
+    const name = 'signed-document-' + 'very-long-name-'.repeat(12) + '.csv'
+    await page.getByLabel('Выбрать подписной бланк',{exact:true}).setInputFiles({name,mimeType:'text/csv',buffer:Buffer.from('id,value\n1,test\n')})
+    const row = page.locator('.fos-signed-documents li button').first()
+    await expect(row).toBeVisible()
+    for(const width of [1440,1024,768,390,320]){
+      await page.setViewportSize({width,height:900})
+      const actual = await row.evaluate(node => {
+        const title = node.querySelector('.fos-summary-row__title')
+        const meta = node.querySelector('.fos-summary-row__meta')
+        const badge = node.querySelector('.fos-artwork-thumbnail')
+        const font = (element:Element|null) => element ? getComputedStyle(element).font : null
+        return {title:font(title),meta:font(meta),badge:font(badge),titleFits:title ? title.scrollWidth <= title.clientWidth + 1 : false,pageFits:document.documentElement.scrollWidth <= innerWidth}
+      })
+      expect(actual,`${role} ${width}px`).toEqual({...reference,titleFits:true,pageFits:true})
+    }
+    await expect(row).toHaveAccessibleName(new RegExp(name.replaceAll('.','\\.')))
+  }
+})
+
+test('order section headings use one responsive typography role', async ({ page }) => {
+  for (const width of [1440,768,390]) {
+    await page.setViewportSize({width,height:900})
+    await page.goto('/?view=client-orders')
+    await page.getByRole('button',{name:'Добавить заказ',exact:true}).click()
+    const styles = await page.evaluate(() => [
+      '.fos-order-composer__products .fos-order-composer__section-heading h2',
+      '.fos-order-composer__general > h2',
+      '.fos-signed-documents h2',
+      '.fos-order-conversation h2',
+    ].map(selector => getComputedStyle(document.querySelector(selector)!).font))
+    expect(styles, `section headings at ${width}px`).toEqual(Array(4).fill(styles[0]))
+  }
+
+  const sharedRole = '600 19px/27px Manrope, sans-serif'
+  await page.goto('/?view=client-orders')
+  await page.locator('[data-order-open="DEMO-003"]').click()
+  await page.evaluate(value => document.documentElement.style.setProperty('--fos-type-section-heading',value), sharedRole)
+  for (const selector of ['.fos-order-detail__products > h2','.fos-order-detail__general > h2','.fos-signed-documents h2','.fos-order-conversation h2']) {
+    await expect(page.locator(selector)).toHaveCSS('font-size','19px')
+    await expect(page.locator(selector)).toHaveCSS('line-height','27px')
+  }
+  await page.goto('/?view=client-orders')
+  await page.getByRole('button',{name:'Добавить заказ',exact:true}).click()
+  await page.getByRole('button',{name:'Добавить позицию',exact:true}).click()
+  await page.evaluate(value => document.documentElement.style.setProperty('--fos-type-section-heading',value), sharedRole)
+  await expect(page.locator('.fos-artwork-source > h2')).toHaveCSS('font-size','19px')
+  await expect(page.locator('.fos-artwork-source > h2')).toHaveCSS('line-height','27px')
+})

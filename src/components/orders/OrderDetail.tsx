@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { PageHeader } from '@/components/ui/page-header'
+import { FosSectionHeading } from '@/components/ui/fos-section-heading'
 import { HeaderAction } from '@/components/ui/header-action'
 import { MoreAction, OverflowMenu } from '@/components/ui/overflow-menu'
 import { FOSDateField, FOSInput } from '@/components/ui/fos-controls'
@@ -35,11 +36,11 @@ export function OrderDetail({ order, detail, onBack, actions, role = 'client', m
     <div className="fos-order-detail__body">
       {role === 'manager' && <FOSInput wrapperClassName="fos-order-detail__company" label="Компания" value={order.company} readOnly />}
       <section className="fos-order-detail__products" aria-labelledby="order-detail-items-title">
-        <h2 id="order-detail-items-title">Продукция</h2>
+        <FosSectionHeading id="order-detail-items-title">Продукция</FosSectionHeading>
         {detail.items.length ? <ul className="fos-order-detail__items">{detail.items.map((item, index) => <li key={item.id}><OrderItemSummary item={item} position={index + 1} /></li>)}</ul>
           : <p className="fos-order-detail__empty">Позиции не указаны.</p>}
       </section>
-      <section className="fos-order-detail__general" aria-labelledby="order-detail-general-title"><h2 id="order-detail-general-title">Общие данные заказа</h2>
+      <section className="fos-order-detail__general" aria-labelledby="order-detail-general-title"><FosSectionHeading id="order-detail-general-title">Общие данные заказа</FosSectionHeading>
         <OrderDateFields className="fos-order-detail__dates">
           <FOSDateField label="Желаемый срок" value={dateValue(detail.requestedDate)} readOnly />
           <FOSDateField label="Согласованный срок" value={dateValue(detail.agreedDate)} readOnly />

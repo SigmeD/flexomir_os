@@ -50,7 +50,7 @@
 .fos-order-composer__section-heading { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 23px; }
 .fos-order-composer[data-order-role=client] .fos-order-composer__section-heading { justify-content: space-between; }
 .fos-order-composer__section-heading > button { flex: none; }
-.fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { margin: 0; color: #273343; font-size: 20px; font-weight: 600; line-height: 28px; }
+.fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { color: #273343; }
 .fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 38px); }
 .fos-order-composer__general > h2 { margin-bottom: var(--fos-compose-heading-gap, 10px); }
 .fos-order-composer__dates + .fos-field { margin-top: var(--fos-compose-note-gap, 20px); }
@@ -60,13 +60,11 @@
 @media(max-width:1023px) {
   .fos-order-composer__body { margin-top: 21px; }
   .fos-order-composer__section-heading { margin-bottom: 36px; }
-  .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { font-size: 18px; line-height: 26px; }
   .fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 36px); }
   .fos-order-composer__general > h2 { margin-bottom: var(--fos-compose-heading-gap, 12px); }
   .fos-order-composer__products[data-empty] .fos-order-composer__section-heading { margin-bottom: 8px; }
   .fos-order-composer__products[data-empty] + .fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 68px); }
 }
 @media(max-width:600px) {
-  .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { font-size: 16px; line-height: 24px; }
   .fos-order-composer__general > h2 { margin-bottom: var(--fos-compose-heading-gap, 14px); }
 }
