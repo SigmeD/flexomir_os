@@ -4,6 +4,10 @@
 
 ## Сейчас продолжать с этого
 
+Owner 14.11 отдельно разрешил перенос принятого DEV-профиля в общий `GlassLens` ответом «применяй». Общий движок используется `DocumentGlassMaterial`; локальный Lens удалён, лишний `adaptiveResolution` и его искусственный стенд убраны. Defaults остальных consumers и замороженные `FosPopupRows`/`FosGlassMaterial` сохранены. Build/optics и M7 Chromium/Firefox/WebKit прошли; точный итог material-suite и visual evidence сверять в [едином контракте](UI_UNIFICATION_2026-11-13.md#documentpreview--текущий-dev-кандидат-14112026). PR #49 остаётся draft; production выбирает original, полная M8/Owner screen acceptance и merge OPEN. Далее — сверить итог CI PR после push, не объявлять DEV Latest production-ready.
+
+## Предыдущий handoff до разрешения переноса
+
 DocumentPreview в PR #49 остаётся DEV-пилотом. Для сравнения доступны только `documentGlass=pilot` и `documentGlass=latest` на [стенде](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html). Owner ответил «да принято» после просмотра Latest с полноразмерной матовой панелью и подложкой заголовка: DEV-визуальный вариант принят. Затем CSS сокращён на нулевой градиент и однотонный фон; максимальное отличие кадра 3 RGB. По уточнению Owner упрощён сам локальный Lens: 314→199 строк, убраны повторные theme/hydration подписки и вычисления перекрытых CSS тени/света; общие environment hooks переиспользуются. Карты Pilot/Latest SHA-256 и контрольные кадры совпали до/после; свежие 46PASS/14 ожидаемых SKIP, build/optics PASS. Настоящий PDF, меню, фильтры, select, frozen FE11 и production не менялись. Production использует original. Следующее действие — согласовать отдельную правку замороженного GlassLens для переноса принятого профиля без второй production-копии движка, затем проверить всех потребителей; merge отдельно. [Текущий аудит](UI_UNIFICATION_2026-11-13.md#documentpreview--текущий-dev-кандидат-14112026).
 
 ## Исторические пробы и другие поставки

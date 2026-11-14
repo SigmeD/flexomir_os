@@ -7,6 +7,7 @@ import {
   type RefObject,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
   useSyncExternalStore,
@@ -87,10 +88,17 @@ interface LensMapOptions {
   splay: number;
   /** rendered map resolution (longest side) */
   resolution: number;
+  profile?: 'rim' | 'tapered';
 }
 
 const mapCache = new Map<string, string>();
 const MAP_CACHE_MAX = 80;
+const MAP_CACHE_BYTES_MAX = 8 * 1024 * 1024;
+let mapCacheBytes = 0;
+
+function mapKey(o: LensMapOptions): string {
+  return `${o.w}x${o.h}|r${o.radius}|b${o.band}|d${o.dome}|s${o.splay}|q${o.resolution}|p${o.profile ?? 'rim'}`;
+}
 
 /**
  * Build a PNG data-URL where R/G encode normalised X/Y displacement
@@ -100,9 +108,13 @@ const MAP_CACHE_MAX = 80;
 function buildLensMap(o: LensMapOptions): string | null {
   if (typeof document === "undefined") return null;
 
-  const key = `${Math.round(o.w)}x${Math.round(o.h)}|r${Math.round(o.radius)}|b${Math.round(o.band)}|d${o.dome}|s${o.splay}`;
+  const key = mapKey(o);
   const hit = mapCache.get(key);
-  if (hit) return hit;
+  if (hit) {
+    mapCache.delete(key);
+    mapCache.set(key, hit);
+    return hit;
+  }
 
   if (o.w < 1 || o.h < 1) return null;
   const aspect = o.w / o.h;
@@ -124,6 +136,7 @@ function buildLensMap(o: LensMapOptions): string | null {
   const halfH = o.h / 2;
   const r = Math.min(o.radius, halfW, halfH);
   const band = Math.max(1, o.band);
+  const tapered = o.profile === 'tapered';
 
   for (let y = 0; y < mh; y++) {
     for (let x = 0; x < mw; x++) {
@@ -155,10 +168,16 @@ function buildLensMap(o: LensMapOptions): string | null {
           dirY = (Math.sign(py) * qy) / len;
         }
 
-        // rim ramp: 0 in the flat middle → 1 at the very edge
-        const ramp = depth < band ? 1 - depth / band : 0;
-        const rim = ramp * ramp * (3 - 2 * ramp); // smoothstep
-        const mag = rim * o.splay;
+        let mag = 0;
+        if (depth < band) {
+          const t = depth / band;
+          if (tapered) mag = Math.sin(Math.PI * t);
+          else {
+            const ramp = 1 - t;
+            mag = ramp * ramp * (3 - 2 * ramp);
+          }
+        }
+        mag *= o.splay;
         nx = dirX * mag;
         ny = dirY * mag;
 
@@ -183,9 +202,12 @@ function buildLensMap(o: LensMapOptions): string | null {
   ctx.putImageData(img, 0, 0);
   const url = canvas.toDataURL("image/png");
   mapCache.set(key, url);
-  if (mapCache.size > MAP_CACHE_MAX) {
-    const first = mapCache.keys().next().value;
-    if (first) mapCache.delete(first);
+  mapCacheBytes += url.length * 2;
+  while (mapCache.size > MAP_CACHE_MAX || mapCacheBytes > MAP_CACHE_BYTES_MAX) {
+    const oldest = mapCache.entries().next().value as [string, string] | undefined;
+    if (!oldest) break;
+    mapCache.delete(oldest[0]);
+    mapCacheBytes -= oldest[1].length * 2;
   }
   return url;
 }
@@ -196,6 +218,29 @@ function clampByte(v: number): number {
 
 function clamp01(v: number): number {
   return v < 0 ? 0 : v > 1 ? 1 : v;
+}
+
+/** Shared SVG markup; map generation and each lens's geometry stay with its owner. */
+function LensDisplacementFilter({
+  id, map, width, height, scale, region,
+}: {
+  id: string;
+  map: string;
+  width: number;
+  height: number;
+  scale: number;
+  region?: { x: string; y: string; width: string; height: string };
+}) {
+  return <svg aria-hidden className="pointer-events-none absolute size-0">
+    <defs>
+      <filter id={id} x={region?.x ?? "0"} y={region?.y ?? "0"}
+        width={region?.width ?? "100%"} height={region?.height ?? "100%"}
+        filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+        <feImage href={map} result="map" x="0" y="0" width={width} height={height} preserveAspectRatio="none" />
+        <feDisplacementMap in="SourceGraphic" in2="map" scale={scale} xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>;
 }
 
 // ── Glass ─────────────────────────────────────────────────────────────────────
@@ -294,37 +339,7 @@ export function Glass({
       style={{ borderRadius: radius }}
     >
       {singleLens && supported && map && (
-        <svg aria-hidden className="pointer-events-none absolute size-0">
-          <defs>
-            <filter
-              id={filterId}
-              x="0"
-              y="0"
-              width="100%"
-              height="100%"
-              filterUnits="objectBoundingBox"
-              primitiveUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
-            >
-              <feImage
-                href={map}
-                result="map"
-                x="0"
-                y="0"
-                width={box.w}
-                height={box.h}
-                preserveAspectRatio="none"
-              />
-              <feDisplacementMap
-                in="SourceGraphic"
-                in2="map"
-                scale={displace}
-                xChannelSelector="R"
-                yChannelSelector="G"
-              />
-            </filter>
-          </defs>
-        </svg>
+        <LensDisplacementFilter id={filterId} map={map} width={box.w} height={box.h} scale={displace} />
       )}
 
       {/* content the lens refracts */}
@@ -377,8 +392,7 @@ function sheen(dark: boolean): string {
 
 // ── GlassLens ─────────────────────────────────────────────────────────────────
 //
-// A standalone, freely-positioned refracting lens — used by the showcase demo
-// and by component thumbs (switch/slider) that "lift" into glass on press.
+// Standalone refraction shared by the approved material and the DEV document preview.
 
 export interface GlassLensProps extends ComponentProps<"div"> {
   width: number;
@@ -387,6 +401,10 @@ export interface GlassLensProps extends ComponentProps<"div"> {
   strength?: number;
   blur?: number;
   dome?: number;
+  brightness?: number;
+  edgeBand?: number;
+  edgeProfile?: 'rim' | 'tapered';
+  filterOutset?: boolean;
 }
 
 export function GlassLens({
@@ -396,6 +414,10 @@ export function GlassLens({
   strength = 0.55,
   blur = 2,
   dome = 0.15,
+  brightness = 1.05,
+  edgeBand,
+  edgeProfile = 'rim',
+  filterOutset = false,
   className,
   style,
   ...props
@@ -404,23 +426,22 @@ export function GlassLens({
   const dark = useGlassDark();
   const supported = useHydrated() && refractionSupported();
   const r = Math.min(radius, width / 2, height / 2);
+  const band = edgeBand ?? Math.max(5, Math.min(width, height) * (0.18 + strength * 0.2));
+  const key = supported ? mapKey({ w: width, h: height, radius: r, band, dome, splay: 1, resolution: 200, profile: edgeProfile }) : '';
+  const [mapState, setMapState] = useState<{ key: string; url: string | null }>({ key: '', url: null });
 
-  const map = supported
-    ? buildLensMap({
-        w: width,
-        h: height,
-        radius: r,
-        band: Math.max(5, Math.min(width, height) * (0.18 + strength * 0.2)),
-        dome,
-        splay: 1,
-        resolution: 200,
-      })
-    : null;
+  useLayoutEffect(() => {
+    if (!supported) return;
+    const url = buildLensMap({ w: width, h: height, radius: r, band, dome, splay: 1, resolution: 200, profile: edgeProfile });
+    setMapState(previous => previous.key === key && previous.url === url ? previous : { key, url });
+  }, [supported, key, width, height, r, band, dome, edgeProfile]);
+  const map = mapState.key === key ? mapState.url : null;
 
   const displace = 8 + strength * 60;
+  const margin = filterOutset ? Math.ceil(displace / 2 + blur * 3) : 0;
   const backdrop =
     supported && map
-      ? `url(#${filterId}) blur(${blur}px) saturate(1.5) brightness(1.05)`
+      ? `url(#${filterId}) blur(${blur}px) saturate(1.5)${brightness === 1 ? '' : ` brightness(${brightness})`}`
       : `blur(${Math.max(blur, 6)}px) saturate(1.5)`;
 
   const css: CSSProperties = {
@@ -436,41 +457,15 @@ export function GlassLens({
   return (
     <div className={cn("relative", className)} style={css} {...props}>
       {supported && map && (
-        <svg aria-hidden className="pointer-events-none absolute size-0">
-          <defs>
-            <filter
-              id={filterId}
-              x="0"
-              y="0"
-              width="100%"
-              height="100%"
-              filterUnits="objectBoundingBox"
-              primitiveUnits="userSpaceOnUse"
-              colorInterpolationFilters="sRGB"
-            >
-              <feImage
-                href={map}
-                result="map"
-                x="0"
-                y="0"
-                width={width}
-                height={height}
-                preserveAspectRatio="none"
-              />
-              <feDisplacementMap
-                in="SourceGraphic"
-                in2="map"
-                scale={displace}
-                xChannelSelector="R"
-                yChannelSelector="G"
-              />
-            </filter>
-          </defs>
-        </svg>
+        <LensDisplacementFilter id={filterId} map={map} width={width} height={height} scale={displace}
+          region={filterOutset ? {
+            x: `${-margin / width * 100}%`, y: `${-margin / height * 100}%`,
+            width: `${100 + margin / width * 200}%`, height: `${100 + margin / height * 200}%`,
+          } : undefined} />
       )}
       <div
         aria-hidden
-        className="absolute inset-0 rounded-[inherit]"
+        className="pointer-events-none absolute inset-0 rounded-[inherit]"
         style={{ background: sheen(dark) }}
       />
     </div>
