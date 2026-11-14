@@ -93,8 +93,6 @@ interface LensMapOptions {
 
 const mapCache = new Map<string, string>();
 const MAP_CACHE_MAX = 80;
-const MAP_CACHE_BYTES_MAX = 8 * 1024 * 1024;
-let mapCacheBytes = 0;
 
 function mapKey(o: LensMapOptions): string {
   return `${o.w}x${o.h}|r${o.radius}|b${o.band}|d${o.dome}|s${o.splay}|q${o.resolution}|p${o.profile ?? 'rim'}`;
@@ -110,11 +108,7 @@ function buildLensMap(o: LensMapOptions): string | null {
 
   const key = mapKey(o);
   const hit = mapCache.get(key);
-  if (hit) {
-    mapCache.delete(key);
-    mapCache.set(key, hit);
-    return hit;
-  }
+  if (hit) return hit;
 
   if (o.w < 1 || o.h < 1) return null;
   const aspect = o.w / o.h;
@@ -202,12 +196,9 @@ function buildLensMap(o: LensMapOptions): string | null {
   ctx.putImageData(img, 0, 0);
   const url = canvas.toDataURL("image/png");
   mapCache.set(key, url);
-  mapCacheBytes += url.length * 2;
-  while (mapCache.size > MAP_CACHE_MAX || mapCacheBytes > MAP_CACHE_BYTES_MAX) {
-    const oldest = mapCache.entries().next().value as [string, string] | undefined;
-    if (!oldest) break;
-    mapCache.delete(oldest[0]);
-    mapCacheBytes -= oldest[1].length * 2;
+  if (mapCache.size > MAP_CACHE_MAX) {
+    const first = mapCache.keys().next().value;
+    if (first) mapCache.delete(first);
   }
   return url;
 }
