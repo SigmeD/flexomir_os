@@ -13,7 +13,7 @@ function changedPixels(before: PNG, after: PNG, rect: { x: number; y: number; wi
   return changed
 }
 
-test('latest DEV preview exposes real fields through a compact unsupported-format message', async ({ page, browserName }, info) => {
+test('latest DEV unsupported preview fills the pilot viewport and masks fields beneath it', async ({ page, browserName }, info) => {
   test.skip(browserName !== 'chromium', 'SVG backdrop refraction is Chromium only')
   await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
   await page.setViewportSize({ width: 1440, height: 1000 })
@@ -27,7 +27,8 @@ test('latest DEV preview exposes real fields through a compact unsupported-forma
   await expect(dialog.locator('.fos-document-shell')).toHaveAttribute('data-material-ready', 'true')
   await page.evaluate(() => document.fonts.ready)
   const viewport = dialog.locator('.fos-document-viewport')
-  expect((await viewport.boundingBox())!.height).toBeLessThan(80)
+  expect((await viewport.boundingBox())!.height).toBeGreaterThan(500)
+  await expect(viewport).toHaveCSS('background-color', 'rgb(250, 251, 252)')
   await expect(viewport).toContainText('Предпросмотр этого формата недоступен')
   const field = page.getByLabel('Согласованный срок', { exact: true }).first()
   const box = (await field.boundingBox())!
@@ -35,9 +36,40 @@ test('latest DEV preview exposes real fields through a compact unsupported-forma
   await field.evaluate(node => { node.style.visibility = 'hidden' })
   const after = PNG.sync.read(await page.screenshot())
   await field.evaluate(node => { node.style.visibility = '' })
-  const visiblePixels = changedPixels(before, after, { x: box.x, y: box.y, width: box.width, height: box.height })
-  expect(visiblePixels, 'real date field must remain visible through the glass surface').toBeGreaterThan(100)
-  await info.attach('field-visibility', { body: JSON.stringify({ visiblePixels }), contentType: 'application/json' })
+  const panel = (await viewport.boundingBox())!
+  const overlap = {
+    x: Math.max(box.x, panel.x), y: Math.max(box.y, panel.y),
+    width: Math.min(box.x + box.width, panel.x + panel.width) - Math.max(box.x, panel.x),
+    height: Math.min(box.y + box.height, panel.y + panel.height) - Math.max(box.y, panel.y),
+  }
+  expect(overlap.width).toBeGreaterThan(20)
+  const visiblePixels = changedPixels(before, after, { ...overlap, x: overlap.x + 10, width: overlap.width - 20 })
+  expect(visiblePixels, 'real date field must not show through the matte preview panel').toBe(0)
+  await info.attach('field-masking', { body: JSON.stringify({ visiblePixels }), contentType: 'application/json' })
+})
+
+test('latest DEV title has a blurred backdrop that grows with the visible filename', async ({ page, browserName }, info) => {
+  if (browserName === 'chromium') await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent', { value: navigator.userAgent.replace('HeadlessChrome', 'Chrome') }))
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  const widths = []
+  for (const name of ['a.csv', 'very-long-signed-document-name-for-client-review.csv']) {
+    await page.goto('/?view=client-orders&documentGlass=latest')
+    await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+    await page.getByLabel('Выбрать подписной бланк', { exact: true }).setInputFiles({ name, mimeType: 'text/csv', buffer: Buffer.from('a,b\n1,2\n') })
+    await page.getByRole('button', { name: new RegExp(`Открыть документ Файл ${name.replace('.', '\\.')}`) }).click()
+    const title = page.getByRole('dialog').locator('.fos-document-content h2')
+    await expect(title).toHaveCSS('backdrop-filter', 'blur(5px)')
+    widths.push((await title.boundingBox())!.width)
+    await page.screenshot({ path: info.outputPath(`latest-title-${widths.length}.png`) })
+  }
+  expect(widths[1]).toBeGreaterThan(widths[0] + 100)
+  await page.setViewportSize({ width: 320, height: 390 })
+  const mobileTitle = page.getByRole('dialog').locator('.fos-document-content h2')
+  const titleBox = (await mobileTitle.boundingBox())!
+  const headerBox = (await page.getByRole('dialog').locator('.fos-document-content header > div').boundingBox())!
+  expect(titleBox.x + titleBox.width).toBeLessThanOrEqual(headerBox.x + headerBox.width + 1)
+  await expect(page.getByRole('button', { name: 'Закрыть', exact: true })).toBeInViewport()
+  await info.attach('filename-backdrop-width', { body: JSON.stringify(widths), contentType: 'application/json' })
 })
 
 test('latest DEV lens bends inside its visible rim and tapers at the outside edge', async ({ page, browserName }) => {

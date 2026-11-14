@@ -5,7 +5,7 @@
 | Этап | Состояние | Следующий шаг и ответственный |
 | --- | --- | --- |
 | M4–M7 | Основные композиции и сквозные сценарии реализованы на fixtures | Использовать существующие компоненты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
-| M8 | Принятые U03/U04 и U06 rollout сохранены; строки, шрифты и Date Field объединены. В DEV DocumentPreview остались только `pilot` и `latest` | [Сравнение на реальном заказе](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html) с CSV/PDF; следующий шаг — Owner visual. Профильные Chromium19/19, build/optics/production isolation PASS. PDF-лист физически закрывает поле под ним. Frozen/production и merge только после отдельного поручения. Полная M8/D09 и UA-03/04 отдельно |
+| M8 | Принятые U03/U04 и U06 rollout сохранены; строки, шрифты и Date Field объединены. В DEV DocumentPreview остались только `pilot` и `latest` | [Сравнение на реальном заказе](http://127.0.0.1:5173/tests/fixtures/document-glass-review.html) с CSV/PDF. У Latest большая панель матовая, заголовок имеет подложку по ширине имени; следующий шаг — Owner visual. После правки Chromium20/20, три движка46PASS/14 ожидаемых SKIP, build/optics/production isolation PASS; CI нового head сверить отдельно. Frozen/production и merge только после отдельного поручения. Полная M8/D09 и UA-03/04 отдельно |
 | M9 | Зависит от готового согласованного API | Алексей: backend/ACL/1С; frontend: подключение клиента и интеграционный QA |
 
 ## Открытая очередь

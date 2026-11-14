@@ -32,14 +32,15 @@
   backdrop-filter: blur(1.5px);
 }
 
-.fos-document-dialog[data-document-glass=latest] .fos-document-content header {
+.fos-document-dialog[data-document-glass=latest] .fos-document-content h2 {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: -8px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background: rgb(250 251 252 / .36);
   backdrop-filter: blur(5px);
-}
-
-.fos-document-dialog[data-document-glass=latest][data-document-kind=unsupported] .fos-document-viewport {
-  height: auto;
-  align-self: start;
-  background-color: rgb(250 251 252 / .88);
 }
 
 @media (forced-colors: active) {
@@ -49,5 +50,4 @@
     border-color: ButtonText;
     box-shadow: none;
   }
-  .fos-document-dialog[data-document-glass=latest][data-document-kind=unsupported] .fos-document-viewport { background-color: Canvas; }
 }

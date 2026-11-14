@@ -116,7 +116,7 @@ test('Latest shows the real order date fill and border through its rim', async (
   const dateBox = (await date.boundingBox())!
   const fillRect = { x: viewport.x + viewport.width, y: dateBox.y + 5, width: shell.x + shell.width - viewport.x - viewport.width - 2, height: dateBox.height - 10 }
   await expect(date).toHaveCSS('background-color', 'rgb(246, 247, 249)')
-  await expect(page.locator('.fos-document-viewport')).toHaveCSS('background-color', 'rgba(250, 251, 252, 0.88)')
+  await expect(page.locator('.fos-document-viewport')).toHaveCSS('background-color', 'rgb(250, 251, 252)')
   const baseline = PNG.sync.read(await page.screenshot({ path: info.outputPath('real-order-fill.png') }))
   await date.evaluate(node => { node.style.backgroundColor = 'white' })
   const withoutGrey = PNG.sync.read(await page.screenshot())
