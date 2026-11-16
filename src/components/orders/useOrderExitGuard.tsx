@@ -9,6 +9,7 @@ export function useOrderExitGuard() {
   const [itemDirty, setItemDirty] = useState(false)
   const [orderDirty, setOrderDirty] = useState(false)
   const [pending, setPending] = useState<(() => void) | null>(null)
+  const [busy, setBusy] = useState(false)
   const [resetKey, setResetKey] = useState(0)
   const dirty = itemDirty || orderDirty
   const registerItem = useCallback((actions: OrderItemExitActions | null) => {
@@ -24,12 +25,15 @@ export function useOrderExitGuard() {
     else action()
   }, [])
   const dismiss = useCallback(() => { setPending(null); setResetKey(value => value + 1) }, [])
-  function finish(save: boolean) {
-    if (!pending) return
+  async function finish(save: boolean) {
+    if (!pending || busy) return
     const itemWasDirty = Boolean(item.current?.dirty)
     if (save) {
-      if (itemWasDirty && !item.current?.commit()) { setResetKey(value => value + 1); return }
-      if ((itemWasDirty || order.current?.dirty) && order.current && !order.current.commit()) { setResetKey(value => value + 1); return }
+      setBusy(true)
+      try {
+        if (itemWasDirty && !await item.current?.commit()) { setResetKey(value => value + 1); return }
+        if ((itemWasDirty || order.current?.dirty) && order.current && !await order.current.commit()) { setResetKey(value => value + 1); return }
+      } finally { setBusy(false) }
     } else {
       if (itemWasDirty) item.current?.discard()
       if (order.current?.dirty) order.current.discard()
@@ -46,6 +50,6 @@ export function useOrderExitGuard() {
   }, [dirty])
   return {
     dirty, resetKey, registerItem, registerOrder, requestExit,
-    dialog: <ConfirmDialog open={pending !== null} title="Сохранить изменения?" confirmLabel="Да" cancelLabel="Нет" onConfirm={() => finish(true)} onCancel={() => finish(false)} onDismiss={dismiss} />,
+    dialog: <ConfirmDialog open={pending !== null} title="Сохранить изменения?" confirmLabel="Да" cancelLabel="Нет" busy={busy} onConfirm={() => void finish(true)} onCancel={() => void finish(false)} onDismiss={dismiss} />,
   }
 }

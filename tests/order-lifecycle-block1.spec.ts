@@ -129,6 +129,28 @@ test('section return opens root lists; dirty layout upload guards sidebar and Ba
   await expect(page.getByRole('button', { name: 'Открыть заказ DEMO-001' })).toHaveCount(0)
 })
 
+test('support draft uses the shared guard and saves before leaving the section', async ({ page }) => {
+  await page.goto('/?view=client-orders')
+  await section(page, 'support')
+  await page.getByRole('button', { name: 'Добавить обращение', exact: true }).click()
+  await page.getByLabel('Тема', { exact: true }).fill('Вопрос по заказу')
+  await section(page, 'artworks')
+  const dialog = page.getByRole('alertdialog', { name: 'Сохранить изменения?' })
+  await expect(dialog).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(page.getByLabel('Тема', { exact: true })).toHaveValue('Вопрос по заказу')
+  await section(page, 'artworks')
+  await dialog.getByRole('button', { name: 'Да', exact: true }).click()
+  await expect(dialog).toBeVisible()
+  await expect(page.getByText('Укажите тему и описание обращения')).toBeVisible()
+  await page.getByLabel('Описание', { exact: true }).fill('Нужна консультация')
+  await dialog.getByRole('button', { name: 'Да', exact: true }).click()
+  await expect(page.getByTestId('layout-browser')).toHaveAttribute('data-state', 'list')
+  await section(page, 'support')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Мои обращения')
+  await expect(page.getByText('Вопрос по заказу', { exact: true })).toBeVisible()
+})
+
 test('tablet and narrow mobile keep section roots, guard and horizontal bounds', async ({ page }, testInfo) => {
   for (const width of [768, 320]) {
     await page.setViewportSize({ width, height: 800 })

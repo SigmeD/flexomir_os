@@ -13,7 +13,7 @@ import './order-item-form.css'
 
 export interface OrderItemExitActions {
   dirty: boolean
-  commit: () => boolean
+  commit: () => boolean | Promise<boolean>
   discard: () => void
 }
 
