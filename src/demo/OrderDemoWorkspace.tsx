@@ -62,6 +62,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
   const [pendingProfileAction, setPendingProfileAction] = useState<(() => void) | null>(null)
   const [presentationVisible, setPresentationVisible] = useState(false)
   const presentationTrigger = useRef<HTMLButtonElement>(null)
+  const focusAfterProfileNavigation = useRef(false)
   const nextOrder = useRef(100)
   const savedClientPhoto = useLocalPhotoPreview(profileIdentities.client.photoFile)
   const savedManagerPhoto = useLocalPhotoPreview(profileIdentities.manager.photoFile)
@@ -79,6 +80,22 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     window.addEventListener('beforeunload', protectUnsavedChanges)
     return () => window.removeEventListener('beforeunload', protectUnsavedChanges)
   }, [profileOpen, profileDirty])
+  useEffect(() => {
+    if (profileOpen || !focusAfterProfileNavigation.current) return
+    const frame = requestAnimationFrame(() => {
+      focusAfterProfileNavigation.current = false
+      const focused = document.activeElement
+      if (focused instanceof HTMLElement && focused !== document.body
+        && focused.getClientRects().length > 0 && !focused.closest('[inert]')) return
+      // Activity retains inactive sections; focus the visible destination after React commits it.
+      if (Array.from(document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"], [aria-modal="true"]'))
+        .some(modal => modal.getClientRects().length > 0 && !modal.closest('[inert], [aria-hidden="true"]'))) return
+      Array.from(document.querySelectorAll<HTMLElement>('.fos-app-shell main h1'))
+        .find(heading => heading.getClientRects().length > 0 && !heading.closest('[inert], [aria-hidden="true"]'))
+        ?.focus({ preventScroll: true })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [profileOpen, currentRole, sections])
   const controller: OrderDemoController = {
     drafts,
     onEditorStateChange: setEditorOpen,
@@ -153,20 +170,10 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
   }
   function navigateSection(section: CabinetSection, onCommit?: () => void) {
     requestProfileTransition(() => {
+      if (profileOpen) focusAfterProfileNavigation.current = true
       setProfileOpen(false)
       visit(currentRole, section)
       onCommit?.()
-      if (profileOpen) requestAnimationFrame(() => {
-        const focused = document.activeElement
-        if (focused instanceof HTMLElement && focused !== document.body
-          && focused.getClientRects().length > 0 && !focused.closest('[inert]')) return
-        // A fast next interaction can open another popup before this frame.
-        if (Array.from(document.querySelectorAll<HTMLElement>('[role="menu"][data-state="open"], [aria-modal="true"]'))
-          .some(modal => modal.getClientRects().length > 0 && !modal.closest('[inert], [aria-hidden="true"]'))) return
-        // Activity keeps inactive sections mounted; focus only the visible destination.
-        Array.from(document.querySelectorAll<HTMLElement>('.fos-app-shell main h1'))
-          .find(heading => heading.getClientRects().length > 0)?.focus({ preventScroll: true })
-      })
     })
   }
   function switchRole(nextRole: ProfileRole) {
