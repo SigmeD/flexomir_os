@@ -46,12 +46,12 @@ export function UploadReviewStand() {
       }} error={error} onOpenLibrary={() => { setArtwork({ artworkMode: 'LIBRARY', fileName: '', layoutId: 'demo-layout', layoutName: 'Этикетка 100×150' }); setState('selected') }} />
     }
     if (kind === 'layout') return <LayoutUploadPanel fileName={name} error={error} onFile={file => selectFile(kind, file)} />
-    return <>
+    return <div className="ua03-stand__signed" data-state={state}>
       <div className="ua03-stand__signed-label">Подписные бланки</div>
       <FileDropzone disabled={false} onFile={file => selectFile(kind, file)} />
       {state === 'selected' && <p className="ua03-stand__note">Выбран локально: {name}. В продукте файл показывается отдельной строкой документов.</p>}
-      {state === 'error' && <p className="ua03-stand__note">У FileDropzone пока нет собственного error-варианта. Стенд его не имитирует.</p>}
-    </>
+      {state === 'error' && <p className="fos-field__error" role="alert">Пустой файл нельзя добавить. Выберите другой файл.</p>}
+    </div>
   }
 
   return <main className="ua03-stand">
@@ -78,6 +78,6 @@ export function UploadReviewStand() {
         <div className="ua03-stand__sample" data-presentation="candidate"><p className="ua03-stand__sample-title">Кандидат</p>{renderUpload(kind.id)}</div>
       </div>
     </section>)}
-    <footer className="ua03-stand__footer">Для согласования: одинаковые ли зона выбора, кнопка, отступы и подсказки в пустом и ошибочном состояниях? Действия «Мои макеты»/«Нужна помощь», карточка выбранного файла библиотеки и строки подписных документов сохраняют свои сценарии.</footer>
+    <footer className="ua03-stand__footer">Общая основа визуально принята Owner. В подписном бланке ошибка пустого файла показана существующим текстом продукта; красный контур справа остаётся кандидатом. Действия «Мои макеты»/«Нужна помощь», карточка выбранного файла библиотеки и строки документов сохраняют свои сценарии.</footer>
   </main>
 }
