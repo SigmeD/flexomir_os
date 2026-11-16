@@ -80,6 +80,8 @@ test('complete Orders compositions at five widths for Figma side-by-side review'
     await page.getByLabel('Нужна помощь с макетом').check()
     await commitItem(page)
     await backToOrders(page)
+    // The composer now protects unsaved item edits on section navigation.
+    await page.getByRole('alertdialog', { name: 'Сохранить изменения?' }).getByRole('button', { name: 'Да', exact: true }).click()
     await page.getByRole('button', { name: 'Открыть заказ DEMO-007' }).click()
     await capture('client-detail')
     await page.getByRole('button', { name: 'Ещё', exact: true }).click()
