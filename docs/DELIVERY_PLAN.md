@@ -4,7 +4,7 @@
 
 | Этап | Состояние | Следующее действие |
 | --- | --- | --- |
-| Блок №1 · T1–T5, заказы/навигация | Frontend-кандидат в [draft PR #55](https://github.com/SigmeD/flexomir_os/pull/55); замечание Owner по единой композиции Client/Manager реализовано, локальный QA PASS, CI code head `6ce2e2b` 4/4 SUCCESS; Owner review/merge OPEN | Провести visual gate, затем решать merge отдельно; [факт и ограничения](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16) |
+| Блок №1 · T1–T5, заказы/навигация | Frontend-кандидат в [draft PR #55](https://github.com/SigmeD/flexomir_os/pull/55); общий Client/Manager Composer, срок менеджера и действие «Отправить» реализованы в демо, локальный QA PASS; Owner review/merge OPEN | Сверить CI фактического head и провести visual gate; production 1С/API/ACL ждёт Алексея и PO. [Факт и ограничения](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16) |
 | M4–M7 | Основные Client/Manager композиции и демосценарии на fixtures реализованы | Сохранять существующие контракты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
 | M8 · [issue #21](https://github.com/SigmeD/flexomir_os/issues/21) | Общие компоненты, DocumentPreview Latest и выровненные формы слиты в `main` через [PR #49](https://github.com/SigmeD/flexomir_os/pull/49); Owner визуально принял показанный заказ, CI проверенного head 10/10 SUCCESS | Полная проверка M8/D09, Auth/WIP UX, side-by-side CURRENT Figma, физические устройства и ручная доступность; внешняя выкладка — отдельное решение |
 | M9 | Нужен согласованный production API | Алексей: backend, ACL, хранение и 1С; frontend: подключение к готовому контракту и интеграционный QA |

@@ -20,6 +20,7 @@ on:
       - 'src/OrdersComponentsLab.tsx'
       - 'src/App.tsx'
       - 'tests/manager-orders.spec.ts'
+      - 'tests/manager-order-lifecycle.spec.ts'
       - 'tests/client-orders.spec.ts'
       - 'tests/order-detail.spec.ts'
       - 'tests/order-compose.spec.ts'
@@ -53,7 +54,7 @@ jobs:
         run: |
           node -e "const version = require('@playwright/test/package.json').version; if (version !== '1.64.1') throw new Error('Update the pinned Playwright image to match ' + version); console.log('Playwright image matches ' + version)"
       - run: npm run build
-      - run: npx playwright test tests/orders-components.spec.ts tests/orders-figma-parity.spec.ts tests/order-compose.spec.ts tests/client-orders.spec.ts tests/order-detail.spec.ts tests/manager-orders.spec.ts tests/navigation-drawer.spec.ts tests/glass-pill-tabs-react.spec.ts tests/gl03-compact-pill-tabs.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts tests/popup-dismissal.spec.ts tests/fe11-frozen-contract.spec.ts tests/fe11-popup-adapters.spec.ts tests/fe-debug-order-transitions.spec.ts --workers=2
+      - run: npx playwright test tests/orders-components.spec.ts tests/orders-figma-parity.spec.ts tests/order-compose.spec.ts tests/client-orders.spec.ts tests/order-detail.spec.ts tests/manager-orders.spec.ts tests/manager-order-lifecycle.spec.ts tests/navigation-drawer.spec.ts tests/glass-pill-tabs-react.spec.ts tests/gl03-compact-pill-tabs.spec.ts tests/sidebar-nav.spec.ts tests/header-action.spec.ts tests/popup-dismissal.spec.ts tests/fe11-frozen-contract.spec.ts tests/fe11-popup-adapters.spec.ts tests/fe-debug-order-transitions.spec.ts --workers=2
       - name: Save Orders Core visual review captures
         if: always()
         uses: actions/upload-artifact@v4

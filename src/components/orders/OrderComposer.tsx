@@ -21,7 +21,7 @@ import { ORDER_STATUS_LABELS } from './order-model'
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
 export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [], actorRole = draft.ownerRole, onCancelReview, onOrderExitActionsChange }: {
-  draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend: (draft: DemoDraft) => void; onBack: () => void
+  draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend?: (draft: DemoDraft) => void; onBack: () => void
   onNavigationSectionChange?: (section: CabinetSection) => void
   onItemExitActionsChange?: (actions: OrderItemExitActions | null) => void
   onDeleteDraft?: (id: string) => void
@@ -32,11 +32,13 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
 }) {
   const [value, setValue] = useState(draft)
   const valueRef = useRef(value)
-  const isReview = draft.stage === 'sent'
+  const isReview = draft.stage !== 'draft'
   const editable = canEditDemoItems(draft, actorRole)
   const [copySeed, setCopySeed] = useState<DemoItem | undefined>()
   const [requestedDateInput, setRequestedDateInput] = useState(() => displayDate(draft.requestedDate))
   const [dateInputValid, setDateInputValid] = useState(true)
+  const [agreedDateInput, setAgreedDateInput] = useState(() => displayDate(draft.agreedDate ?? ''))
+  const [agreedDateValid, setAgreedDateValid] = useState(true)
   const [editing, setEditing] = useState<string | null>(null)
   const [feedback, setFeedback] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -55,20 +57,20 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
   }, [editing])
   useEffect(() => {
     onOrderExitActionsChange?.({
-      dirty: JSON.stringify(value) !== JSON.stringify(draft) || !dateInputValid || requestedDateInput !== displayDate(draft.requestedDate),
+      dirty: JSON.stringify(value) !== JSON.stringify(draft) || !dateInputValid || !agreedDateValid || requestedDateInput !== displayDate(draft.requestedDate) || agreedDateInput !== displayDate(draft.agreedDate ?? ''),
       commit: () => {
         const current = valueRef.current
-        if (!editable || !dateInputValid || !validDemoDate(current.requestedDate) || (isReview && !validDemoReview(current)) || (actorRole === 'manager' && !current.company)) return false
+        if (!editable || !dateInputValid || !agreedDateValid || !validDemoDate(current.requestedDate) || !validDemoDate(current.agreedDate ?? '') || (isReview && !validDemoReview(current)) || (actorRole === 'manager' && !current.company)) return false
         onSave(current)
         return true
       },
       discard: () => {
         if (isReview) onCancelReview?.()
-        else { valueRef.current = draft; setValue(draft); setRequestedDateInput(displayDate(draft.requestedDate)); setDateInputValid(true) }
+        else { valueRef.current = draft; setValue(draft); setRequestedDateInput(displayDate(draft.requestedDate)); setDateInputValid(true); setAgreedDateInput(displayDate(draft.agreedDate ?? '')); setAgreedDateValid(true) }
       },
     })
     return () => onOrderExitActionsChange?.(null)
-  }, [value, draft, editable, dateInputValid, requestedDateInput, isReview, actorRole, onOrderExitActionsChange, onSave, onCancelReview])
+  }, [value, draft, editable, dateInputValid, agreedDateValid, requestedDateInput, agreedDateInput, isReview, actorRole, onOrderExitActionsChange, onSave, onCancelReview])
   function save(next: DemoDraft) {
     if (!editable) return
     valueRef.current = next
@@ -109,10 +111,10 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
   const title = 'Заказ ' + value.id
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id}>
     {editing === null ? <>
-      <PageHeader title={title} floatingWorkActions subtitle={isReview ? ORDER_STATUS_LABELS.review : ORDER_STATUS_LABELS.draft} subtitleRole="status" breadcrumbs={[{ label: actorRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
-        {isReview ? <HeaderAction action="save" accessibleName="Сохранить заказ" disabled={!editable || !dateInputValid || !validDemoReview(value) || JSON.stringify(value) === JSON.stringify(draft)} onAction={() => { if (editable && dateInputValid && validDemoReview(value)) onSave(value) }} /> : value.ownerRole === 'manager'
-          ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={!dateInputValid || JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { if (!dateInputValid) return; onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
-          : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!dateInputValid || !canSendDemo(value)} onAction={() => { if (dateInputValid && canSendDemo(value)) onSend(value) }} />}
+      <PageHeader title={title} floatingWorkActions subtitle={draft.stage === 'done' ? ORDER_STATUS_LABELS.done : draft.stage === 'sent' ? draft.transferStarted ? ORDER_STATUS_LABELS.work : ORDER_STATUS_LABELS.review : ORDER_STATUS_LABELS.draft} subtitleRole="status" breadcrumbs={[{ label: actorRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
+        {actorRole === 'manager' ? <HeaderAction action="send" accessibleName="Отправить заказ" disabled={!onSend || !editable || !dateInputValid || !agreedDateValid || !value.company || !value.agreedDate || (isReview ? !validDemoReview(value) || JSON.stringify(value) === JSON.stringify(draft) : !canSendDemo(value))} onAction={() => { if (editable && dateInputValid && agreedDateValid && value.company && value.agreedDate && (isReview ? validDemoReview(value) && JSON.stringify(value) !== JSON.stringify(draft) : canSendDemo(value))) onSend?.(value) }} />
+          : isReview ? <HeaderAction action="save" accessibleName="Сохранить заказ" disabled={!editable || !dateInputValid || !validDemoReview(value) || JSON.stringify(value) === JSON.stringify(draft)} onAction={() => { if (editable && dateInputValid && validDemoReview(value)) onSave(value) }} />
+          : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!onSend || !dateInputValid || !canSendDemo(value)} onAction={() => { if (dateInputValid && canSendDemo(value)) onSend?.(value) }} />}
         <OverflowMenu items={[
           { id: 'add', label: 'Добавить позицию', disabled: !editable, onSelect: addItem, focusAfter: 'consumer' },
           ...(isReview ? [{ id: 'cancel', label: 'Отменить изменения', onSelect: onCancelReview, focusAfter: 'consumer' as const }] : [{ id: 'delete', label: 'Удалить черновик', disabled: !onDeleteDraft, reason: onDeleteDraft ? undefined : 'Удаление доступно только для черновика демосессии', onSelect: () => setConfirmDelete(true) }]),
@@ -137,7 +139,9 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
           <OrderDateFields className="fos-order-composer__dates">
             <FOSDatePicker label="Желаемый срок" value={value.requestedDate} inputDraft={requestedDateInput} onInputDraftChange={setRequestedDateInput} onValidityChange={setDateInputValid}
               error={!dateInputValid || !validDemoDate(value.requestedDate) ? 'Проверьте дату' : undefined} onValueChange={requestedDate => save({ ...value, requestedDate })} />
-            {value.ownerRole === 'client' && <FOSDatePicker label="Согласованный срок" value="" readOnly />}
+            {actorRole === 'manager' ? <FOSDatePicker label="Согласованный срок" value={value.agreedDate ?? ''} inputDraft={agreedDateInput} onInputDraftChange={setAgreedDateInput} onValidityChange={setAgreedDateValid}
+              error={!agreedDateValid || !validDemoDate(value.agreedDate ?? '') ? 'Проверьте дату' : undefined} onValueChange={agreedDate => save({ ...value, agreedDate })} />
+              : <FOSDatePicker label="Согласованный срок" value={value.agreedDate ?? ''} readOnly />}
           </OrderDateFields>
         </section>
         <SignedDocumentsSection key={'docs'+JSON.stringify([value.company,value.id])} context={JSON.stringify(['order',value.company,value.id])} canAdd={editable} />

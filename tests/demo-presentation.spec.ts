@@ -83,7 +83,11 @@ test('role switching and reset stay locked while a Manager private draft editor 
   await expect(page.getByTestId('order-composer')).toBeVisible()
 
   await page.keyboard.press('Escape')
-  await page.getByRole('button', { name: 'Сохранить черновик менеджера' }).click()
+  if (await managerMenuTrigger.isVisible()) {
+    await managerMenuTrigger.click()
+    await page.getByRole('button', { name: 'Заказы', exact: true }).last().click()
+  } else await page.getByRole('button', { name: 'Заказы', exact: true }).first().click()
+  await page.getByRole('alertdialog', { name: 'Сохранить изменения?' }).getByRole('button', { name: 'Да', exact: true }).click()
   await openDemoControls(page)
   await expect(page.getByRole('button', { name: 'Демо: клиент', exact: true })).toBeEnabled()
   await closeDemoControls(page)

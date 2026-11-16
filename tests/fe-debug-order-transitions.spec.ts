@@ -130,12 +130,15 @@ test('new draft list identifier and Composer title keep the same order ID', asyn
   await expect(page.getByRole('heading', { level: 1, name: 'Заказ ' + id, exact: true })).toBeVisible()
 })
 
-test('base DEMO-001 fixture remains read-only until its editability contract is approved', async ({ page }) => {
+test('base DEMO-001 draft opens the manager editor from More', async ({ page }) => {
   await page.goto('/?view=manager-orders')
   await page.getByRole('button', { name: 'Открыть заказ DEMO-001' }).click()
   await expect(page.getByTestId('order-detail')).toHaveAttribute('data-order-id', 'DEMO-001')
   await expect(page.getByRole('button', { name: 'Добавить позицию заказа' })).toBeDisabled()
   await expect(page.getByTestId('order-composer')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Ещё', exact: true }).click()
+  await page.getByRole('menuitem', { name: 'Изменить' }).click()
+  await expect(page.getByTestId('order-composer')).toHaveAttribute('data-order-id', 'DEMO-001')
 })
 
 test('Manager mobile active Заказы selection returns from order detail to the list', async ({ page }) => {

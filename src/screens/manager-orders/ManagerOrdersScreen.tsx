@@ -38,10 +38,12 @@ interface ManagerOrdersScreenProps {
   managerCompanies?: readonly Pick<DemoCompany, 'id' | 'name'>[]
   onCreateOrder?: () => string
   onSaveManagerDraft?: (draft: DemoDraft) => void
+  onSendManagerDraft?: (draft: DemoDraft) => void
   onDeleteManagerDraft?: (id: string) => void
   onEditorStateChange?: (open: boolean) => void
   reviewOrders?: readonly DemoDraft[]
   onSaveReviewOrder?: (order: DemoDraft) => void
+  onSendManagerOrder?: (order: DemoDraft) => void
 }
 
 /**
@@ -49,7 +51,7 @@ interface ManagerOrdersScreenProps {
  * No 1C mapping, backend statuses, real navigation or server-side ACL here.
  * Accepted Glass primitives remain unchanged.
  */
-export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId = 'all', onFilterChange, newOrderIds = [], processingStates = {}, onProcessingStateChange, demoTools = false, managerDrafts = [], managerCompanies = [], onCreateOrder, onSaveManagerDraft, onDeleteManagerDraft, onEditorStateChange, reviewOrders = [], onSaveReviewOrder }: ManagerOrdersScreenProps) {
+export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId = 'all', onFilterChange, newOrderIds = [], processingStates = {}, onProcessingStateChange, demoTools = false, managerDrafts = [], managerCompanies = [], onCreateOrder, onSaveManagerDraft, onSendManagerDraft, onDeleteManagerDraft, onEditorStateChange, reviewOrders = [], onSaveReviewOrder, onSendManagerOrder }: ManagerOrdersScreenProps) {
   const navigation = useCabinetNavigation()
   const [filterId, setFilterId] = useState<OrderStatusFilterId>(initialFilterId)
   const [queue, setQueue] = useState<'new' | 'all'>('all')
@@ -90,9 +92,9 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
         footerText="Менеджер"
       >
         <main className="fos-orders-page__main" data-layout="standard" data-role="manager" data-view={selectedManagerDraft || editingReview ? 'compose' : preview.selectedOrder ? 'detail' : 'list'}>
-          {editingReview ? <OrderComposer key={editingReview.id + '-review'} draft={editingReview} actorRole="manager" onSave={order => { onSaveReviewOrder?.(order); setReviewEditingId(null) }} onSend={() => {}} onBack={() => exitGuard.requestExit(() => { setReviewEditingId(null); preview.backToList() })} onCancelReview={() => setReviewEditingId(null)} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} /> : selectedManagerDraft ? <OrderComposer key={selectedManagerDraft.id} draft={selectedManagerDraft} onSave={onSaveManagerDraft ?? (() => {})} onSend={() => {}} onBack={() => exitGuard.requestExit(preview.backToList)} onDeleteDraft={onDeleteManagerDraft} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} managerCompanies={managerCompanies} /> : preview.selectedOrder?.detail ? (
+          {editingReview ? <OrderComposer key={editingReview.id + '-review'} draft={editingReview} actorRole="manager" onSave={order => { if (order.stage === 'draft') onSaveManagerDraft?.(order); else onSaveReviewOrder?.(order); setReviewEditingId(null) }} onSend={(editingReview.stage === 'draft' ? onSendManagerDraft : onSendManagerOrder) ? order => { if (order.stage === 'draft') onSendManagerDraft?.(order); else onSendManagerOrder?.(order); setReviewEditingId(null) } : undefined} onBack={() => exitGuard.requestExit(() => { setReviewEditingId(null); preview.backToList() })} onCancelReview={() => setReviewEditingId(null)} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} managerCompanies={managerCompanies} /> : selectedManagerDraft ? <OrderComposer key={selectedManagerDraft.id} draft={selectedManagerDraft} actorRole="manager" onSave={onSaveManagerDraft ?? (() => {})} onSend={onSendManagerDraft} onBack={() => exitGuard.requestExit(preview.backToList)} onDeleteDraft={onDeleteManagerDraft} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} managerCompanies={managerCompanies} /> : preview.selectedOrder?.detail ? (
             <>
-              <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} onExit={preview.backToList} role="manager" canReply={reviewOrders.find(record => record.id === preview.selectedOrder?.id)?.communication?.canReply ?? preview.selectedOrder.communication?.canReply ?? false} onEdit={selectedReview && onSaveReviewOrder ? () => setReviewEditingId(selectedReview.id) : undefined} managerIntake={demoOrderIds.includes(preview.selectedOrder.id)} demoProcessingState={processingStates[preview.selectedOrder.id] ?? 'pending'} onDemoProcessingStateChange={state => onProcessingStateChange?.(preview.selectedOrder!.id, state)} demoProcessingEnabled={demoTools} />
+              <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} onExit={preview.backToList} role="manager" canReply={reviewOrders.find(record => record.id === preview.selectedOrder?.id)?.communication?.canReply ?? preview.selectedOrder.communication?.canReply ?? false} onEdit={selectedReview && (selectedReview.stage === 'draft' ? onSendManagerDraft : onSendManagerOrder) ? () => setReviewEditingId(selectedReview.id) : undefined} managerIntake={demoOrderIds.includes(preview.selectedOrder.id)} demoProcessingState={processingStates[preview.selectedOrder.id] ?? 'pending'} onDemoProcessingStateChange={state => onProcessingStateChange?.(preview.selectedOrder!.id, state)} demoProcessingEnabled={demoTools} />
             </>
           ) : (
             <>

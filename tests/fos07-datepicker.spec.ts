@@ -251,7 +251,11 @@ for (const role of ['client', 'manager'] as const) {
     const composer = page.getByTestId('order-composer')
     const trigger = composer.getByRole('button', { name: 'Открыть календарь: Желаемый срок', exact: true })
     await expect(trigger).toBeVisible()
-    if (role === 'manager') await chooseFormOption(page, 'Компания', 'Компания 01')
+    if (role === 'manager') {
+      await chooseFormOption(page, 'Компания', 'Компания 01')
+      await expect(composer.getByLabel('Согласованный срок', { exact: true })).toBeEditable()
+      await composer.getByLabel('Согласованный срок', { exact: true }).fill('20.11.2026')
+    }
     else {
       await expect(composer.getByLabel('Согласованный срок', { exact: true })).toHaveAttribute('readonly', '')
       await expect(composer.getByRole('button', { name: /календарь: Согласованный срок/ })).toHaveCount(0)
@@ -267,7 +271,7 @@ for (const role of ['client', 'manager'] as const) {
     await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
     await fillItem(page)
     await commitItem(page)
-    const action = page.getByRole('button', { name: role === 'client' ? 'Передать менеджеру (демо)' : 'Сохранить черновик менеджера', exact: true })
+    const action = page.getByRole('button', { name: role === 'client' ? 'Передать менеджеру (демо)' : 'Отправить заказ', exact: true })
     await expect(action).toBeEnabled()
     await date.fill('31.11.2026')
     await date.press('Tab')
@@ -285,7 +289,10 @@ for (const role of ['client', 'manager'] as const) {
     if (role === 'client') {
       await expect(page.getByTestId('order-detail').getByLabel('Желаемый срок', { exact: true })).toHaveValue('18.11.2026')
       await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveAttribute('readonly', '')
-    } else await expect(action).toBeDisabled()
+    } else {
+      await expect(page.getByTestId('order-detail-status')).toHaveText('На рассмотрении')
+      await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveValue('20.11.2026')
+    }
     expect(errors).toEqual([])
   })
 }

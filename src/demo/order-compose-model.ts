@@ -24,11 +24,13 @@ export interface DemoItem {
 
 export interface DemoDraft {
   id: string
+  title?: string
   company: string
   items: readonly DemoItem[]
   requestedDate: string
+  agreedDate?: string
   comment: string
-  stage: 'draft' | 'sent' | 'cancelled'
+  stage: 'draft' | 'sent' | 'done' | 'cancelled'
   ownerRole: 'client' | 'manager'
   sourceOrderId?: string
   /** Fixture/UI lock only. Real integration state must come from the agreed API. */
@@ -37,11 +39,12 @@ export interface DemoDraft {
   communication?: { canReply: boolean; phase?:'open'|'work'|'readonly' }
 }
 
-export const canEditDemoItems = (order: DemoDraft, actor: DemoDraft['ownerRole']) => !order.transferStarted
-  && (order.stage === 'sent' || (order.stage === 'draft' && order.ownerRole === actor))
+export const canEditDemoItems = (order: DemoDraft, actor: DemoDraft['ownerRole']) => actor === 'manager'
+  ? order.stage === 'sent' || order.stage === 'done' || (order.stage === 'draft' && order.ownerRole === actor)
+  : !order.transferStarted && order.ownerRole === actor && (order.stage === 'sent' || order.stage === 'draft')
 
-export const validDemoReview = (order: DemoDraft) => order.stage === 'sent' && order.items.length > 0
-  && order.items.every(validDemoItem) && validDemoDate(order.requestedDate)
+export const validDemoReview = (order: DemoDraft) => (order.stage === 'sent' || order.stage === 'done') && order.items.length > 0
+  && order.items.every(validDemoItem) && validDemoDate(order.requestedDate) && validDemoDate(order.agreedDate ?? '')
 
 export const emptyDemoItem = (): DemoItem => ({
   id: '', name: '', quantity: '', shape: '', width: '', height: '', material: '',
@@ -84,7 +87,7 @@ export function validDemoDate(value: string): boolean {
 }
 
 export const canSendDemo = (draft: DemoDraft) => draft.stage === 'draft' && draft.items.length > 0
-  && draft.items.every(validDemoItem) && validDemoDate(draft.requestedDate)
+  && draft.items.every(validDemoItem) && validDemoDate(draft.requestedDate) && validDemoDate(draft.agreedDate ?? '')
 
 export function itemSummary(item: DemoItem): OrderItemSummaryView {
   const artworkLabel = item.artworkMode === 'HELP' ? 'Макет: нужна помощь'
@@ -98,10 +101,10 @@ export function itemSummary(item: DemoItem): OrderItemSummaryView {
 
 export function draftView(draft: DemoDraft): OrderListItem {
   return {
-    id: draft.id, company: draft.company, title: draft.items[0]?.name || (draft.ownerRole === 'manager' ? 'Новый заказ менеджера' : 'Новый демонстрационный заказ'),
-    statusLabel: draft.stage === 'cancelled' ? ORDER_STATUS_LABELS.cancelled : draft.stage === 'draft' ? ORDER_STATUS_LABELS.draft : draft.transferStarted ? ORDER_STATUS_LABELS.work : ORDER_STATUS_LABELS.review,
-    filterId: draft.stage === 'cancelled' ? null : draft.stage === 'draft' ? 'draft' : draft.transferStarted ? 'work' : 'review',
+    id: draft.id, company: draft.company, title: draft.title || draft.items[0]?.name || (draft.ownerRole === 'manager' ? 'Новый заказ менеджера' : 'Новый демонстрационный заказ'),
+    statusLabel: draft.stage === 'cancelled' ? ORDER_STATUS_LABELS.cancelled : draft.stage === 'done' ? ORDER_STATUS_LABELS.done : draft.stage === 'draft' ? ORDER_STATUS_LABELS.draft : draft.transferStarted ? ORDER_STATUS_LABELS.work : ORDER_STATUS_LABELS.review,
+    filterId: draft.stage === 'cancelled' ? null : draft.stage === 'done' ? 'done' : draft.stage === 'draft' ? 'draft' : draft.transferStarted ? 'work' : 'review',
     communication: {canReply:draft.communication?.canReply??false,phase:draft.communication?.phase??'open'},
-    detail: { items: draft.items.map(itemSummary), requestedDate: draft.requestedDate, comment: draft.comment },
+    detail: { items: draft.items.map(itemSummary), requestedDate: draft.requestedDate, agreedDate: draft.agreedDate, comment: draft.comment },
   }
 }
