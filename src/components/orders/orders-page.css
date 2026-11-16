@@ -1,6 +1,6 @@
 /* Shared screen composition; accepted Glass controls keep their own surface/motion. */
 .fos-orders-page { --fos-v2-semantic-color-text-secondary: #586d7c; display: flex; min-width: 0; min-height: 100vh; background: #fff; color: #253144; font-family: var(--fos-font-family); }
-.fos-orders-page:has(main[data-view=list]),.fos-orders-page:has(main[data-role=manager]) { background: #fafbfc; }
+.fos-orders-page:has(main[data-view=list]),.fos-orders-page:has(main[data-role=manager]:not([data-view])) { background: #fafbfc; }
 .fos-orders-page__main { --fos-order-column-gap: 26px; --fos-order-half-column-width: calc((100% - var(--fos-order-column-gap))/2); box-sizing: border-box; min-width: 0; width: 100%; margin-inline: auto; padding: 52px 72px 64px; }
 .fos-orders-page__main[data-layout=standard] { max-width: 1440px; }
 /* One list-shell contract, anchored to accepted Client Orders. Nested library

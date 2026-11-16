@@ -37,7 +37,7 @@ test('presentation role switch keeps one workspace and preserves the complete Cl
   await closeDemoControls(page)
   await expect(page.getByTestId('client-orders-screen')).toBeVisible()
   await page.getByRole('button', { name: 'Открыть заказ ' + orderId }).click()
-  await expect(page.getByTestId('order-detail-status')).toHaveText('Демо-обработка завершена')
+  await expect(page.getByTestId('order-detail-status')).toHaveText('На рассмотрении')
   expect(await workspace?.evaluate(element => element.isConnected)).toBe(true)
 })
 
@@ -82,7 +82,12 @@ test('role switching and reset stay locked while a Manager private draft editor 
   } else await page.getByRole('button', { name: 'Заказы', exact: true }).first().click()
   await expect(page.getByTestId('order-composer')).toBeVisible()
 
-  await page.getByRole('button', { name: 'Сохранить черновик менеджера' }).click()
+  await page.keyboard.press('Escape')
+  if (await managerMenuTrigger.isVisible()) {
+    await managerMenuTrigger.click()
+    await page.getByRole('button', { name: 'Заказы', exact: true }).last().click()
+  } else await page.getByRole('button', { name: 'Заказы', exact: true }).first().click()
+  await page.getByRole('alertdialog', { name: 'Сохранить изменения?' }).getByRole('button', { name: 'Да', exact: true }).click()
   await openDemoControls(page)
   await expect(page.getByRole('button', { name: 'Демо: клиент', exact: true })).toBeEnabled()
   await closeDemoControls(page)

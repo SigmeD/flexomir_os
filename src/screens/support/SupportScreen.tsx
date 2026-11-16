@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { CabinetPage, type CabinetRole, type CabinetSection } from '@/components/layout/CabinetPage'
 import { usePreviewNavigation } from '@/components/layout/usePreviewNavigation'
 import { PageHeader } from '@/components/ui/page-header'
@@ -13,9 +13,13 @@ import type { MessageComposerHandle } from '@/components/messaging/MessageCompos
 import type { ConversationHandle, ConversationState } from '@/components/messaging/ConversationPanel'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { deleteLocalContext } from '@/components/messaging/local-communication'
+import { useOrderExitGuard } from '@/components/orders/useOrderExitGuard'
+import { useCabinetNavigation } from '@/components/layout/CabinetNavigation'
 
 /** Shared requester UI. Owner enabled local follow-up; Manager remains a requester, not a support operator. */
 export function SupportScreen({ role, empty = false, errorFixture = false, onNavigate }: { role: CabinetRole; empty?: boolean; errorFixture?: boolean; onNavigate?: (section: CabinetSection) => void }) {
+  const navigation = useCabinetNavigation()
+  const exitGuard = useOrderExitGuard()
   const [tickets, setTickets] = useState<readonly DemoSupportTicket[]>(() => empty ? [] : supportFixtures(role))
   const [input, setInput] = useState<SupportInput>({ subject: '', description: '' })
   const [touched, setTouched] = useState<Partial<Record<keyof SupportInput, boolean>>>({})
@@ -28,7 +32,11 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
   const saveToList = useRef(false), saveLock = useRef(false)
   const [saving,setSaving] = useState(false),[createBusy,setCreateBusy] = useState(false),[confirmDelete,setConfirmDelete] = useState(false)
   const [conversationState,setConversationState] = useState<ConversationState & {id:string}>({id:'',dirty:false,canSave:true,busy:false})
-  const nav = usePreviewNavigation()
+  const nav = usePreviewNavigation('list', undefined, (next, proceed) => {
+    if (nav.path !== 'new' || next === 'new' || !input.subject && !input.description) return false
+    exitGuard.requestExit(proceed)
+    return true
+  }, () => Boolean(document.querySelector(`[data-testid="${role}-support-screen"]`)?.getClientRects().length))
   const own = tickets.filter(ticket => ticket.owner === role)
   const ticket = own.find(item => 'ticket/' + item.id === nav.path)
   const onConversationState = useCallback((state:ConversationState)=>setConversationState({...state,id:ticket?.id??''}),[ticket?.id])
@@ -51,6 +59,24 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
   const state=conversationState.id===ticket?.id ? conversationState : {dirty:false,canSave:true,busy:false}
   const busy=saving || createBusy || Boolean(ticket&&state.busy)
   const canSave=creating ? valid&&!busy : Boolean(ticket&&!busy&&state.canSave&&state.dirty)
+  useEffect(() => {
+    if (!creating) return
+    exitGuard.registerOrder({
+      dirty: Boolean(input.subject || input.description),
+      commit: async () => {
+        if (!valid || busy || !createComposer.current) {
+          setTouched({ subject: true, description: true })
+          setError('Укажите тему и описание обращения')
+          return false
+        }
+        saveToList.current = true
+        try { return await createComposer.current.submit() }
+        finally { saveToList.current = false }
+      },
+      discard: () => { setInput({ subject: '', description: '' }); setTouched({}); setError('') },
+    })
+    return () => exitGuard.registerOrder(null)
+  }, [creating, input, valid, busy, exitGuard.registerOrder])
   async function save() {
     if(!canSave||saveLock.current)return
     saveLock.current=true;setSaving(true)
@@ -70,8 +96,10 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
   function cancelDelete(){setConfirmDelete(false);requestAnimationFrame(()=>document.querySelector<HTMLElement>(`[data-testid="${role}-support-screen"] .fos-more`)?.focus({preventScroll:true}))}
   const title = ticket?.subject ?? (creating ? 'Новое обращение' : 'Мои обращения')
   const parentBreadcrumb = ticket && role === 'client' ? 'Поддержка' : 'Мои обращения'
-  return <CabinetPage role={role} section="support" onNavigate={onNavigate}>
-    <PageHeader title={title} floatingWorkActions autoFocus={creating || Boolean(ticket)} breadcrumbs={nav.path === 'list' ? [{ label: 'Мои обращения' }] : [{ label: parentBreadcrumb, onSelect: nav.back }, { label: title }]}
+  return <CabinetPage role={role} section="support" drawerSelectionResetKey={exitGuard.resetKey}
+    onNavigate={id => exitGuard.requestExit(() => (onNavigate ?? navigation?.navigate)?.(id))}
+    onOpenProfile={() => exitGuard.requestExit(() => navigation?.openProfile?.())}>
+    <PageHeader title={title} floatingWorkActions autoFocus={creating || Boolean(ticket)} breadcrumbs={nav.path === 'list' ? [{ label: 'Мои обращения' }] : [{ label: parentBreadcrumb, onSelect: () => exitGuard.requestExit(nav.back) }, { label: title }]}
       actions={<><HeaderAction action={nav.path === 'list' ? 'add' : 'save'} accessibleName={nav.path === 'list' ? 'Добавить обращение' : 'Сохранить обращение'} data-focus-key="support-add"
         disabled={nav.path !== 'list' && !canSave} onAction={nav.path === 'list' ? () => nav.open('new') : ()=>{void save()}} />{nav.path==='list' ? <MoreAction disabled/> : <OverflowMenu disabled={busy} label="Действия обращения" items={[
           {id:'delete',label:'Удалить обращение',onSelect:()=>setConfirmDelete(true),focusAfter:'consumer'},
@@ -82,6 +110,7 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
       {!own.length && <p className="fos-cabinet__empty" data-testid="support-empty" role="status">Обращений пока нет.</p>}
     </>}
     {confirmDelete&&<ConfirmDialog open title="Удалить обращение?" body="Обращение и его локальная переписка будут удалены из этой демосессии." confirmLabel="Удалить" cancelLabel="Отмена" onConfirm={removeTicket} onCancel={cancelDelete}/>}
+    {exitGuard.dialog}
     <p className="fos-cabinet__notice">Демонстрационные обращения и ответы команды. Данные существуют только в этой демосессии.</p>
   </CabinetPage>
 }

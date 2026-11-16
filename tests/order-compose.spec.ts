@@ -2,6 +2,12 @@ import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { backToOrders, chooseMore, closeDemoControls, commitItem, detailData, fillItem, openDemoControls, setDemoRole } from './helpers/orders'
 
+async function saveAndBackToOrders(page: import('@playwright/test').Page) {
+  await backToOrders(page)
+  const dialog = page.getByRole('alertdialog', { name: 'Сохранить изменения?' })
+  if (await dialog.isVisible()) await dialog.getByRole('button', { name: 'Да', exact: true }).click()
+}
+
 test('A: Figma new→0/1/N→whole-row edit/save/cancel; stable IDs and retained order fields', async ({ page }) => {
   await page.goto('/?view=client-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
@@ -42,7 +48,7 @@ test('A: Figma new→0/1/N→whole-row edit/save/cancel; stable IDs and retained
   await page.getByLabel('Желаемый срок', { exact: true }).fill('01.12.2026')
   await page.getByLabel('Сообщение', { exact: true }).fill('Общий комментарий DEMO')
   await page.getByRole('button', { name: 'Отправить сообщение локально' }).click()
-  await backToOrders(page)
+  await saveAndBackToOrders(page)
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   await expect(composer.getByTestId('order-item-summary')).toHaveCount(2)
   await expect(page.getByLabel('Желаемый срок', { exact: true })).toHaveValue('01.12.2026')
@@ -113,7 +119,7 @@ test('B: completed More→duplicate same composer, source immutable, fresh IDs a
   await page.getByLabel('Нужна помощь с макетом').check()
   await commitItem(page)
   await expect(page.getByRole('button', { name: 'Передать менеджеру (демо)' })).toBeEnabled()
-  await backToOrders(page)
+  await saveAndBackToOrders(page)
   await page.getByRole('button', { name: 'Открыть заказ DEMO-007' }).click()
   expect(await detailData(page)).toEqual(source)
   await chooseMore(page, 'Дублировать заказ')
@@ -134,14 +140,14 @@ test('C: private draft→submit→same Manager record; readonly contracts, role 
   await page.getByLabel('Желаемый срок', { exact: true }).fill('03.12.2026')
   await page.getByLabel('Сообщение', { exact: true }).fill('Единый комментарий DEMO')
   await page.getByRole('button', { name: 'Отправить сообщение локально' }).click()
-  await backToOrders(page)
+  await saveAndBackToOrders(page)
   await setDemoRole(page, 'manager')
   await expect(page.getByTestId('manager-order-' + id)).toHaveCount(0)
   await setDemoRole(page, 'client')
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
-  await expect(page.getByRole('heading', { level: 1, name: 'Заказ отправлен' })).toBeVisible()
-  await expect(page.getByTestId('order-detail-status')).toHaveText('Передан менеджеру')
+  await expect(page.getByRole('heading', { level: 1, name: 'Заказ ' + id })).toBeVisible()
+  await expect(page.getByTestId('order-detail-status')).toHaveText('На рассмотрении')
   const client = await detailData(page)
   await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveValue('')
   await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveAttribute('readonly', '')
@@ -152,7 +158,7 @@ test('C: private draft→submit→same Manager record; readonly contracts, role 
   await expect(page.getByTestId('message-thread')).toContainText('Единый комментарий DEMO')
   await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveAttribute('readonly', '')
   await expect(page.getByRole('button', { name: 'Создать заказ', exact: true })).toBeDisabled()
-  await backToOrders(page)
+  await saveAndBackToOrders(page)
   await page.getByTestId('glass-pill-work').click()
   await setDemoRole(page, 'client')
   await setDemoRole(page, 'manager')
@@ -170,7 +176,7 @@ test('validation/dirty guard/error and keyboard escape; no fabricated upload suc
   await page.goto('/?view=client-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).focus()
   await page.keyboard.press('Enter')
-  await expect(page.getByRole('heading', { level: 1, name: 'Новый заказ' })).toBeFocused()
+  await expect(page.getByRole('heading', { level: 1, name: 'Заказ DEMO-NEW-100' })).toBeFocused()
   await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Новая позиция' })).toBeFocused()
   await page.keyboard.press('Escape')
@@ -185,7 +191,7 @@ test('validation/dirty guard/error and keyboard escape; no fabricated upload suc
   if ((page.viewportSize()?.width || 1440) >= 1024) {
     await expect(page.getByRole('navigation', { name: 'Навигация клиента', exact: true }).getByTestId('sidebar-nav-orders')).toBeEnabled()
     await expect(page.getByRole('navigation', { name: 'Навигация клиента', exact: true }).getByTestId('sidebar-nav-support')).toBeEnabled()
-    await expect(page.getByRole('navigation', { name: 'Хлебные крошки' }).getByRole('button', { name: 'Мои заказы' })).toBeDisabled()
+    await expect(page.getByRole('navigation', { name: 'Хлебные крошки' }).getByRole('button', { name: 'Мои заказы' })).toBeEnabled()
   } else {
     await page.getByTestId('navigation-drawer-trigger').click()
     await expect(page.getByRole('dialog').getByTestId('sidebar-nav-orders')).toBeEnabled()
@@ -234,7 +240,7 @@ test('five-size reference flow, menus/outside/keyboard, fallback modes, no API r
     await page.screenshot({ path: testInfo.outputPath('fes02-item-' + width + '.png'), fullPage: true, animations: 'disabled' })
     await commitItem(page)
     await page.screenshot({ path: testInfo.outputPath('fes02-new-' + width + '.png'), fullPage: true, animations: 'disabled' })
-    await backToOrders(page)
+    await saveAndBackToOrders(page)
     await page.getByRole('button', { name: 'Открыть заказ DEMO-007' }).click()
     await page.getByRole('button', { name: 'Ещё', exact: true }).click()
     await page.getByRole('heading', { level: 1 }).click({ position: { x: 2, y: 2 } })

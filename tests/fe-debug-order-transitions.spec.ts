@@ -119,23 +119,26 @@ test('More deletes only the confirmed in-session draft and leaves other drafts i
   await expect(page.getByTestId('client-order-' + secondId)).toBeVisible()
 })
 
-test('new draft list identifier and Composer title follow their distinct current labels', async ({ page }) => {
+test('new draft list identifier and Composer title keep the same order ID', async ({ page }) => {
   await page.goto('/?view=client-orders&demoTools=1')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   const id = await page.getByTestId('order-composer').getAttribute('data-order-id')
-  await expect(page.getByRole('heading', { level: 1, name: 'Новый заказ', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Заказ ' + id, exact: true })).toBeVisible()
   await selectSection(page, 'orders')
   await expect(page.getByRole('button', { name: 'Открыть заказ ' + id })).toContainText('Заказ ' + id)
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   await expect(page.getByRole('heading', { level: 1, name: 'Заказ ' + id, exact: true })).toBeVisible()
 })
 
-test('base DEMO-001 fixture remains read-only until its editability contract is approved', async ({ page }) => {
+test('base DEMO-001 draft opens the manager editor from More', async ({ page }) => {
   await page.goto('/?view=manager-orders')
   await page.getByRole('button', { name: 'Открыть заказ DEMO-001' }).click()
   await expect(page.getByTestId('order-detail')).toHaveAttribute('data-order-id', 'DEMO-001')
   await expect(page.getByRole('button', { name: 'Добавить позицию заказа' })).toBeDisabled()
   await expect(page.getByTestId('order-composer')).toHaveCount(0)
+  await page.getByRole('button', { name: 'Ещё', exact: true }).click()
+  await page.getByRole('menuitem', { name: 'Изменить' }).click()
+  await expect(page.getByTestId('order-composer')).toHaveAttribute('data-order-id', 'DEMO-001')
 })
 
 test('Manager mobile active Заказы selection returns from order detail to the list', async ({ page }) => {
