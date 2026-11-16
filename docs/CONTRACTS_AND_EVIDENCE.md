@@ -9,7 +9,7 @@
 <a name="evidence-order-lifecycle-block1-2026-11-16"></a>
 ## Блок №1 · жизненный цикл заказа и навигация · 16.11.2026
 
-Назначение: технический факт по T1–T5 из Owner-пакета `FLEXOMIR_OS_2026-11-16_BLOCK_1_AGENT_TASK.md`. Ответственный: Codex/frontend. Статус: реализовано в ветке `feat/order-lifecycle-block1-20261116`; локальный QA PASS, PR/Owner visual/merge OPEN на момент этой записи. База: `main` `cda9ee2` после PR #54. Синтетические данные живут только до перезагрузки; API/ACL/1С не подключены.
+Назначение: технический факт по T1–T5 из Owner-пакета `FLEXOMIR_OS_2026-11-16_BLOCK_1_AGENT_TASK.md`. Ответственный: Codex/frontend. Статус: реализовано в [draft PR #55](https://github.com/SigmeD/flexomir_os/pull/55), code head `4308ba4`; локальный QA PASS, CI/Owner visual/merge OPEN на момент этой записи. База: `main` `cda9ee2` после PR #54. Синтетические данные живут только до перезагрузки; API/ACL/1С не подключены.
 
 | Состояние / условие | Клиентские действия | Результат в демо |
 | --- | --- | --- |
