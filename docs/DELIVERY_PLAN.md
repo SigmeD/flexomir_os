@@ -2,9 +2,10 @@
 
 Ответственный: Codex/frontend. Статус: актуальная очередь на 16.11.2026; следующая плановая ревизия 28.11.2026. Канонический [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); проверенное состояние — [PROJECT_STATE](PROJECT_STATE.md).
 
+Блок №1 · T1–T5 и уточнения Owner слиты в `main` через [PR #55](https://github.com/SigmeD/flexomir_os/pull/55) (`75b9a99`, CI 5/5 SUCCESS, post-merge build и smoke 13/13 PASS). Отдельная визуальная приёмка блока и production 1С/API/ACL остаются открытыми; [факт и ограничения](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16).
+
 | Этап | Состояние | Следующее действие |
 | --- | --- | --- |
-| Блок №1 · T1–T5, заказы/навигация | Frontend-кандидат в [draft PR #55](https://github.com/SigmeD/flexomir_os/pull/55); общий Client/Manager Composer, срок менеджера и действие «Отправить» реализованы в демо; локальный QA PASS. После коррекции фокуса возврата из профиля профильный набор 124/124 PASS; CI нового head — в PR. Owner review/merge OPEN | Провести visual gate; production 1С/API/ACL ждёт Алексея и PO. [Факт и ограничения](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16) |
 | M4–M7 | Основные Client/Manager композиции и демосценарии на fixtures реализованы | Сохранять существующие контракты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
 | M8 · [issue #21](https://github.com/SigmeD/flexomir_os/issues/21) | Общие компоненты, DocumentPreview Latest и выровненные формы слиты в `main` через [PR #49](https://github.com/SigmeD/flexomir_os/pull/49); Owner визуально принял показанный заказ, CI проверенного head 10/10 SUCCESS | Полная проверка M8/D09, Auth/WIP UX, side-by-side CURRENT Figma, физические устройства и ручная доступность; внешняя выкладка — отдельное решение |
 | M9 | Нужен согласованный production API | Алексей: backend, ACL, хранение и 1С; frontend: подключение к готовому контракту и интеграционный QA |
