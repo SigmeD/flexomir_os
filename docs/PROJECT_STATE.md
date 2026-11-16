@@ -1,8 +1,10 @@
 # Flexomir OS — состояние проекта
 
-Ответственный: Codex/frontend. Статус: актуальное состояние на 16.11.2026 (UA-03 DEV-стенд OWNER APPROVED и MERGED; product rollout OPEN; последняя поставка в main — 16.11). Очередь и владельцы — [DELIVERY_PLAN](DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); решения — [DECISIONS](DECISIONS.md).
+Ответственный: Codex/frontend. Статус: актуальное состояние на 16.11.2026; `main` `cda9ee2` после PR #54, блок №1 T1–T5 реализован в рабочей ветке, review/merge OPEN. Очередь и владельцы — [DELIVERY_PLAN](DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); решения — [DECISIONS](DECISIONS.md).
 
 ## Текущий инкремент
+
+Блок №1 заказа (T1–T5): в ветке `feat/order-lifecycle-block1-20261116` исправлены статус после передачи («На рассмотрении»), постоянный `Заказ {ID}`, доступные действия и отмена с историей, общий guard несохранённых форм и возврат к корневым спискам разделов. Локальный build и адресные браузерные проверки PASS; Owner visual, PR/merge и production-интеграция OPEN. [Матрица, архитектура, QA и границы](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16).
 
 На `main` слит [PR #51](https://github.com/SigmeD/flexomir_os/pull/51) с принятым UA-03 DEV-стендом: squash `b3196db`, проверенный head `644ea78`, CI Communication/Screen/M7 **3/3 SUCCESS**, post-merge `npm run build` PASS. Последующий документационный [PR #52](https://github.com/SigmeD/flexomir_os/pull/52) слит как `6a70ef9` без новых UI workflow по paths. Удалённые heads удалены автоматически; продуктовые экраны не менялись. Ранее [PR #49](https://github.com/SigmeD/flexomir_os/pull/49) слит как `858615c` после CI 10/10 SUCCESS; Owner ответил «Визуальная приемка принята» для показанной локальной версии заказа. Это приёмка данного вида, а не всей M8/D09 или релиза. На предыдущих документационных checkpoints были нестабильные Screen и Communication FAIL с успешными повторами; причины OPEN.
 

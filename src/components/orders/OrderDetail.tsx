@@ -15,11 +15,13 @@ import { SignedDocumentsSection } from '@/components/documents/SignedDocumentsSe
 
 interface OrderDetailProps {
   order: OrderListItem; detail: OrderDetailContent; onBack: () => void; actions?: ReactNode
-  role?: 'client' | 'manager'; managerIntake?: boolean; submitted?: boolean
+  role?: 'client' | 'manager'; managerIntake?: boolean
   demoProcessingState?: 'pending' | 'success' | 'error'
   onDemoProcessingStateChange?: (state: 'pending' | 'success' | 'error') => void
   demoProcessingEnabled?: boolean
   onEdit?: () => void
+  onCancelOrder?: () => void
+  onExit?: () => void
   canReply?: boolean
 }
 function dateValue(value?: string) {
@@ -27,12 +29,17 @@ function dateValue(value?: string) {
   return /^\d{2}\.\d{2}\.\d{4}$/.test(value) ? value.slice(6) + '-' + value.slice(3, 5) + '-' + value.slice(0, 2) : value
 }
 /** Shared readonly composition; Manager-only data slots never create production commands. */
-export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, submitted = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false, onEdit, canReply = false }: OrderDetailProps) {
-  const title = submitted ? 'Заказ отправлен' : 'Заказ ' + order.id
+export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false, onEdit, onCancelOrder, onExit, canReply = false }: OrderDetailProps) {
+  const title = 'Заказ ' + order.id
+  const menuItems = [
+    ...(onEdit ? [{ id: 'edit', label: 'Изменить', onSelect: onEdit, focusAfter: 'consumer' as const }] : []),
+    ...(onCancelOrder ? [{ id: 'cancel', label: 'Отменить заказ', onSelect: onCancelOrder, focusAfter: 'consumer' as const }] : []),
+    ...(onExit ? [{ id: 'exit', label: 'Выйти', onSelect: onExit, focusAfter: 'consumer' as const }] : []),
+  ]
   return <div className="fos-order-detail" data-testid="order-detail" data-role={role} data-order-id={order.id}>
     <PageHeader title={title} floatingWorkActions={!actions} autoFocus subtitleRole="status" subtitle={<span data-testid="order-detail-status">{order.statusLabel}</span>}
       breadcrumbs={[{ label: role === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]}
-      actions={actions || <><HeaderAction action={role === 'manager' ? 'add' : 'send'} accessibleName={role === 'manager' ? 'Добавить позицию заказа' : 'Отправить заказ'} disabled />{onEdit ? <OverflowMenu items={[{ id: 'edit', label: 'Изменить', onSelect: onEdit, focusAfter: 'consumer' }]} /> : <MoreAction disabled />}</>} />
+      actions={actions || <><HeaderAction action={role === 'manager' ? 'add' : 'send'} accessibleName={role === 'manager' ? 'Добавить позицию заказа' : 'Отправить заказ'} disabled />{menuItems.length ? <OverflowMenu items={menuItems} /> : <MoreAction disabled />}</>} />
     <p className="fos-sr-only">{order.title} · {order.company} · Только просмотр.</p>
     <div className="fos-order-detail__body">
       {role === 'manager' && <FOSInput wrapperClassName="fos-order-detail__company" label="Компания" value={order.company} readOnly />}

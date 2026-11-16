@@ -1,4 +1,4 @@
-import type { OrderListItem, OrderItemSummaryView } from '@/components/orders/order-model'
+import { ORDER_STATUS_LABELS, type OrderListItem, type OrderItemSummaryView } from '@/components/orders/order-model'
 
 /** Ephemeral UI model. Never use these keys/validation as an API/1C contract. */
 export interface DemoItem {
@@ -28,7 +28,7 @@ export interface DemoDraft {
   items: readonly DemoItem[]
   requestedDate: string
   comment: string
-  stage: 'draft' | 'sent'
+  stage: 'draft' | 'sent' | 'cancelled'
   ownerRole: 'client' | 'manager'
   sourceOrderId?: string
   /** Fixture/UI lock only. Real integration state must come from the agreed API. */
@@ -99,8 +99,8 @@ export function itemSummary(item: DemoItem): OrderItemSummaryView {
 export function draftView(draft: DemoDraft): OrderListItem {
   return {
     id: draft.id, company: draft.company, title: draft.items[0]?.name || (draft.ownerRole === 'manager' ? 'Новый заказ менеджера' : 'Новый демонстрационный заказ'),
-    statusLabel: draft.ownerRole === 'manager' ? 'Черновик менеджера' : draft.stage === 'draft' ? 'Черновик' : 'Передан менеджеру',
-    filterId: draft.stage === 'draft' ? 'draft' : 'review',
+    statusLabel: draft.stage === 'cancelled' ? ORDER_STATUS_LABELS.cancelled : draft.stage === 'draft' ? ORDER_STATUS_LABELS.draft : draft.transferStarted ? ORDER_STATUS_LABELS.work : ORDER_STATUS_LABELS.review,
+    filterId: draft.stage === 'cancelled' ? null : draft.stage === 'draft' ? 'draft' : draft.transferStarted ? 'work' : 'review',
     communication: {canReply:draft.communication?.canReply??false,phase:draft.communication?.phase??'open'},
     detail: { items: draft.items.map(itemSummary), requestedDate: draft.requestedDate, comment: draft.comment },
   }

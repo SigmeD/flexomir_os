@@ -58,6 +58,7 @@ for (const source of ['LOCAL', 'LIBRARY', 'HELP'] as const) {
     await expect(first).toContainText('1234 шт.')
     await expect(page.getByRole('button', { name: 'Изменить позицию 1', exact: true })).toBeFocused()
     await backToOrders(page)
+    await page.getByRole('alertdialog', { name: 'Сохранить изменения?' }).getByRole('button', { name: 'Нет', exact: true }).click()
     await page.locator('[data-order-open="DEMO-007"]').click()
     await expect(page.getByTestId('order-detail')).toContainText('500 шт.')
   })

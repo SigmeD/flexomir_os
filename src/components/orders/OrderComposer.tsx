@@ -17,13 +17,11 @@ import type { CabinetSection } from '@/components/layout/CabinetPage'
 import './order-compose.css'
 import { OrderConversation } from '@/components/messaging/OrderConversation'
 import { SignedDocumentsSection } from '@/components/documents/SignedDocumentsSection'
+import { ORDER_STATUS_LABELS } from './order-model'
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
-export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBack, onItemEditorChange, onDraftDirtyChange, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [], actorRole = draft.ownerRole, onCancelReview, onOrderExitActionsChange }: {
+export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [], actorRole = draft.ownerRole, onCancelReview, onOrderExitActionsChange }: {
   draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend: (draft: DemoDraft) => void; onBack: () => void
-  isNewDraft?: boolean
-  onItemEditorChange?: (open: boolean) => void
-  onDraftDirtyChange?: (dirty: boolean) => void
   onNavigationSectionChange?: (section: CabinetSection) => void
   onItemExitActionsChange?: (actions: OrderItemExitActions | null) => void
   onDeleteDraft?: (id: string) => void
@@ -49,8 +47,6 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
     setConfirmDelete(false)
     root.current?.querySelector<HTMLButtonElement>('button.fos-more')?.focus({ preventScroll: true })
   }
-  useEffect(() => { onItemEditorChange?.(editing !== null); return () => onItemEditorChange?.(false) }, [editing, onItemEditorChange])
-  useEffect(() => { onDraftDirtyChange?.(JSON.stringify(value) !== JSON.stringify(draft) || !dateInputValid || requestedDateInput !== displayDate(draft.requestedDate)); return () => onDraftDirtyChange?.(false) }, [value, draft, dateInputValid, requestedDateInput, onDraftDirtyChange])
   useLayoutEffect(() => {
     if (editing !== null) return
     const target = returnFocus.current ? root.current?.querySelector<HTMLElement>(returnFocus.current) : root.current?.querySelector<HTMLElement>('h1')
@@ -58,23 +54,25 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
     returnFocus.current = null
   }, [editing])
   useEffect(() => {
-    if (!isReview) return
     onOrderExitActionsChange?.({
       dirty: JSON.stringify(value) !== JSON.stringify(draft) || !dateInputValid || requestedDateInput !== displayDate(draft.requestedDate),
       commit: () => {
         const current = valueRef.current
-        if (!editable || !dateInputValid || !validDemoReview(current)) return false
+        if (!editable || !dateInputValid || !validDemoDate(current.requestedDate) || (isReview && !validDemoReview(current)) || (actorRole === 'manager' && !current.company)) return false
         onSave(current)
         return true
       },
-      discard: () => onCancelReview?.(),
+      discard: () => {
+        if (isReview) onCancelReview?.()
+        else { valueRef.current = draft; setValue(draft); setRequestedDateInput(displayDate(draft.requestedDate)); setDateInputValid(true) }
+      },
     })
     return () => onOrderExitActionsChange?.(null)
-  }, [value, draft, editable, dateInputValid, requestedDateInput, isReview, onOrderExitActionsChange, onSave, onCancelReview])
+  }, [value, draft, editable, dateInputValid, requestedDateInput, isReview, actorRole, onOrderExitActionsChange, onSave, onCancelReview])
   function save(next: DemoDraft) {
     if (!editable) return
     valueRef.current = next
-    setValue(next); if (!isReview && actorRole !== 'manager') onSave(next); setFeedback('Изменения только в памяти страницы')
+    setValue(next); setFeedback('Есть несохранённые изменения')
   }
   function addItem() { if (!editable) return; setCopySeed(undefined); returnFocus.current = '[data-add-item]'; setEditing('new') }
   function commitItem(item: DemoItem) {
@@ -108,16 +106,17 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
     save({ ...current, items })
     setEditing(null)
   }
-  const title = isNewDraft ? 'Новый заказ' : 'Заказ ' + value.id
+  const title = 'Заказ ' + value.id
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id} data-order-role={value.ownerRole}>
     {editing === null ? <>
-      <PageHeader title={title} floatingWorkActions subtitle={isReview ? 'На рассмотрении' : 'Черновик'} subtitleRole="status" breadcrumbs={[{ label: actorRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
+      <PageHeader title={title} floatingWorkActions subtitle={isReview ? ORDER_STATUS_LABELS.review : ORDER_STATUS_LABELS.draft} subtitleRole="status" breadcrumbs={[{ label: actorRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
         {isReview ? <HeaderAction action="save" accessibleName="Сохранить заказ" disabled={!editable || !dateInputValid || !validDemoReview(value) || JSON.stringify(value) === JSON.stringify(draft)} onAction={() => { if (editable && dateInputValid && validDemoReview(value)) onSave(value) }} /> : value.ownerRole === 'manager'
           ? <HeaderAction action="save" accessibleName="Сохранить черновик менеджера" disabled={!dateInputValid || JSON.stringify(value) === JSON.stringify(draft) || !value.company} onAction={() => { if (!dateInputValid) return; onSave(value); setFeedback('Черновик сохранён только в памяти страницы') }} />
           : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!dateInputValid || !canSendDemo(value)} onAction={() => { if (dateInputValid && canSendDemo(value)) onSend(value) }} />}
         <OverflowMenu items={[
           { id: 'add', label: 'Добавить позицию', disabled: !editable, onSelect: addItem, focusAfter: 'consumer' },
           ...(isReview ? [{ id: 'cancel', label: 'Отменить изменения', onSelect: onCancelReview, focusAfter: 'consumer' as const }] : [{ id: 'delete', label: 'Удалить черновик', disabled: !onDeleteDraft, reason: onDeleteDraft ? undefined : 'Удаление доступно только для черновика демосессии', onSelect: () => setConfirmDelete(true) }]),
+          { id: 'exit', label: 'Выйти', onSelect: onBack, focusAfter: 'consumer' },
         ]} />
       </>} />
       <div className="fos-order-composer__body">
@@ -144,11 +143,10 @@ export function OrderComposer({ draft, isNewDraft = false, onSave, onSend, onBac
         <SignedDocumentsSection key={'docs'+JSON.stringify([value.company,value.id])} context={JSON.stringify(['order',value.company,value.id])} canAdd={editable} />
         <OrderConversation key={JSON.stringify([value.company,value.id,actorRole])} context={JSON.stringify(['order',value.company,value.id])} actor={actorRole} canReply={value.communication?.canReply ?? false} phase={value.communication?.phase??'open'} legacyComment={value.comment} />
       </div>
-      <p className="fos-sr-only" role="status">{feedback || 'Черновик только в памяти страницы'}</p>
+      <p className="fos-sr-only" role="status">{feedback || 'Данные только в памяти страницы'}</p>
       <ConfirmDialog open={confirmDelete} title="Удалить черновик?" body="Черновик будет удалён из текущей демонстрационной сессии." confirmLabel="Да" cancelLabel="Отмена" onConfirm={() => {
         onDeleteDraft?.(value.id)
         setConfirmDelete(false)
-        onBack()
       }} onCancel={cancelDelete} onDismiss={cancelDelete} />
     </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} initialValue={editing === 'copy' ? copySeed : undefined} onSave={saveItem} onCommit={commitItem}
       onDuplicate={editable ? duplicateItem : undefined} onDelete={editable ? deleteItem : undefined} deleteDisabledReason={isReview && value.items.length <= 1 ? 'В заказе на рассмотрении должна остаться хотя бы одна позиция' : undefined}

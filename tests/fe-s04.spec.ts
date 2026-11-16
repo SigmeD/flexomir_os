@@ -60,5 +60,5 @@ test('D: Client submission is visible in Manager New and local processing result
   await page.getByRole('button', { name: 'Демо-обработка завершена' }).click()
   await setDemoRole(page, 'client')
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
-  await expect(page.getByTestId('order-detail-status')).toHaveText('Демо-обработка завершена')
+  await expect(page.getByTestId('order-detail-status')).toHaveText('На рассмотрении')
 })

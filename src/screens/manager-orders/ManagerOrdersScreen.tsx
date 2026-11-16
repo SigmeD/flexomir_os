@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GlassPillTabs } from '@/components/ui/glass-pill-tabs'
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
@@ -9,7 +9,7 @@ import { cabinetItems, type CabinetSection } from '@/components/layout/CabinetPa
 import { useCabinetNavigation } from '@/components/layout/CabinetNavigation'
 import { OrderComposer } from '@/components/orders/OrderComposer'
 import { canEditDemoItems, type DemoDraft } from '@/demo/order-compose-model'
-import type { OrderItemExitActions } from '@/components/orders/OrderItemForm'
+import { useOrderExitGuard } from '@/components/orders/useOrderExitGuard'
 import type { DemoCompany } from '@/demo/company-fixtures'
 import { OrdersList } from './OrdersList'
 import { OrderDetail } from '@/components/orders/OrderDetail'
@@ -53,17 +53,14 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
   const navigation = useCabinetNavigation()
   const [filterId, setFilterId] = useState<OrderStatusFilterId>(initialFilterId)
   const [queue, setQueue] = useState<'new' | 'all'>('all')
-  const [managerDraftDirty, setManagerDraftDirty] = useState(false)
-  const [newDraftId, setNewDraftId] = useState<string | null>(null)
   const [reviewEditingId, setReviewEditingId] = useState<string | null>(null)
-  const [itemDirty, setItemDirty] = useState(false)
-  const registerItemExitActions = useCallback((actions: OrderItemExitActions | null) => setItemDirty(Boolean(actions?.dirty)), [])
-  const preview = useOrderPreview(orders)
+  const exitGuard = useOrderExitGuard()
+  const preview = useOrderPreview(orders, exitGuard)
   const queueOrders = queue === 'new' ? orders.filter(order => newOrderIds.includes(order.id)) : orders
   const selectedManagerDraft = managerDrafts.find(draft => draft.id === preview.selectedOrder?.id)
   const selectedReview = reviewOrders.find(order => order.id === preview.selectedOrder?.id && canEditDemoItems(order, 'manager'))
   const editingReview = selectedReview?.id === reviewEditingId ? selectedReview : undefined
-  const dirty = managerDraftDirty || itemDirty
+  const dirty = exitGuard.dirty
   useEffect(() => { onEditorStateChange?.(Boolean((selectedManagerDraft || editingReview) && dirty)); return () => onEditorStateChange?.(false) }, [selectedManagerDraft, editingReview, dirty, onEditorStateChange])
   const visibleOrders = filterId === 'all'
     ? queueOrders
@@ -81,9 +78,10 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
       <AppShell
         items={navigation ? cabinetItems('manager', navigation.ready) : managerNav}
         activeId="orders"
+        drawerSelectionResetKey={exitGuard.resetKey}
         onProfileReturnToRoot={preview.backToList}
-        onOpenProfile={() => { if (!dirty) navigation?.openProfile?.() }}
-        onSelect={id => { if ((selectedManagerDraft || editingReview) && dirty) return; setReviewEditingId(null); if (id === 'orders') preview.backToList(); else navigation?.navigate(id as CabinetSection) }}
+        onOpenProfile={() => exitGuard.requestExit(() => navigation?.openProfile?.())}
+        onSelect={id => exitGuard.requestExit(() => { setReviewEditingId(null); if (id === 'orders') preview.backToList(); else { preview.backToList(); navigation?.navigate(id as CabinetSection) } })}
         roleLabel="Менеджер"
         variant="manager"
         navigationLabel="Навигация менеджера"
@@ -92,13 +90,13 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
         footerText="Менеджер"
       >
         <main className="fos-orders-page__main" data-layout="standard" data-role="manager" data-view={preview.selectedOrder ? 'detail' : 'list'}>
-          {editingReview ? <OrderComposer key={editingReview.id + '-review'} draft={editingReview} actorRole="manager" onSave={order => { onSaveReviewOrder?.(order); setReviewEditingId(null) }} onSend={() => {}} onBack={() => { if (!dirty) { setReviewEditingId(null); preview.backToList() } }} onCancelReview={() => setReviewEditingId(null)} onDraftDirtyChange={setManagerDraftDirty} onItemExitActionsChange={registerItemExitActions} /> : selectedManagerDraft ? <OrderComposer key={selectedManagerDraft.id} draft={selectedManagerDraft} isNewDraft={newDraftId === selectedManagerDraft.id} onSave={onSaveManagerDraft ?? (() => {})} onSend={() => {}} onBack={() => { if (!dirty) preview.backToList() }} onDeleteDraft={onDeleteManagerDraft} onDraftDirtyChange={setManagerDraftDirty} onItemExitActionsChange={registerItemExitActions} managerCompanies={managerCompanies} /> : preview.selectedOrder?.detail ? (
+          {editingReview ? <OrderComposer key={editingReview.id + '-review'} draft={editingReview} actorRole="manager" onSave={order => { onSaveReviewOrder?.(order); setReviewEditingId(null) }} onSend={() => {}} onBack={() => exitGuard.requestExit(() => { setReviewEditingId(null); preview.backToList() })} onCancelReview={() => setReviewEditingId(null)} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} /> : selectedManagerDraft ? <OrderComposer key={selectedManagerDraft.id} draft={selectedManagerDraft} onSave={onSaveManagerDraft ?? (() => {})} onSend={() => {}} onBack={() => exitGuard.requestExit(preview.backToList)} onDeleteDraft={onDeleteManagerDraft} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} managerCompanies={managerCompanies} /> : preview.selectedOrder?.detail ? (
             <>
-              <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} role="manager" canReply={reviewOrders.find(record => record.id === preview.selectedOrder?.id)?.communication?.canReply ?? preview.selectedOrder.communication?.canReply ?? false} onEdit={selectedReview && onSaveReviewOrder ? () => setReviewEditingId(selectedReview.id) : undefined} managerIntake={demoOrderIds.includes(preview.selectedOrder.id)} demoProcessingState={processingStates[preview.selectedOrder.id] ?? 'pending'} onDemoProcessingStateChange={state => onProcessingStateChange?.(preview.selectedOrder!.id, state)} demoProcessingEnabled={demoTools} />
+              <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} onExit={preview.backToList} role="manager" canReply={reviewOrders.find(record => record.id === preview.selectedOrder?.id)?.communication?.canReply ?? preview.selectedOrder.communication?.canReply ?? false} onEdit={selectedReview && onSaveReviewOrder ? () => setReviewEditingId(selectedReview.id) : undefined} managerIntake={demoOrderIds.includes(preview.selectedOrder.id)} demoProcessingState={processingStates[preview.selectedOrder.id] ?? 'pending'} onDemoProcessingStateChange={state => onProcessingStateChange?.(preview.selectedOrder!.id, state)} demoProcessingEnabled={demoTools} />
             </>
           ) : (
             <>
-              <PageHeader title="Заказы" floatingWorkActions breadcrumbs={[{ label: 'Заказы' }]} actions={<><HeaderAction action="add" accessibleName="Добавить заказ" disabled={!onCreateOrder} onAction={() => { const id = onCreateOrder?.(); if (id) { setNewDraftId(id); preview.openCreatedOrder(id) } }} /><MoreAction disabled /></>} />
+              <PageHeader title="Заказы" floatingWorkActions breadcrumbs={[{ label: 'Заказы' }]} actions={<><HeaderAction action="add" accessibleName="Добавить заказ" disabled={!onCreateOrder} onAction={() => { const id = onCreateOrder?.(); if (id) preview.openCreatedOrder(id) }} /><MoreAction disabled /></>} />
               <p className="fos-sr-only">
                 Демонстрационные данные. Интеграция с 1С не подключена.
               </p>
@@ -113,11 +111,12 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
                 />
               </section>
 
-              <OrdersList orders={visibleOrders} total={queueOrders.length} onOpen={id => { setNewDraftId(null); preview.openOrder(id) }} />
+              <OrdersList orders={visibleOrders} total={queueOrders.length} onOpen={preview.openOrder} />
             </>
           )}
         </main>
       </AppShell>
+      {exitGuard.dialog}
     </div>
   )
 }

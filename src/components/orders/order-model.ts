@@ -3,6 +3,15 @@ import type { GlassPillFilter } from '@/components/ui/glass-pill-tabs'
 /** Presentation keys only. No API/1C enums, permissions or workflow transitions. */
 export type OrderStatusFilterId = 'all' | 'draft' | 'review' | 'work' | 'done'
 
+/** UI copy only; API and 1C status mapping is a separate contract. */
+export const ORDER_STATUS_LABELS = {
+  draft: 'Черновик',
+  review: 'На рассмотрении',
+  work: 'В работе',
+  done: 'Завершён',
+  cancelled: 'Отменён',
+} as const
+
 export interface OrderListItem {
   id: string
   title: string

@@ -14,18 +14,18 @@ export function cabinetItems(role: CabinetRole, ready: readonly CabinetSection[]
     { id: 'support', label: 'Поддержка', icon: 'support' }]
   return items.map(item => ({ ...item, disabled: !ready.includes(item.id as CabinetSection) }))
 }
-export function CabinetPage({ role, section, children, onNavigate, ready = [section] }: {
-  role: CabinetRole; section: CabinetSection; children: ReactNode; ready?: readonly CabinetSection[]; onNavigate?: (section: CabinetSection) => void
+export function CabinetPage({ role, section, children, onNavigate, onOpenProfile, drawerSelectionResetKey, ready = [section] }: {
+  role: CabinetRole; section: CabinetSection; children: ReactNode; ready?: readonly CabinetSection[]; onNavigate?: (section: CabinetSection) => void; onOpenProfile?: () => void; drawerSelectionResetKey?: number
 }) {
   const name = role === 'client' ? 'Клиент' : 'Менеджер'
   const owner = role === 'client' ? 'клиента' : 'менеджера'
   const navigation = useCabinetNavigation()
   return <div className="fos-orders-page fos-cabinet" data-testid={role + '-' + section + '-screen'}>
-    <AppShell variant={role} items={cabinetItems(role, navigation?.ready ?? ready)} activeId={section} onSelect={id => (onNavigate ?? navigation?.navigate)?.(id as CabinetSection)}
+    <AppShell variant={role} items={cabinetItems(role, navigation?.ready ?? ready)} activeId={section} drawerSelectionResetKey={drawerSelectionResetKey} onSelect={id => (onNavigate ?? navigation?.navigate)?.(id as CabinetSection)}
       roleLabel={name} identityLabel={role === 'client' ? 'Компания 01' : name} navigationLabel={'Навигация ' + owner}
       menuLabel={'Меню ' + owner} triggerLabel={'Открыть меню ' + owner} footerText={role === 'client' ? 'Компания 01' : name}
       accountIdentity={navigation?.identity ?? DEMO_PROFILE_IDENTITIES[role]} accountPhotoPreview={navigation?.photoPreview ?? null}
-      onOpenProfile={navigation?.openProfile ?? (() => undefined)}>
+      onOpenProfile={onOpenProfile ?? navigation?.openProfile ?? (() => undefined)}>
       <main className="fos-orders-page__main fos-cabinet__main" data-layout="standard" data-role={role} data-section={section}>{children}</main>
     </AppShell>
   </div>

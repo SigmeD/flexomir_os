@@ -38,14 +38,15 @@ export function OrderItemForm({ item, initialValue, onSave, onClose, onBackToLis
   const form = useRef<HTMLFormElement>(null)
   // A prefilled copy is an unsaved new item even when its fields are unchanged.
   const dirty = Boolean(initialValue) || JSON.stringify(value) !== JSON.stringify(initial)
-  const [pendingAction, setPendingAction] = useState<'duplicate' | 'delete' | null>(null)
+  const [pendingAction, setPendingAction] = useState<'duplicate' | 'delete' | 'close' | null>(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const restoreMore = () => requestAnimationFrame(() => form.current?.querySelector<HTMLButtonElement>('button.fos-more')?.focus({ preventScroll: true }))
-  function runAction(action: 'duplicate' | 'delete') {
+  function runAction(action: 'duplicate' | 'delete' | 'close') {
     if (action === 'duplicate') onDuplicate?.()
-    else setConfirmDelete(true)
+    else if (action === 'delete') setConfirmDelete(true)
+    else onClose()
   }
-  function requestAction(action: 'duplicate' | 'delete') {
+  function requestAction(action: 'duplicate' | 'delete' | 'close') {
     if (dirty) setPendingAction(action)
     else runAction(action)
   }
@@ -99,8 +100,8 @@ export function OrderItemForm({ item, initialValue, onSave, onClose, onBackToLis
     if (event.key === 'Escape' && !event.defaultPrevented && event.currentTarget.contains(event.target as Node) && !dirty) { event.stopPropagation(); onClose() }
   }}>
     <PageHeader title={title} floatingWorkActions autoFocus breadcrumbs={[
-      { label: role === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBackToList, disabled: dirty },
-      { label: orderLabel, onSelect: onClose, disabled: dirty }, { label: title },
+      { label: role === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBackToList },
+      { label: orderLabel, onSelect: () => requestAction('close') }, { label: title },
     ]} actions={<>
       <HeaderAction action={item ? 'save' : 'add'} accessibleName={item ? 'Сохранить позицию' : 'Добавить позицию'} disabled={!dirty || !validDemoItem(value)} onAction={() => form.current?.requestSubmit()} />
       <OverflowMenu items={item ? [

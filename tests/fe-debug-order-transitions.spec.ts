@@ -119,11 +119,11 @@ test('More deletes only the confirmed in-session draft and leaves other drafts i
   await expect(page.getByTestId('client-order-' + secondId)).toBeVisible()
 })
 
-test('new draft list identifier and Composer title follow their distinct current labels', async ({ page }) => {
+test('new draft list identifier and Composer title keep the same order ID', async ({ page }) => {
   await page.goto('/?view=client-orders&demoTools=1')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   const id = await page.getByTestId('order-composer').getAttribute('data-order-id')
-  await expect(page.getByRole('heading', { level: 1, name: 'Новый заказ', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: 'Заказ ' + id, exact: true })).toBeVisible()
   await selectSection(page, 'orders')
   await expect(page.getByRole('button', { name: 'Открыть заказ ' + id })).toContainText('Заказ ' + id)
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
