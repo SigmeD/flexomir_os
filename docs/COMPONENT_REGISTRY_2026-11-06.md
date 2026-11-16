@@ -1,6 +1,6 @@
 # Flexomir OS — реестр React-компонентов
 
-Назначение: актуальная карта переиспользования React-компонентов. Ответственный: Codex/frontend. Статус: действующий реестр. Содержательная проверка: 14.11.2026. Статус приёмки — в [решениях](DECISIONS.md); подробные контракты, Figma refs и проверки — по ссылкам ниже. Owner принял U06 DocumentPreview pilot; карта отражает последующий перенос с сохранением вида.
+Назначение: актуальная карта переиспользования React-компонентов. Ответственный: Codex/frontend. Статус: действующий реестр. Содержательная проверка: 16.11.2026 (UA-03). Статус приёмки — в [решениях](DECISIONS.md); подробные контракты, Figma refs и проверки — по ссылкам ниже. Owner принял U06 DocumentPreview pilot; карта отражает последующий перенос с сохранением вида.
 
 Owner визуально принял показанные экраны заказа на head `228b226`: общую рабочую ось, ширину полей/загрузок/сроков и типографику формы. PR #49 слит в `main` как `858615c` после CI проверенного head 10/10 SUCCESS; полная M8/D09 остаётся OPEN.
 
@@ -44,7 +44,7 @@ U03/U04 приняты Owner13.11 ответом «принято продолж
 
 ## Обязательные правила
 
-Аудит14.11 после SignedDocuments обнаружил отдельный hover OrderItemRow; **UA-01 закрыт** подключением overlay-варианта FosSummaryRow. UA-02 заголовки секций тоже закрыт; UA-03/04 остаются OPEN candidates. Остальные native controls, popup consumers и прямые material exceptions — в [едином аудите](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13-дополнительный-аудит-унификации--14112026). Принятый DocumentPreview Latest подключён в обычном приложении через `DocumentGlassMaterial`; код из `src/lab/document-glass-pilot/` перенесён или удалён. [Текущий rollout](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13-documentpreview--production-rollout-14112026).
+Аудит14.11 после SignedDocuments обнаружил отдельный hover OrderItemRow; **UA-01 закрыт** подключением overlay-варианта FosSummaryRow. UA-02 заголовки секций тоже закрыт; UA-03 имеет [изолированный React DEV-стенд](../tests/fixtures/ua03-upload-review.html), общая презентационная роль и исправленный пример ошибки подписного бланка OWNER APPROVED, продуктовый rollout OPEN; UA-04 остаётся кандидатом. Остальные native controls, popup consumers и прямые material exceptions — в [едином аудите](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13-дополнительный-аудит-унификации--14112026). Принятый DocumentPreview Latest подключён в обычном приложении через `DocumentGlassMaterial`; код из `src/lab/document-glass-pilot/` перенесён или удалён. [Текущий rollout](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13-documentpreview--production-rollout-14112026).
 
 Owner row-highlight correction: все Company/Order/Layout/Support строки Client/Manager используют один enabled hover/pressed/focus профиль Orders в `fos-summary-row.css`. Flat interaction implementation и card-only hover tokens удалены. Geometry/density variants сохраняются; они больше не выбирают подсветку. Новый `m7-row-highlight` контракт проверяет равенство всех consumers и запрет второй реализации. [Решение и доказательства](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13-единая-подсветка-по-эталону-orders).
 

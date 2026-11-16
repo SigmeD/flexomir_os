@@ -1,0 +1,29 @@
+.ua03-stand { max-width: 1440px; margin: 0 auto; padding: 32px clamp(16px, 3vw, 44px) 64px; font-family: var(--fos-font-family); color: var(--fos-v2-semantic-color-text-primary, #1f2228); }
+.ua03-stand__header { max-width: 780px; }
+.ua03-stand__eyebrow { color: var(--fos-v2-semantic-color-text-secondary, #737781); font: var(--fos-type-row-meta); text-transform: uppercase; letter-spacing: .08em; }
+.ua03-stand h1 { margin: 8px 0 12px; font-size: clamp(28px, 3vw, 40px); line-height: 1.2; }
+.ua03-stand__header p { margin: 0; font: var(--fos-type-body); color: var(--fos-v2-semantic-color-text-secondary, #737781); }
+.ua03-stand__sources { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font: var(--fos-type-row-meta); }
+.ua03-stand__sources a { color: #1f3861; text-underline-offset: 3px; }
+.ua03-stand__controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 20px; }
+.ua03-stand__legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; padding: 0 20px; font: var(--fos-type-row-meta); color: var(--fos-v2-semantic-color-text-secondary, #737781); }
+.ua03-stand__case { margin-top: 12px; padding: 20px; background: var(--fos-v2-semantic-color-bg-surface, #fff); border: 1px solid var(--fos-v2-semantic-color-border-default, #d6d9e0); border-radius: 16px; }
+.ua03-stand__case-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; margin-bottom: 16px; }
+.ua03-stand__case-head h2 { margin: 0; font: var(--fos-type-section-heading); }
+.ua03-stand__case-head p, .ua03-stand__case-head > span { margin: 2px 0 0; font: var(--fos-type-row-meta); color: var(--fos-v2-semantic-color-text-secondary, #737781); }
+.ua03-stand__comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.ua03-stand__sample { min-width: 0; padding: 20px; border: 1px solid var(--fos-v2-semantic-color-border-default, #d6d9e0); border-radius: 12px; background: var(--fos-v2-semantic-color-bg-page, #fafbfc); }
+.ua03-stand__sample-title { margin: 0 0 20px; font: var(--fos-type-row-title); }
+.ua03-stand__sample .fos-file-dropzone { width: 100%; }
+.ua03-stand__signed-label { margin-bottom: 8px; font: var(--fos-type-section-heading); }
+.ua03-stand__note { margin: 12px 0 0; color: var(--fos-v2-semantic-color-text-secondary, #737781); font: var(--fos-type-row-meta); }
+.ua03-stand__footer { max-width: 950px; margin-top: 24px; color: var(--fos-v2-semantic-color-text-secondary, #737781); font: var(--fos-type-body); }
+/* One candidate presentation contract, scoped to the review stand. Selected file compositions stay contextual. */
+.ua03-stand__sample[data-presentation=candidate] :is(.fos-artwork-source__dropzone, .fos-layout-upload__zone:not(.fos-layout-upload__zone--selected), .fos-file-dropzone) { box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; width: 100%; min-height: 183px; padding: 28px 12px 21px; border: 1px dashed var(--fos-v2-layout-drop-border, #c4d1e0); border-radius: 12px; background: var(--fos-v2-layout-drop-bg, #fbfcfe); text-align: center; }
+.ua03-stand__sample[data-presentation=candidate] :is(.fos-artwork-source__dropzone, .fos-layout-upload__zone:not(.fos-layout-upload__zone--selected), .fos-file-dropzone) > .fos-action { min-width: 164px; }
+.ua03-stand__sample[data-presentation=candidate] :is(.fos-artwork-source__dropzone, .fos-layout-upload__zone:not(.fos-layout-upload__zone--selected), .fos-file-dropzone) > p { margin: 24px 0 8px; font: var(--fos-type-body); color: var(--fos-v2-semantic-color-text-secondary, #737781); overflow-wrap: anywhere; }
+.ua03-stand__sample[data-presentation=candidate] :is(.fos-artwork-source__dropzone, .fos-layout-upload__zone:not(.fos-layout-upload__zone--selected), .fos-file-dropzone) > small { margin: 0; font: var(--fos-type-row-meta); color: var(--fos-v2-semantic-color-text-secondary, #737781); }
+.ua03-stand__sample[data-presentation=candidate] :is(.fos-artwork-source__dropzone, .fos-layout-upload__zone:not(.fos-layout-upload__zone--selected))[data-state=error] { border-color: var(--fos-v2-error, #a33a3a); }
+.ua03-stand__sample[data-presentation=candidate] .ua03-stand__signed[data-state=error] .fos-file-dropzone { border-color: var(--fos-v2-error, #a33a3a); }
+@media (max-width: 800px) { .ua03-stand__comparison { grid-template-columns: 1fr; } .ua03-stand__legend { display: none; } .ua03-stand__sample { padding: 16px; } }
+@media (max-width: 390px) { .ua03-stand { padding-inline: 12px; } .ua03-stand__case { padding: 12px; } .ua03-stand__case-head { flex-wrap: wrap; } }

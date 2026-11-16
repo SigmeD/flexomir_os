@@ -1,6 +1,6 @@
 # Flexomir OS — текущий план
 
-Ответственный: Codex/frontend. Статус: актуальная очередь на 14.11.2026; следующая ревизия 28.11.2026. Канонический [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); проверенное состояние — [PROJECT_STATE](PROJECT_STATE.md).
+Ответственный: Codex/frontend. Статус: актуальная очередь на 16.11.2026; следующая плановая ревизия 28.11.2026. Канонический [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); проверенное состояние — [PROJECT_STATE](PROJECT_STATE.md).
 
 | Этап | Состояние | Следующее действие |
 | --- | --- | --- |
@@ -12,7 +12,7 @@
 
 - Нестабильный WebKit сценарий контекстного меню сообщения: первый CI FAIL, rerun PASS, локально 4/5; причина OPEN. Не считать его исправленным по одному успешному повтору.
 - Owner/PO: состав дубликата обращения; действия менеджера по согласованному сроку, публикации клиенту и переводу заказа в «В работе». Сохранение даты само по себе не меняет статус.
-- UA-03/04 остаются кандидатами карты ролей. №10/13 — отложенный backlog до API Алексея; №11 снят с исходной итерации. [Основания](CONTRACTS_AND_EVIDENCE.md#evidence-next-scope-13-2026-11-10).
+- UA-03: Owner подтвердил приёмку общей презентационной роли и исправленного примера ошибки подписного бланка на [DEV-стенде](../tests/fixtures/ua03-upload-review.html); стенд находится в [draft PR #51](https://github.com/SigmeD/flexomir_os/pull/51). Проверка нового красного контура, перенос роли в продукт и регрессия потребителей OPEN. UA-04 остаётся кандидатом. №10/13 — отложенный backlog до API Алексея; №11 снят с исходной итерации. [Решение](DECISIONS.md), [контракт UA-03](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16), [основания backlog](CONTRACTS_AND_EVIDENCE.md#evidence-next-scope-13-2026-11-10).
 - Frozen FE11-v0.2 и действующие material defaults сохраняются. Старый Figma Client Row master 14/20/400 не синхронизирован с принятым React title 16/22/600; это различие зафиксировано в [M8 контракте](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13).
 
 ## Проверки и поставка
