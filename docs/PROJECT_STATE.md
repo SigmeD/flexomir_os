@@ -1,6 +1,6 @@
 # Flexomir OS — состояние проекта
 
-Ответственный: Codex/frontend. Статус: актуальное состояние на 16.11.2026 (UA-03 — общая визуальная основа принята в целом, product rollout OPEN; последняя поставка в main — 14.11). Очередь и владельцы — [DELIVERY_PLAN](DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); решения — [DECISIONS](DECISIONS.md).
+Ответственный: Codex/frontend. Статус: актуальное состояние на 16.11.2026 (UA-03 — общая презентационная роль и исправленный пример ошибки на DEV-стенде OWNER APPROVED; product rollout OPEN; последняя поставка в main — 14.11). Очередь и владельцы — [DELIVERY_PLAN](DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); решения — [DECISIONS](DECISIONS.md).
 
 ## Текущий инкремент
 
@@ -26,7 +26,7 @@ DocumentPreview Latest включён по умолчанию в DEV и producti
 ## Открыто
 
 - Полная Owner M8/D09, Auth/WIP UX, отдельное сравнение с CURRENT Figma, физические устройства и ручная доступность. WebKit menu сообщения дал нестабильный FAIL (повтор PASS, локально 4/5); Screen движения линзы на документационном checkpoint не прошёл порог на 0,012px (повтор PASS). Причины OPEN.
-- Owner/PO: состав дубликата тикета, фиксация согласованного срока менеджером, публикация клиенту и переход в «В работе». UA-03: Owner принял в целом общую основу [сравнительного DEV-стенда](../tests/fixtures/ua03-upload-review.html); по замечанию добавлен пример ошибки подписного файла с реальным текстом продукта. Красный контур этого состояния, перенос в продукт и QA потребителей OPEN. [Контракт и различия](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16). UA-04 остаётся кандидатом.
+- Owner/PO: состав дубликата тикета, фиксация согласованного срока менеджером, публикация клиенту и переход в «В работе». UA-03: Owner подтвердил приёмку общей презентационной роли и исправленного примера ошибки подписного файла на [DEV-стенде](../tests/fixtures/ua03-upload-review.html). Красный контур этого состояния, перенос в продукт и QA потребителей OPEN. [Решение](DECISIONS.md), [контракт и различия](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16). UA-04 остаётся кандидатом.
 - Алексей: API, ACL, хранение, 1С. Frontend M9 зависит от согласованного контракта. №10/13 отложены; №11 снят с исходной итерации.
 - Внешняя выкладка не поручена. Frozen FE11-v0.2 и [manifest](FE11_MOTION_FROZEN_V0_2.json) сохраняются.
 
