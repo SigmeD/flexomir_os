@@ -18,24 +18,6 @@
 .fos-demo-workspace__hide:focus-visible,.fos-demo-workspace__show:focus-visible { outline: 2px solid #1f3861; outline-offset: 2px; }
 .fos-demo-workspace__show { position: fixed; z-index: 120; top: 60px; left: 8px; padding: 8px 14px; border: 1px solid rgba(230,238,244,.82); border-radius: 20px; background: rgba(248,250,252,.82); color: #263542; font: 600 13px/20px Manrope,system-ui,sans-serif; backdrop-filter: blur(9px); cursor: pointer; }
 .fos-order-composer { min-width: 0; overflow-wrap: anywhere; }
-/* Owner-accepted Manager composition: section32 / block24, in DEV and production. */
-.fos-order-composer[data-order-role=manager] {
-  --fos-v2-primitive-space-24: 24px;
-  --fos-v2-primitive-space-32: 32px;
-  --fos-v2-semantic-space-block-md: var(--fos-v2-primitive-space-24);
-  --fos-v2-semantic-space-section-gap: var(--fos-v2-primitive-space-32);
-  --fos-compose-general-offset: 0px;
-  --fos-compose-heading-gap: var(--fos-v2-semantic-space-block-md);
-  --fos-compose-note-gap: var(--fos-v2-semantic-space-block-md);
-  /* Moving the subtitle off the 68px action row frees 20px. Preserve Company Y. */
-  --fos-compose-body-offset: 25px;
-}
-.fos-order-composer[data-order-role=manager] .fos-order-composer__body {
-  display: grid;
-  gap: var(--fos-v2-semantic-space-section-gap);
-}
-.fos-order-composer[data-order-role=manager] .fos-order-composer__body > .fos-order-conversation,
-.fos-order-composer[data-order-role=manager] .fos-order-composer__body > .fos-signed-documents { margin-top: 0; }
 @media(max-width:600px) {
   .fos-demo-workspace__controls { top: 80px; right: 8px; width: min(360px, calc(100vw - 16px)); }
   .fos-demo-workspace__intro { min-width: 0; }
@@ -47,8 +29,8 @@
   .fos-demo-workspace__show { top: auto; right: auto; bottom: calc(24px + env(safe-area-inset-bottom)); left: 12px; }
 }
 .fos-order-composer__body { margin-top: var(--fos-compose-body-offset, 25px); }
-.fos-order-composer__section-heading { display: flex; align-items: center; gap: 12px; min-height: 44px; margin-bottom: 23px; }
-.fos-order-composer[data-order-role=client] .fos-order-composer__section-heading { justify-content: space-between; }
+.fos-order-composer__company { margin-bottom: var(--fos-v2-semantic-space-section-gap, 32px); }
+.fos-order-composer__section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin-bottom: 23px; }
 .fos-order-composer__section-heading > button { flex: none; }
 .fos-order-composer__section-heading > h2, .fos-order-composer__general > h2 { color: #273343; }
 .fos-order-composer__general { margin-top: var(--fos-compose-general-offset, 38px); }

@@ -107,7 +107,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
     setEditing(null)
   }
   const title = 'Заказ ' + value.id
-  return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id} data-order-role={value.ownerRole}>
+  return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id}>
     {editing === null ? <>
       <PageHeader title={title} floatingWorkActions subtitle={isReview ? ORDER_STATUS_LABELS.review : ORDER_STATUS_LABELS.draft} subtitleRole="status" breadcrumbs={[{ label: actorRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
         {isReview ? <HeaderAction action="save" accessibleName="Сохранить заказ" disabled={!editable || !dateInputValid || !validDemoReview(value) || JSON.stringify(value) === JSON.stringify(draft)} onAction={() => { if (editable && dateInputValid && validDemoReview(value)) onSave(value) }} /> : value.ownerRole === 'manager'

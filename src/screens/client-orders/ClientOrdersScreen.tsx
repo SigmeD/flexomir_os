@@ -73,7 +73,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
         roleLabel="Клиент" identityLabel={companyName} variant="client" navigationLabel="Навигация клиента" menuLabel="Меню клиента"
         triggerLabel="Открыть меню клиента" footerText={companyName}
       >
-        <main className="fos-orders-page__main" data-layout="standard" data-view={selectedDraft ? 'compose' : preview.selectedOrder ? 'detail' : 'list'}>
+        <main className="fos-orders-page__main" data-layout="standard" data-view={selectedDraft || editingReview ? 'compose' : preview.selectedOrder ? 'detail' : 'list'}>
           {editingReview && demo ? <OrderComposer key={editingReview.id + '-review'} draft={editingReview} actorRole="client" onSave={order => { demo.saveReviewOrder(order); setReviewEditingId(null) }} onSend={() => {}}
             onBack={() => navigateFromShell('orders')} onCancelReview={() => setReviewEditingId(null)} onNavigationSectionChange={setNavigationSection} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} /> : selectedDraft && demo ? (
             <OrderComposer key={selectedDraft.id} draft={selectedDraft} onSave={demo.saveDraft} onSend={demo.sendDraft} onBack={() => navigateFromShell('orders')} onNavigationSectionChange={setNavigationSection} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} onDeleteDraft={id => demo.deleteDraft(id, 'client')} />
