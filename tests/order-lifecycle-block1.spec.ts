@@ -149,6 +149,13 @@ test('support draft uses the shared guard and saves before leaving the section',
   await section(page, 'support')
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Мои обращения')
   await expect(page.getByText('Вопрос по заказу', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Добавить обращение', exact: true }).click()
+  await page.getByLabel('Тема', { exact: true }).fill('Отказ от черновика')
+  if ((page.viewportSize()?.width ?? 1440) < 1024) await page.goBack()
+  else await page.getByRole('navigation', { name: 'Хлебные крошки' }).getByRole('button', { name: 'Мои обращения' }).click()
+  await dialog.getByRole('button', { name: 'Нет', exact: true }).click()
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Мои обращения')
+  await expect(dialog).toHaveCount(0)
 })
 
 test('tablet and narrow mobile keep section roots, guard and horizontal bounds', async ({ page }, testInfo) => {
