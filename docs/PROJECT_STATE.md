@@ -1,10 +1,10 @@
 # Flexomir OS — состояние проекта
 
-Ответственный: Codex/frontend. Статус: актуальное состояние на 16.11.2026 (UA-03 — общая презентационная роль и исправленный пример ошибки на DEV-стенде OWNER APPROVED; product rollout OPEN; последняя поставка в main — 14.11). Очередь и владельцы — [DELIVERY_PLAN](DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); решения — [DECISIONS](DECISIONS.md).
+Ответственный: Codex/frontend. Статус: актуальное состояние на 16.11.2026 (UA-03 DEV-стенд OWNER APPROVED и MERGED; product rollout OPEN; последняя поставка в main — 16.11). Очередь и владельцы — [DELIVERY_PLAN](DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); решения — [DECISIONS](DECISIONS.md).
 
 ## Текущий инкремент
 
-На `main` слит [PR #49](https://github.com/SigmeD/flexomir_os/pull/49) по прямому поручению Owner «давай мердж обновления в origin/main»: squash `858615c`, проверенный head `028c05f`, CI **10/10 SUCCESS**. Дерево squash совпадает с head; post-merge `npm run build` PASS. Owner ранее ответил «Визуальная приемка принята» для показанной локальной версии заказа на head приложения `228b226`. Это приёмка данного вида, а не всей M8/D09 или релиза. На предыдущих документационных checkpoints были нестабильные Screen и Communication FAIL с успешными повторами; причины OPEN.
+На `main` слит [PR #51](https://github.com/SigmeD/flexomir_os/pull/51) с принятым UA-03 DEV-стендом: squash `b3196db`, проверенный head `644ea78`, CI Communication/Screen/M7 **3/3 SUCCESS**, post-merge `npm run build` PASS. Удалённый head удалён автоматически; продуктовые экраны не менялись. Ранее [PR #49](https://github.com/SigmeD/flexomir_os/pull/49) слит как `858615c` после CI 10/10 SUCCESS; Owner ответил «Визуальная приемка принята» для показанной локальной версии заказа. Это приёмка данного вида, а не всей M8/D09 или релиза. На предыдущих документационных checkpoints были нестабильные Screen и Communication FAIL с успешными повторами; причины OPEN.
 
 Документация: 22 отдельных контракта и отчёта собраны в [единый документ](CONTRACTS_AND_EVIDENCE.md), исходные SHA256 и адресные разделы сохранены, старые Markdown-пути удалены. Frozen manifest и исходные доказательства не удалялись. Это изменение навигации по документам, не поведения приложения.
 
@@ -26,7 +26,7 @@ DocumentPreview Latest включён по умолчанию в DEV и producti
 ## Открыто
 
 - Полная Owner M8/D09, Auth/WIP UX, отдельное сравнение с CURRENT Figma, физические устройства и ручная доступность. WebKit menu сообщения дал нестабильный FAIL (повтор PASS, локально 4/5); Screen движения линзы на документационном checkpoint не прошёл порог на 0,012px (повтор PASS). Причины OPEN.
-- Owner/PO: состав дубликата тикета, фиксация согласованного срока менеджером, публикация клиенту и переход в «В работе». UA-03: Owner подтвердил приёмку общей презентационной роли и исправленного примера ошибки подписного файла на [DEV-стенде](../tests/fixtures/ua03-upload-review.html). Красный контур этого состояния, перенос в продукт и QA потребителей OPEN. [Решение](DECISIONS.md), [контракт и различия](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16). UA-04 остаётся кандидатом.
+- Owner/PO: состав дубликата тикета, фиксация согласованного срока менеджером, публикация клиенту и переход в «В работе». UA-03 DEV-стенд закрыт приёмкой и merge; красный контур ошибки, перенос роли в продукт и QA потребителей OPEN как отдельный этап. [Решение](DECISIONS.md), [контракт и различия](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16). UA-04 остаётся кандидатом.
 - Алексей: API, ACL, хранение, 1С. Frontend M9 зависит от согласованного контракта. №10/13 отложены; №11 снят с исходной итерации.
 - Внешняя выкладка не поручена. Frozen FE11-v0.2 и [manifest](FE11_MOTION_FROZEN_V0_2.json) сохраняются.
 
