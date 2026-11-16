@@ -12,7 +12,7 @@
 
 - Нестабильный WebKit сценарий контекстного меню сообщения: первый CI FAIL, rerun PASS, локально 4/5; причина OPEN. Не считать его исправленным по одному успешному повтору.
 - Owner/PO: состав дубликата обращения; действия менеджера по согласованному сроку, публикации клиенту и переводу заказа в «В работе». Сохранение даты само по себе не меняет статус.
-- UA-03: [сравнительный DEV-стенд](../tests/fixtures/ua03-upload-review.html) готов для Owner visual review; перенос общей презентационной роли в продукт и приёмка OPEN. UA-04 остаётся кандидатом. №10/13 — отложенный backlog до API Алексея; №11 снят с исходной итерации. [Контракт UA-03](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16), [основания backlog](CONTRACTS_AND_EVIDENCE.md#evidence-next-scope-13-2026-11-10).
+- UA-03: [сравнительный DEV-стенд](../tests/fixtures/ua03-upload-review.html) и [draft PR #51](https://github.com/SigmeD/flexomir_os/pull/51) готовы для Owner visual review; перенос общей презентационной роли в продукт и приёмка OPEN. UA-04 остаётся кандидатом. №10/13 — отложенный backlog до API Алексея; №11 снят с исходной итерации. [Контракт UA-03](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16), [основания backlog](CONTRACTS_AND_EVIDENCE.md#evidence-next-scope-13-2026-11-10).
 - Frozen FE11-v0.2 и действующие material defaults сохраняются. Старый Figma Client Row master 14/20/400 не синхронизирован с принятым React title 16/22/600; это различие зафиксировано в [M8 контракте](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13).
 
 ## Проверки и поставка

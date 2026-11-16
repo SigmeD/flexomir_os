@@ -2568,7 +2568,7 @@ Owner уточнил по Screenshot_7: режим с тонкими линия�
 <a name="evidence-ua03-upload-review-stand-2026-11-16"></a>
 ##### UA-03 · сравнительный DEV-стенд загрузчиков · 16.11.2026
 
-Статус: **DEMO CANDIDATE / OWNER VISUAL OPEN / PRODUCT ROLLOUT OPEN**. В отдельной ветке `feat/ua03-upload-review-stand` создан [живой React-стенд](../tests/fixtures/ua03-upload-review.html), локальный адрес `http://127.0.0.1:5173/tests/fixtures/ua03-upload-review.html`. Он использует действующие `ArtworkSource`, `LayoutUploadPanel`, `FileDropzone` и сравнивает их «как сейчас» с кандидатом CSS-роли, ограниченной только стендом. `src/App.tsx` и продуктовые потребители не меняются; обычная production-сборка не включает стенд. Общий native picker/drop `LocalFileControl` и FOSAction сохраняются.
+Статус: **DEMO CANDIDATE / OWNER VISUAL OPEN / PRODUCT ROLLOUT OPEN**. В отдельной ветке `feat/ua03-upload-review-stand`, [draft PR #51](https://github.com/SigmeD/flexomir_os/pull/51), implementation commit `3beb1f0`, создан [живой React-стенд](../tests/fixtures/ua03-upload-review.html), локальный адрес `http://127.0.0.1:5173/tests/fixtures/ua03-upload-review.html`. Он использует действующие `ArtworkSource`, `LayoutUploadPanel`, `FileDropzone` и сравнивает их «как сейчас» с кандидатом CSS-роли, ограниченной только стендом. `src/App.tsx` и продуктовые потребители не меняются; обычная production-сборка не включает стенд. Общий native picker/drop `LocalFileControl` и FOSAction сохраняются.
 
 | CURRENT Figma → React | Кандидат общей роли | Контекст сохранён |
 | --- | --- | --- |
