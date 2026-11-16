@@ -4,7 +4,7 @@
 
 | Этап | Состояние | Следующее действие |
 | --- | --- | --- |
-| Блок №1 · T1–T5, заказы/навигация | Frontend-кандидат в [draft PR #55](https://github.com/SigmeD/flexomir_os/pull/55); общий Client/Manager Composer, срок менеджера и действие «Отправить» реализованы в демо, локальный QA PASS; Owner review/merge OPEN | Сверить CI фактического head и провести visual gate; production 1С/API/ACL ждёт Алексея и PO. [Факт и ограничения](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16) |
+| Блок №1 · T1–T5, заказы/навигация | Frontend-кандидат в [draft PR #55](https://github.com/SigmeD/flexomir_os/pull/55); общий Client/Manager Composer, срок менеджера и действие «Отправить» реализованы в демо; локальный QA PASS, CI code head `f343bf1` 5/5 SUCCESS; Owner review/merge OPEN | Провести visual gate; production 1С/API/ACL ждёт Алексея и PO. [Факт и ограничения](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16) |
 | M4–M7 | Основные Client/Manager композиции и демосценарии на fixtures реализованы | Сохранять существующие контракты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
 | M8 · [issue #21](https://github.com/SigmeD/flexomir_os/issues/21) | Общие компоненты, DocumentPreview Latest и выровненные формы слиты в `main` через [PR #49](https://github.com/SigmeD/flexomir_os/pull/49); Owner визуально принял показанный заказ, CI проверенного head 10/10 SUCCESS | Полная проверка M8/D09, Auth/WIP UX, side-by-side CURRENT Figma, физические устройства и ручная доступность; внешняя выкладка — отдельное решение |
 | M9 | Нужен согласованный production API | Алексей: backend, ACL, хранение и 1С; frontend: подключение к готовому контракту и интеграционный QA |
@@ -12,7 +12,7 @@
 ## Открытые вопросы
 
 - Нестабильный WebKit сценарий контекстного меню сообщения: первый CI FAIL, rerun PASS, локально 4/5; причина OPEN. Не считать его исправленным по одному успешному повтору.
-- Owner/PO: состав дубликата обращения; действия менеджера по согласованному сроку, публикации клиенту и переводу заказа в «В работе». Сохранение даты само по себе не меняет статус.
+- Owner/PO и Алексей: состав дубликата обращения, production-контракт передачи менеджерских правок и согласованного срока клиенту и в 1С, серверное подтверждение отправки и событие перехода в «В работе». UI правки и показа срока работает в демо; сохранение даты само по себе не меняет статус.
 - Следующий этап UA-03: визуальная проверка красного контура ошибки, перенос общей роли в продукт и регрессия потребителей OPEN. Предыдущий DEV-стенд **OWNER APPROVED / MERGED** в [PR #51](https://github.com/SigmeD/flexomir_os/pull/51), `main` `b3196db`, CI 3/3 SUCCESS; повторное согласование общей роли не требуется. UA-04/Profile photo и профильные экраны **DEFERRED BY OWNER** до backend/API-интеграции, не блокируют следующий блок и не входят в текущий рефакторинг. №10/13 — отложенный backlog до API Алексея; №11 снят с исходной итерации. [Решение](DECISIONS.md), [контракт UA-03](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16), [основания backlog](CONTRACTS_AND_EVIDENCE.md#evidence-next-scope-13-2026-11-10).
 - Frozen FE11-v0.2 и действующие material defaults сохраняются. Старый Figma Client Row master 14/20/400 не синхронизирован с принятым React title 16/22/600; это различие зафиксировано в [M8 контракте](CONTRACTS_AND_EVIDENCE.md#evidence-ui-unification-2026-11-13).
 
