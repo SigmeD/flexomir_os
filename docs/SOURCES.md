@@ -2,9 +2,9 @@
 
 Назначение: карта действующих источников и их приоритета. Ответственный: Codex/frontend. Статус: действующий указатель. Содержательная проверка: 16.11.2026 (UA-03).
 
-Проверка клиентского и технического Drive CURRENT: 14.11.2026. Подтверждены draft PR #49, локальная визуальная приёмка показанного заказа и открытые M8/API-гейты. Figma и нормативные документы при уборке не изменялись; их старые чтения не считаются повторной проверкой.
+Клиентский статус, технический Frontend CURRENT и CMP CURRENT повторно прочитаны 16.11.2026 после merge [PR #51](https://github.com/SigmeD/flexomir_os/pull/51) и документационного [PR #52](https://github.com/SigmeD/flexomir_os/pull/52). В них отражены приёмка и поставка UA-03 DEV-стенда, открытый перенос роли в продукт, полная M8 и API-гейты. Figma и нормативные документы при этой синхронизации не изменялись; их прежние чтения не считаются новой проверкой.
 
-16.11, UA-03 DEV-стенд: Figma read-only session `910feb3c-9d8a-4aad-8448-d4c04ac22da4` проверила Artwork Source634:445, Layout Upload Panel1438:474 и Signed Documents3391:3551. Первые два имеют разные исходные высоты и текстовые роли; подписные бланки используют верхнюю часть Artwork Source без library/help. Кандидат общей пустой зоны показан только в [React-стенде](../tests/fixtures/ua03-upload-review.html); Figma canvas не менялся, Owner visual OPEN. [Карта и QA](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16).
+16.11, UA-03 DEV-стенд: Figma read-only session `910feb3c-9d8a-4aad-8448-d4c04ac22da4` проверила Artwork Source634:445, Layout Upload Panel1438:474 и Signed Documents3391:3551. Первые два имеют разные исходные высоты и текстовые роли; подписные бланки используют верхнюю часть Artwork Source без library/help. Общая презентационная роль и исправленный пример ошибки приняты Owner на [React-стенде](../tests/fixtures/ua03-upload-review.html) и слиты в PR #51; Figma canvas не менялся. Красный контур ошибки и перенос в продукт OPEN. [Карта и QA](CONTRACTS_AND_EVIDENCE.md#evidence-ua03-upload-review-stand-2026-11-16).
 
 ## Как выбирать источник
 
