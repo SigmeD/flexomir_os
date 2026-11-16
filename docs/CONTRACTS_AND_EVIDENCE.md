@@ -2565,6 +2565,21 @@ Owner уточнил по Screenshot_7: режим с тонкими линия�
 
 Подтверждённые пропуски **UA-01/02 закрыты** последующими инкрементами ниже. UA-03/04 остаются кандидатами и не объявлены общим redesign. Owner решает optical/спорные visual вопросы; сроки не назначены. Backend/ACL/1С и №10/13 вне этого аудита.
 
+<a name="evidence-ua03-upload-review-stand-2026-11-16"></a>
+##### UA-03 · сравнительный DEV-стенд загрузчиков · 16.11.2026
+
+Статус: **DEMO CANDIDATE / OWNER VISUAL OPEN / PRODUCT ROLLOUT OPEN**. В отдельной ветке `feat/ua03-upload-review-stand` создан [живой React-стенд](../tests/fixtures/ua03-upload-review.html), локальный адрес `http://127.0.0.1:5173/tests/fixtures/ua03-upload-review.html`. Он использует действующие `ArtworkSource`, `LayoutUploadPanel`, `FileDropzone` и сравнивает их «как сейчас» с кандидатом CSS-роли, ограниченной только стендом. `src/App.tsx` и продуктовые потребители не меняются; обычная production-сборка не включает стенд. Общий native picker/drop `LocalFileControl` и FOSAction сохраняются.
+
+| CURRENT Figma → React | Кандидат общей роли | Контекст сохранён |
+| --- | --- | --- |
+| [Artwork Source634:445](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=634-445) → `ArtworkSource` | 183px пустая зона, 164px Action, prompt14/20, hint12/18 | «Мои макеты», HELP, local/library/unavailable, ошибка |
+| [Layout Upload Panel1438:474](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=1438-474) → `LayoutUploadPanel` | Пустая зона 200→183px и prompt13/20→14/20; наружная карточка не меняется | Selected остаётся отдельной карточкой; Figma Uploading/Success не имитируются без API |
+| [Signed Documents3391:3551](https://www.figma.com/design/7rvIYc6yj3OA7gxmf1xJbv/flexomir-OS?node-id=3391-3551) → `FileDropzone` | Та же 183px зона, выравнивание Action/prompt/hint | Подписной файл в продукте отображается отдельной строкой; отдельного error-prop у FileDropzone сейчас нет |
+
+Стенд показывает Empty/Selected/Error и обновляет обе стороны при локальном выборе файла. Он честно показывает отсутствие error-варианта у подписных файлов; размер/MIME, серверный upload/progress/success и ACL не симулируются. Решение Owner нужно для переноса предложенной визуальной роли на все три продуктовых потребителя. Принятый вид заказа и FOS12 не требуют повторной приёмки.
+
+Проверка: `npm run build` PASS; `git diff --check` PASS; обычный production `dist` не содержит текста или маршрута UA-03. Browser: desktop1440 Empty/Selected и mobile390 Selected/Error визуально просмотрены; на320px document scrollWidth=viewport320; native chooser с локальным `README.md` обновил оба сравниваемых ArtworkSource и показал «не загружен на сервер». Кандидатные пустые зоны на1440px имеют общие height183px, фон rgb(251,252,254), border rgb(196,209,224). Figma↔React различие для решения Owner: Layout Empty в Figma высотой200px и prompt13/20, кандидат183px и14/20; внешняя карточка сохранена. Снимки стенда: [desktop Empty](../tests/fixtures/ua03-upload-review/desktop-empty.png), [mobile Selected](../tests/fixtures/ua03-upload-review/mobile-selected.png), [mobile Error](../tests/fixtures/ua03-upload-review/mobile-error.png). В browser console только предсуществующий запрос отсутствующего `/favicon.ico`; ошибок React нет. Это QA стенда, не финальная M8/D09 или приёмка продукта.
+
 <a name="evidence-ui-unification-2026-11-13-ua-01--строка-позиции-и-общий-fossummaryrow--14112026"></a>
 ##### UA-01 · строка позиции и общий FosSummaryRow · 14.11.2026
 
