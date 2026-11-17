@@ -16,6 +16,7 @@ import { OrderDetail } from '@/components/orders/OrderDetail'
 import { useOrderPreview } from '@/components/orders/useOrderPreview'
 import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from './model'
 import '@/components/orders/orders-page.css'
+import { commitContentNavigation } from '@/components/layout/navigation-content-motion'
 
 const managerNav: readonly SidebarNavItem[] = [
   { id: 'orders', label: 'Заказы', icon: 'orders' },
@@ -57,7 +58,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
   const [queue, setQueue] = useState<'new' | 'all'>('all')
   const [reviewEditingId, setReviewEditingId] = useState<string | null>(null)
   const exitGuard = useOrderExitGuard()
-  const preview = useOrderPreview(orders, exitGuard)
+  const preview = useOrderPreview(orders, exitGuard, true)
   const queueOrders = queue === 'new' ? orders.filter(order => newOrderIds.includes(order.id)) : orders
   const selectedManagerDraft = managerDrafts.find(draft => draft.id === preview.selectedOrder?.id)
   const selectedReview = reviewOrders.find(order => order.id === preview.selectedOrder?.id && canEditDemoItems(order, 'manager'))
@@ -70,8 +71,13 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
 
   const onSelectFilter = (id: string) => {
     if (ORDER_STATUS_FILTERS.some(filter => filter.id === id && !filter.disabled)) {
-      setFilterId(id as OrderStatusFilterId)
-      onFilterChange?.(id as OrderStatusFilterId)
+      if (id === filterId) return
+      const currentIndex = ORDER_STATUS_FILTERS.findIndex(filter => filter.id === filterId)
+      const nextIndex = ORDER_STATUS_FILTERS.findIndex(filter => filter.id === id)
+      commitContentNavigation(nextIndex > currentIndex ? 'forward' : 'back', () => {
+        setFilterId(id as OrderStatusFilterId)
+        onFilterChange?.(id as OrderStatusFilterId)
+      })
     }
   }
 
@@ -83,7 +89,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
         drawerSelectionResetKey={exitGuard.resetKey}
         onProfileReturnToRoot={preview.backToList}
         onOpenProfile={() => exitGuard.requestExit(() => navigation?.openProfile?.())}
-        onSelect={id => exitGuard.requestExit(() => { setReviewEditingId(null); if (id === 'orders') preview.backToList(); else { preview.backToList(); navigation?.navigate(id as CabinetSection) } })}
+        onSelect={id => exitGuard.requestExit(() => { setReviewEditingId(null); if (id === 'orders') preview.backToList(); else { preview.backToList({ animate: false }); navigation?.navigate(id as CabinetSection) } })}
         roleLabel="Менеджер"
         variant="manager"
         navigationLabel="Навигация менеджера"
@@ -92,7 +98,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
         footerText="Менеджер"
       >
         <main className="fos-orders-page__main" data-layout="standard" data-role="manager" data-view={selectedManagerDraft || editingReview ? 'compose' : preview.selectedOrder ? 'detail' : 'list'}>
-          {editingReview ? <OrderComposer key={editingReview.id + '-review'} draft={editingReview} actorRole="manager" onSave={order => { if (order.stage === 'draft') onSaveManagerDraft?.(order); else onSaveReviewOrder?.(order); setReviewEditingId(null) }} onSend={(editingReview.stage === 'draft' ? onSendManagerDraft : onSendManagerOrder) ? order => { if (order.stage === 'draft') onSendManagerDraft?.(order); else onSendManagerOrder?.(order); setReviewEditingId(null) } : undefined} onBack={() => exitGuard.requestExit(() => { setReviewEditingId(null); preview.backToList() })} onCancelReview={() => setReviewEditingId(null)} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} managerCompanies={managerCompanies} /> : selectedManagerDraft ? <OrderComposer key={selectedManagerDraft.id} draft={selectedManagerDraft} actorRole="manager" onSave={onSaveManagerDraft ?? (() => {})} onSend={onSendManagerDraft} onBack={() => exitGuard.requestExit(preview.backToList)} onDeleteDraft={onDeleteManagerDraft} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} managerCompanies={managerCompanies} /> : preview.selectedOrder?.detail ? (
+          {editingReview ? <OrderComposer key={editingReview.id + '-review'} draft={editingReview} actorRole="manager" animateItemNavigation onSave={order => { if (order.stage === 'draft') onSaveManagerDraft?.(order); else onSaveReviewOrder?.(order); setReviewEditingId(null) }} onSend={(editingReview.stage === 'draft' ? onSendManagerDraft : onSendManagerOrder) ? order => { if (order.stage === 'draft') onSendManagerDraft?.(order); else onSendManagerOrder?.(order); setReviewEditingId(null) } : undefined} onBack={() => exitGuard.requestExit(() => { setReviewEditingId(null); preview.backToList() })} onCancelReview={() => setReviewEditingId(null)} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} managerCompanies={managerCompanies} /> : selectedManagerDraft ? <OrderComposer key={selectedManagerDraft.id} draft={selectedManagerDraft} actorRole="manager" animateItemNavigation onSave={onSaveManagerDraft ?? (() => {})} onSend={onSendManagerDraft} onBack={() => exitGuard.requestExit(preview.backToList)} onDeleteDraft={onDeleteManagerDraft} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} managerCompanies={managerCompanies} /> : preview.selectedOrder?.detail ? (
             <>
               <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={preview.backToList} onExit={preview.backToList} role="manager" canReply={reviewOrders.find(record => record.id === preview.selectedOrder?.id)?.communication?.canReply ?? preview.selectedOrder.communication?.canReply ?? false} onEdit={selectedReview && (selectedReview.stage === 'draft' ? onSendManagerDraft : onSendManagerOrder) ? () => setReviewEditingId(selectedReview.id) : undefined} managerIntake={demoOrderIds.includes(preview.selectedOrder.id)} demoProcessingState={processingStates[preview.selectedOrder.id] ?? 'pending'} onDemoProcessingStateChange={state => onProcessingStateChange?.(preview.selectedOrder!.id, state)} demoProcessingEnabled={demoTools} />
             </>
@@ -104,7 +110,9 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
               </p>
 
               <section className="fos-orders-page__filters" aria-label="Фильтры заказов">
-                <GlassPillTabs items={[{ id: 'new', label: 'Новые' }, { id: 'all', label: 'Все' }]} value={queue} onValueChange={value => { if (value === 'new' || value === 'all') setQueue(value) }} ariaLabel="Очередь заказов менеджера" />
+                <GlassPillTabs items={[{ id: 'new', label: 'Новые' }, { id: 'all', label: 'Все' }]} value={queue} onValueChange={value => {
+                  if ((value === 'new' || value === 'all') && value !== queue) commitContentNavigation(value === 'all' ? 'forward' : 'back', () => setQueue(value))
+                }} ariaLabel="Очередь заказов менеджера" />
                 <GlassPillTabs
                   items={ORDER_STATUS_FILTERS}
                   value={filterId}

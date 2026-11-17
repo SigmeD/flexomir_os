@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { waitForNavigationMotion } from './helpers/navigation-motion'
 
 for (const width of [1440, 1024, 768, 390, 320]) {
   test(`A companies flow, scope, focus and responsive ${width}`, async ({ page }, info) => {
@@ -29,6 +30,7 @@ for (const width of [1440, 1024, 768, 390, 320]) {
     await expect(page.getByTestId('companies-empty')).toBeVisible()
     await search.fill('')
     await expect(page.getByRole('button', { name: 'Добавить компанию', exact: true })).toBeDisabled()
+    await waitForNavigationMotion(page)
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
     await page.screenshot({ path: info.outputPath(`fes03-companies-${width}.png`), fullPage: true })

@@ -1,10 +1,10 @@
 # Flexomir OS — решения и открытые вопросы
 
-Назначение: индекс действующих решений и открытых вопросов. Ответственный за ведение: Codex/frontend; продуктовые решения утверждают Owner/PO. Статус: действующий индекс. Содержательная проверка: 16.11.2026 (блок №1). История согласований хранится в Git; технические SHA/CI — в [состоянии](PROJECT_STATE.md) и [сборнике контрактов](CONTRACTS_AND_EVIDENCE.md). Запись агента сама по себе не является approval.
+Назначение: индекс действующих решений и открытых вопросов. Ответственный за ведение: Codex/frontend; продуктовые решения утверждают Owner/PO. Статус: действующий индекс. Содержательная проверка: 17.11.2026 (блок №2). История согласований хранится в Git; технические SHA/CI — в [состоянии](PROJECT_STATE.md) и [сборнике контрактов](CONTRACTS_AND_EVIDENCE.md). Запись агента сама по себе не является approval.
 
 ## Актуальный индекс
 
-17.11, [issue #57](https://github.com/SigmeD/flexomir_os/issues/57): Owner увидел и принял направление анимации list/detail, затем поручил включить Client «Добавить заказ», «Добавить позицию» и фильтры. Последнее уточнение Owner — 300мс. Новый кандидат 44px/300мс на этих маршрутах реализован; визуальная оценка обновлённого варианта, разделы и другие роли OPEN. Glass/Frozen FE11 не изменён. [Факт](CONTRACTS_AND_EVIDENCE.md#evidence-block2-motion-pilot-2026-11-17).
+17.11, [issue #57](https://github.com/SigmeD/flexomir_os/issues/57): Owner увидел и принял направление list/detail, поручил включить Client «Добавить заказ», «Добавить позицию» и фильтры, затем уточнил скорость до 300мс и ответил «да, теперь все отлично, продолжай». Пилот 44px/300мс визуально принят; это разрешение продолжить анимацию разделов и вложенных маршрутов. Кандидат rollout использует вертикальный вход контента 16px/200мс между разделами и тот же горизонтальный 300мс в Manager Orders, Layouts, Support и Companies. Визуальная оценка rollout, CI и merge OPEN; Glass/Frozen FE11 не изменён. [Факт](CONTRACTS_AND_EVIDENCE.md#evidence-block2-motion-pilot-2026-11-17).
 
 16.11, Owner: «давай merge/main», затем уточнение «origin/main». [PR #55](https://github.com/SigmeD/flexomir_os/pull/55) слит как `75b9a99` после CI 5/5 SUCCESS и post-merge build/smoke 13/13 PASS. Это прямое разрешение на merge frontend-блока №1; отдельная visual acceptance блока, полная M8/D09 и production API/ACL/1С остаются OPEN. [Факт](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16).
 

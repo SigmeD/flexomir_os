@@ -60,7 +60,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
       if (destination === 'profile') { setNavigationSection('orders'); navigation?.openProfile?.(); return }
       if (destination === 'orders') preview.backToList({ restoreFocus: !fromShell || window.innerWidth >= 1024 })
       else {
-        preview.backToList()
+        preview.backToList({ animate: false })
         navigation?.navigate(destination)
       }
     }

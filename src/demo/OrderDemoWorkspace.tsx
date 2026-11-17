@@ -10,6 +10,7 @@ import { COMPLETED_DEMO_ITEMS, COMPLETED_DEMO_ORDER, MANAGER_LIFECYCLE_FIXTURES,
 import type { OrderStatusFilterId } from '@/components/orders/order-model'
 import { FOSAction } from '@/components/ui/fos-controls'
 import { CabinetNavigation } from '@/components/layout/CabinetNavigation'
+import { commitSectionNavigation } from '@/components/layout/navigation-content-motion'
 import type { CabinetSection } from '@/components/layout/CabinetPage'
 import { ManagerCompaniesScreen } from '@/screens/companies/ManagerCompaniesScreen'
 import { SupportScreen } from '@/screens/support/SupportScreen'
@@ -170,10 +171,14 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
   }
   function navigateSection(section: CabinetSection, onCommit?: () => void) {
     requestProfileTransition(() => {
-      if (profileOpen) focusAfterProfileNavigation.current = true
-      setProfileOpen(false)
-      visit(currentRole, section)
-      onCommit?.()
+      const commit = () => {
+        if (profileOpen) focusAfterProfileNavigation.current = true
+        setProfileOpen(false)
+        visit(currentRole, section)
+        onCommit?.()
+      }
+      if (section !== sections[currentRole]) commitSectionNavigation(commit)
+      else commit()
     })
   }
   function switchRole(nextRole: ProfileRole) {

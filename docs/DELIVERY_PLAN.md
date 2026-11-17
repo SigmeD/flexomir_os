@@ -9,7 +9,7 @@
 | M4–M7 | Основные Client/Manager композиции и демосценарии на fixtures реализованы | Сохранять существующие контракты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
 | M8 · [issue #21](https://github.com/SigmeD/flexomir_os/issues/21) | Общие компоненты, DocumentPreview Latest и выровненные формы слиты в `main` через [PR #49](https://github.com/SigmeD/flexomir_os/pull/49); Owner визуально принял показанный заказ, CI проверенного head 10/10 SUCCESS | Полная проверка M8/D09, Auth/WIP UX, side-by-side CURRENT Figma, физические устройства и ручная доступность; внешняя выкладка — отдельное решение |
 | M9 | Нужен согласованный production API | Алексей: backend, ACL, хранение и 1С; frontend: подключение к готовому контракту и интеграционный QA |
-| Блок №2 · [issue #57](https://github.com/SigmeD/flexomir_os/issues/57) · motion | Owner принял направление list/detail; 300мс и маршруты Add order/Add item/filters реализованы в PR #58, CI и новый visual gate OPEN | Показать расширенный вариант Owner; затем отдельно проверить «Заказы ↔ Макеты» и rollout по ролям |
+| Блок №2 · [issue #57](https://github.com/SigmeD/flexomir_os/issues/57) · motion | Owner визуально принял Client пилот 300мс; разделы 200мс и горизонтальный rollout Client/Manager/Support/Layouts/Companies реализованы в PR #58; CI и visual gate rollout OPEN | Завершить регрессию и показать Owner общий маршрут; затем review/merge по отдельному поручению |
 
 ## Открытые вопросы
 

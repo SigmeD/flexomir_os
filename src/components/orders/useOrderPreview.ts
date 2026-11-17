@@ -17,8 +17,8 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
   const restoreOpenerFocus = useRef(true)
   const selectedOrder = orders.find(order => order.id === selectedId && order.detail)
   const visibleId = selectedOrder?.id
-  const select = (id: string | null) => {
-    const animate = enableMotion && (id !== null || selectedRef.current !== null)
+  const select = (id: string | null, animateTransition = true) => {
+    const animate = animateTransition && enableMotion && (id !== null || selectedRef.current !== null)
     selectedRef.current = id
     const epoch = ++navigationEpoch.current
     const commit = () => { if (navigationEpoch.current === epoch) setSelectedId(id) }
@@ -80,10 +80,10 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
       history.pushState({ ...history.state, orderPreview: { session: session.current, id } }, '')
       select(id)
     },
-    backToList({ restoreFocus = true }: { restoreFocus?: boolean } = {}) {
+    backToList({ restoreFocus = true, animate = true }: { restoreFocus?: boolean; animate?: boolean } = {}) {
       restoreOpenerFocus.current = restoreFocus
       history.replaceState({ ...history.state, orderPreview: { session: session.current, id: null } }, '')
-      select(null)
+      select(null, animate)
     },
   }
 }

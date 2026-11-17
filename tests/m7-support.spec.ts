@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
+import { waitForNavigationMotion } from './helpers/navigation-motion'
 
 for (const role of ['client', 'manager']) test(`${role} support detail breadcrumb returns to the own list and restores its opener`, async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 })
@@ -40,6 +41,7 @@ for (const role of ['client', 'manager']) for (const width of [1440, 1024, 768, 
     await expect(page.getByRole('status')).toContainText('Обращение отправлено')
     await expect(page.getByRole('status')).toContainText('только в этой демосессии')
     await expect(page.getByRole('textbox')).toHaveCount(1)
+    await waitForNavigationMotion(page)
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: info.outputPath(`fes03-support-${role}-submitted-${width}.png`), fullPage: true })
@@ -72,10 +74,12 @@ for (const role of ['client', 'manager']) test(`B ${role} Figma reference states
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
     await page.screenshot({ path: info.outputPath(`fes03-support-${role}-list-${width}.png`), fullPage: true })
     await page.getByRole('button', { name: 'Добавить обращение' }).click()
+    await waitForNavigationMotion(page)
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
     await page.screenshot({ path: info.outputPath(`fes03-support-${role}-new-${width}.png`), fullPage: true })
     await page.goBack()
     await page.getByTestId('ticket-row-' + role + '-01').click()
+    await waitForNavigationMotion(page)
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
     await page.screenshot({ path: info.outputPath(`fes03-support-${role}-detail-${width}.png`), fullPage: true })
   }

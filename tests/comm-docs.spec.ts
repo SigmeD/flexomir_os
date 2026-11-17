@@ -227,6 +227,7 @@ test('Q27–36 documents, support and item visual/a11y matrix', async ({ page },
     await page.getByRole('button',{ name:'Добавить обращение',exact:true }).click()
     await page.getByLabel('Тема',{exact:true}).fill('Длинная синтетическая тема')
     await page.getByLabel('Описание',{exact:true}).fill('Описание обращения: проверяем общий ввод и адаптивность.')
+    await waitForOrderMotion(page)
     expect((await new AxeBuilder({page}).analyze()).violations).toEqual([])
     expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBeTruthy()
     await page.screenshot({path:`output/comm-docs/${info.project.name}/support-${width}.png`,fullPage:true})

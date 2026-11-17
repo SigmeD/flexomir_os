@@ -1,12 +1,15 @@
 import { expect, test, type Page } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { chooseFormOption, commitItem, fillItem, chooseMore } from './helpers/orders'
+import { waitForNavigationMotion } from './helpers/navigation-motion'
 
 const widths = [1440, 1024, 768, 390, 320]
 
 async function newOrder(page: Page, role = 'manager') {
   await page.goto(`/?view=${role}-orders`)
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-motion', /forward|back/)
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-fallback', /forward|back/)
   await page.evaluate(() => document.fonts.ready)
 }
 
@@ -51,6 +54,7 @@ for (const width of widths) {
     for (const count of [0, 1, 2]) {
       if (count === 1) await chooseFormOption(page, 'Компания', 'Компания 01')
       if (count > 0) await addItem(page, `Позиция DEMO ${count}`)
+      await waitForNavigationMotion(page)
       await page.evaluate(() => { window.scrollTo(0, 0) })
       const layout = await geometry(page)
       await page.screenshot({ path: info.outputPath(`manager-${width}-${count}.png`), fullPage: true })

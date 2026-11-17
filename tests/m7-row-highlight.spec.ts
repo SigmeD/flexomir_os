@@ -19,6 +19,8 @@ async function openRow(page: import('@playwright/test').Page, route:string, sele
     await page.getByRole('button',{name:'Добавить заказ',exact:true}).click()
     await page.getByLabel('Выбрать подписной бланк',{exact:true}).setInputFiles({name:'synthetic.csv',mimeType:'text/csv',buffer:Buffer.from('id,value\n1,synthetic\n')})
   }
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-motion', /forward|back/)
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-fallback', /forward|back/)
   await page.evaluate(() => document.fonts.ready)
   return page.locator(selector).filter({visible:true}).first()
 }
