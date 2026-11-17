@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test'
 import { chooseMore, commitItem, fillItem } from './helpers/orders'
 
-test('optional integer fields reject text and malformed paste while keeping valid digits', async ({ page, context }) => {
-  await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+test('optional integer fields reject text and malformed paste while keeping valid digits', async ({ page, context }, testInfo) => {
+  const clipboardSupported = testInfo.project.name.includes('chromium')
+  if (clipboardSupported) await context.grantPermissions(['clipboard-read', 'clipboard-write'])
   await page.goto('/?view=client-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
@@ -14,8 +15,10 @@ test('optional integer fields reject text and malformed paste while keeping vali
   await expect(labels).toHaveValue('12')
   await inks.fill('3')
   await inks.evaluate((input: HTMLInputElement) => input.focus())
-  await page.evaluate(() => navigator.clipboard.writeText('e2'))
-  await inks.press('ControlOrMeta+V')
+  if (clipboardSupported) {
+    await page.evaluate(() => navigator.clipboard.writeText('e2'))
+    await inks.press('ControlOrMeta+V')
+  } else await page.keyboard.insertText('e2')
   await expect(inks).toHaveValue('3')
   await labels.fill('')
   await expect(labels).toHaveValue('')
