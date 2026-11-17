@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { setDemoRole } from './helpers/orders'
+import { waitForNavigationMotion } from './helpers/navigation-motion'
 
 async function section(page: Page, id: string) {
   if ((page.viewportSize()?.width ?? 1440) < 1024) {
@@ -42,6 +43,7 @@ for (const width of [1440, 1024, 768, 390, 320]) test(`D cabinet navigation pres
   await expect(page.getByLabel('Компания', { exact: true })).toHaveValue('Компания 01')
   await page.goBack()
   await expect(page.getByLabel('Поиск компании', { exact: true })).toHaveValue('Компания 01')
+  await waitForNavigationMotion(page)
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
 })

@@ -1,5 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test'
 import { setDemoRole } from './helpers/orders'
+import { waitForNavigationMotion } from './helpers/navigation-motion'
 
 async function focusByKeyboard(page: Page, control: Locator) {
   // Scripted focus after a pointer action inherits pointer modality. Exercise
@@ -95,6 +96,7 @@ for (const width of [768, 390, 320]) {
       const dock = page.getByTestId('floating-work-actions')
       await expect(dock).toBeVisible()
       await expect(dock.locator('button')).toHaveCount(2)
+      await waitForNavigationMotion(page)
       const box = await dock.boundingBox()
       expect(box).not.toBeNull()
       expect(box!.width).toBe(108)
