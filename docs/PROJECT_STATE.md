@@ -4,7 +4,7 @@
 
 ## Текущий инкремент
 
-По прямому поручению Owner блок №2 слит в `origin/main`: функциональный [PR #59](https://github.com/SigmeD/flexomir_os/pull/59) → `851a319` (CI 5/5 SUCCESS), motion/полировка [PR #58](https://github.com/SigmeD/flexomir_os/pull/58) → `e7babc6` (проверенный совместный head `d76001f`, полный CI 11/11 SUCCESS). Дерево squash #58 совпало с проверенным head. Post-merge build PASS, адресный Chromium smoke 6/6 PASS; обе remote head ветки удалены автоматически, локальные сохранены. Числовые поля, подтверждение отправки, восстановление и скрытие отменённого заказа работают только на frontend-моках. Анимации Client/Manager/Layouts/Support/Companies и единые фильтры/аватар находятся в main. Owner визуально принял полный rollout анимаций блока №2. Физические устройства, полная M8/D09 и production API/ACL/хранение/чат/1С остаются OPEN.
+По прямому поручению Owner блок №2 слит в `origin/main`: функциональный [PR #59](https://github.com/SigmeD/flexomir_os/pull/59) → `851a319` (CI 5/5 SUCCESS), motion/полировка [PR #58](https://github.com/SigmeD/flexomir_os/pull/58) → `e7babc6` (проверенный совместный head `d76001f`, полный CI 11/11 SUCCESS). Дерево squash #58 совпало с проверенным head. Post-merge build PASS, адресный Chromium smoke 6/6 PASS; обе remote head ветки удалены автоматически. После отдельной уборки 17.11 локальные слитые ветки удалены. Числовые поля, подтверждение отправки, восстановление и скрытие отменённого заказа работают только на frontend-моках. Анимации Client/Manager/Layouts/Support/Companies и единые фильтры/аватар находятся в main. Owner визуально принял полный rollout анимаций блока №2. Физические устройства, полная M8/D09 и production API/ACL/хранение/чат/1С остаются OPEN.
 
 ## Основа и ранее принятые решения
 
