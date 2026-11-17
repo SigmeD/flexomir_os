@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { demoItemErrors, emptyDemoItem, validDemoItem, type DemoItem, type DemoItemErrors } from '@/demo/order-compose-model'
-import { FOSInput, FOSQuantity, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
+import { FOSInput, FOSIntegerInput, FOSQuantity, FOSSelect, FOSTextarea } from '@/components/ui/fos-controls'
 import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
 import { OverflowMenu } from '@/components/ui/overflow-menu'
@@ -119,8 +119,8 @@ export function OrderItemForm({ item, initialValue, onSave, onClose, onBackToLis
           <FOSSelect label="Тип намотки" value={value.winding || ''} helper="Тестовые значения; применимость и обязательность уточняются" onChange={event => update({ winding: event.target.value })}>
             <option value="">Выберите намотку</option><option value="demo-external">Тестовая: наружная</option><option value="demo-internal">Тестовая: внутренняя</option>
           </FOSSelect>
-          <FOSInput label="Этикеток в рулоне" inputMode="numeric" value={value.labelsPerRoll || ''} placeholder="Введите количество" error={error('labelsPerRoll')} onBlur={blur('labelsPerRoll')} onChange={event => update({ labelsPerRoll: event.target.value })} />
-          <FOSInput label="Количество красок" inputMode="numeric" value={value.inkCount || ''} placeholder="Укажите число красок" error={error('inkCount')} onBlur={blur('inkCount')} onChange={event => update({ inkCount: event.target.value })} />
+          <FOSIntegerInput label="Этикеток в рулоне" value={value.labelsPerRoll || ''} placeholder="Введите количество" error={error('labelsPerRoll')} onBlur={blur('labelsPerRoll')} onChange={event => update({ labelsPerRoll: event.target.value })} />
+          <FOSIntegerInput label="Количество красок" value={value.inkCount || ''} placeholder="Укажите число красок" error={error('inkCount')} onBlur={blur('inkCount')} onChange={event => update({ inkCount: event.target.value })} />
         </div>
         <div className="fos-item-form__dimensions"><FOSSelect wrapperClassName="fos-item-form__shape" label="Форма" value={value.shape} error={error('shape')} onBlur={blur('shape')} onChange={event => update({ shape: event.target.value })} required>
           <option value="">Выберите форму</option><option>Прямоугольная</option><option>Круглая</option>

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { backToOrders, chooseFormOption, chooseMore, commitItem, detailData, fillItem, setDemoRole } from './helpers/orders'
+import { backToOrders, chooseFormOption, chooseMore, commitItem, confirmClientSend, detailData, fillItem, setDemoRole } from './helpers/orders'
 import AxeBuilder from '@axe-core/playwright'
 
 test('Client draft: copy opens a new editor and is added only on explicit valid save', async ({ page }, testInfo) => {
@@ -220,6 +220,7 @@ test('ordinary Client submit → Manager edit → same Client order, copy saved 
   await fillItem(page)
   await commitItem(page)
   await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
+  await confirmClientSend(page)
   await setDemoRole(page, 'manager')
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   await chooseMore(page, 'Изменить')

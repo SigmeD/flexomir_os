@@ -24,7 +24,7 @@ test('Q04–08 production parameters persist on item and legacy remains editable
   await expect(page.getByLabel('Этикеток в рулоне')).toBeVisible()
   await expect(page.getByLabel('Количество красок')).toBeVisible()
   await page.getByLabel('Этикеток в рулоне').fill('-1')
-  await expect(page.getByText('Введите положительное целое число', { exact: true }).first()).toBeVisible()
+  await expect(page.getByLabel('Этикеток в рулоне')).toHaveValue('')
   await fillItem(page,'Первая позиция')
   await chooseFormOption(page,'Тип намотки','Тестовая: наружная')
   await page.getByLabel('Этикеток в рулоне').fill('250')

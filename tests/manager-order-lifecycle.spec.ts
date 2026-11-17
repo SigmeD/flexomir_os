@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { chooseFormOption, chooseMore, commitItem, fillItem, setDemoRole } from './helpers/orders'
+import { chooseFormOption, chooseMore, commitItem, confirmClientSend, fillItem, setDemoRole } from './helpers/orders'
 
 test('manager sends a complete order and the client sees the agreed date', async ({ page }, testInfo) => {
   await page.goto('/?view=manager-orders&demoTools=1')
@@ -39,6 +39,7 @@ test('manager sets agreed date on a client order without changing its review sta
   await fillItem(page)
   await commitItem(page)
   await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
+  await confirmClientSend(page)
   await setDemoRole(page, 'manager')
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   await chooseMore(page, 'Изменить')

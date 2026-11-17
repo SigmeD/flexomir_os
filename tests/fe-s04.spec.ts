@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { chooseFormOption, commitItem, fillItem, setDemoRole } from './helpers/orders'
+import { chooseFormOption, commitItem, confirmClientSend, fillItem, setDemoRole } from './helpers/orders'
 
 test('A: Manager queue New contains client submissions; All includes labeled synthetic imported fixture', async ({ page }) => {
   await page.goto('/?view=manager-orders&demoTools=1&fixture=imported-1c')
@@ -53,6 +53,7 @@ test('D: Client submission is visible in Manager New and local processing result
   await fillItem(page)
   await commitItem(page)
   await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
+  await confirmClientSend(page)
   await setDemoRole(page, 'manager')
   const queue = page.getByRole('group', { name: 'Очередь заказов менеджера' })
   await queue.getByRole('button', { name: 'Новые' }).click()

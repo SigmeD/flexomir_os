@@ -21,6 +21,8 @@ interface OrderDetailProps {
   demoProcessingEnabled?: boolean
   onEdit?: () => void
   onCancelOrder?: () => void
+  onRestoreOrder?: () => void
+  onDeleteCancelledOrder?: () => void
   onExit?: () => void
   canReply?: boolean
 }
@@ -29,11 +31,13 @@ function dateValue(value?: string) {
   return /^\d{2}\.\d{2}\.\d{4}$/.test(value) ? value.slice(6) + '-' + value.slice(3, 5) + '-' + value.slice(0, 2) : value
 }
 /** Shared readonly composition; Manager-only data slots never create production commands. */
-export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false, onEdit, onCancelOrder, onExit, canReply = false }: OrderDetailProps) {
+export function OrderDetail({ order, detail, onBack, actions, role = 'client', managerIntake = false, demoProcessingState, onDemoProcessingStateChange, demoProcessingEnabled = false, onEdit, onCancelOrder, onRestoreOrder, onDeleteCancelledOrder, onExit, canReply = false }: OrderDetailProps) {
   const title = 'Заказ ' + order.id
   const menuItems = [
     ...(onEdit ? [{ id: 'edit', label: 'Изменить', onSelect: onEdit, focusAfter: 'consumer' as const }] : []),
     ...(onCancelOrder ? [{ id: 'cancel', label: 'Отменить заказ', onSelect: onCancelOrder, focusAfter: 'consumer' as const }] : []),
+    ...(onRestoreOrder ? [{ id: 'restore', label: 'Восстановить заказ', onSelect: onRestoreOrder, focusAfter: 'consumer' as const }] : []),
+    ...(onDeleteCancelledOrder ? [{ id: 'delete', label: 'Удалить заказ', onSelect: onDeleteCancelledOrder, focusAfter: 'consumer' as const }] : []),
     ...(onExit ? [{ id: 'exit', label: 'Выйти', onSelect: onExit, focusAfter: 'consumer' as const }] : []),
   ]
   return <div className="fos-order-detail" data-testid="order-detail" data-role={role} data-order-id={order.id}>

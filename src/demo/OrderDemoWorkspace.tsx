@@ -28,7 +28,9 @@ export interface OrderDemoController {
   sendManagerOrder: (order: DemoDraft) => void
   deleteDraft: (id: string, ownerRole: 'client' | 'manager') => void
   cancelOrder: (id: string, company: string) => void
-  sendDraft: (draft: DemoDraft) => void
+  restoreOrder: (id: string, company: string) => boolean
+  hideCancelledOrder: (id: string, company: string) => boolean
+  sendDraft: (draft: DemoDraft) => boolean
   duplicateOrder: (sourceId: string) => string | undefined
   onEditorStateChange: (open: boolean) => void
 }
@@ -42,6 +44,7 @@ const initialProfileDrafts = (): Record<ProfileRole, DemoProfileDraft> => ({
 export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orders', errorFixture = '', presentationMode = false, diagnosticMessage }: { role: 'client' | 'manager'; empty?: boolean; initialSection?: CabinetSection; errorFixture?: string; presentationMode?: boolean; diagnosticMessage?: string }) {
   const [drafts, setDrafts] = useState<readonly DemoDraft[]>(() => [...MANAGER_LIFECYCLE_FIXTURES, ...itemActionsFixtures(errorFixture)])
   const [editedFixtureIds, setEditedFixtureIds] = useState<ReadonlySet<string>>(() => new Set())
+  const [hiddenClientOrderIds, setHiddenClientOrderIds] = useState<ReadonlySet<string>>(() => new Set())
   const [currentRole, setCurrentRole] = useState(role)
   const [sections, setSections] = useState<Record<'client' | 'manager', CabinetSection>>({ client: role === 'client' ? initialSection : 'orders', manager: role === 'manager' ? initialSection : 'orders' })
   const [motionFromSection, setMotionFromSection] = useState<CabinetSection | null>(null)
@@ -128,13 +131,29 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
     },
     cancelOrder(id, company) {
       setDrafts(current => current.map(saved => currentRole === 'client' && saved.id === id && saved.company === company && saved.ownerRole === 'client' && saved.stage === 'sent' && !saved.transferStarted
-        ? { ...saved, stage: 'cancelled', communication: { canReply: false, phase: 'readonly' } } : saved))
+        ? { ...saved, stage: 'cancelled', communicationBeforeCancellation: saved.communication, communication: { canReply: false, phase: 'readonly' } } : saved))
+    },
+    restoreOrder(id, company) {
+      if (currentRole !== 'client' || company !== CLIENT_DEMO_COMPANY || hiddenClientOrderIds.has(id)
+        || !drafts.some(saved => saved.id === id && saved.company === company && saved.ownerRole === 'client' && saved.stage === 'cancelled' && !saved.transferStarted)) return false
+      setDrafts(current => current.map(saved => saved.id === id && saved.company === company && saved.ownerRole === 'client' && saved.stage === 'cancelled' && !saved.transferStarted
+        ? { ...saved, stage: 'sent', communication: saved.communicationBeforeCancellation ?? { canReply: false, phase: 'readonly' }, communicationBeforeCancellation: undefined } : saved))
+      return true
+    },
+    hideCancelledOrder(id, company) {
+      if (currentRole !== 'client' || company !== CLIENT_DEMO_COMPANY || hiddenClientOrderIds.has(id)
+        || !drafts.some(saved => saved.id === id && saved.company === company && saved.ownerRole === 'client' && saved.stage === 'cancelled')) return false
+      setHiddenClientOrderIds(current => new Set(current).add(id))
+      return true
     },
     sendDraft(draft) {
-      if (!canSendDemo(draft) || (draft.ownerRole === 'manager' && (currentRole !== 'manager' || !draft.company || !draft.agreedDate)) || (draft.ownerRole === 'client' && currentRole !== 'client')) return
+      if (!canSendDemo(draft) || (draft.ownerRole === 'manager' && (currentRole !== 'manager' || !draft.company || !draft.agreedDate)) || (draft.ownerRole === 'client' && currentRole !== 'client')
+        || !drafts.some(saved => saved.id === draft.id && saved.stage === 'draft' && saved.ownerRole === draft.ownerRole
+          && (draft.ownerRole === 'manager' || saved.company === draft.company))) return false
       if (MANAGER_LIFECYCLE_FIXTURES.some(fixture => fixture.id === draft.id)) setEditedFixtureIds(current => new Set(current).add(draft.id))
       setDrafts(current => current.map(saved => saved.id === draft.id && saved.stage === 'draft' && saved.ownerRole === draft.ownerRole
         ? { ...draft, stage: 'sent', items: draft.items.map(item => ({ ...item })) } : saved))
+      return true
     },
     duplicateOrder(sourceId) {
       if (sourceId !== COMPLETED_DEMO_ORDER.id || COMPLETED_DEMO_ORDER.filterId !== 'done') return
@@ -184,6 +203,7 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
       resetLocalCommunication()
       setProfileOpen(false)
       setDrafts(itemActionsFixtures(errorFixture))
+      setHiddenClientOrderIds(new Set())
       nextOrder.current = 100
       setClientFilter('all')
       setManagerFilter('all')
@@ -299,8 +319,8 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
         onSave: saveProfile,
       },
     }}>
-      {currentRole === 'client' && slot('client', 'orders', <ClientOrdersScreen orders={[...(empty ? [] : [...CLIENT_ORDERS_DEMO, COMPLETED_DEMO_ORDER].map(displayedFixture)), ...drafts.filter(draft => !lifecycleFixtureIds.has(draft.id) && draft.company === CLIENT_DEMO_COMPANY && (draft.ownerRole === 'client' || draft.stage !== 'draft')).map(draftView)]} companyName={CLIENT_DEMO_COMPANY} demo={controller} initialFilterId={clientFilter} onFilterChange={setClientFilter} />)}
-      {currentRole === 'manager' && slot('manager', 'orders', <ManagerOrdersScreen orders={[...(empty ? [] : MANAGER_ORDERS_DEMO.map(displayedFixture)), ...(new URLSearchParams(window.location.search).get('fixture') === 'imported-1c' && !empty ? [DEMO_IMPORTED_1C_ORDER] : []), ...sent.filter(draft => !lifecycleFixtureIds.has(draft.id)).map(draft => ({ ...draftView(draft), demoProcessingState: processingStates[draft.id] ?? 'pending' })), ...drafts.filter(draft => draft.ownerRole === 'manager' && draft.stage === 'draft' && !lifecycleFixtureIds.has(draft.id)).map(draftView)]} demoOrderIds={pendingIntake.map(draft => draft.id)} newOrderIds={pendingIntake.map(draft => draft.id)} reviewOrders={drafts.filter(draft => draft.stage === 'sent' || draft.stage === 'done' || lifecycleFixtureIds.has(draft.id))} onSaveReviewOrder={controller.saveReviewOrder} onSendManagerOrder={controller.sendManagerOrder} onSendManagerDraft={controller.sendDraft} managerDrafts={drafts.filter(draft => draft.ownerRole === 'manager' && draft.stage === 'draft' && !lifecycleFixtureIds.has(draft.id))} managerCompanies={DEMO_COMPANIES} onCreateOrder={() => controller.createDraft('manager')} onSaveManagerDraft={controller.saveDraft} onDeleteManagerDraft={id => controller.deleteDraft(id, 'manager')} onEditorStateChange={controller.onEditorStateChange} processingStates={processingStates} onProcessingStateChange={(id, state) => setProcessingStates(current => ({ ...current, [id]: state }))} demoTools={demoTools} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />)}
+      {currentRole === 'client' && slot('client', 'orders', <ClientOrdersScreen orders={[...(empty ? [] : [...CLIENT_ORDERS_DEMO, COMPLETED_DEMO_ORDER].map(displayedFixture)), ...drafts.filter(draft => !lifecycleFixtureIds.has(draft.id) && draft.company === CLIENT_DEMO_COMPANY && (draft.ownerRole === 'client' || draft.stage !== 'draft')).map(draftView)].filter(order => !hiddenClientOrderIds.has(order.id))} companyName={CLIENT_DEMO_COMPANY} demo={controller} initialFilterId={clientFilter} onFilterChange={setClientFilter} />)}
+      {currentRole === 'manager' && slot('manager', 'orders', <ManagerOrdersScreen orders={[...(empty ? [] : MANAGER_ORDERS_DEMO.map(displayedFixture)), ...(new URLSearchParams(window.location.search).get('fixture') === 'imported-1c' && !empty ? [DEMO_IMPORTED_1C_ORDER] : []), ...drafts.filter(draft => (draft.stage === 'sent' || draft.stage === 'cancelled') && !lifecycleFixtureIds.has(draft.id)).map(draft => ({ ...draftView(draft), demoProcessingState: processingStates[draft.id] ?? 'pending' })), ...drafts.filter(draft => draft.ownerRole === 'manager' && draft.stage === 'draft' && !lifecycleFixtureIds.has(draft.id)).map(draftView)]} demoOrderIds={pendingIntake.map(draft => draft.id)} newOrderIds={pendingIntake.map(draft => draft.id)} reviewOrders={drafts.filter(draft => draft.stage === 'sent' || draft.stage === 'done' || lifecycleFixtureIds.has(draft.id))} onSaveReviewOrder={controller.saveReviewOrder} onSendManagerOrder={controller.sendManagerOrder} onSendManagerDraft={controller.sendDraft} managerDrafts={drafts.filter(draft => draft.ownerRole === 'manager' && draft.stage === 'draft' && !lifecycleFixtureIds.has(draft.id))} managerCompanies={DEMO_COMPANIES} onCreateOrder={() => controller.createDraft('manager')} onSaveManagerDraft={controller.saveDraft} onDeleteManagerDraft={id => controller.deleteDraft(id, 'manager')} onEditorStateChange={controller.onEditorStateChange} processingStates={processingStates} onProcessingStateChange={(id, state) => setProcessingStates(current => ({ ...current, [id]: state }))} demoTools={demoTools} initialFilterId={managerFilter} onFilterChange={setManagerFilter} />)}
       {slot('manager', 'clients', <ManagerCompaniesScreen empty={empty} />)}
       {slot('client', 'artworks', <ClientLayoutsScreen empty={empty} errorFixture={errorFixture === 'layout-error'} />)}
       {slot('client', 'support', <SupportScreen role="client" empty={empty} errorFixture={errorFixture === 'support-error'} />)}
