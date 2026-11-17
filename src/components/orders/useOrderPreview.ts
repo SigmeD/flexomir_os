@@ -1,20 +1,28 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import type { OrderListItem } from './order-model'
+import { commitContentNavigation } from '@/components/layout/navigation-content-motion'
 
 /** Local list/detail navigation, with no URL, history, storage, backend or role mutations. */
-export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { dirty: boolean; requestExit: (action: () => void) => void }) {
+export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { dirty: boolean; requestExit: (action: () => void) => void }, enableMotion = false) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const session = useRef(crypto.randomUUID())
   const selectedRef = useRef(selectedId)
+  const navigationEpoch = useRef(0)
   const guardRef = useRef(exitGuard)
   const ordersRef = useRef(orders)
-  selectedRef.current = selectedId
   guardRef.current = exitGuard
   ordersRef.current = orders
   const surfaceRef = useRef<HTMLDivElement>(null)
   const returnPoint = useRef<{ id: string; scrollY: number } | null>(null)
   const selectedOrder = orders.find(order => order.id === selectedId && order.detail)
   const visibleId = selectedOrder?.id
+  const select = (id: string | null) => {
+    selectedRef.current = id
+    const epoch = ++navigationEpoch.current
+    const commit = () => { if (navigationEpoch.current === epoch) setSelectedId(id) }
+    if (enableMotion) commitContentNavigation(id ? 'forward' : 'back', commit)
+    else commit()
+  }
 
   useLayoutEffect(() => {
     if (history.state?.orderPreview?.session !== session.current) {
@@ -28,7 +36,7 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
       if (currentId === nextId) return
       const apply = () => {
         history.replaceState({ ...history.state, orderPreview: { session: session.current, id: nextId } }, '')
-        setSelectedId(nextId)
+        select(nextId)
       }
       if (currentId && guardRef.current?.dirty) {
         history.pushState({ ...history.state, orderPreview: { session: session.current, id: currentId } }, '')
@@ -61,17 +69,17 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
     openCreatedOrder(id: string) {
       returnPoint.current = { id, scrollY: window.scrollY }
       history.pushState({ ...history.state, orderPreview: { session: session.current, id } }, '')
-      setSelectedId(id)
+      select(id)
     },
     openOrder(id: string) {
       if (!orders.some(order => order.id === id && order.detail)) return
       returnPoint.current = { id, scrollY: window.scrollY }
       history.pushState({ ...history.state, orderPreview: { session: session.current, id } }, '')
-      setSelectedId(id)
+      select(id)
     },
     backToList() {
       history.replaceState({ ...history.state, orderPreview: { session: session.current, id: null } }, '')
-      setSelectedId(null)
+      select(null)
     },
   }
 }

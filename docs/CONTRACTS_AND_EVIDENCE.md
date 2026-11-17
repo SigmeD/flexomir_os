@@ -6,6 +6,15 @@
 
 Быстрый переход: [блок №1, жизненный цикл заказа](#evidence-order-lifecycle-block1-2026-11-16) · [текущая унификация M8](#evidence-ui-unification-2026-11-13) · [переписка и документы](#evidence-comm-docs-2026-11-12) · [действия с позицией](#evidence-fos06-item-actions-delivery-2026-11-12) · [Glass и motion](#evidence-fe11-popup-pilot-2026-11-09) · [материал Select](#evidence-fos-glass-material) · [исходный scope](#evidence-next-scope-13-2026-11-10).
 
+<a name="evidence-block2-motion-pilot-2026-11-17"></a>
+## Блок №2 · пилот движения карточки заказа · 17.11.2026
+
+Назначение: технический факт по motion-пилоту [issue #57](https://github.com/SigmeD/flexomir_os/issues/57). Ответственный: Codex/frontend. Статус: код в отдельной ветке `feat/fe57-navigation-motion`, функциональная QA пройдена, визуальная приёмка Owner OPEN; merge и production не выполнялись. База `origin/main` `45201a0`. Референс — локальная запись Windows 11 `bandicam 2026-11-17 11-39-23-581.mp4`; 20px/220мс — пробные параметры, не измерение из видео. Figma утверждённого motion-master для этого перехода нет.
+
+Пилот: Client «Мои заказы → детали → назад». `useOrderPreview` задаёт forward/back после guard, `commitContentNavigation` анимирует только содержимое; заголовок сразу меняет текст. Chromium/Firefox: View Transitions old/new, ±20px + opacity, 220мс. WebKit: CSS-анимация входящего содержимого, поскольку захват сохранённой оболочки через View Transitions воспроизводимо завершал браузер; исходящий экран там не анимирован. `prefers-reduced-motion: reduce` отключает движение. `AppShell`, боковая панель, GlassLens и frozen FE11 не изменены. Scroll, focus, browser Back/Forward и быстрые переходы сохраняются.
+
+Проверки: `npm run build` PASS; `block2-motion` Chromium 1440/390 6/6, Firefox+WebKit 390 6/6, `order-lifecycle-block1` Chromium 1440/390 14/14 PASS; `npm run verify:material-optics` PASS при работающем DEV-сервере. Видео пилота: `output/block2-motion/client-orders-pilot-chromium-desktop.webm`, `client-orders-pilot-chromium-mobile.webm`, `client-orders-pilot-webkit-mobile.webm` — локальные ignored доказательства, не заменяют Owner visual или Figma side-by-side. Следующий gate: Owner просматривает пилот, затем отдельная реализация и QA «Заказы ↔ Макеты» и rollout остальных ролей/маршрутов. WebKit двухсторонний эффект и физические устройства OPEN.
+
 <a name="evidence-order-lifecycle-block1-2026-11-16"></a>
 ## Блок №1 · жизненный цикл заказа и навигация · 16.11.2026
 

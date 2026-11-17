@@ -43,7 +43,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   const exitGuard = useOrderExitGuard()
   const setFilterId = (id: OrderStatusFilterId) => { setLocalFilterId(id); onFilterChange?.(id) }
   const presentedOrders = orders
-  const preview = useOrderPreview(presentedOrders, exitGuard)
+  const preview = useOrderPreview(presentedOrders, exitGuard, true)
   const visibleOrders = filterId === 'all' ? presentedOrders : presentedOrders.filter(order => order.filterId === filterId)
   const selectedDraft = demo?.drafts.find(draft => draft.id === preview.selectedOrder?.id && draft.stage === 'draft' && draft.ownerRole === 'client' && draft.company === companyName)
   const selectedReview = demo?.drafts.find(order => order.id === preview.selectedOrder?.id && order.stage === 'sent' && order.company === companyName && canEditDemoItems(order, 'client'))
