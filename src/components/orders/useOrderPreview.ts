@@ -14,6 +14,7 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
   ordersRef.current = orders
   const surfaceRef = useRef<HTMLDivElement>(null)
   const returnPoint = useRef<{ id: string; scrollY: number } | null>(null)
+  const restoreOpenerFocus = useRef(true)
   const selectedOrder = orders.find(order => order.id === selectedId && order.detail)
   const visibleId = selectedOrder?.id
   const select = (id: string | null) => {
@@ -57,9 +58,10 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
     const buttons = surfaceRef.current?.querySelectorAll<HTMLButtonElement>('button[data-order-open]') ?? []
     const opener = Array.from(buttons).find(button => button.dataset.orderOpen === previous.id)
       ?? surfaceRef.current?.querySelector<HTMLButtonElement>('button[data-create-order]')
-    opener?.focus({ preventScroll: true })
+    if (restoreOpenerFocus.current) opener?.focus({ preventScroll: true })
     window.scrollTo(0, previous.scrollY)
     returnPoint.current = null
+    restoreOpenerFocus.current = true
   }, [visibleId])
 
   return {
@@ -77,7 +79,8 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
       history.pushState({ ...history.state, orderPreview: { session: session.current, id } }, '')
       select(id)
     },
-    backToList() {
+    backToList({ restoreFocus = true }: { restoreFocus?: boolean } = {}) {
+      restoreOpenerFocus.current = restoreFocus
       history.replaceState({ ...history.state, orderPreview: { session: session.current, id: null } }, '')
       select(null)
     },

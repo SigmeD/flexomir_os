@@ -52,12 +52,12 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   const editorStateChange = demo?.onEditorStateChange
   useEffect(() => { editorStateChange?.(editingDraft); return () => editorStateChange?.(false) }, [editingDraft, editorStateChange])
 
-  function navigateFromShell(id: string) {
+  function navigateFromShell(id: string, fromShell = false) {
     const destination = id as CabinetSection | 'profile'
     const leave = () => {
       setReviewEditingId(null)
       if (destination === 'profile') { setNavigationSection('orders'); navigation?.openProfile?.(); return }
-      if (destination === 'orders') preview.backToList()
+      if (destination === 'orders') preview.backToList({ restoreFocus: !fromShell || window.innerWidth >= 1024 })
       else {
         preview.backToList()
         navigation?.navigate(destination)
@@ -69,7 +69,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   return (
     <div className="fos-orders-page" data-testid="client-orders-screen" ref={preview.surfaceRef}>
       <AppShell
-        items={navigation ? cabinetItems('client', navigation.ready) : clientNav} activeId={navigationSection} onSelect={navigateFromShell} drawerSelectionResetKey={exitGuard.resetKey} onProfileReturnToRoot={preview.backToList} onOpenProfile={() => navigateFromShell('profile')}
+        items={navigation ? cabinetItems('client', navigation.ready) : clientNav} activeId={navigationSection} onSelect={id => navigateFromShell(id, true)} drawerSelectionResetKey={exitGuard.resetKey} onProfileReturnToRoot={preview.backToList} onOpenProfile={() => navigateFromShell('profile')}
         roleLabel="Клиент" identityLabel={companyName} variant="client" navigationLabel="Навигация клиента" menuLabel="Меню клиента"
         triggerLabel="Открыть меню клиента" footerText={companyName}
       >
