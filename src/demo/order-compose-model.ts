@@ -67,7 +67,7 @@ export function demoItemErrors(item: DemoItem): DemoItemErrors {
   if (!item.printMethod) errors.printMethod = 'Выберите способ печати'
   for (const field of ['labelsPerRoll', 'inkCount'] as const) {
     const number = item[field]
-    if (number && (!positive(number) || !Number.isSafeInteger(Number(number)))) errors[field] = 'Введите положительное целое число'
+    if (number && (!/^[0-9]+$/.test(number) || !positive(number) || !Number.isSafeInteger(Number(number)))) errors[field] = 'Введите положительное целое число'
   }
   if (!(item.artworkMode === 'HELP' || (item.artworkMode === 'UPLOAD' && item.fileName) || (item.artworkMode === 'LIBRARY' && item.layoutId && item.layoutName))) {
     errors.artwork = (item.unavailableArtwork ? 'Исходный макет недоступен. ' : '') + 'Выберите файл заново, макет из библиотеки или запросите помощь.'

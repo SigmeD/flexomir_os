@@ -28,7 +28,7 @@ export interface OrderDemoController {
   sendManagerOrder: (order: DemoDraft) => void
   deleteDraft: (id: string, ownerRole: 'client' | 'manager') => void
   cancelOrder: (id: string, company: string) => void
-  sendDraft: (draft: DemoDraft) => void
+  sendDraft: (draft: DemoDraft) => boolean
   duplicateOrder: (sourceId: string) => string | undefined
   onEditorStateChange: (open: boolean) => void
 }
@@ -131,10 +131,13 @@ export function OrderDemoWorkspace({ role, empty = false, initialSection = 'orde
         ? { ...saved, stage: 'cancelled', communication: { canReply: false, phase: 'readonly' } } : saved))
     },
     sendDraft(draft) {
-      if (!canSendDemo(draft) || (draft.ownerRole === 'manager' && (currentRole !== 'manager' || !draft.company || !draft.agreedDate)) || (draft.ownerRole === 'client' && currentRole !== 'client')) return
+      if (!canSendDemo(draft) || (draft.ownerRole === 'manager' && (currentRole !== 'manager' || !draft.company || !draft.agreedDate)) || (draft.ownerRole === 'client' && currentRole !== 'client')
+        || !drafts.some(saved => saved.id === draft.id && saved.stage === 'draft' && saved.ownerRole === draft.ownerRole
+          && (draft.ownerRole === 'manager' || saved.company === draft.company))) return false
       if (MANAGER_LIFECYCLE_FIXTURES.some(fixture => fixture.id === draft.id)) setEditedFixtureIds(current => new Set(current).add(draft.id))
       setDrafts(current => current.map(saved => saved.id === draft.id && saved.stage === 'draft' && saved.ownerRole === draft.ownerRole
         ? { ...draft, stage: 'sent', items: draft.items.map(item => ({ ...item })) } : saved))
+      return true
     },
     duplicateOrder(sourceId) {
       if (sourceId !== COMPLETED_DEMO_ORDER.id || COMPLETED_DEMO_ORDER.filterId !== 'done') return

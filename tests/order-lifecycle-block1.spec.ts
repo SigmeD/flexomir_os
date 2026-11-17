@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
-import { chooseMore, commitItem, fillItem } from './helpers/orders'
+import { chooseMore, commitItem, confirmClientSend, fillItem } from './helpers/orders'
 
 async function section(page: Page, id: 'orders' | 'artworks' | 'support') {
   if ((page.viewportSize()?.width ?? 1440) < 1024) {
@@ -49,6 +49,7 @@ test('sent order keeps its ID, can be cancelled with history, and transfer lock 
   await fillItem(page)
   await commitItem(page)
   await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
+  await confirmClientSend(page)
   await expect(page.getByRole('heading', { level: 1, name: 'Заказ ' + id })).toBeVisible()
   await expect(page.getByTestId('order-detail-status')).toHaveText('На рассмотрении')
   await page.screenshot({ path: testInfo.outputPath('review-order.png'), fullPage: true, animations: 'disabled' })

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
-import { backToOrders, chooseMore, closeDemoControls, commitItem, detailData, fillItem, openDemoControls, setDemoRole } from './helpers/orders'
+import { backToOrders, chooseMore, closeDemoControls, commitItem, confirmClientSend, detailData, fillItem, openDemoControls, setDemoRole } from './helpers/orders'
 
 async function saveAndBackToOrders(page: import('@playwright/test').Page) {
   await backToOrders(page)
@@ -146,6 +146,7 @@ test('C: private draft→submit→same Manager record; readonly contracts, role 
   await setDemoRole(page, 'client')
   await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
   await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
+  await confirmClientSend(page)
   await expect(page.getByRole('heading', { level: 1, name: 'Заказ ' + id })).toBeVisible()
   await expect(page.getByTestId('order-detail-status')).toHaveText('На рассмотрении')
   const client = await detailData(page)
@@ -255,6 +256,7 @@ test('five-size reference flow, menus/outside/keyboard, fallback modes, no API r
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: testInfo.outputPath('fes02-repeat-' + width + '.png'), fullPage: true, animations: 'disabled' })
     await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
+    await confirmClientSend(page)
     await setDemoRole(page, 'manager')
     await page.getByRole('button', { name: 'Открыть заказ ' + id }).click()
     await expect(page.getByTestId('order-item-summary')).toHaveCount(2)
