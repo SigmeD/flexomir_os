@@ -243,6 +243,7 @@ test('Owner 2 and 4 Save retains unsent audio/video draft without posting it and
   test.skip(!await page.evaluate(() => typeof MediaRecorder !== 'undefined'), 'Native recorder absent; ordinary File/text draft and unsupported paths tested separately.')
   const row = page.getByTestId('ticket-row-client-01')
   await row.click()
+  await expect(page.getByTestId('message-thread').locator('article')).toHaveCount(2)
   for (const kind of ['audio','video']) {
     const count = await page.getByTestId('message-thread').locator('article').count()
     const record = page.locator('.fos-record-button')

@@ -89,7 +89,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
         drawerSelectionResetKey={exitGuard.resetKey}
         onProfileReturnToRoot={preview.backToList}
         onOpenProfile={() => exitGuard.requestExit(() => navigation?.openProfile?.())}
-        onSelect={id => exitGuard.requestExit(() => { setReviewEditingId(null); if (id === 'orders') preview.backToList(); else { preview.backToList({ animate: false }); navigation?.navigate(id as CabinetSection) } })}
+        onSelect={id => exitGuard.requestExit(() => { setReviewEditingId(null); if (id === 'orders') preview.backToList({ restoreFocus: window.innerWidth >= 1024 }); else { preview.backToList({ restoreFocus: false, animate: false }); navigation?.navigate(id as CabinetSection) } })}
         roleLabel="Менеджер"
         variant="manager"
         navigationLabel="Навигация менеджера"
