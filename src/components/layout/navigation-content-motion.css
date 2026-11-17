@@ -17,6 +17,7 @@ html[data-order-navigation-motion=back]::view-transition-new(fos-order-content) 
 html[data-order-navigation-fallback=forward] [data-testid=client-orders-screen] .fos-order-detail__body,
 html[data-order-navigation-fallback=forward] [data-testid=client-orders-screen] .fos-order-composer__body { animation: fos-order-in-right var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
 html[data-order-navigation-fallback=back] [data-testid=client-orders-screen] .fos-orders-page__list { animation: fos-order-in-left var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+html[data-order-navigation-fallback] [data-testid=client-orders-screen] .fos-orders-page__main { overflow-x: clip; }
 @media (prefers-reduced-motion: reduce) {
   html[data-order-navigation-motion]::view-transition-old(fos-order-content),html[data-order-navigation-motion]::view-transition-new(fos-order-content),
   html[data-order-navigation-fallback] [data-testid=client-orders-screen] .fos-order-detail__body,
