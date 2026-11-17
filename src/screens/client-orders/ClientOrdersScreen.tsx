@@ -18,6 +18,7 @@ import '@/components/orders/orders-page.css'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { useOrderExitGuard } from '@/components/orders/useOrderExitGuard'
 import { canEditDemoItems } from '@/demo/order-compose-model'
+import { commitContentNavigation } from '@/components/layout/navigation-content-motion'
 
 const clientNav: readonly SidebarNavItem[] = [
   { id: 'orders', label: 'Заказы', icon: 'orders' },
@@ -74,9 +75,9 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
         triggerLabel="Открыть меню клиента" footerText={companyName}
       >
         <main className="fos-orders-page__main" data-layout="standard" data-view={selectedDraft || editingReview ? 'compose' : preview.selectedOrder ? 'detail' : 'list'}>
-          {editingReview && demo ? <OrderComposer key={editingReview.id + '-review'} draft={editingReview} actorRole="client" onSave={order => { demo.saveReviewOrder(order); setReviewEditingId(null) }} onSend={() => {}}
+          {editingReview && demo ? <OrderComposer key={editingReview.id + '-review'} draft={editingReview} actorRole="client" animateItemNavigation onSave={order => { demo.saveReviewOrder(order); setReviewEditingId(null) }} onSend={() => {}}
             onBack={() => navigateFromShell('orders')} onCancelReview={() => setReviewEditingId(null)} onNavigationSectionChange={setNavigationSection} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} /> : selectedDraft && demo ? (
-            <OrderComposer key={selectedDraft.id} draft={selectedDraft} onSave={demo.saveDraft} onSend={demo.sendDraft} onBack={() => navigateFromShell('orders')} onNavigationSectionChange={setNavigationSection} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} onDeleteDraft={id => demo.deleteDraft(id, 'client')} />
+            <OrderComposer key={selectedDraft.id} draft={selectedDraft} animateItemNavigation onSave={demo.saveDraft} onSend={demo.sendDraft} onBack={() => navigateFromShell('orders')} onNavigationSectionChange={setNavigationSection} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} onDeleteDraft={id => demo.deleteDraft(id, 'client')} />
           ) : preview.selectedOrder?.detail ? (
             <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={() => navigateFromShell('orders')} onExit={() => navigateFromShell('orders')} onCancelOrder={selectedReview ? () => setCancelOrderId(selectedReview.id) : undefined} canReply={demo?.drafts.find(record => record.id === preview.selectedOrder?.id && record.company === companyName)?.communication?.canReply ?? preview.selectedOrder.communication?.canReply ?? false} onEdit={selectedReview ? () => setReviewEditingId(selectedReview.id) : undefined}
               actions={demo && preview.selectedOrder.filterId === 'done' ? <CompletedOrderMenu onExit={() => navigateFromShell('orders')} onDuplicate={() => {
@@ -97,7 +98,10 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
                   items={ORDER_STATUS_FILTERS} value={filterId}
                   onValueChange={value => {
                     if (ORDER_STATUS_FILTERS.some(filter => filter.id === value && !filter.disabled)) {
-                      setFilterId(value as OrderStatusFilterId)
+                      if (value === filterId) return
+                      const currentIndex = ORDER_STATUS_FILTERS.findIndex(filter => filter.id === filterId)
+                      const nextIndex = ORDER_STATUS_FILTERS.findIndex(filter => filter.id === value)
+                      commitContentNavigation(nextIndex > currentIndex ? 'forward' : 'back', () => setFilterId(value as OrderStatusFilterId))
                     }
                   }}
                   ariaLabel="Фильтр заказов по статусу"

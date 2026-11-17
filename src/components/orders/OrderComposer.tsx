@@ -18,9 +18,10 @@ import './order-compose.css'
 import { OrderConversation } from '@/components/messaging/OrderConversation'
 import { SignedDocumentsSection } from '@/components/documents/SignedDocumentsSection'
 import { ORDER_STATUS_LABELS } from './order-model'
+import { commitContentNavigation } from '@/components/layout/navigation-content-motion'
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
-export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [], actorRole = draft.ownerRole, onCancelReview, onOrderExitActionsChange }: {
+export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [], actorRole = draft.ownerRole, onCancelReview, onOrderExitActionsChange, animateItemNavigation = false }: {
   draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend?: (draft: DemoDraft) => void; onBack: () => void
   onNavigationSectionChange?: (section: CabinetSection) => void
   onItemExitActionsChange?: (actions: OrderItemExitActions | null) => void
@@ -29,6 +30,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
   actorRole?: DemoDraft['ownerRole']
   onCancelReview?: () => void
   onOrderExitActionsChange?: (actions: OrderItemExitActions | null) => void
+  animateItemNavigation?: boolean
 }) {
   const [value, setValue] = useState(draft)
   const valueRef = useRef(value)
@@ -76,7 +78,8 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
     valueRef.current = next
     setValue(next); setFeedback('Есть несохранённые изменения')
   }
-  function addItem() { if (!editable) return; setCopySeed(undefined); returnFocus.current = '[data-add-item]'; setEditing('new') }
+  const navigateItem = (direction: 'forward' | 'back', action: () => void) => animateItemNavigation ? commitContentNavigation(direction, action) : action()
+  function addItem() { if (!editable) return; setCopySeed(undefined); returnFocus.current = '[data-add-item]'; navigateItem('forward', () => setEditing('new')) }
   function commitItem(item: DemoItem) {
     if (!editable || !validDemoItem(item)) return
     const currentValue = valueRef.current
@@ -88,7 +91,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
   function saveItem(item: DemoItem) {
     if (!editable || !validDemoItem(item)) return
     commitItem(item)
-    setEditing(null)
+    navigateItem('back', () => setEditing(null))
   }
   function duplicateItem() {
     if (!editable) return
@@ -106,7 +109,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
     const next = items[Math.min(index, items.length - 1)]
     returnFocus.current = next ? '[data-item-id="' + next.id + '"] button' : '[data-add-item]'
     save({ ...current, items })
-    setEditing(null)
+    navigateItem('back', () => setEditing(null))
   }
   const title = 'Заказ ' + value.id
   return <div className="fos-order-composer" ref={root} data-testid="order-composer" data-order-id={value.id}>
@@ -132,7 +135,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
         <section className="fos-order-composer__products" data-empty={value.items.length === 0 || undefined} aria-labelledby="compose-products-title">
           <div className="fos-order-composer__section-heading"><FosSectionHeading id="compose-products-title">Продукция</FosSectionHeading>{editable && <SectionAddItem onClick={addItem} />}</div>
           {value.items.length ? <ul className="fos-order-detail__items">{value.items.map((item, index) => <li key={item.id} data-item-id={item.id}>
-            <OrderItemRow item={itemSummary(item)} position={index + 1} onOpen={() => { returnFocus.current = '[data-item-id="' + item.id + '"] button'; setEditing(item.id) }} />
+            <OrderItemRow item={itemSummary(item)} position={index + 1} onOpen={() => { returnFocus.current = '[data-item-id="' + item.id + '"] button'; navigateItem('forward', () => setEditing(item.id)) }} />
           </li>)}</ul> : <p className="fos-order-detail__empty">Позиция ещё не добавлена. Добавьте первую позицию.</p>}
         </section>
         <section className="fos-order-composer__general" aria-labelledby="compose-general-title"><FosSectionHeading id="compose-general-title">Общие данные заказа</FosSectionHeading>
@@ -154,6 +157,6 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
       }} onCancel={cancelDelete} onDismiss={cancelDelete} />
     </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} initialValue={editing === 'copy' ? copySeed : undefined} onSave={saveItem} onCommit={commitItem}
       onDuplicate={editable ? duplicateItem : undefined} onDelete={editable ? deleteItem : undefined} deleteDisabledReason={isReview && value.items.length <= 1 ? 'В заказе на рассмотрении должна остаться хотя бы одна позиция' : undefined}
-      role={actorRole} orderLabel={title} onClose={() => setEditing(null)} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} onExitActionsChange={onItemExitActionsChange} />}
+      role={actorRole} orderLabel={title} onClose={() => navigateItem('back', () => setEditing(null))} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} onExitActionsChange={onItemExitActionsChange} />}
   </div>
 }

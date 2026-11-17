@@ -3,12 +3,38 @@ import { chooseMore } from './helpers/orders'
 
 test.use({ video: 'on' })
 
-test('creating a draft keeps the form geometry outside the detail motion pilot', async ({ page }) => {
+test('creating a draft and opening a new item use the forward transition, then return backward', async ({ page }, testInfo) => {
   await page.goto('/?view=client-orders')
+  const direction = async (value: 'forward' | 'back') => {
+    await expect(page.locator('html')).toHaveAttribute(testInfo.project.name.includes('webkit') ? 'data-order-navigation-fallback' : 'data-order-navigation-motion', value)
+    await expect(page.locator('html')).not.toHaveAttribute(testInfo.project.name.includes('webkit') ? 'data-order-navigation-fallback' : 'data-order-navigation-motion', /forward|back/)
+  }
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await expect(page.getByTestId('order-composer')).toBeVisible()
-  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-motion', /forward|back/)
-  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-fallback', /forward|back/)
+  await direction('forward')
+  await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
+  await expect(page.getByTestId('order-item-form')).toBeVisible()
+  await direction('forward')
+  await chooseMore(page, 'Отменить ввод')
+  await expect(page.getByTestId('order-composer')).toBeVisible()
+  await direction('back')
+  await chooseMore(page, 'Выйти')
+  await expect(page.getByTestId('client-orders-list')).toBeVisible()
+  await direction('back')
+})
+
+test('client filters move the list in tab order while the filter row stays fixed', async ({ page }, testInfo) => {
+  await page.goto('/?view=client-orders')
+  const filters = page.getByRole('group', { name: 'Фильтр заказов по статусу' })
+  const motionAttribute = testInfo.project.name.includes('webkit') ? 'data-order-navigation-fallback' : 'data-order-navigation-motion'
+  await filters.getByRole('button', { name: 'Черновики' }).click()
+  await expect(page.getByRole('button', { name: 'Открыть заказ DEMO-003' })).toHaveCount(0)
+  await expect(page.locator('html')).toHaveAttribute(motionAttribute, 'forward')
+  if (!testInfo.project.name.includes('webkit')) await expect(page.locator('.fos-orders-page__filters')).toHaveCSS('view-transition-name', 'fos-order-filters')
+  await expect(page.locator('html')).not.toHaveAttribute(motionAttribute, /forward|back/)
+  await filters.getByRole('button', { name: 'Все заказы' }).click()
+  await expect(page.getByRole('button', { name: 'Открыть заказ DEMO-003' })).toBeVisible()
+  await expect(page.locator('html')).toHaveAttribute(motionAttribute, 'back')
 })
 
 test('client order drill and return animate content in opposite directions', async ({ page }, testInfo) => {
@@ -25,7 +51,7 @@ test('client order drill and return animate content in opposite directions', asy
     await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation =>
       (animation.effect as KeyframeEffect | null)?.pseudoElement?.includes('view-transition')
     ).map(animation => ({ pseudo: (animation.effect as KeyframeEffect).pseudoElement, duration: animation.effect?.getTiming().duration, frames: (animation.effect as KeyframeEffect).getKeyframes().map(frame => frame.transform) }))))
-      .toContainEqual(expect.objectContaining({ pseudo: '::view-transition-new(fos-order-content)', duration: 420, frames: expect.arrayContaining(['translateX(44px)', 'translateX(0px)']) }))
+      .toContainEqual(expect.objectContaining({ pseudo: '::view-transition-new(fos-order-content)', duration: 340, frames: expect.arrayContaining(['translateX(44px)', 'translateX(0px)']) }))
   }
   await page.goBack()
   await expect(page.getByTestId('client-orders-list')).toBeVisible()
@@ -35,7 +61,7 @@ test('client order drill and return animate content in opposite directions', asy
     await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation =>
       (animation.effect as KeyframeEffect | null)?.pseudoElement?.includes('view-transition')
     ).map(animation => ({ pseudo: (animation.effect as KeyframeEffect).pseudoElement, duration: animation.effect?.getTiming().duration, frames: (animation.effect as KeyframeEffect).getKeyframes().map(frame => frame.transform) }))))
-      .toContainEqual(expect.objectContaining({ pseudo: '::view-transition-new(fos-order-content)', duration: 420, frames: expect.arrayContaining(['translateX(-44px)', 'translateX(0px)']) }))
+      .toContainEqual(expect.objectContaining({ pseudo: '::view-transition-new(fos-order-content)', duration: 340, frames: expect.arrayContaining(['translateX(-44px)', 'translateX(0px)']) }))
   }
 })
 
