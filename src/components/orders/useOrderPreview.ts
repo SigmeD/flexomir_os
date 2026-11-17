@@ -18,10 +18,12 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
   const selectedOrder = orders.find(order => order.id === selectedId && order.detail)
   const visibleId = selectedOrder?.id
   const select = (id: string | null) => {
+    const movingOrderId = id ?? selectedRef.current
+    const animate = enableMotion && ordersRef.current.some(order => order.id === movingOrderId && order.filterId !== 'draft')
     selectedRef.current = id
     const epoch = ++navigationEpoch.current
     const commit = () => { if (navigationEpoch.current === epoch) setSelectedId(id) }
-    if (enableMotion) commitContentNavigation(id ? 'forward' : 'back', commit)
+    if (animate) commitContentNavigation(id ? 'forward' : 'back', commit)
     else commit()
   }
 

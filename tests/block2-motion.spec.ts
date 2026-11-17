@@ -3,6 +3,14 @@ import { chooseMore } from './helpers/orders'
 
 test.use({ video: 'on' })
 
+test('creating a draft keeps the form geometry outside the detail motion pilot', async ({ page }) => {
+  await page.goto('/?view=client-orders')
+  await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+  await expect(page.getByTestId('order-composer')).toBeVisible()
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-motion', /forward|back/)
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-fallback', /forward|back/)
+})
+
 test('client order drill and return animate content in opposite directions', async ({ page }, testInfo) => {
   await page.goto('/?view=client-orders')
   if (testInfo.project.name.includes('webkit')) await page.evaluate(() => {
