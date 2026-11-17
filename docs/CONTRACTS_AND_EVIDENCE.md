@@ -9,7 +9,7 @@
 <a name="evidence-block2-functional-2026-11-17"></a>
 ## Блок №2 · поля позиции и подтверждение отправки · 17.11.2026
 
-Назначение: технический факт по функциональной части [issue #57](https://github.com/SigmeD/flexomir_os/issues/57). Ответственный: Codex/frontend. Статус: две правки в ветке `feat/fe57-functional-block2`; PR/CI/Owner acceptance/merge OPEN. База `origin/main` `45201a0`. Реального API/ACL/1С нет.
+Назначение: технический факт по функциональной части [issue #57](https://github.com/SigmeD/flexomir_os/issues/57). Ответственный: Codex/frontend. Статус: две правки в [черновом PR #59](https://github.com/SigmeD/flexomir_os/pull/59), code commit `e310ed2`; CI/Owner acceptance/merge OPEN. База `origin/main` `45201a0`. Реального API/ACL/1С нет.
 
 `FOSIntegerInput` переиспользует вид `FOSInput`; `inputMode=numeric` оставлен как клавиатурная подсказка, общий `onChange` принимает только `/^[0-9]*$/`. Оба поля `OrderItemForm` необязательны; заполненное значение валидируется как положительное безопасное целое без знака, дроби, пробела и экспоненты. Ограничение числа красок не добавлено. Client/Manager используют одну форму.
 
