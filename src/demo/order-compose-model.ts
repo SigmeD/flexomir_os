@@ -37,6 +37,8 @@ export interface DemoDraft {
   transferStarted?: boolean
   /** Independent local capability fixture; not production ACL/status mapping. */
   communication?: { canReply: boolean; phase?:'open'|'work'|'readonly' }
+  /** Local snapshot used only to restore the chat capability held before cancellation. */
+  communicationBeforeCancellation?: { canReply: boolean; phase?:'open'|'work'|'readonly' }
 }
 
 export const canEditDemoItems = (order: DemoDraft, actor: DemoDraft['ownerRole']) => actor === 'manager'

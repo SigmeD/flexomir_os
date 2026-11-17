@@ -4,7 +4,7 @@
 
 ## Актуальный индекс
 
-17.11, [issue #57](https://github.com/SigmeD/flexomir_os/issues/57): Owner поручил начать блок №2. Цифровые необязательные поля и подтверждение именно клиентской отправки реализованы в frontend demo. Предложение вернуть отменённый заказ в Review с тем же ID и скрывать его из клиентского списка вместо физического удаления меняет ранее утверждённый терминальный исход; переход, права, серверная история/retention и 1С остаются **OPEN**, без самовольной замены правила. [Факт](CONTRACTS_AND_EVIDENCE.md#evidence-block2-functional-2026-11-17).
+17.11, [issue #57](https://github.com/SigmeD/flexomir_os/issues/57): Owner поручил блок №2 и отдельно подтвердил восстановление/скрытие отменённого заказа **пока на моках**. Локальный клиентский сценарий: Cancelled → Review с прежним ID/историей; удаление скрывает запись от клиента без физического уничтожения. Цифровые необязательные поля и подтверждение именно клиентской отправки также реализованы в frontend demo. Это разрешение не утверждает production lifecycle: серверные права/история/retention, чат и 1С остаются **OPEN** у PO/Алексея. [Факт](CONTRACTS_AND_EVIDENCE.md#evidence-block2-functional-2026-11-17).
 
 16.11, Owner: «давай merge/main», затем уточнение «origin/main». [PR #55](https://github.com/SigmeD/flexomir_os/pull/55) слит как `75b9a99` после CI 5/5 SUCCESS и post-merge build/smoke 13/13 PASS. Это прямое разрешение на merge frontend-блока №1; отдельная visual acceptance блока, полная M8/D09 и production API/ACL/1С остаются OPEN. [Факт](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16).
 
