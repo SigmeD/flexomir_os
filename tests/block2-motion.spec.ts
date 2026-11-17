@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test'
 import { chooseMore } from './helpers/orders'
+import { waitForNavigationMotion } from './helpers/navigation-motion'
 
 async function openSection(page: import('@playwright/test').Page, id: 'orders' | 'artworks' | 'clients' | 'support', role: 'client' | 'manager' = 'client') {
   if ((page.viewportSize()?.width ?? 1440) < 1024) {
@@ -227,6 +228,32 @@ test('Layouts, Support and Companies detail routes share forward and back motion
     }
     await page.goBack()
     await expectHorizontalMotion(page, 'back')
+  }
+})
+
+test('library heading stays anchored through detail, back and upload at four widths', async ({ page }) => {
+  for (const width of [1440, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/?view=client-layouts')
+    const heading = page.getByTestId('client-artworks-screen').getByRole('heading', { level: 1 })
+    const origin = await heading.boundingBox()
+    expect(origin).not.toBeNull()
+    const assertAnchor = async () => {
+      await waitForNavigationMotion(page)
+      const current = await heading.boundingBox()
+      expect(current).not.toBeNull()
+      expect(current!.x).toBe(origin!.x)
+      expect(current!.y).toBe(origin!.y)
+    }
+    await page.getByTestId('layout-row-demo-layout-01').click()
+    await expect(page.getByTestId('layout-detail')).toBeVisible()
+    await assertAnchor()
+    await page.goBack()
+    await expect(heading).toHaveText('Мои макеты')
+    await assertAnchor()
+    await page.getByRole('button', { name: 'Добавить макет', exact: true }).click()
+    await expect(heading).toHaveText('Загрузить макет')
+    await assertAnchor()
   }
 })
 
