@@ -15,6 +15,8 @@
 
 Проверки: `npm run build` PASS; `block2-motion` Chromium 1440/390 8/8, Firefox+WebKit 390 8/8, `order-lifecycle-block1` Chromium 1440/390 14/14 PASS; `npm run verify:material-optics` PASS при работающем DEV-сервере. Первый Screen CI обнаружил потерю фокуса при возврате через мобильный Drawer; `useOrderPreview.backToList` теперь сохраняет фокус на trigger при выборе раздела на мобильном, а при возврате через карточку или desktop — на открывавшей строке. После исправления адресный `order-detail` Chromium 1440/390 2/2 PASS. Первый Communication CI дал WebKit отклонение геометрии при открытии нового черновика; этот маршрут исключён из пилота, адресный Q01 по четырём профилям 4/4 PASS. Видео пилота: `output/block2-motion/client-orders-pilot-chromium-desktop.webm`, `client-orders-pilot-chromium-mobile.webm`, `client-orders-pilot-webkit-mobile.webm` — локальные ignored доказательства, не заменяют Owner visual или Figma side-by-side. Следующий gate: Owner просматривает пилот, затем отдельная реализация и QA «Заказы ↔ Макеты» и rollout остальных ролей/маршрутов. WebKit двухсторонний эффект и физические устройства OPEN.
 
+Отдельный Screen CI дважды попал в нестабильный тест Manager Sidebar lens: фиксированная пауза 48мс попадала после почти завершённого движения и ошибочно считала это отсутствием промежуточного кадра. Тест теперь собирает реальные `requestAnimationFrame` позиции между исходной и целевой строкой, не меняя FE11 engine или пороги конечной позиции. Адресный повтор Chromium 1440/390 10/10 PASS; полный CI нового head ожидается.
+
 <a name="evidence-order-lifecycle-block1-2026-11-16"></a>
 ## Блок №1 · жизненный цикл заказа и навигация · 16.11.2026
 

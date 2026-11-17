@@ -75,6 +75,19 @@ test('implemented navigation is available while unapproved Manager order command
 
 test('desktop sidebar lens visibly travels during a real Manager section change', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
+  await page.evaluate(() => {
+    const state = window as typeof window & { lensSamples?: number[]; stopLensSampling?: () => void }
+    state.lensSamples = []
+    let running = true
+    state.stopLensSampling = () => { running = false }
+    const sample = () => {
+      if (!running) return
+      const lens = document.querySelector<HTMLElement>('[data-testid="manager-clients-screen"] [data-testid="sidebar-selected-lens"]')
+      if (lens) state.lensSamples!.push(lens.getBoundingClientRect().y)
+      requestAnimationFrame(sample)
+    }
+    requestAnimationFrame(sample)
+  })
   const ordersNav = page.getByTestId('manager-orders-screen').getByTestId('sidebar-nav-clients')
   await ordersNav.click()
   await expect(page.getByTestId('manager-clients-screen')).toBeVisible()
@@ -84,16 +97,18 @@ test('desktop sidebar lens visibly travels during a real Manager section change'
   const lens = page.getByTestId('manager-clients-screen').getByTestId('sidebar-selected-lens')
   await expect(lens).toHaveAttribute('data-travel-target', '48')
   await expect(lens).toHaveAttribute('data-motion-state', 'moving')
-  await page.waitForTimeout(48)
-  const [midBox, originBox, clientsBox] = await Promise.all([
+  await expect(lens).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  const [lensBox, originBox, settledClientsBox, samples] = await Promise.all([
     lens.boundingBox(),
     page.getByTestId('manager-clients-screen').getByTestId('sidebar-nav-orders').boundingBox(),
     clients.boundingBox(),
+    page.evaluate(() => {
+      const state = window as typeof window & { lensSamples?: number[]; stopLensSampling?: () => void }
+      state.stopLensSampling?.()
+      return state.lensSamples ?? []
+    }),
   ])
-  expect((midBox?.y ?? 0) - (originBox?.y ?? 0)).toBeGreaterThan(0)
-  expect((midBox?.y ?? 0)).toBeLessThan((clientsBox?.y ?? 0) - 2)
-  await expect(lens).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
-  const [lensBox, settledClientsBox] = await Promise.all([lens.boundingBox(), clients.boundingBox()])
+  expect(samples.some(y => y > (originBox?.y ?? 0) + 2 && y < (settledClientsBox?.y ?? 0) - 2)).toBe(true)
   expect(Math.abs((lensBox?.y ?? 0) - (settledClientsBox?.y ?? 0))).toBeLessThan(1.25)
 })
 
