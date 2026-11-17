@@ -22,7 +22,7 @@ import { commitContentNavigation } from '@/components/layout/navigation-content-
 
 /** One CURRENT composition for New/Repeat. Draft changes are ephemeral, never server autosave. */
 export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSectionChange, onItemExitActionsChange, onDeleteDraft, managerCompanies = [], actorRole = draft.ownerRole, onCancelReview, onOrderExitActionsChange, animateItemNavigation = false }: {
-  draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend?: (draft: DemoDraft) => void; onBack: () => void
+  draft: DemoDraft; onSave: (draft: DemoDraft) => void; onSend?: (draft: DemoDraft) => boolean | void | Promise<boolean | void>; onBack: () => void
   onNavigationSectionChange?: (section: CabinetSection) => void
   onItemExitActionsChange?: (actions: OrderItemExitActions | null) => void
   onDeleteDraft?: (id: string) => void
@@ -44,12 +44,32 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
   const [editing, setEditing] = useState<string | null>(null)
   const [feedback, setFeedback] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [confirmSend, setConfirmSend] = useState(false)
+  const [sendBusy, setSendBusy] = useState(false)
+  const sendInFlight = useRef(false)
   const nextItem = useRef(1)
   const returnFocus = useRef<string | null>(null)
   const root = useRef<HTMLDivElement>(null)
   function cancelDelete() {
     setConfirmDelete(false)
     root.current?.querySelector<HTMLButtonElement>('button.fos-more')?.focus({ preventScroll: true })
+  }
+  async function sendConfirmed() {
+    if (sendInFlight.current || actorRole !== 'client' || isReview || !onSend) return
+    const current = valueRef.current
+    if (!dateInputValid || !canSendDemo(current)) { setConfirmSend(false); setFeedback('Проверьте данные заказа перед отправкой.'); return }
+    sendInFlight.current = true
+    setSendBusy(true)
+    try {
+      const result = await onSend(current)
+      if (result === false) setFeedback('Не удалось отправить заказ. Данные сохранены в черновике.')
+      else setConfirmSend(false)
+    } catch {
+      setFeedback('Не удалось отправить заказ. Данные сохранены в черновике.')
+    } finally {
+      sendInFlight.current = false
+      setSendBusy(false)
+    }
   }
   useLayoutEffect(() => {
     if (editing !== null) return
@@ -117,7 +137,7 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
       <PageHeader title={title} floatingWorkActions subtitle={draft.stage === 'done' ? ORDER_STATUS_LABELS.done : draft.stage === 'sent' ? draft.transferStarted ? ORDER_STATUS_LABELS.work : ORDER_STATUS_LABELS.review : ORDER_STATUS_LABELS.draft} subtitleRole="status" breadcrumbs={[{ label: actorRole === 'manager' ? 'Заказы' : 'Мои заказы', onSelect: onBack }, { label: title }]} actions={<>
         {actorRole === 'manager' ? <HeaderAction action="send" accessibleName="Отправить заказ" disabled={!onSend || !editable || !dateInputValid || !agreedDateValid || !value.company || !value.agreedDate || (isReview ? !validDemoReview(value) || JSON.stringify(value) === JSON.stringify(draft) : !canSendDemo(value))} onAction={() => { if (editable && dateInputValid && agreedDateValid && value.company && value.agreedDate && (isReview ? validDemoReview(value) && JSON.stringify(value) !== JSON.stringify(draft) : canSendDemo(value))) onSend?.(value) }} />
           : isReview ? <HeaderAction action="save" accessibleName="Сохранить заказ" disabled={!editable || !dateInputValid || !validDemoReview(value) || JSON.stringify(value) === JSON.stringify(draft)} onAction={() => { if (editable && dateInputValid && validDemoReview(value)) onSave(value) }} />
-          : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!onSend || !dateInputValid || !canSendDemo(value)} onAction={() => { if (dateInputValid && canSendDemo(value)) onSend?.(value) }} />}
+          : <HeaderAction action="send" accessibleName="Передать менеджеру (демо)" disabled={!onSend || !dateInputValid || !canSendDemo(value) || confirmSend} onAction={() => { if (!confirmSend && dateInputValid && canSendDemo(value)) setConfirmSend(true) }} />}
         <OverflowMenu items={[
           { id: 'add', label: 'Добавить позицию', disabled: !editable, onSelect: addItem, focusAfter: 'consumer' },
           ...(isReview ? [{ id: 'cancel', label: 'Отменить изменения', onSelect: onCancelReview, focusAfter: 'consumer' as const }] : [{ id: 'delete', label: 'Удалить черновик', disabled: !onDeleteDraft, reason: onDeleteDraft ? undefined : 'Удаление доступно только для черновика демосессии', onSelect: () => setConfirmDelete(true) }]),
@@ -155,6 +175,8 @@ export function OrderComposer({ draft, onSave, onSend, onBack, onNavigationSecti
         onDeleteDraft?.(value.id)
         setConfirmDelete(false)
       }} onCancel={cancelDelete} onDismiss={cancelDelete} />
+      <ConfirmDialog open={confirmSend} title="Отправить заказ?" confirmLabel="Да" cancelLabel="Нет" busy={sendBusy}
+        onConfirm={() => void sendConfirmed()} onCancel={() => setConfirmSend(false)} onDismiss={() => setConfirmSend(false)} />
     </> : <OrderItemForm key={editing} item={value.items.find(item => item.id === editing)} initialValue={editing === 'copy' ? copySeed : undefined} onSave={saveItem} onCommit={commitItem}
       onDuplicate={editable ? duplicateItem : undefined} onDelete={editable ? deleteItem : undefined} deleteDisabledReason={isReview && value.items.length <= 1 ? 'В заказе на рассмотрении должна остаться хотя бы одна позиция' : undefined}
       role={actorRole} orderLabel={title} onClose={() => navigateItem('back', () => setEditing(null))} onBackToList={onBack} onNavigationSectionChange={onNavigationSectionChange} onExitActionsChange={onItemExitActionsChange} />}

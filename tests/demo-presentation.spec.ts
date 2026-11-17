@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
-import { chooseFormOption, closeDemoControls, commitItem, fillItem, openDemoControls, setDemoRole } from './helpers/orders'
+import { chooseFormOption, closeDemoControls, commitItem, confirmClientSend, fillItem, openDemoControls, setDemoRole } from './helpers/orders'
 
 test('presentation role switch keeps one workspace and preserves the complete Client→Manager→Client flow', async ({ page }) => {
   await page.goto('/?demoTools=1')
@@ -19,6 +19,7 @@ test('presentation role switch keeps one workspace and preserves the complete Cl
   await fillItem(page)
   await commitItem(page)
   await page.getByRole('button', { name: 'Передать менеджеру (демо)' }).click()
+  await confirmClientSend(page)
   await setDemoRole(page, 'manager')
 
   await expect(page).toHaveURL('/?demoTools=1')

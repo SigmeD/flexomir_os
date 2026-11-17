@@ -40,6 +40,8 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   const [navigationSection, setNavigationSection] = useState<CabinetSection>('orders')
   const [reviewEditingId, setReviewEditingId] = useState<string | null>(null)
   const [cancelOrderId, setCancelOrderId] = useState<string | null>(null)
+  const [restoreOrderId, setRestoreOrderId] = useState<string | null>(null)
+  const [deleteOrderId, setDeleteOrderId] = useState<string | null>(null)
   const exitGuard = useOrderExitGuard()
   const setFilterId = (id: OrderStatusFilterId) => { setLocalFilterId(id); onFilterChange?.(id) }
   const presentedOrders = orders
@@ -48,6 +50,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   const filterMotion = useOrderFilterMotion(visibleOrders, orders.length)
   const selectedDraft = demo?.drafts.find(draft => draft.id === preview.selectedOrder?.id && draft.stage === 'draft' && draft.ownerRole === 'client' && draft.company === companyName)
   const selectedReview = demo?.drafts.find(order => order.id === preview.selectedOrder?.id && order.stage === 'sent' && order.company === companyName && canEditDemoItems(order, 'client'))
+  const selectedCancelled = demo?.drafts.find(order => order.id === preview.selectedOrder?.id && order.stage === 'cancelled' && order.company === companyName && order.ownerRole === 'client')
   const editingReview = selectedReview?.id === reviewEditingId ? selectedReview : undefined
   const editingDraft = Boolean(selectedDraft || editingReview)
   const editorStateChange = demo?.onEditorStateChange
@@ -79,7 +82,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
             onBack={() => navigateFromShell('orders')} onCancelReview={() => setReviewEditingId(null)} onNavigationSectionChange={setNavigationSection} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} /> : selectedDraft && demo ? (
             <OrderComposer key={selectedDraft.id} draft={selectedDraft} animateItemNavigation onSave={demo.saveDraft} onSend={demo.sendDraft} onBack={() => navigateFromShell('orders')} onNavigationSectionChange={setNavigationSection} onItemExitActionsChange={exitGuard.registerItem} onOrderExitActionsChange={exitGuard.registerOrder} onDeleteDraft={id => demo.deleteDraft(id, 'client')} />
           ) : preview.selectedOrder?.detail ? (
-            <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={() => navigateFromShell('orders')} onExit={() => navigateFromShell('orders')} onCancelOrder={selectedReview ? () => setCancelOrderId(selectedReview.id) : undefined} canReply={demo?.drafts.find(record => record.id === preview.selectedOrder?.id && record.company === companyName)?.communication?.canReply ?? preview.selectedOrder.communication?.canReply ?? false} onEdit={selectedReview ? () => setReviewEditingId(selectedReview.id) : undefined}
+            <OrderDetail order={preview.selectedOrder} detail={preview.selectedOrder.detail} onBack={() => navigateFromShell('orders')} onExit={() => navigateFromShell('orders')} onCancelOrder={selectedReview ? () => setCancelOrderId(selectedReview.id) : undefined} onRestoreOrder={selectedCancelled ? () => setRestoreOrderId(selectedCancelled.id) : undefined} onDeleteCancelledOrder={selectedCancelled ? () => setDeleteOrderId(selectedCancelled.id) : undefined} canReply={demo?.drafts.find(record => record.id === preview.selectedOrder?.id && record.company === companyName)?.communication?.canReply ?? preview.selectedOrder.communication?.canReply ?? false} onEdit={selectedReview ? () => setReviewEditingId(selectedReview.id) : undefined}
               actions={demo && preview.selectedOrder.filterId === 'done' ? <CompletedOrderMenu onExit={() => navigateFromShell('orders')} onDuplicate={() => {
                 const id = demo.duplicateOrder(preview.selectedOrder!.id)
                 if (id) { setFilterId('all'); preview.openCreatedOrder(id) }
@@ -114,6 +117,8 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
       </AppShell>
       {exitGuard.dialog}
       <ConfirmDialog open={cancelOrderId !== null} title="Отменить заказ?" body="Заказ останется в истории со статусом «Отменён»." confirmLabel="Да" cancelLabel="Нет" onConfirm={() => { if (cancelOrderId) demo?.cancelOrder(cancelOrderId, companyName); setCancelOrderId(null) }} onCancel={() => setCancelOrderId(null)} onDismiss={() => setCancelOrderId(null)} />
+      <ConfirmDialog open={restoreOrderId !== null} title="Восстановить заказ?" body="Заказ вернётся в статус «На рассмотрении» с тем же номером и историей." confirmLabel="Да" cancelLabel="Нет" onConfirm={() => { if (restoreOrderId) demo?.restoreOrder(restoreOrderId, companyName); setRestoreOrderId(null) }} onCancel={() => setRestoreOrderId(null)} onDismiss={() => setRestoreOrderId(null)} />
+      <ConfirmDialog open={deleteOrderId !== null} title="Удалить заказ?" body="Заказ исчезнет из вашего списка в этой демосессии. История заказа сохранится." confirmLabel="Удалить" cancelLabel="Отмена" onConfirm={() => { if (deleteOrderId && demo?.hideCancelledOrder(deleteOrderId, companyName)) preview.backToList(); setDeleteOrderId(null) }} onCancel={() => setDeleteOrderId(null)} onDismiss={() => setDeleteOrderId(null)} />
     </div>
   )
 }

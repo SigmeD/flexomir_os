@@ -23,6 +23,12 @@ export function FOSInput({ label, error, helper, wrapperClassName, id: suppliedI
     <input {...props} id={id} className={'fos-field__control ' + className} aria-invalid={error ? true : undefined} aria-describedby={[props['aria-describedby'], (error || helper) && id + '-message'].filter(Boolean).join(' ') || undefined} />
   </Field>
 }
+/** Optional decimal integer text. Keep the native keyboard and the shared FOS field appearance. */
+export function FOSIntegerInput({ onChange, ...props }: ComponentProps<'input'> & FieldOptions) {
+  return <FOSInput {...props} type="text" inputMode="numeric" onChange={event => {
+    if (/^[0-9]*$/.test(event.currentTarget.value)) onChange?.(event)
+  }} />
+}
 /** Quantity 680:177 has no production unit until the contract is agreed. */
 export function FOSQuantity(props: ComponentProps<'input'> & FieldOptions) { return <FOSInput type="number" inputMode="numeric" step="1" placeholder="Введите количество" {...props} /> }
 /** Date 1169:437; native picker, shared field states; no business date policy here. */

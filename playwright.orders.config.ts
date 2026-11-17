@@ -4,7 +4,7 @@ import base from './playwright.config'
 /** Reproduce the local Orders cross-engine QA; physical devices remain a separate check. */
 export default defineConfig({
   ...base,
-  testMatch: /(block2-motion|client-orders|manager-orders|manager-order-lifecycle|order-detail|order-compose|orders-components|orders-figma-parity)\.spec\.ts/,
+  testMatch: /(block2-motion|block2-functional|client-orders|manager-orders|manager-order-lifecycle|order-detail|order-compose|orders-components|orders-figma-parity)\.spec\.ts/,
   outputDir: 'output/playwright/orders-cross-browser',
   reporter: [['list'], ['json', { outputFile: 'output/playwright/orders-cross-browser/results.json' }]],
   projects: [

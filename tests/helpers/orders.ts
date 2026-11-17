@@ -50,6 +50,12 @@ export async function commitItem(page: Page) {
   await expect(page.getByTestId('order-item-form')).toHaveCount(0)
 }
 
+export async function confirmClientSend(page: Page) {
+  const dialog = page.getByRole('alertdialog', { name: 'Отправить заказ?' })
+  await expect(dialog).toBeVisible()
+  await dialog.getByRole('button', { name: 'Да', exact: true }).click()
+}
+
 export async function chooseMore(page: Page, label: string) {
   await page.getByRole('button', { name: 'Ещё', exact: true }).click()
   await page.getByRole('menuitem', { name: label, exact: true }).click()

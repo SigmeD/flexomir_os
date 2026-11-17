@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
-import { chooseFormOption, commitItem, fillItem } from './helpers/orders'
+import { chooseFormOption, commitItem, confirmClientSend, fillItem } from './helpers/orders'
 
 test('FOS07 RU calendar commits ISO once; navigation and Escape do not commit', async ({ page }) => {
   await page.goto('/fos07-datepicker.html')
@@ -286,6 +286,7 @@ for (const role of ['client', 'manager'] as const) {
     await dialog.getByRole('button', { name: '18 ноября 2026', exact: true }).click()
     await expect(action).toBeEnabled()
     await action.click()
+    if (role === 'client') await confirmClientSend(page)
     if (role === 'client') {
       await expect(page.getByTestId('order-detail').getByLabel('Желаемый срок', { exact: true })).toHaveValue('18.11.2026')
       await expect(page.getByLabel('Согласованный срок', { exact: true })).toHaveAttribute('readonly', '')
