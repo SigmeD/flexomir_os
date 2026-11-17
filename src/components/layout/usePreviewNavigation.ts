@@ -1,7 +1,8 @@
 import { useLayoutEffect, useRef, useState } from 'react'
+import { commitContentNavigation, type ContentNavigationDirection } from './navigation-content-motion'
 
 /** Same-document demo navigation only. Each host owns its own history namespace. */
-export function usePreviewNavigation(root = 'list', onExit?: () => void, beforePop?: (next: string, proceed: () => void) => boolean, isActive?: () => boolean) {
+export function usePreviewNavigation(root = 'list', onExit?: () => void, beforePop?: (next: string, proceed: () => void) => boolean, isActive?: () => boolean, enableMotion = false) {
   const [session] = useState(() => crypto.randomUUID())
   const [path, setPath] = useState(root)
   const current = useRef(root)
@@ -11,15 +12,22 @@ export function usePreviewNavigation(root = 'list', onExit?: () => void, beforeP
   exitCallback.current = onExit
   const beforePopCallback = useRef(beforePop)
   const activeCallback = useRef(isActive)
+  const motionEnabled = useRef(enableMotion)
   beforePopCallback.current = beforePop
   activeCallback.current = isActive
+  motionEnabled.current = enableMotion
+  const changePath = (next: string, direction: ContentNavigationDirection) => {
+    if (motionEnabled.current) commitContentNavigation(direction, () => setPath(next))
+    else setPath(next)
+  }
   useLayoutEffect(() => {
     const pop = (event: PopStateEvent) => {
       if (activeCallback.current && !activeCallback.current()) return
       const state = event.state?.preview
       if (state?.session === session) {
         const next = state.path as string
-        const proceed = () => { depth.current = state.depth; history.replaceState({ ...history.state, preview: { session, path: next, depth: state.depth } }, ''); setPath(next) }
+        const previousDepth = depth.current
+        const proceed = () => { depth.current = state.depth; history.replaceState({ ...history.state, preview: { session, path: next, depth: state.depth } }, ''); changePath(next, state.depth < previousDepth ? 'back' : 'forward') }
         if (next !== current.current && beforePopCallback.current?.(next, proceed)) {
           history.pushState({ ...history.state, preview: { session, path: current.current, depth: depth.current } }, '')
           return
@@ -56,9 +64,9 @@ export function usePreviewNavigation(root = 'list', onExit?: () => void, beforeP
     points.current.set(current.current, { scroll: window.scrollY, attribute: opener?.attribute ?? attribute, value: opener?.value ?? (attribute ? active?.getAttribute(attribute) ?? undefined : undefined) })
     depth.current += 1
     history.pushState({ ...history.state, preview: { session, path: next, depth: depth.current } }, '')
-    setPath(next)
+    changePath(next, 'forward')
   }, replace(next: string) {
     history.replaceState({ ...history.state, preview: { session, path: next, depth: depth.current } }, '')
-    setPath(next)
+    changePath(next, next === root ? 'back' : 'forward')
   }, back() { if (depth.current > 0) history.back() }, exit() { if (exitCallback.current) history.go(-depth.current - 1) } }
 }

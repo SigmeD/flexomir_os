@@ -51,6 +51,7 @@ export function SidebarNav({
   const anchor = motionFromIndex >= 0 ? motionFromIndex : initialIndexRef.current
   const labelRefs = useRef<Array<HTMLSpanElement | null>>([])
   const iconRefs = useRef<Array<HTMLSpanElement | null>>([])
+  const navRef = useRef<HTMLElement | null>(null)
   const currentTravel = useRef(0)
   const lensIndexRef = useRef(lensIndex)
   lensIndexRef.current = lensIndex
@@ -60,6 +61,12 @@ export function SidebarNav({
   // FosGlassMaterial reports its current travel instead of a second RAF.
   const syncLabelMagnification = useCallback((travelY: number) => {
     currentTravel.current = travelY
+    const target = (lensIndexRef.current - anchor) * 48
+    const progress = target === 0 ? 0 : Math.min(1, Math.max(0, Math.abs(travelY / target)))
+    const stretch = 4 * progress * (1 - progress)
+    navRef.current?.style.setProperty('--fos-sidebar-marker-scale-y', (1 + .8 * stretch).toFixed(3))
+    navRef.current?.style.setProperty('--fos-sidebar-marker-scale-x', (1 - .12 * stretch).toFixed(3))
+    navRef.current?.style.setProperty('--fos-sidebar-marker-shift', `${(Math.sign(target) * 2 * stretch).toFixed(2)}px`)
     for (let index = 0; index < labelRefs.current.length; index++) {
       const label = labelRefs.current[index]
       if (!label) continue
@@ -81,10 +88,11 @@ export function SidebarNav({
 
   return (
     <nav
+      ref={navRef}
       aria-label={ariaLabel}
       data-testid="shared-sidebar-nav"
       data-glass-tone={glassTone}
-      className={['fos-sidebar-nav', className].filter(Boolean).join(' ')}
+      className={['fos-sidebar-nav', 'fos-sidebar-nav--persistent', className].filter(Boolean).join(' ')}
       style={style}
     >
       <div className="fos-sidebar-nav__list">

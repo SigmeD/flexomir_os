@@ -36,7 +36,7 @@ export function SupportScreen({ role, empty = false, errorFixture = false, onNav
     if (nav.path !== 'new' || next === 'new' || !input.subject && !input.description) return false
     exitGuard.requestExit(proceed)
     return true
-  }, () => Boolean(document.querySelector(`[data-testid="${role}-support-screen"]`)?.getClientRects().length))
+  }, () => Boolean(document.querySelector(`[data-testid="${role}-support-screen"]`)?.getClientRects().length), true)
   const own = tickets.filter(ticket => ticket.owner === role)
   const ticket = own.find(item => 'ticket/' + item.id === nav.path)
   const onConversationState = useCallback((state:ConversationState)=>setConversationState({...state,id:ticket?.id??''}),[ticket?.id])

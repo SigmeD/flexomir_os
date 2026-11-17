@@ -7,13 +7,23 @@
 .fos-page-header__actions--floating { justify-content: flex-start; }
 .fos-page-header__subtitle, .fos-page-header__context { margin: 8px 0 0; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); font-size: 12px; line-height: 18px; }
 .fos-page-header__subtitle--status { font-size: var(--fos-type-order-status-size); }
-.fos-breadcrumbs { position: absolute; left: 0; bottom: calc(100% + 10px); font-size: 13px; line-height: 20px; }
+.fos-breadcrumbs { position: absolute; left: 0; bottom: calc(100% + 10px); color: var(--fos-color-breadcrumb, #02357f); font-size: 13px; line-height: 20px; }
 .fos-breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0; }
 .fos-breadcrumbs li { display: inline-flex; gap: 6px; align-items: center; }
 .fos-breadcrumbs li:not(:last-child)::after { content: '/'; color: var(--fos-v2-semantic-color-text-secondary,#586d7c); }
-.fos-breadcrumbs button { padding: 0; border: 0; background: transparent; font: inherit; color: inherit; cursor: pointer; }
-.fos-breadcrumbs button:focus-visible { outline: 2px solid #1f3861; outline-offset: 2px; }
+.fos-breadcrumbs button { padding: 2px 4px; margin: -2px -4px; border: 0; border-radius: 5px; background: transparent; font: inherit; color: inherit; cursor: pointer; transition: background-color 160ms ease, box-shadow 160ms ease; }
+.fos-breadcrumbs button:not(:disabled):hover,
+.fos-breadcrumbs button:focus-visible {
+  background: rgb(255 255 255 / .32);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  backdrop-filter: blur(10px) saturate(1.2);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .82), inset 0 -2px 0 var(--fos-color-brand-cyan, #46c1ce), 0 3px 9px rgb(31 56 97 / .09);
+}
+.fos-breadcrumbs button:focus-visible { outline: 2px solid var(--fos-color-breadcrumb, #02357f); outline-offset: 3px; }
 .fos-breadcrumbs button:disabled { opacity: .42; cursor: default; }
+.fos-breadcrumbs__label { display: inline-block; transform-origin: 0 50%; transition: transform 160ms ease; }
+.fos-breadcrumbs button:not(:disabled):is(:hover, :focus-visible) .fos-breadcrumbs__label { transform: scale(1.043); }
+@media (prefers-reduced-motion: reduce) { .fos-breadcrumbs button, .fos-breadcrumbs__label { transition: none; } }
 @media(max-width:1023px) { .fos-page-header__row h1 { padding-top: 6px; } .fos-breadcrumbs { display: none; } }
 @media(max-width:600px) { .fos-page-header__row h1 { padding-top: 9px; } .fos-page-header__actions { gap: 8px; } }
 @media(max-width:1023px) {

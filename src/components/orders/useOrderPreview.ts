@@ -1,20 +1,30 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import type { OrderListItem } from './order-model'
+import { commitContentNavigation } from '@/components/layout/navigation-content-motion'
 
 /** Local list/detail navigation, with no URL, history, storage, backend or role mutations. */
-export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { dirty: boolean; requestExit: (action: () => void) => void }) {
+export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { dirty: boolean; requestExit: (action: () => void) => void }, enableMotion = false) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const session = useRef(crypto.randomUUID())
   const selectedRef = useRef(selectedId)
+  const navigationEpoch = useRef(0)
   const guardRef = useRef(exitGuard)
   const ordersRef = useRef(orders)
-  selectedRef.current = selectedId
   guardRef.current = exitGuard
   ordersRef.current = orders
   const surfaceRef = useRef<HTMLDivElement>(null)
   const returnPoint = useRef<{ id: string; scrollY: number } | null>(null)
+  const restoreOpenerFocus = useRef(true)
   const selectedOrder = orders.find(order => order.id === selectedId && order.detail)
   const visibleId = selectedOrder?.id
+  const select = (id: string | null, animateTransition = true) => {
+    const animate = animateTransition && enableMotion && (id !== null || selectedRef.current !== null)
+    selectedRef.current = id
+    const epoch = ++navigationEpoch.current
+    const commit = () => { if (navigationEpoch.current === epoch) setSelectedId(id) }
+    if (animate) commitContentNavigation(id ? 'forward' : 'back', commit)
+    else commit()
+  }
 
   useLayoutEffect(() => {
     if (history.state?.orderPreview?.session !== session.current) {
@@ -28,7 +38,7 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
       if (currentId === nextId) return
       const apply = () => {
         history.replaceState({ ...history.state, orderPreview: { session: session.current, id: nextId } }, '')
-        setSelectedId(nextId)
+        select(nextId)
       }
       if (currentId && guardRef.current?.dirty) {
         history.pushState({ ...history.state, orderPreview: { session: session.current, id: currentId } }, '')
@@ -49,9 +59,10 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
     const buttons = surfaceRef.current?.querySelectorAll<HTMLButtonElement>('button[data-order-open]') ?? []
     const opener = Array.from(buttons).find(button => button.dataset.orderOpen === previous.id)
       ?? surfaceRef.current?.querySelector<HTMLButtonElement>('button[data-create-order]')
-    opener?.focus({ preventScroll: true })
+    if (restoreOpenerFocus.current) opener?.focus({ preventScroll: true })
     window.scrollTo(0, previous.scrollY)
     returnPoint.current = null
+    restoreOpenerFocus.current = true
   }, [visibleId])
 
   return {
@@ -61,17 +72,18 @@ export function useOrderPreview(orders: readonly OrderListItem[], exitGuard?: { 
     openCreatedOrder(id: string) {
       returnPoint.current = { id, scrollY: window.scrollY }
       history.pushState({ ...history.state, orderPreview: { session: session.current, id } }, '')
-      setSelectedId(id)
+      select(id)
     },
     openOrder(id: string) {
       if (!orders.some(order => order.id === id && order.detail)) return
       returnPoint.current = { id, scrollY: window.scrollY }
       history.pushState({ ...history.state, orderPreview: { session: session.current, id } }, '')
-      setSelectedId(id)
+      select(id)
     },
-    backToList() {
+    backToList({ restoreFocus = true, animate = true }: { restoreFocus?: boolean; animate?: boolean } = {}) {
+      restoreOpenerFocus.current = restoreFocus
       history.replaceState({ ...history.state, orderPreview: { session: session.current, id: null } }, '')
-      setSelectedId(null)
+      select(null, animate)
     },
   }
 }

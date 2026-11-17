@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { fillItem, commitItem } from './helpers/orders'
+import { waitForNavigationMotion } from './helpers/navigation-motion'
 
 for (const width of [1440, 1024, 768, 390, 320]) {
   test(`C LAY01/02/07 library preview and local upload ${width}`, async ({ page }, info) => {
@@ -14,13 +15,16 @@ for (const width of [1440, 1024, 768, 390, 320]) {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Этикетка 100×150')
     await expect(page.getByRole('button', { name: 'Скачать', exact: true })).toBeDisabled()
     await expect(page.getByRole('button', { name: 'Посмотреть', exact: true })).toBeDisabled()
+    await waitForNavigationMotion(page)
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
     await page.screenshot({ path: info.outputPath(`fes03-layout-detail-${width}.png`), fullPage: true })
     await page.goBack()
+    await waitForNavigationMotion(page)
     await expect(page.getByTestId('layout-row-demo-layout-01')).toBeFocused()
     await page.getByRole('button', { name: 'Добавить макет', exact: true }).click()
     const save = page.getByRole('button', { name: 'Сохранить макет в демосессии', exact: true })
     await expect(save).toBeDisabled()
+    await waitForNavigationMotion(page)
     await page.screenshot({ path: info.outputPath(`fes03-layout-upload-empty-${width}.png`), fullPage: true })
     await page.getByLabel('Название макета', { exact: true }).fill('Локальный демонстрационный макет')
     await expect(save).toBeDisabled()
@@ -28,6 +32,7 @@ for (const width of [1440, 1024, 768, 390, 320]) {
     await expect(page.getByText('Выбран локально: synthetic-layout.svg', { exact: true })).toBeVisible()
     await page.getByLabel('Описание (необязательно)', { exact: true }).fill('Только demo metadata')
     await expect(save).toBeEnabled()
+    await waitForNavigationMotion(page)
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: info.outputPath(`fes03-layout-upload-selected-${width}.png`), fullPage: true })

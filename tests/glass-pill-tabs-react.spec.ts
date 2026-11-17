@@ -55,8 +55,10 @@ test('hover changes only color; click moves one lens horizontally and adapts wid
 test('selected optical +4.3% text scale follows lens; hover does not enlarge inactive', async ({ page }) => {
   const group = page.getByTestId('glass-pill-tabs')
   const work = group.getByTestId('glass-pill-work')
+  const restingWeight = await work.evaluate(el => getComputedStyle(el).fontWeight)
   await work.click()
   await expect(group.getByTestId('glass-pill-lens-frame')).toHaveAttribute('data-motion-state', 'settled', { timeout: 5000 })
+  await expect(work).toHaveCSS('font-weight', restingWeight)
   const selectedScale = await work.locator('.fos-glass-pill-tabs__label').evaluate(
     el => getComputedStyle(el).transform,
   )
@@ -64,6 +66,7 @@ test('selected optical +4.3% text scale follows lens; hover does not enlarge ina
   const other = group.getByTestId('glass-pill-review')
   await other.hover()
   await expect(other).toHaveAttribute('aria-pressed', 'false')
+  await expect(other).toHaveCSS('font-weight', restingWeight)
   const otherScale = await other.locator('.fos-glass-pill-tabs__label').evaluate(
     el => getComputedStyle(el).transform,
   )

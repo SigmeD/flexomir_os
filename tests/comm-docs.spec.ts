@@ -1,11 +1,17 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 import { syntheticPdf } from './helpers/synthetic-pdf'
 import { openDemoControls, closeDemoControls, backToOrders, fillItem, commitItem, chooseFormOption, chooseMore, setDemoRole } from './helpers/orders'
 import AxeBuilder from '@axe-core/playwright'
 
+async function waitForOrderMotion(page: Page) {
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-motion', /forward|back/)
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-fallback', /forward|back/)
+}
+
 test('Q01–03 Client product plus aligns to content and opens one editor', async ({ page }) => {
   await page.goto('/?view=client-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+  await waitForOrderMotion(page)
   const heading = page.locator('.fos-order-composer__products .fos-order-composer__section-heading')
   const button = heading.getByRole('button', { name: 'Добавить позицию', exact: true })
   const a = await heading.boundingBox(), b = await button.boundingBox()
@@ -201,6 +207,7 @@ test('Q27–36 documents, support and item visual/a11y matrix', async ({ page },
     await page.setViewportSize({ width,height:1000 })
     await page.goto('/?view=client-orders')
     await page.getByRole('button',{ name:'Добавить заказ',exact:true }).click()
+    await waitForOrderMotion(page)
     await page.getByLabel('Выбрать подписной бланк').setInputFiles({ name:'Длинное имя синтетического подписного бланка.pdf',mimeType:'application/pdf',buffer:syntheticPdf(2) })
     await page.getByRole('button',{ name:/Открыть документ PDF Длинное/ }).click()
     const dialog = page.getByRole('dialog')
@@ -213,12 +220,14 @@ test('Q27–36 documents, support and item visual/a11y matrix', async ({ page },
     await page.screenshot({path:`output/comm-docs/${info.project.name}/pdf-${width}.png`})
     await page.keyboard.press('Escape')
     await page.getByRole('button',{ name:'Добавить позицию',exact:true }).click()
+    await waitForOrderMotion(page)
     expect((await new AxeBuilder({page}).analyze()).violations).toEqual([])
     await page.screenshot({path:`output/comm-docs/${info.project.name}/item-${width}.png`,fullPage:true})
     await page.goto('/?view=client-support')
     await page.getByRole('button',{ name:'Добавить обращение',exact:true }).click()
     await page.getByLabel('Тема',{exact:true}).fill('Длинная синтетическая тема')
     await page.getByLabel('Описание',{exact:true}).fill('Описание обращения: проверяем общий ввод и адаптивность.')
+    await waitForOrderMotion(page)
     expect((await new AxeBuilder({page}).analyze()).violations).toEqual([])
     expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBeTruthy()
     await page.screenshot({path:`output/comm-docs/${info.project.name}/support-${width}.png`,fullPage:true})

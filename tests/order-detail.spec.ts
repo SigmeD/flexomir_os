@@ -8,6 +8,34 @@ const sizes = [
 ] as const
 
 for (const role of roles) {
+  test(role + ' breadcrumb uses the reference blue and visibly previews the return action', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto('/?view=' + role + '-orders')
+    await page.getByRole('button', { name: 'Открыть заказ DEMO-003' }).click()
+    const breadcrumbs = page.getByRole('navigation', { name: 'Хлебные крошки' })
+    const back = breadcrumbs.getByRole('button', { name: role === 'client' ? 'Мои заказы' : 'Заказы' })
+    const current = breadcrumbs.locator('[aria-current="page"]')
+    await expect(back).toHaveCSS('color', 'rgb(2, 53, 127)')
+    await expect(current).toHaveCSS('color', 'rgb(2, 53, 127)')
+    const before = await back.evaluate((element) => ({
+      width: element.getBoundingClientRect().width,
+      height: element.getBoundingClientRect().height,
+    }))
+    await back.hover()
+    await expect(back).toHaveCSS('background-color', 'rgba(255, 255, 255, 0.32)')
+    await expect(back).toHaveCSS('backdrop-filter', 'blur(10px) saturate(1.2)')
+    await expect(back).toHaveCSS('box-shadow', /rgb\(70, 193, 206\) 0px -2px 0px 0px inset/)
+    await expect(back.locator('.fos-breadcrumbs__label')).toHaveCSS('transform', 'matrix(1.043, 0, 0, 1.043, 0, 0)')
+    expect(await back.evaluate((element) => ({
+      width: element.getBoundingClientRect().width,
+      height: element.getBoundingClientRect().height,
+    }))).toEqual(before)
+    await back.click()
+    await expect(page.getByTestId('order-detail')).toHaveCount(0)
+  })
+}
+
+for (const role of roles) {
   test(role + ' list → readonly order with writable Work chat → back preserves identity, filter and focus at five widths', async ({ page }) => {
     for (const [, width, height] of sizes) {
       await page.setViewportSize({ width, height })

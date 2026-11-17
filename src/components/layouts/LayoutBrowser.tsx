@@ -38,7 +38,7 @@ export function LayoutBrowser({ mode = 'library', onChoose, onExit, parentContex
     if (next === 'upload' || !dirtyUpload) return false
     exit(proceed)
     return true
-  }, () => Boolean(rootRef.current?.getClientRects().length))
+  }, () => Boolean(rootRef.current?.getClientRects().length), mode === 'library')
   const layouts = empty ? [] : demo.layouts
   const layout = layouts.find(item => nav.path === 'detail/' + item.id)
   const uploading = nav.path === 'upload'

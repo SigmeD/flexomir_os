@@ -2,6 +2,8 @@
 /* Owner decision 10.11.2026: navigation/item and popup/item share one role.
  * Base typography only; approved optical transforms remain in GlassLens. */
 :root {
+  --fos-color-breadcrumb: #02357f;
+  --fos-color-brand-cyan: #46c1ce;
   --fos-type-menu-item: 500 14px/18px var(--fos-font-family);
   --fos-type-navigation-item: var(--fos-type-menu-item);
   --fos-type-popup-item: var(--fos-type-menu-item);

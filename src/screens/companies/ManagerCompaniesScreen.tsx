@@ -13,7 +13,7 @@ import { DEMO_COMPANIES, companyOrders } from '@/demo/company-fixtures'
 export function ManagerCompaniesScreen({ empty = false, onNavigate }: { empty?: boolean; onNavigate?: (section: CabinetSection) => void }) {
   const [search, setSearch] = useState('')
   const [filters, setFilters] = useState<Record<string, CompanyFilters>>({})
-  const nav = usePreviewNavigation()
+  const nav = usePreviewNavigation('list', undefined, undefined, () => Boolean(document.querySelector('[data-testid="manager-clients-screen"]')?.getClientRects().length), true)
   const [, companyId, orderId] = nav.path.split('/')
   const companies = empty ? [] : DEMO_COMPANIES
   const company = companies.find(item => item.id === companyId)

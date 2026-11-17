@@ -4,6 +4,7 @@ import { HeaderAction } from '@/components/ui/header-action'
 import { PageHeader } from '@/components/ui/page-header'
 import { MoreAction } from '@/components/ui/overflow-menu'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { FosAvatar } from '@/components/ui/fos-avatar'
 import { useLocalPhotoPreview, type DemoProfileDraft, type DemoProfileIdentity } from '@/demo/profile-model'
 import './profile-settings.css'
 
@@ -61,9 +62,7 @@ export function ProfileSettingsScreen({
           <div className="fos-profile-photo">
             <h2>Фотография пользователя</h2>
             <div className="fos-profile-photo__row">
-              <div className="fos-profile-avatar" data-testid="profile-avatar" aria-label={preview ? 'Фотография пользователя' : `Инициалы ${identity.displayName}`}>
-                {preview ? <img src={preview} alt="" /> : <span>{draft.displayName.trim().split(/\s+/u)[0]?.slice(0, 1).toLocaleUpperCase('ru-RU') || ''}</span>}
-              </div>
+              <FosAvatar name={draft.displayName} photoUrl={preview} size="large" testId="profile-avatar" />
               <div className="fos-profile-photo__actions">
                 <input
                   ref={inputRef}
