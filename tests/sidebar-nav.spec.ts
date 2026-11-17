@@ -35,9 +35,15 @@ test('selected lens follows click only; hover does not switch route', async ({ p
   const lens = manager.getByTestId('sidebar-selected-lens')
 
   await expect(orders).toHaveAttribute('aria-current', 'page')
+  const accent = await lens.evaluate(element => {
+    const style = getComputedStyle(element, '::after')
+    return { color: style.backgroundColor, width: style.width, height: style.height }
+  })
+  expect(accent).toEqual({ color: 'rgb(70, 193, 206)', width: '4px', height: '24px' })
   await clients.hover()
   await expect(orders).toHaveAttribute('aria-current', 'page')
   await expect(lens).toHaveAttribute('data-travel-target', '0')
+  await expect(clients).toHaveCSS('background-color', 'rgba(31, 34, 40, 0.055)')
   await clients.click()
   await expect(clients).toHaveAttribute('aria-current', 'page')
   await expect(orders).not.toHaveAttribute('aria-current', 'page')
@@ -46,6 +52,26 @@ test('selected lens follows click only; hover does not switch route', async ({ p
   await expect(lens).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
   const pos = await Promise.all([lens.boundingBox(), clients.boundingBox()])
   expect(Math.abs((pos[0]?.y ?? 0) - (pos[1]?.y ?? 0))).toBeLessThan(1.25)
+})
+
+test('cyan marker stretches during the existing lens spring and returns to its resting shape', async ({ page }) => {
+  const manager = page.getByTestId('sidebar-lab-manager')
+  const nav = manager.getByRole('navigation')
+  const lens = manager.getByTestId('sidebar-selected-lens')
+  await nav.evaluate(element => {
+    const node = element as HTMLElement
+    node.dataset.markerPeak = '1'
+    const observer = new MutationObserver(() => {
+      const scale = Number(node.style.getPropertyValue('--fos-sidebar-marker-scale-y'))
+      node.dataset.markerPeak = String(Math.max(Number(node.dataset.markerPeak), scale))
+    })
+    observer.observe(node, { attributes: true, attributeFilter: ['style'] })
+  })
+  await manager.getByTestId('sidebar-nav-clients').click()
+  await expect(lens).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
+  expect(Number(await nav.getAttribute('data-marker-peak'))).toBeGreaterThan(1.5)
+  await expect(nav).toHaveCSS('--fos-sidebar-marker-scale-y', '1.000')
+  await expect(nav).toHaveCSS('--fos-sidebar-marker-scale-x', '1.000')
 })
 
 test('independent selection between Manager and Client nav instances', async ({ page }) => {
@@ -80,6 +106,7 @@ test('reduced motion and forced colors do not affect semantic selection', async 
   await client.getByTestId('sidebar-nav-support').click()
   await expect(client.getByTestId('sidebar-nav-support')).toHaveAttribute('aria-current', 'page')
   await expect(client.getByTestId('sidebar-selected-lens')).toHaveAttribute('data-motion-state', 'off')
+  await expect(client.getByRole('navigation')).toHaveCSS('--fos-sidebar-marker-scale-y', '1.000')
   await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' })
   await client.getByTestId('sidebar-nav-orders').click()
   await expect(client.getByTestId('sidebar-nav-orders')).toHaveAttribute('aria-current', 'page')
@@ -112,7 +139,7 @@ test('screenshot for owner visual review', async ({ page }, testInfo) => {
     await manager.getByTestId('sidebar-nav-clients').hover()
     await page.waitForTimeout(210)
     await page.screenshot({
-      path: testInfo.outputPath('sidebar-' + width + '-hover-color-only.png'),
+      path: testInfo.outputPath('sidebar-' + width + '-hover-preview.png'),
       fullPage: true,
       animations: 'disabled',
     })
@@ -160,7 +187,7 @@ test('reference 2.2.5 C label magnification follows the selected lens', async ({
   expect(await getScale(support)).toBeLessThan(1.046)
 })
 
-test('hover only changes color; focus only adds outline; zoom follows click and lens arrival', async ({ page }) => {
+test('hover previews color and surface; focus adds outline; zoom follows click and lens arrival', async ({ page }) => {
   const manager = page.getByTestId('sidebar-lab-manager')
   const orders = manager.getByTestId('sidebar-nav-orders')
   const clients = manager.getByTestId('sidebar-nav-clients')
@@ -231,7 +258,7 @@ test('optional reference SVG icons are correctly sized and decorative across bot
   }
 })
 
-test('selected icon +2.2% lens magnification; hovering only changes color', async ({ page }) => {
+test('selected icon +2.2% lens magnification; hover leaves the lens in place', async ({ page }) => {
   const nav = page.getByTestId('sidebar-lab-client').getByRole('navigation')
   const orders = nav.getByTestId('sidebar-nav-orders')
   const artworks = nav.getByTestId('sidebar-nav-artworks')

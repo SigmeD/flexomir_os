@@ -2,7 +2,7 @@
 .fos-orders-page__main.fos-profile-main { padding: 0; }
 .fos-profile-page__content { box-sizing: border-box; width: 100%; padding: 28px 32px 48px 40px; }
 .fos-profile-page__header { position: relative; min-height: 157px; }
-.fos-profile-page__breadcrumb { color: #293849; font-size: 13px; line-height: 20px; }
+.fos-profile-page__breadcrumb { color: var(--fos-color-breadcrumb, #02357f); font-size: 13px; line-height: 20px; }
 .fos-profile-page__header .fos-page-header__row { min-height: 48px; }
 .fos-profile-page__header .fos-page-header__row h1 { max-width: calc(100% - 180px); margin: 24px 0 0; padding: 0; color: #253144; }
 .fos-profile-actions { position: absolute; top: 44px; right: 0; display: flex; width: 148px; height: 68px; align-items: flex-start; gap: 12px; }

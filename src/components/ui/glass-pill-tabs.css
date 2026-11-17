@@ -99,7 +99,6 @@
 }
 .fos-glass-pill-tabs__button[aria-pressed="true"] {
   color: var(--fos-pill-selected);
-  font-weight: 730;
 }
 .fos-glass-pill-tabs__button:hover:not(:disabled):not([aria-pressed="true"]) { color: #415b6d; }
 .fos-glass-pill-tabs__button:focus-visible {

@@ -11,6 +11,8 @@
 .fos-sidebar-nav {
   --fos-sidebar-item-height: 44px;
   --fos-sidebar-item-gap: 4px;
+  --fos-sidebar-selection-accent: var(--fos-color-brand-cyan, #46c1ce);
+  --fos-sidebar-hover-background: rgb(31 34 40 / .055);
   --fos-sidebar-text: var(--fos-v2-semantic-color-text-secondary, #737781);
   --fos-sidebar-selected-text: var(--fos-v2-semantic-color-text-brand, #1f3861);
   position: relative;
@@ -36,6 +38,20 @@
   pointer-events: none;
   border-radius: 14px;
 }
+.fos-sidebar-nav__lens::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 4px;
+  width: 4px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--fos-sidebar-selection-accent);
+  transform: translateY(calc(-50% + var(--fos-sidebar-marker-shift, 0px)))
+    scale(var(--fos-sidebar-marker-scale-x, 1), var(--fos-sidebar-marker-scale-y, 1));
+  will-change: transform;
+}
 .fos-sidebar-nav__item {
   display: flex;
   position: relative;
@@ -55,9 +71,10 @@
   font: var(--fos-type-navigation-item);
   white-space: nowrap;
   cursor: pointer;
-  transition: color 160ms ease;
+  transition: color 160ms ease, background-color 160ms ease;
 }
 .fos-sidebar-nav__item[aria-current="page"] { color: var(--fos-sidebar-selected-text); }
+.fos-sidebar-nav--persistent .fos-sidebar-nav__item:not(:disabled):not([aria-current="page"]):hover { background: var(--fos-sidebar-hover-background); }
 .fos-sidebar-nav__item:not(:disabled):hover { color: #3e6578; }
 .fos-sidebar-nav__item[aria-current="page"]:hover { color: var(--fos-sidebar-selected-text); }
 .fos-sidebar-nav__item:focus-visible { outline: 2px solid #497e9b; outline-offset: -3px; }
@@ -101,6 +118,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .fos-sidebar-nav__item { transition: none; }
+  .fos-sidebar-nav__lens::after { will-change: auto; }
   .fos-sidebar-nav__label { transition: none; transform: none !important; will-change: auto; }
   .fos-sidebar-nav__icon { transition: none; transform: none !important; will-change: auto; }
 }
@@ -108,6 +126,8 @@
   .fos-sidebar-nav__label { transform: none !important; will-change: auto; }
   .fos-sidebar-nav__icon { transform: none !important; will-change: auto; }
   .fos-sidebar-nav__lens { border: 1px solid Highlight; background: Canvas; }
+  .fos-sidebar-nav__lens::after { background: Highlight; forced-color-adjust: none; }
   .fos-sidebar-nav__item[aria-current="page"] { color: Highlight; }
+  .fos-sidebar-nav__item:not([aria-current="page"]):hover { background: transparent; }
   .fos-sidebar-nav__item:focus-visible { outline: 3px solid Highlight; }
 }
