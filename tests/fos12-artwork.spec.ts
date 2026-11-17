@@ -11,6 +11,9 @@ async function newItem(page: Page, url = pilot) {
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
   await page.getByRole('button', { name: 'Добавить позицию', exact: true }).click()
   await page.evaluate(() => document.fonts.ready)
+  // Measure settled component geometry after the Client navigation entrance.
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-fallback', /forward|back/)
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-motion', /forward|back/)
 }
 
 async function chooseLibrary(page: Page, id = 'demo-layout-01', trigger = 'Мои макеты') {
