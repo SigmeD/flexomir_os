@@ -4,7 +4,7 @@
 
 ## Актуальный индекс
 
-17.11, [issue #57](https://github.com/SigmeD/flexomir_os/issues/57): Owner увидел и принял направление анимации list/detail, затем поручил слегка ускорить его и включить Client «Добавить заказ», «Добавить позицию» и фильтры. Новый кандидат 44px/340мс на этих маршрутах реализован; визуальная оценка обновлённого варианта, разделы и другие роли OPEN. Glass/Frozen FE11 не изменён. [Факт](CONTRACTS_AND_EVIDENCE.md#evidence-block2-motion-pilot-2026-11-17).
+17.11, [issue #57](https://github.com/SigmeD/flexomir_os/issues/57): Owner увидел и принял направление анимации list/detail, затем поручил включить Client «Добавить заказ», «Добавить позицию» и фильтры. Последнее уточнение Owner — 300мс. Новый кандидат 44px/300мс на этих маршрутах реализован; визуальная оценка обновлённого варианта, разделы и другие роли OPEN. Glass/Frozen FE11 не изменён. [Факт](CONTRACTS_AND_EVIDENCE.md#evidence-block2-motion-pilot-2026-11-17).
 
 16.11, Owner: «давай merge/main», затем уточнение «origin/main». [PR #55](https://github.com/SigmeD/flexomir_os/pull/55) слит как `75b9a99` после CI 5/5 SUCCESS и post-merge build/smoke 13/13 PASS. Это прямое разрешение на merge frontend-блока №1; отдельная visual acceptance блока, полная M8/D09 и production API/ACL/1С остаются OPEN. [Факт](CONTRACTS_AND_EVIDENCE.md#evidence-order-lifecycle-block1-2026-11-16).
 

@@ -51,7 +51,7 @@ test('client order drill and return animate content in opposite directions', asy
     await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation =>
       (animation.effect as KeyframeEffect | null)?.pseudoElement?.includes('view-transition')
     ).map(animation => ({ pseudo: (animation.effect as KeyframeEffect).pseudoElement, duration: animation.effect?.getTiming().duration, frames: (animation.effect as KeyframeEffect).getKeyframes().map(frame => frame.transform) }))))
-      .toContainEqual(expect.objectContaining({ pseudo: '::view-transition-new(fos-order-content)', duration: 340, frames: expect.arrayContaining(['translateX(44px)', 'translateX(0px)']) }))
+      .toContainEqual(expect.objectContaining({ pseudo: '::view-transition-new(fos-order-content)', duration: 300, frames: expect.arrayContaining(['translateX(44px)', 'translateX(0px)']) }))
   }
   await page.goBack()
   await expect(page.getByTestId('client-orders-list')).toBeVisible()
@@ -61,7 +61,7 @@ test('client order drill and return animate content in opposite directions', asy
     await expect.poll(() => page.evaluate(() => document.getAnimations().filter(animation =>
       (animation.effect as KeyframeEffect | null)?.pseudoElement?.includes('view-transition')
     ).map(animation => ({ pseudo: (animation.effect as KeyframeEffect).pseudoElement, duration: animation.effect?.getTiming().duration, frames: (animation.effect as KeyframeEffect).getKeyframes().map(frame => frame.transform) }))))
-      .toContainEqual(expect.objectContaining({ pseudo: '::view-transition-new(fos-order-content)', duration: 340, frames: expect.arrayContaining(['translateX(-44px)', 'translateX(0px)']) }))
+      .toContainEqual(expect.objectContaining({ pseudo: '::view-transition-new(fos-order-content)', duration: 300, frames: expect.arrayContaining(['translateX(-44px)', 'translateX(0px)']) }))
   }
 })
 

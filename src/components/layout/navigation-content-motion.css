@@ -1,5 +1,5 @@
 /* Client Orders navigation content moves; its heading and shell switch in place. */
-html { --fos-order-transition-duration: 340ms; --fos-order-transition-easing: cubic-bezier(.45, 0, .2, 1); }
+html { --fos-order-transition-duration: 300ms; --fos-order-transition-easing: cubic-bezier(.45, 0, .2, 1); }
 html[data-order-navigation-motion] [data-testid=client-orders-screen] .fos-orders-page__main[data-view] { view-transition-name: fos-order-content; }
 html[data-order-navigation-motion] [data-testid=client-orders-screen] .fos-orders-page__main[data-view] .fos-page-header { view-transition-name: fos-order-header; }
 html[data-order-navigation-motion] [data-testid=client-orders-screen] .fos-orders-page__filters { view-transition-name: fos-order-filters; }

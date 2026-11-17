@@ -4,6 +4,8 @@ import AxeBuilder from '@axe-core/playwright'
 async function newOrder(page: Page) {
   await page.goto('/?view=client-orders')
   await page.getByRole('button', { name: 'Добавить заказ', exact: true }).click()
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-motion', /forward|back/)
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-navigation-fallback', /forward|back/)
 }
 
 test('Owner 1 deleting the selected file preserves its same-name sibling and restores empty upload', async ({ page }) => {

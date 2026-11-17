@@ -19,7 +19,7 @@ export function commitContentNavigation(direction: ContentNavigationDirection, c
     const epoch = ++fallbackEpoch
     document.documentElement.dataset.orderNavigationFallback = direction
     flushSync(commit)
-    window.setTimeout(() => { if (fallbackEpoch === epoch) delete document.documentElement.dataset.orderNavigationFallback }, 370)
+    window.setTimeout(() => { if (fallbackEpoch === epoch) delete document.documentElement.dataset.orderNavigationFallback }, 330)
     return
   }
   activeTransition?.skipTransition()
