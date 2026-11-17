@@ -9,7 +9,7 @@
 | M4–M7 | Основные Client/Manager композиции и демосценарии на fixtures реализованы | Сохранять существующие контракты и [карту экранов](SCREEN_MAP_M4_2026-11-06.md) |
 | M8 · [issue #21](https://github.com/SigmeD/flexomir_os/issues/21) | Общие компоненты, DocumentPreview Latest и выровненные формы слиты в `main` через [PR #49](https://github.com/SigmeD/flexomir_os/pull/49); Owner визуально принял показанный заказ, CI проверенного head 10/10 SUCCESS | Полная проверка M8/D09, Auth/WIP UX, side-by-side CURRENT Figma, физические устройства и ручная доступность; внешняя выкладка — отдельное решение |
 | M9 | Нужен согласованный production API | Алексей: backend, ACL, хранение и 1С; frontend: подключение к готовому контракту и интеграционный QA |
-| Блок №2 · [issue #57](https://github.com/SigmeD/flexomir_os/issues/57) | Функциональный PR #59 слит как `851a319`, motion/полировка PR #58 как `e7babc6`; совместный head прошёл CI 11/11, post-merge build и smoke 6/6 PASS. Owner принял пилот Client 300мс; общая визуальная приёмка rollout OPEN. Действия с заказом пока только frontend-моки | Owner: оценить полный rollout; PO/Алексей: production API, ACL, хранение, чат и 1С. Полная M8/D09 и физические устройства — отдельные гейты |
+| Блок №2 · [issue #57](https://github.com/SigmeD/flexomir_os/issues/57) | Функциональный PR #59 слит как `851a319`, motion/полировка PR #58 как `e7babc6`; совместный head прошёл CI 11/11, post-merge build и smoke 6/6 PASS. Owner визуально принял полный rollout анимаций блока №2. Действия с заказом пока только frontend-моки | PO/Алексей: production API, ACL, хранение, чат и 1С. Полная M8/D09 и физические устройства — отдельные гейты |
 
 ## Открытые вопросы
 
