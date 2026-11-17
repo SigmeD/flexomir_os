@@ -1,21 +1,22 @@
 /* Pilot: only Client Orders content moves; its heading and shell switch in place. */
+html { --fos-order-transition-duration: 420ms; --fos-order-transition-easing: cubic-bezier(.45, 0, .2, 1); }
 html[data-order-navigation-motion] [data-testid=client-orders-screen] .fos-orders-page__main[data-view] { view-transition-name: fos-order-content; }
 html[data-order-navigation-motion] [data-testid=client-orders-screen] .fos-orders-page__main[data-view] .fos-page-header { view-transition-name: fos-order-header; }
 html[data-order-navigation-motion]::view-transition-old(root),html[data-order-navigation-motion]::view-transition-new(root),
 html[data-order-navigation-motion]::view-transition-group(fos-order-content),
 html[data-order-navigation-motion]::view-transition-old(fos-order-header),html[data-order-navigation-motion]::view-transition-new(fos-order-header) { animation: none; }
 html[data-order-navigation-motion]::view-transition-old(fos-order-header) { display: none; }
-html[data-order-navigation-motion=forward]::view-transition-old(fos-order-content) { animation: fos-order-out-left 220ms ease both; }
-html[data-order-navigation-motion=forward]::view-transition-new(fos-order-content) { animation: fos-order-in-right 220ms ease both; }
-html[data-order-navigation-motion=back]::view-transition-old(fos-order-content) { animation: fos-order-out-right 220ms ease both; }
-html[data-order-navigation-motion=back]::view-transition-new(fos-order-content) { animation: fos-order-in-left 220ms ease both; }
-@keyframes fos-order-out-left { from { transform: translateX(0px); opacity: 1; } to { transform: translateX(-20px); opacity: 0; } }
-@keyframes fos-order-in-right { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0px); opacity: 1; } }
-@keyframes fos-order-out-right { from { transform: translateX(0px); opacity: 1; } to { transform: translateX(20px); opacity: 0; } }
-@keyframes fos-order-in-left { from { transform: translateX(-20px); opacity: 0; } to { transform: translateX(0px); opacity: 1; } }
+html[data-order-navigation-motion=forward]::view-transition-old(fos-order-content) { animation: fos-order-out-left var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+html[data-order-navigation-motion=forward]::view-transition-new(fos-order-content) { animation: fos-order-in-right var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+html[data-order-navigation-motion=back]::view-transition-old(fos-order-content) { animation: fos-order-out-right var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+html[data-order-navigation-motion=back]::view-transition-new(fos-order-content) { animation: fos-order-in-left var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+@keyframes fos-order-out-left { from { transform: translateX(0px); opacity: 1; } to { transform: translateX(-28px); opacity: 0; } }
+@keyframes fos-order-in-right { from { transform: translateX(44px); opacity: .18; } to { transform: translateX(0px); opacity: 1; } }
+@keyframes fos-order-out-right { from { transform: translateX(0px); opacity: 1; } to { transform: translateX(28px); opacity: 0; } }
+@keyframes fos-order-in-left { from { transform: translateX(-44px); opacity: .18; } to { transform: translateX(0px); opacity: 1; } }
 html[data-order-navigation-fallback=forward] [data-testid=client-orders-screen] .fos-order-detail__body,
-html[data-order-navigation-fallback=forward] [data-testid=client-orders-screen] .fos-order-composer__body { animation: fos-order-in-right 220ms ease both; }
-html[data-order-navigation-fallback=back] [data-testid=client-orders-screen] .fos-orders-page__list { animation: fos-order-in-left 220ms ease both; }
+html[data-order-navigation-fallback=forward] [data-testid=client-orders-screen] .fos-order-composer__body { animation: fos-order-in-right var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+html[data-order-navigation-fallback=back] [data-testid=client-orders-screen] .fos-orders-page__list { animation: fos-order-in-left var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
 @media (prefers-reduced-motion: reduce) {
   html[data-order-navigation-motion]::view-transition-old(fos-order-content),html[data-order-navigation-motion]::view-transition-new(fos-order-content),
   html[data-order-navigation-fallback] [data-testid=client-orders-screen] .fos-order-detail__body,
