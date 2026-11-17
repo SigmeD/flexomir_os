@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { PNG } from 'pngjs'
 import { chooseMore } from './helpers/orders'
 import { waitForNavigationMotion } from './helpers/navigation-motion'
 
@@ -26,10 +27,10 @@ async function watchHorizontalMotion(page: import('@playwright/test').Page) {
     probe.horizontalMotionEvents = []
     probe.horizontalAnimationEvents = []
     const record = () => {
-      const value = document.documentElement.dataset.orderNavigationMotion ?? document.documentElement.dataset.orderNavigationFallback
+      const value = document.documentElement.dataset.orderNavigationMotion ?? document.documentElement.dataset.orderNavigationFallback ?? document.documentElement.dataset.orderFilterMotion
       if (value) probe.horizontalMotionEvents.push(value)
     }
-    new MutationObserver(record).observe(document.documentElement, { attributes: true, attributeFilter: ['data-order-navigation-motion', 'data-order-navigation-fallback'] })
+    new MutationObserver(record).observe(document.documentElement, { attributes: true, attributeFilter: ['data-order-navigation-motion', 'data-order-navigation-fallback', 'data-order-filter-motion'] })
     document.addEventListener('animationstart', event => {
       if (event.animationName.startsWith('fos-order-in-')) probe.horizontalAnimationEvents.push(event.animationName)
     }, true)
@@ -62,18 +63,85 @@ test('creating a draft and opening a new item use the forward transition, then r
   await direction('back')
 })
 
-test('client filters move the list in tab order while the filter row stays fixed', async ({ page }, testInfo) => {
+test('client filters move the list in tab order while the filter row stays fixed', async ({ page }) => {
   await page.goto('/?view=client-orders')
   const filters = page.getByRole('group', { name: 'Фильтр заказов по статусу' })
-  const motionAttribute = testInfo.project.name.includes('webkit') ? 'data-order-navigation-fallback' : 'data-order-navigation-motion'
+  const motionAttribute = 'data-order-filter-motion'
   await filters.getByRole('button', { name: 'Черновики' }).click()
+  const outgoing = page.locator('.fos-order-filter-results__old')
+  await expect(outgoing).toHaveAttribute('aria-hidden', 'true')
+  await expect(outgoing).toHaveCSS('animation-name', 'fos-order-out-left')
+  await expect(page.getByTestId('client-orders-list')).toHaveCSS('animation-name', 'fos-order-in-right')
+  await expect(page.getByTestId('client-orders-list')).toHaveCount(1)
   await expect(page.getByRole('button', { name: 'Открыть заказ DEMO-003' })).toHaveCount(0)
   await expect(page.locator('html')).toHaveAttribute(motionAttribute, 'forward')
-  if (!testInfo.project.name.includes('webkit')) await expect(page.locator('.fos-orders-page__filters')).toHaveCSS('view-transition-name', 'fos-order-filters')
+  await expect(page.locator('.fos-orders-page__filters')).toHaveCSS('view-transition-name', 'none')
   await expect(page.locator('html')).not.toHaveAttribute(motionAttribute, /forward|back/)
   await filters.getByRole('button', { name: 'Все заказы' }).click()
+  await expect(outgoing).toHaveCSS('animation-name', 'fos-order-out-right')
+  await expect(page.getByTestId('client-orders-list')).toHaveCSS('animation-name', 'fos-order-in-left')
   await expect(page.getByRole('button', { name: 'Открыть заказ DEMO-003' })).toBeVisible()
   await expect(page.locator('html')).toHaveAttribute(motionAttribute, 'back')
+})
+
+for (const role of ['client', 'manager'] as const) {
+  for (const width of [1440, 390]) {
+    test(`${role} filter leaves every unrelated header button unchanged at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 900 })
+      await page.goto('/?view=' + role + '-orders')
+      const headerButtons = page.locator('.fos-orders-page__main[data-view="list"] .fos-page-header__actions button')
+      await expect(headerButtons.first()).toBeVisible()
+      const before = await Promise.all((await headerButtons.all()).map(button => button.screenshot()))
+      const assertUnchanged = async () => {
+        await expect(page.locator('html')).toHaveAttribute('data-order-filter-motion', /forward|back/)
+        await page.waitForTimeout(90)
+        const after = await Promise.all((await headerButtons.all()).map(button => button.screenshot()))
+        expect(after).toHaveLength(before.length)
+        if (width === 1440) after.forEach((shot, index) => {
+          const oldPixels = PNG.sync.read(before[index]).data
+          const newPixels = PNG.sync.read(shot).data
+          expect(newPixels.length).toBe(oldPixels.length)
+          let peakDifference = 0
+          for (let pixel = 0; pixel < newPixels.length; pixel++) peakDifference = Math.max(peakDifference, Math.abs(newPixels[pixel] - oldPixels[pixel]))
+          expect(peakDifference).toBeLessThanOrEqual(3)
+        })
+        for (const button of await headerButtons.all()) {
+          expect(await button.evaluate(element => element.getAnimations({ subtree: true }).length)).toBe(0)
+        }
+        await expect(headerButtons.first()).toHaveAttribute('data-pressed', 'false')
+        await expect(headerButtons.first()).toHaveAttribute('data-surface-deforming', 'false')
+        await expect(page.getByTestId('order-composer')).toHaveCount(0)
+      }
+      const filters = page.getByRole('group', { name: 'Фильтр заказов по статусу' })
+      await filters.getByRole('button', { name: 'Черновики' }).click()
+      await assertUnchanged()
+      if (role === 'manager') {
+        await expect(page.locator('html')).not.toHaveAttribute('data-order-filter-motion', /forward|back/)
+        await page.getByRole('group', { name: 'Очередь заказов менеджера' }).getByRole('button', { name: 'Новые' }).click()
+        await assertUnchanged()
+      }
+    })
+  }
+}
+
+test('rapid order filter changes leave one accessible list and clean the outgoing layer', async ({ page }) => {
+  await page.goto('/?view=client-orders')
+  const filters = page.getByRole('group', { name: 'Фильтр заказов по статусу' })
+  await filters.getByRole('button', { name: 'Черновики' }).click()
+  await filters.getByRole('button', { name: 'На рассмотрении' }).click()
+  await filters.getByRole('button', { name: 'Все заказы' }).click()
+  await expect(page.getByTestId('client-orders-list')).toHaveCount(1)
+  await expect(page.getByTestId('client-orders-list')).toContainText('Заказ DEMO-003')
+  await expect(page.locator('.fos-order-filter-results__old')).toHaveCount(0)
+})
+
+test('reduced motion changes order filters without an outgoing layer', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/?view=client-orders')
+  await page.getByRole('group', { name: 'Фильтр заказов по статусу' }).getByRole('button', { name: 'Черновики' }).click()
+  await expect(page.locator('.fos-order-filter-results__old')).toHaveCount(0)
+  await expect(page.locator('html')).not.toHaveAttribute('data-order-filter-motion', /forward|back/)
+  await expect(page.getByTestId('client-orders-list')).toContainText('Заказ DEMO-001')
 })
 
 test('client order drill and return animate content in opposite directions', async ({ page }, testInfo) => {

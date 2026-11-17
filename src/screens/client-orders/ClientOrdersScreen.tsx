@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { AppShell } from '@/components/layout/AppShell'
 import { cabinetItems, type CabinetSection } from '@/components/layout/CabinetPage'
 import { useCabinetNavigation } from '@/components/layout/CabinetNavigation'
-import { OrdersList } from '@/components/orders/OrdersList'
+import { OrderFilterResults, useOrderFilterMotion } from '@/components/orders/OrderFilterResults'
 import { OrderDetail } from '@/components/orders/OrderDetail'
 import { OrderComposer } from '@/components/orders/OrderComposer'
 import { CompletedOrderMenu } from '@/components/orders/CompletedOrderMenu'
@@ -18,7 +18,6 @@ import '@/components/orders/orders-page.css'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { useOrderExitGuard } from '@/components/orders/useOrderExitGuard'
 import { canEditDemoItems } from '@/demo/order-compose-model'
-import { commitContentNavigation } from '@/components/layout/navigation-content-motion'
 
 const clientNav: readonly SidebarNavItem[] = [
   { id: 'orders', label: 'Заказы', icon: 'orders' },
@@ -46,6 +45,7 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
   const presentedOrders = orders
   const preview = useOrderPreview(presentedOrders, exitGuard, true)
   const visibleOrders = filterId === 'all' ? presentedOrders : presentedOrders.filter(order => order.filterId === filterId)
+  const filterMotion = useOrderFilterMotion(visibleOrders, orders.length)
   const selectedDraft = demo?.drafts.find(draft => draft.id === preview.selectedOrder?.id && draft.stage === 'draft' && draft.ownerRole === 'client' && draft.company === companyName)
   const selectedReview = demo?.drafts.find(order => order.id === preview.selectedOrder?.id && order.stage === 'sent' && order.company === companyName && canEditDemoItems(order, 'client'))
   const editingReview = selectedReview?.id === reviewEditingId ? selectedReview : undefined
@@ -101,13 +101,13 @@ export function ClientOrdersScreen({ orders, companyName, demo, initialFilterId 
                       if (value === filterId) return
                       const currentIndex = ORDER_STATUS_FILTERS.findIndex(filter => filter.id === filterId)
                       const nextIndex = ORDER_STATUS_FILTERS.findIndex(filter => filter.id === value)
-                      commitContentNavigation(nextIndex > currentIndex ? 'forward' : 'back', () => setFilterId(value as OrderStatusFilterId))
+                      filterMotion.navigate(nextIndex > currentIndex ? 'forward' : 'back', () => setFilterId(value as OrderStatusFilterId))
                     }
                   }}
                   ariaLabel="Фильтр заказов по статусу"
                 />
               </section>
-              <OrdersList orders={visibleOrders} total={orders.length} idPrefix="client" onOpen={preview.openOrder} />
+              <OrderFilterResults orders={visibleOrders} total={orders.length} idPrefix="client" motionKey={filterId} outgoing={filterMotion.outgoing} onOpen={preview.openOrder} />
             </>
           )}
         </main>

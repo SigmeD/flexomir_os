@@ -28,6 +28,25 @@ test('Client account menu and profile use the same identity and canonical page a
   await expect(page.locator('[data-testid="account-menu-trigger"]:visible')).toContainText('М')
 })
 
+test('account trigger, menu and profile share one avatar color and size variants', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/?demoTools=1')
+  const trigger = page.locator('[data-testid="account-menu-trigger"]:visible')
+  const triggerAvatar = trigger.locator('.fos-avatar')
+  const color = await triggerAvatar.evaluate(element => getComputedStyle(element).backgroundColor)
+  await expect(triggerAvatar).toHaveCSS('width', '40px')
+  await trigger.click()
+  const menuAvatar = page.getByTestId('account-menu').locator('.fos-avatar')
+  await expect(menuAvatar).toHaveCSS('background-color', color)
+  await page.getByRole('menuitem', { name: 'Настройки профиля' }).click()
+  const profileAvatar = page.getByTestId('profile-avatar')
+  await expect(profileAvatar).toHaveCSS('background-color', color)
+  await expect(profileAvatar).toHaveCSS('width', '80px')
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await expect(page.locator('[data-testid="account-menu-trigger"]:visible .fos-avatar')).toHaveCSS('background-color', color)
+})
+
 test('Manager profile keeps its own fixture identity when switching demo roles', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/?demoTools=1')

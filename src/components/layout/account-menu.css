@@ -60,33 +60,8 @@
   overflow: hidden;
   padding: 0;
   border-radius: 20px;
-  background: #1f3861;
-  color: #fff;
-  font-size: 17px;
-  line-height: 40px;
-  font-weight: 600;
+  background: transparent;
   text-align: center;
-}
-.fos-account-avatar {
-  display: grid;
-  width: 40px;
-  height: 40px;
-  flex: none;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 20px;
-  background: #1f3861;
-  color: #fff;
-  font-size: 17px;
-  line-height: 40px;
-  font-weight: 600;
-}
-.fos-account-avatar img,
-.fos-account-trigger img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 .fos-account-menu {
   z-index: 100;
@@ -130,7 +105,6 @@
 @media (forced-colors: active) {
   .fos-account-menu__separator { background: CanvasText; }
   .fos-account-menu__item[data-highlighted], .fos-account-footer, .fos-account-trigger { background: Canvas; color: CanvasText; }
-  .fos-account-avatar { border: 1px solid ButtonText; background: Canvas; color: CanvasText; }
 }
 @media (prefers-reduced-motion: reduce) {
   .fos-account-footer__glass, .fos-account-footer__name { transition: none; }

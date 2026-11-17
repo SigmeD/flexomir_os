@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import type { DemoProfileIdentity } from '@/demo/profile-model'
 import { FosMaterialSurface } from '@/components/ui/fos-material-surface'
 import { FosPopup } from '@/components/ui/fos-popup'
+import { FosAvatar } from '@/components/ui/fos-avatar'
 import './account-menu.css'
 
 export function AccountMenu({
@@ -19,17 +20,16 @@ export function AccountMenu({
 }) {
   const triggerRef = useRef<HTMLButtonElement>(null)
   const consumerFocus = useRef(false)
-  const initials = identity.displayName.trim().split(/\s+/u)[0]?.slice(0, 1).toLocaleUpperCase('ru-RU') || ''
   const secondary = identity.companyName || identity.email
   const triggerLabel = `${identity.displayName} — открыть меню аккаунта`
   const trigger = placement === 'sidebar'
     ? <FosButtonRoot family="navigation" ref={triggerRef} type="button" className="fos-account-footer" data-testid="account-menu-trigger">
         <FosMaterialSurface aria-hidden="true" className="fos-account-footer__glass" variant="account-trigger" />
-        <span className="fos-account-avatar" aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
+        <FosAvatar className="fos-account-avatar" name={identity.displayName} photoUrl={photoPreview} decorative />
         <span className="fos-account-footer__name">{identity.displayName}</span>
       </FosButtonRoot>
     : <FosButtonRoot family="navigation" ref={triggerRef} type="button" className="fos-account-trigger" data-testid="account-menu-trigger" aria-label={triggerLabel}>
-        <span aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
+        <FosAvatar name={identity.displayName} photoUrl={photoPreview} decorative />
       </FosButtonRoot>
 
   return <DropdownMenu.Root modal={false}>
@@ -61,7 +61,7 @@ export function AccountMenu({
           items={[{ id: 'profile', label: 'Настройки профиля' }, { id: 'company', label: 'Настройки компании', disabled: true }, { id: 'logout', label: 'Выйти', disabled: true }]}
           rowClassName="fos-account-menu__item" onSelect={id => { if (id === 'profile') { consumerFocus.current = true; onOpenProfile() } }}
           header={<div className="fos-account-menu__identity">
-            <span className="fos-account-avatar" aria-hidden="true">{photoPreview ? <img src={photoPreview} alt="" /> : initials}</span>
+            <FosAvatar className="fos-account-avatar" name={identity.displayName} photoUrl={photoPreview} decorative />
             <span className="fos-account-menu__copy"><strong>{identity.displayName}</strong><small>{secondary}</small></span>
           </div>} />
       </DropdownMenu.Content>

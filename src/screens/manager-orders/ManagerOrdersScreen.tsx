@@ -11,12 +11,11 @@ import { OrderComposer } from '@/components/orders/OrderComposer'
 import { canEditDemoItems, type DemoDraft } from '@/demo/order-compose-model'
 import { useOrderExitGuard } from '@/components/orders/useOrderExitGuard'
 import type { DemoCompany } from '@/demo/company-fixtures'
-import { OrdersList } from './OrdersList'
+import { OrderFilterResults, useOrderFilterMotion } from '@/components/orders/OrderFilterResults'
 import { OrderDetail } from '@/components/orders/OrderDetail'
 import { useOrderPreview } from '@/components/orders/useOrderPreview'
 import { ORDER_STATUS_FILTERS, type OrderListItem, type OrderStatusFilterId } from './model'
 import '@/components/orders/orders-page.css'
-import { commitContentNavigation } from '@/components/layout/navigation-content-motion'
 
 const managerNav: readonly SidebarNavItem[] = [
   { id: 'orders', label: 'Заказы', icon: 'orders' },
@@ -68,13 +67,14 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
   const visibleOrders = filterId === 'all'
     ? queueOrders
     : queueOrders.filter(order => order.filterId === filterId)
+  const filterMotion = useOrderFilterMotion(visibleOrders, queueOrders.length)
 
   const onSelectFilter = (id: string) => {
     if (ORDER_STATUS_FILTERS.some(filter => filter.id === id && !filter.disabled)) {
       if (id === filterId) return
       const currentIndex = ORDER_STATUS_FILTERS.findIndex(filter => filter.id === filterId)
       const nextIndex = ORDER_STATUS_FILTERS.findIndex(filter => filter.id === id)
-      commitContentNavigation(nextIndex > currentIndex ? 'forward' : 'back', () => {
+      filterMotion.navigate(nextIndex > currentIndex ? 'forward' : 'back', () => {
         setFilterId(id as OrderStatusFilterId)
         onFilterChange?.(id as OrderStatusFilterId)
       })
@@ -111,7 +111,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
 
               <section className="fos-orders-page__filters" aria-label="Фильтры заказов">
                 <GlassPillTabs items={[{ id: 'new', label: 'Новые' }, { id: 'all', label: 'Все' }]} value={queue} onValueChange={value => {
-                  if ((value === 'new' || value === 'all') && value !== queue) commitContentNavigation(value === 'all' ? 'forward' : 'back', () => setQueue(value))
+                  if ((value === 'new' || value === 'all') && value !== queue) filterMotion.navigate(value === 'all' ? 'forward' : 'back', () => setQueue(value))
                 }} ariaLabel="Очередь заказов менеджера" />
                 <GlassPillTabs
                   items={ORDER_STATUS_FILTERS}
@@ -121,7 +121,7 @@ export function ManagerOrdersScreen({ orders, demoOrderIds = [], initialFilterId
                 />
               </section>
 
-              <OrdersList orders={visibleOrders} total={queueOrders.length} onOpen={preview.openOrder} />
+              <OrderFilterResults orders={visibleOrders} total={queueOrders.length} idPrefix="manager" motionKey={queue + '-' + filterId} outgoing={filterMotion.outgoing} onOpen={preview.openOrder} />
             </>
           )}
         </main>

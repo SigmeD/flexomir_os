@@ -19,6 +19,14 @@ html[data-order-navigation-motion=back]::view-transition-new(fos-order-content) 
 @keyframes fos-order-in-right { from { transform: translateX(44px); opacity: .18; } to { transform: translateX(0px); opacity: 1; } }
 @keyframes fos-order-out-right { from { transform: translateX(0px); opacity: 1; } to { transform: translateX(28px); opacity: 0; } }
 @keyframes fos-order-in-left { from { transform: translateX(-44px); opacity: .18; } to { transform: translateX(0px); opacity: 1; } }
+/* Order filters retarget the list without resnapshotting the glass action in PageHeader. */
+.fos-order-filter-results { position: relative; min-width: 0; }
+.fos-order-filter-results__old { position: absolute; inset: 0 0 auto; width: 100%; pointer-events: none; }
+html[data-order-filter-motion=forward] .fos-order-filter-results > .fos-orders-page__list { animation: fos-order-in-right var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+html[data-order-filter-motion=back] .fos-order-filter-results > .fos-orders-page__list { animation: fos-order-in-left var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+html[data-order-filter-motion=forward] .fos-order-filter-results__old { animation: fos-order-out-left var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+html[data-order-filter-motion=back] .fos-order-filter-results__old { animation: fos-order-out-right var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
+html[data-order-filter-motion] .fos-orders-page__main { overflow-x: clip; }
 /* Section changes raise only the content. The page heading and AppShell remain fixed. */
 html[data-cabinet-section-motion] .fos-demo-workspace .fos-orders-page__main > :not(.fos-page-header):not(.fos-layout-browser):not(.fos-sr-only),
 html[data-cabinet-section-motion] .fos-demo-workspace .fos-layout-browser > :not(.fos-page-header) { animation: fos-section-in 200ms cubic-bezier(.45, 0, .2, 1) both; }
@@ -35,6 +43,8 @@ html[data-order-navigation-fallback=back] .fos-cabinet__main > :not(.fos-page-he
 html[data-order-navigation-fallback=back] .fos-layout-browser > :not(.fos-page-header) { animation: fos-order-in-left var(--fos-order-transition-duration) var(--fos-order-transition-easing) both; }
 html[data-order-navigation-fallback] .fos-orders-page__main { overflow-x: clip; }
 @media (prefers-reduced-motion: reduce) {
+  html[data-order-filter-motion] .fos-order-filter-results > .fos-orders-page__list,
+  html[data-order-filter-motion] .fos-order-filter-results__old { animation: none; }
   html[data-cabinet-section-motion] .fos-demo-workspace .fos-orders-page__main > :not(.fos-page-header):not(.fos-layout-browser):not(.fos-sr-only),
   html[data-cabinet-section-motion] .fos-demo-workspace .fos-layout-browser > :not(.fos-page-header) { animation: none; }
   html[data-order-navigation-motion]::view-transition-old(fos-order-content),html[data-order-navigation-motion]::view-transition-new(fos-order-content),

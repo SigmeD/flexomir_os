@@ -10,6 +10,7 @@ let fallbackEpoch = 0
 export function commitContentNavigation(direction: ContentNavigationDirection, commit: () => void) {
   const epoch = ++fallbackEpoch
   delete document.documentElement.dataset.cabinetSectionMotion
+  delete document.documentElement.dataset.orderFilterMotion
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     activeTransition?.skipTransition()
     delete document.documentElement.dataset.orderNavigationMotion
@@ -37,6 +38,23 @@ export function commitContentNavigation(direction: ContentNavigationDirection, c
   })
 }
 
+/** Filter changes animate their list only, leaving the glass header action in the live DOM. */
+export function commitOrderFilterNavigation(direction: ContentNavigationDirection, commit: () => void) {
+  const epoch = ++fallbackEpoch
+  activeTransition?.skipTransition()
+  delete document.documentElement.dataset.orderNavigationMotion
+  delete document.documentElement.dataset.orderNavigationFallback
+  delete document.documentElement.dataset.cabinetSectionMotion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    delete document.documentElement.dataset.orderFilterMotion
+    commit()
+    return
+  }
+  document.documentElement.dataset.orderFilterMotion = direction
+  flushSync(commit)
+  window.setTimeout(() => { if (fallbackEpoch === epoch) delete document.documentElement.dataset.orderFilterMotion }, 330)
+}
+
 /** Animate the newly selected cabinet section after its exit guard has committed. */
 export function commitSectionNavigation(commit: () => void) {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -44,6 +62,7 @@ export function commitSectionNavigation(commit: () => void) {
     activeTransition?.skipTransition()
     delete document.documentElement.dataset.orderNavigationMotion
     delete document.documentElement.dataset.orderNavigationFallback
+    delete document.documentElement.dataset.orderFilterMotion
     delete document.documentElement.dataset.cabinetSectionMotion
     commit()
     return
@@ -51,6 +70,7 @@ export function commitSectionNavigation(commit: () => void) {
   activeTransition?.skipTransition()
   delete document.documentElement.dataset.orderNavigationMotion
   delete document.documentElement.dataset.orderNavigationFallback
+  delete document.documentElement.dataset.orderFilterMotion
   const epoch = ++fallbackEpoch
   document.documentElement.dataset.cabinetSectionMotion = 'enter'
   flushSync(commit)

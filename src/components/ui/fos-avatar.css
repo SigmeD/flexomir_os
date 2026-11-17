@@ -1,0 +1,17 @@
+.fos-avatar {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--fos-v2-semantic-color-text-brand, #1f3861);
+  color: #fff;
+  font: 600 17px/1 var(--fos-font-family);
+}
+.fos-avatar[data-size='large'] { width: 80px; height: 80px; font-size: 20px; }
+.fos-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (forced-colors: active) {
+  .fos-avatar { border: 1px solid ButtonText; background: Canvas; color: CanvasText; }
+}
