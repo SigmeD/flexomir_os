@@ -6,6 +6,7 @@ import { DEMO_PROFILE_IDENTITIES, type DemoProfileIdentity } from '@/demo/profil
 import { useCabinetNavigation } from './CabinetNavigation'
 import type { CabinetSection } from './CabinetPage'
 import { ProfileSettingsScreen } from '@/screens/profile/ProfileSettingsScreen'
+import flexomirLogo from '@/assets/brand/flexomir-logo-light.svg'
 import './app-shell.css'
 
 interface AppShellProps {
@@ -61,14 +62,14 @@ export function AppShell({
   return (
     <div className="fos-app-shell" data-variant={variant}>
       <aside className="fos-app-shell__aside" aria-label="Навигация">
-        <div className="fos-app-shell__brand">FLEXOMIR OS</div>
+        <div className="fos-app-shell__brand"><img src={flexomirLogo} alt="Flexomir V" /></div>
         <SidebarNav items={items} activeId={activeId} motionFromId={navigation?.motionFromSection} onSelect={selectSection} ariaLabel={navigationLabel} />
         {!compact && <AccountMenu identity={accountIdentity} photoPreview={accountPhotoPreview} placement="sidebar" onOpenProfile={onOpenProfile} />}
       </aside>
       <div className="fos-app-shell__content">
         <header className="fos-app-shell__mobile-header" data-testid="app-shell-mobile-header">
           <div className="fos-app-shell__identity">
-            <strong>FLEXOMIR OS</strong>
+            <img src={flexomirLogo} alt="Flexomir V" />
           </div>
           {compact && (
             <NavigationDrawer

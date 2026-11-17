@@ -16,7 +16,7 @@
 .fos-demo-workspace__hide { width: 32px; height: 32px; flex: none; border: 0; border-radius: 8px; background: transparent; color: #263542; font: 400 24px/1 Manrope,system-ui,sans-serif; cursor: pointer; }
 .fos-demo-workspace__hide:hover { background: rgba(255,255,255,.42); }
 .fos-demo-workspace__hide:focus-visible,.fos-demo-workspace__show:focus-visible { outline: 2px solid #1f3861; outline-offset: 2px; }
-.fos-demo-workspace__show { position: fixed; z-index: 120; top: 60px; left: 8px; padding: 8px 14px; border: 1px solid rgba(230,238,244,.82); border-radius: 20px; background: rgba(248,250,252,.82); color: #263542; font: 600 13px/20px Manrope,system-ui,sans-serif; backdrop-filter: blur(9px); cursor: pointer; }
+.fos-demo-workspace__show { position: fixed; z-index: 120; top: 104px; left: 24px; padding: 8px 14px; border: 1px solid rgba(230,238,244,.82); border-radius: 20px; background: rgba(248,250,252,.82); color: #263542; font: 600 13px/20px Manrope,system-ui,sans-serif; backdrop-filter: blur(9px); cursor: pointer; }
 .fos-order-composer { min-width: 0; overflow-wrap: anywhere; }
 @media(max-width:600px) {
   .fos-demo-workspace__controls { top: 80px; right: 8px; width: min(360px, calc(100vw - 16px)); }
