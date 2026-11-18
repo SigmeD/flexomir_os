@@ -1,5 +1,5 @@
 .fos-popup-surface {
-  --fos-popup-color: #253144;
+  --fos-popup-color: var(--fos-v2-semantic-color-text-brand, #1f3861);
   --fos-popup-outline: rgba(222,225,229,.66);
   position: relative;
   box-sizing: border-box;
@@ -25,7 +25,16 @@
   color: var(--fos-popup-color);
 }
 .fos-popup-surface[data-sidebar-material="true"] [data-popup-item]:not(:disabled):not([data-disabled]):hover {
-  color: var(--fos-popup-hover-color, #3e6578);
+  color: var(--fos-popup-hover-color, var(--fos-v2-semantic-color-text-brand, #1f3861));
+}
+.fos-popup-surface[data-fos-popup="navigation"][data-sidebar-material="true"] [data-popup-item]:not(:disabled):not([data-disabled]) {
+  color: var(--fos-v2-semantic-color-text-secondary, #737781);
+}
+.fos-popup-surface[data-fos-popup="navigation"][data-sidebar-material="true"] [data-popup-item]:not(:disabled):not([data-disabled]):not([aria-current="page"]):hover {
+  color: #3e6578;
+}
+.fos-popup-surface[data-fos-popup="navigation"][data-sidebar-material="true"] [data-popup-item][aria-current="page"]:not(:disabled) {
+  color: var(--fos-v2-semantic-color-text-brand, #1f3861);
 }
 .fos-popup-surface__shell.fos-glass-material {
   position: absolute;
@@ -43,7 +52,7 @@
 .fos-popup-surface [role="menuitem"],
 .fos-popup-surface [role="option"] {
   font: var(--fos-type-popup-item);
-  color: #253144;
+  color: var(--fos-popup-color);
   background: transparent;
   transform-origin: center;
   transition: transform 160ms ease;
