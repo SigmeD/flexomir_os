@@ -3154,7 +3154,7 @@ Axe:0 violations в scope Select/portal, contrast rules включены. `incom
 <a id="evidence-primary-headeraction-lens-issue64-2026-11-18"></a>
 ## Evidence: Primary HeaderAction lens / Issue #64 / 18.11.2026
 
-Ответственный: Codex/frontend. Статус: **DEV PILOT OWNER APPROVED / SHARED ROLLOUT IN BRANCH / MERGE OPEN**. База `origin/main` при старте `cf0443d48b75e6db84db7fcd3acb344c84bb2bc6`; ветка `feat/issue-64-header-action-lens`. Figma edit, PR, CI и merge не выполнены.
+Ответственный: Codex/frontend. Статус: **DEV PILOT OWNER APPROVED / SHARED ROLLOUT IN DRAFT PR / MERGE OPEN**. База `origin/main` при старте `cf0443d48b75e6db84db7fcd3acb344c84bb2bc6`; ветка `feat/issue-64-header-action-lens`, проверенный код `f5005a5`, [draft PR #65](https://github.com/SigmeD/flexomir_os/pull/65). Figma edit и merge не выполнены; CI PR в проверке.
 
 Источники: [Issue #64](https://github.com/SigmeD/flexomir_os/issues/64); Flexomir FOS Web Action `1953:4168`, Send `1941:680` и Icon Send `1886:656`; внешний material reference DenSept `22:2` / core `126:56`. Внешний референс показывает 4px прозрачную оболочку вокруг синей сердцевины. Его горизонтальная форма, текст и голубой градиент не перенесены. Фирменный ориентир — Owner screenshot сайта Flexomir-V и уже применяемый в React `--fos-color-breadcrumb: #02357f`; это цвет кандидата, не утверждённый новый DS-токен.
 
@@ -3164,6 +3164,6 @@ Axe:0 violations в scope Select/portal, contrast rules включены. `incom
 
 Проверки rollout: `npm run build` PASS; `npx playwright test --config=playwright.header-lens.config.ts --workers=2` **42/42 PASS** в Chromium/Firefox/WebKit, затем отдельная проверка системного цвета Plus в forced colors **3/3 PASS**. Адресная Chromium регрессия Order, Item, HeaderAction, Layouts, Support, Profile, Neutral и frozen FE11: **78 PASS, 1 SKIPPED** (touch account trigger в desktop-проекте). Проверены геометрия/иконки/core на 1440/768/390/320, disabled→enabled, callbacks, Enter/Space/touch, focus, reduced motion, forced colors, отсутствие overflow и перекрытия More. Визуально просмотрены 2× Original/Candidate Default/Pressed/Release на белом/тёмном и действующие Client/Manager «Добавить»/Send/Save на белом. Снимки rollout — ignored `output/issue64/2026-11-18-rollout-v13/`; v1–v12 и Owner originals сохранены. `FosGlassMaterial`, `FosMaterialSurface`, `glass.tsx` и `glass-motion.ts` отсутствуют в diff.
 
-OPEN: PR/CI и синхронизация Drive CURRENT после фиксации проверенного head. Merge — только после отдельного решения Owner. Физические устройства не проверялись; Figma master не менялся. Frozen FE11 manifest сохранён.
+OPEN: CI/review draft PR #65 и синхронизация Drive CURRENT. Merge — только после отдельного решения Owner. Физические устройства не проверялись; Figma master не менялся. Frozen FE11 manifest сохранён.
 
 ---
