@@ -3164,6 +3164,6 @@ Axe:0 violations в scope Select/portal, contrast rules включены. `incom
 
 Проверки rollout: `npm run build` PASS; `npx playwright test --config=playwright.header-lens.config.ts --workers=2` **42/42 PASS** в Chromium/Firefox/WebKit, затем отдельная проверка системного цвета Plus в forced colors **3/3 PASS**. Адресная Chromium регрессия Order, Item, HeaderAction, Layouts, Support, Profile, Neutral и frozen FE11: **78 PASS, 1 SKIPPED** (touch account trigger в desktop-проекте). Проверены геометрия/иконки/core на 1440/768/390/320, disabled→enabled, callbacks, Enter/Space/touch, focus, reduced motion, forced colors, отсутствие overflow и перекрытия More. Визуально просмотрены 2× Original/Candidate Default/Pressed/Release на белом/тёмном и действующие Client/Manager «Добавить»/Send/Save на белом. Снимки rollout — ignored `output/issue64/2026-11-18-rollout-v13/`; v1–v12 и Owner originals сохранены. `FosGlassMaterial`, `FosMaterialSurface`, `glass.tsx` и `glass-motion.ts` отсутствуют в diff.
 
-OPEN: CI/review draft PR #65 и синхронизация Drive CURRENT. Merge — только после отдельного решения Owner. Физические устройства не проверялись; Figma master не менялся. Frozen FE11 manifest сохранён.
+Drive CURRENT синхронизирован 18.11: клиентский статус, Frontend CURRENT и компонентный backlog, чтение после записи подтверждено. OPEN: CI/review draft PR #65. Merge — только после отдельного решения Owner. Физические устройства не проверялись; Figma master не менялся. Frozen FE11 manifest сохранён.
 
 ---
