@@ -16,7 +16,7 @@ export function PlusMotionLab() {
       {(['legacy', 'surface'] as const).map(mode => <section key={mode} aria-label={mode === 'legacy' ? 'Прежняя реакция' : 'Контрольный Plus'}>
         <h2>{mode === 'legacy' ? 'До · только содержимое' : 'После · поверхность и свет'}</h2>
         <div className="plus-motion-lab__stage"><div className="plus-motion-lab__sample">
-          <SectionAddItem palette={mode === 'surface' ? 'neutral' : 'reference'} disabled={disabled} data-testid={`${mode}-plus`} onClick={() => setCount(value => value + 1)} />
+          <SectionAddItem palette={mode === 'surface' ? 'neutral' : 'reference'} appearance="standard" disabled={disabled} data-testid={`${mode}-plus`} onClick={() => setCount(value => value + 1)} />
         </div></div>
       </section>)}
     </div>

@@ -29,6 +29,20 @@
 }
 .fos-confirm-dialog__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 12px; }
 .fos-confirm-dialog__actions .fos-action { min-width: 120px; height: 40px; min-height: 40px; border-radius: 20px; }
+.fos-confirm-dialog__actions .fos-action--primary {
+  --fos-neutral-primary: var(--fos-color-breadcrumb, #02357f);
+  --fos-neutral-primary-hover: #06428c;
+  --fos-neutral-focus: #1b5ea9;
+}
+.fos-confirm-dialog__actions .fos-action--primary .fos-action__solid {
+  transition: background-color 90ms ease, border-color 90ms ease, box-shadow 90ms ease, transform 90ms ease;
+}
+.fos-confirm-dialog__actions .fos-action--primary:not(:disabled):is([data-pressed="true"], [data-feedback="true"]) .fos-action__solid {
+  background: #01265c;
+  border-color: #01265c;
+  box-shadow: inset 0 2px 5px rgb(0 17 45 / .38);
+  transform: scale(.97);
+}
 @media (max-width: 360px) {
   .fos-confirm-dialog { width: 296px; min-height: 128px; padding: 20px; }
   .fos-confirm-dialog__actions { justify-content: stretch; }
@@ -38,4 +52,5 @@
   .fos-confirm-overlay { background: Canvas; }
   .fos-confirm-dialog { border: 1px solid CanvasText; background: Canvas; color: CanvasText; }
   .fos-confirm-dialog__close { color: ButtonText; }
+  .fos-confirm-dialog__actions .fos-action--primary:not(:disabled):is([data-pressed="true"], [data-feedback="true"]) { background: Highlight; color: HighlightText; border-color: Highlight; }
 }
