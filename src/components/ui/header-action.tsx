@@ -1,11 +1,12 @@
 import { FosButtonRoot } from '@/components/ui/fos-button-root'
-import { useImperativeHandle, useLayoutEffect, useRef, type ComponentProps } from 'react'
+import { useEffect, useImperativeHandle, useLayoutEffect, useRef, useState, type ComponentProps } from 'react'
 import { useDirectionalPress } from './use-directional-press'
 import { FosActionSurface } from './fos-action-surface'
 import type { ActionPalette } from './action-palette'
 import { DEFAULT_ACTION_PALETTE, isNeutralAction } from './action-palette'
 import './header-action.css'
 import './action-palette.css'
+import './header-action-lens.css'
 import saveIcon from '@/assets/orders/save.svg'
 import sendIcon from '@/assets/orders/send.svg'
 import editIcon from '@/assets/orders/edit.svg'
@@ -19,20 +20,42 @@ export interface HeaderActionProps extends Omit<ComponentProps<'button'>, 'child
   accessibleName: string
   presentation?: HeaderActionPresentation
   palette?: ActionPalette
+  appearance?: 'standard' | 'primary-lens'
   onAction?: () => void
 }
 
 /** Shared Client/Manager icon action. Only the 48px circle animates; the hit area and caption stay fixed. */
 export function HeaderAction({
-  action, accessibleName, presentation = 'auto', palette = DEFAULT_ACTION_PALETTE, onAction, disabled = false,
+  action, accessibleName, presentation = 'auto', palette = DEFAULT_ACTION_PALETTE, appearance = 'primary-lens', onAction, disabled = false,
   className = '', ref, ...buttonProps
 }: HeaderActionProps) {
   const neutral = isNeutralAction(palette)
+  const lens = appearance === 'primary-lens' && neutral
+  const [feedback, setFeedback] = useState(false)
+  const feedbackTimer = useRef<number | null>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   useImperativeHandle(ref, () => buttonRef.current!, [])
   const circleRef = useRef<HTMLSpanElement>(null)
   const motionRef = useRef<HTMLSpanElement>(null)
   const press = useDirectionalPress(buttonRef, circleRef, disabled, 'ha', neutral)
+  useEffect(() => () => {
+    if (feedbackTimer.current !== null) window.clearTimeout(feedbackTimer.current)
+  }, [])
+  useEffect(() => {
+    if (lens && !disabled) return
+    if (feedbackTimer.current !== null) window.clearTimeout(feedbackTimer.current)
+    feedbackTimer.current = null
+    setFeedback(false)
+  }, [lens, disabled])
+  function showFeedback() {
+    if (!lens) return
+    if (feedbackTimer.current !== null) window.clearTimeout(feedbackTimer.current)
+    setFeedback(true)
+    feedbackTimer.current = window.setTimeout(() => {
+      setFeedback(false)
+      feedbackTimer.current = null
+    }, 220)
+  }
   function positionTooltip() {
     const button = buttonRef.current
     const tooltip = button?.querySelector<HTMLElement>('.fos-ha__tooltip')
@@ -60,9 +83,11 @@ export function HeaderAction({
       data-presentation={presentation}
       data-action={action}
       data-action-palette={neutral ? 'neutral' : undefined}
+      data-appearance={lens ? 'primary-lens' : undefined}
+      data-feedback={lens && feedback ? 'true' : undefined}
       data-surface-motion={neutral ? 'pressure' : undefined}
       className={['fos-ha', 'fos-ha--' + presentation, className].filter(Boolean).join(' ')}
-      onClick={event => { if (press.allowsClick(event)) onAction?.() }}
+      onClick={event => { if (press.allowsClick(event)) { showFeedback(); onAction?.() } }}
       onPointerEnter={event => { positionTooltip(); press.onPointerEnter(event); buttonProps.onPointerEnter?.(event) }}
       onPointerMove={event => { press.onPointerMove(event); buttonProps.onPointerMove?.(event) }}
       onPointerLeave={event => { press.onPointerLeave(event); buttonProps.onPointerLeave?.(event) }}

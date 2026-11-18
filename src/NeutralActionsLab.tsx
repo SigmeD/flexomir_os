@@ -15,12 +15,12 @@ function Samples({ palette, surfaceLabel }: { palette: ActionPalette; surfaceLab
     <h3>{neutral ? 'Единое семейство · OWNER OPEN' : 'Reference-палитра · для сравнения'}</h3>
     <div className="neutral-lab__controls">
       <SectionAddItem palette={palette} onClick={activate} data-testid={`${prefix}-plus`} />
-      <HeaderAction palette={palette} action="save" accessibleName={neutral ? 'Нейтральный Save' : 'Текущий Save'} onAction={activate} data-testid={`${prefix}-header`} />
+      <HeaderAction palette={palette} appearance="standard" action="save" accessibleName={neutral ? 'Нейтральный Save' : 'Текущий Save'} onAction={activate} data-testid={`${prefix}-header`} />
       <FOSAction palette={palette} hierarchy="primary" onClick={activate} data-testid={`${prefix}-primary`}>Основное действие</FOSAction>
       <FOSAction palette={palette} onClick={activate} data-testid={`${prefix}-secondary`}>Вторичное действие</FOSAction>
       <FOSAction palette={palette} hierarchy="tertiary" shape="icon" size="compact" aria-label="Закрыть пример" onClick={activate} data-testid={`${prefix}-icon`}><span aria-hidden="true">×</span></FOSAction>
       <FOSAction palette={palette} hierarchy="primary" disabled onClick={activate} data-testid={`${prefix}-disabled`}>Недоступно</FOSAction>
-      <HeaderAction palette={palette} action="save" accessibleName={neutral ? 'Нейтральный Save недоступен' : 'Текущий Save недоступен'} disabled />
+      <HeaderAction palette={palette} appearance="standard" action="save" accessibleName={neutral ? 'Нейтральный Save недоступен' : 'Текущий Save недоступен'} disabled />
       <SectionAddItem palette={palette} disabled />
     </div>
     <p role="status" data-testid={`${prefix}-count`}>Нажатий: {count}</p>
