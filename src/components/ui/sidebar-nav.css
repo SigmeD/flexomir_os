@@ -116,14 +116,23 @@
   transform: scale(var(--fos-sidebar-label-scale));
   will-change: transform;
 }
+/* Persistent navigation keeps the same overlap-driven 1.043× magnification,
+ * but rasterizes the glyphs at their displayed size during lens travel. */
+.fos-sidebar-nav--persistent .fos-sidebar-nav__label {
+  font-size: calc(1em * var(--fos-sidebar-label-scale));
+  transform: none;
+  will-change: auto;
+}
 @media (prefers-reduced-motion: reduce) {
   .fos-sidebar-nav__item { transition: none; }
   .fos-sidebar-nav__lens::after { will-change: auto; }
   .fos-sidebar-nav__label { transition: none; transform: none !important; will-change: auto; }
+  .fos-sidebar-nav--persistent .fos-sidebar-nav__label { font-size: inherit; }
   .fos-sidebar-nav__icon { transition: none; transform: none !important; will-change: auto; }
 }
 @media (forced-colors: active) {
   .fos-sidebar-nav__label { transform: none !important; will-change: auto; }
+  .fos-sidebar-nav--persistent .fos-sidebar-nav__label { font-size: inherit; }
   .fos-sidebar-nav__icon { transform: none !important; will-change: auto; }
   .fos-sidebar-nav__lens { border: 1px solid Highlight; background: Canvas; }
   .fos-sidebar-nav__lens::after { background: Highlight; forced-color-adjust: none; }
