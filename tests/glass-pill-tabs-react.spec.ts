@@ -59,18 +59,18 @@ test('selected optical +4.3% text scale follows lens; hover does not enlarge ina
   await work.click()
   await expect(group.getByTestId('glass-pill-lens-frame')).toHaveAttribute('data-motion-state', 'settled', { timeout: 5000 })
   await expect(work).toHaveCSS('font-weight', restingWeight)
-  const selectedScale = await work.locator('.fos-glass-pill-tabs__label').evaluate(
-    el => getComputedStyle(el).transform,
+  const selectedSize = await work.locator('.fos-glass-pill-tabs__label-text').evaluate(
+    el => parseFloat(getComputedStyle(el).fontSize),
   )
-  expect(selectedScale).not.toBe('none')
+  expect(selectedSize).toBeCloseTo(13 * 1.043, 2)
   const other = group.getByTestId('glass-pill-review')
   await other.hover()
   await expect(other).toHaveAttribute('aria-pressed', 'false')
   await expect(other).toHaveCSS('font-weight', restingWeight)
-  const otherScale = await other.locator('.fos-glass-pill-tabs__label').evaluate(
-    el => getComputedStyle(el).transform,
+  const otherSize = await other.locator('.fos-glass-pill-tabs__label-text').evaluate(
+    el => parseFloat(getComputedStyle(el).fontSize),
   )
-  expect(otherScale).toBe('matrix(1, 0, 0, 1, 0, 0)')
+  expect(otherSize).toBe(13)
 })
 
 test('D1440/L1024/T768/M390/M320 responsive and no document horizontal overflow', async ({ page }, testInfo) => {
