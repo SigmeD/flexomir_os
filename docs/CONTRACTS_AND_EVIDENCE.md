@@ -3150,3 +3150,20 @@ Axe:0 violations в scope Select/portal, contrast rules включены. `incom
 
 
 ---
+
+<a id="evidence-primary-headeraction-lens-issue64-2026-11-18"></a>
+## Evidence: Primary HeaderAction lens / Issue #64 / 18.11.2026
+
+Ответственный: Codex/frontend. Статус: **DEV PILOT / OWNER VISUAL OPEN**. База `origin/main` при старте `cf0443d48b75e6db84db7fcd3acb344c84bb2bc6`; ветка `feat/issue-64-header-action-lens`. Product rollout, Figma edit, PR, CI и merge не выполнены.
+
+Источники: [Issue #64](https://github.com/SigmeD/flexomir_os/issues/64); Flexomir FOS Web Action `1953:4168`, Send `1941:680` и Icon Send `1886:656`; внешний material reference DenSept `22:2` / core `126:56`. Внешний референс показывает 4px прозрачную оболочку вокруг синей сердцевины. Его горизонтальная форма, текст и голубой градиент не перенесены. Фирменный ориентир — Owner screenshot сайта Flexomir-V и уже применяемый в React `--fos-color-breadcrumb: #02357f`; это цвет кандидата, не утверждённый новый DS-токен.
+
+Карта: Figma Send и его disabled variant → **REUSE** `HeaderAction(action="send")` → `FosActionSurface(quiet, geometry="header")` → `FosMaterialSurface(variant="header-action")` → один существующий `GlassLens`; `useDirectionalPress` остаётся владельцем pressure. Кандидат получает только opt-in класс `.fos-ha--lens-pilot` на DEV-стенде. Общие Client/Manager, Support и прочие consumers остаются с прежними классами. `HeaderAction` уже имел несколько световых CSS-слоёв для старой reference-палитры, но действующий default — neutral; добавление новой линзы поверх неё дало бы двойной материал. Пилот использует текущую нейтральную линзу как оболочку, заменяет её локальную отделку и рисует плоскую сердцевину в существующем `::before` круга. Новых optical engine, RAF, displacement-карты и кнопочного SVG нет.
+
+Геометрия: внешний круг 48×48, core inset 4px / 40×40, glyph 24×24, desktop wrapper 68×68 с подписью Manrope 12/16 SemiBold; compact 48×48 без постоянной подписи. Native button, aria-label, tooltip, disabled, click, Enter/Space, pointer/touch и callback — прежние. На тёмном фоне прозрачная оболочка видна отчётливо; на белом она светлее и имеет направленную синеватую тень. Сердцевина `#02357F` однотонна. Сравнительный [DEV URL](http://127.0.0.1:5173/tests/fixtures/header-action-lens-pilot.html) показывает Original/Candidate на белом и тёмном фоне, также disabled; интерактивные hover/pressed/focus проверяются прямо там. Кандидатный CSS загружается только этим fixture; production bundle не содержит пилот.
+
+Проверки последней локальной версии: `npm run build` PASS; `npx playwright test --config=playwright.header-lens.config.ts --workers=2` **15/15 PASS** в Chromium, Firefox и WebKit; существующий `tests/header-action.spec.ts` **14/14 PASS** в Chromium. Геометрия, цвет иконки/core, Manrope, отсутствие overflow на 1440/768/390/320, native click, Enter/Space, контрастный focus на обоих фонах, disabled, touch, reduced motion и forced colors проверены адресными тестами. Снимки 1× и 2×, Default/Hover/Pressed/Focus, светлый/тёмный фон и узкие viewport сохранены в ignored `output/issue64/2026-11-18-pilot-v7/`; исходные Owner PNG сохранены без изменения в `-v1/`. Вручную просмотрены светлая/тёмная 2× пара, mobile390 и focus. Production assets не содержат пилотного CSS/JS; нативные экраны продукта визуально не изменены.
+
+OPEN: Owner должен оценить оптику и синий цвет на DEV-пилоте. Только после явного APPROVED согласовать список Primary HeaderAction consumers и перенести вариант через общий `HeaderAction`, затем выполнить независимую регрессию и отдельный PR/merge gate. Drive CURRENT ещё не синхронизирован: пилот не принят и не поставлен. Физические устройства не проверялись. Frozen FE11 manifest, `FosGlassMaterial`, `FosMaterialSurface`, `glass.tsx` и `glass-motion.ts` отсутствуют в diff.
+
+---

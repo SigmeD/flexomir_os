@@ -1,6 +1,10 @@
 # Flexomir OS — состояние проекта
 
-Ответственный: Codex/frontend. Статус: актуальное состояние на 17.11.2026; продуктовый `main` `e7babc67bf8fad09c2634fec73a7e33dd74be1ae` после блока №2. Следующая ревизия документации 28.11.2026. Очередь и владельцы — [DELIVERY_PLAN](DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); решения — [DECISIONS](DECISIONS.md).
+Ответственный: Codex/frontend. Статус: проверено 18.11.2026; продуктовый `origin/main` `cf0443d48b75e6db84db7fcd3acb344c84bb2bc6`. Следующая ревизия документации 28.11.2026. Очередь и владельцы — [DELIVERY_PLAN](DELIVERY_PLAN.md) и [Drive CURRENT](https://docs.google.com/document/d/1fzILzuOPgP6PEn1K5RaR9-XTw6RW6gJYELJp02Bt9BE/edit); решения — [DECISIONS](DECISIONS.md).
+
+## DEV-пилот Issue #64 / 18.11.2026
+
+[Primary HeaderAction / Liquid Glass](https://github.com/SigmeD/flexomir_os/issues/64): локальная ветка `feat/issue-64-header-action-lens` от `cf0443d`. Только в DEV доступно [изолированное сравнение Original/Candidate](http://127.0.0.1:5173/tests/fixtures/header-action-lens-pilot.html) для круглой кнопки «Отправить». Кандидат использует тот же `HeaderAction`, нейтральный `FosMaterialSurface` и pressure motion; прозрачная оболочка окружает однотонную сердцевину `#02357F`. Продуктовые потребители, production bundle, Figma и frozen FE11 не менялись. Build и адресный Chromium/Firefox/WebKit QA выполнены; снимки 1×/2× находятся локально в `output/issue64/2026-11-18-pilot-v7/`. Визуальное решение Owner, перенос на остальные Primary HeaderAction, PR/CI/merge и синхронизация Drive остаются OPEN. [Контракт пилота](CONTRACTS_AND_EVIDENCE.md#evidence-primary-headeraction-lens-issue64-2026-11-18).
 
 ## Текущий инкремент
 

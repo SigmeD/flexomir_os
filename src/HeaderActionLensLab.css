@@ -1,0 +1,89 @@
+.ha-lens-lab { width: min(760px, calc(100% - 32px)); margin: 36px auto 72px; font-family: var(--fos-font-family); color: #1f2228; }
+.ha-lens-lab__intro { margin-bottom: 28px; }
+.ha-lens-lab__intro p { font-size: 11px; font-weight: 750; letter-spacing: .1em; color: #607887; }
+.ha-lens-lab__intro h1 { font-size: clamp(23px, 4vw, 32px); line-height: 1.2; margin: 8px 0; }
+.ha-lens-lab__intro span { font-size: 14px; }
+.ha-lens-lab__panel { padding: 28px; border-radius: 18px; margin-bottom: 16px; }
+.ha-lens-lab__panel--light { background: #fff; border: 1px solid #e1e7e9; }
+.ha-lens-lab__panel--dark { background: #0b2e49; color: #fff; }
+.ha-lens-lab__panel h2 { font-size: 16px; line-height: 1.4; margin: 0 0 24px; }
+.ha-lens-lab__compare { display: flex; gap: clamp(28px, 12vw, 120px); align-items: flex-start; }
+.ha-lens-lab__compare--disabled { margin-top: 30px; padding-top: 20px; border-top: 1px solid rgb(128 148 164 / .3); }
+.ha-lens-lab__sample { display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 100px; }
+.ha-lens-lab__sample > span { font-size: 12px; font-weight: 650; white-space: nowrap; }
+.ha-lens-lab__panel--dark .fos-ha { --ha-caption: #fff; }
+.ha-lens-lab__count { font-size: 13px; font-weight: 650; }
+@media (max-width: 390px) {
+  .ha-lens-lab { margin-top: 22px; }
+  .ha-lens-lab__panel { padding: 20px 14px; }
+  .ha-lens-lab__compare { justify-content: space-around; gap: 12px; }
+  .ha-lens-lab__sample { min-width: 0; }
+}
+
+/* Issue #64 DEV pilot. Keep the accepted neutral glass/pressure layer as the lens. */
+.fos-ha.fos-ha--lens-pilot[data-action-palette="neutral"] .fos-ha__circle {
+  --ha-pilot-core: #02357f;
+  color: #fff;
+  overflow: hidden;
+}
+.fos-ha--lens-pilot .fos-ha__material {
+  border-color: rgb(166 209 232 / .43);
+  background: linear-gradient(145deg,
+    rgb(213 239 251 / .56),
+    rgb(199 231 247 / .29) 34%,
+    rgb(135 188 219 / .20) 64%,
+    rgb(232 248 255 / .41));
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / .72),
+    inset 0 -1px 2px rgb(25 77 117 / .14),
+    0 3px 7px rgb(7 45 73 / .13),
+    0 1px 2px rgb(7 45 73 / .09);
+  transition: background .18s ease, box-shadow .18s ease;
+}
+.fos-ha.fos-ha--lens-pilot[data-action-palette="neutral"] .fos-ha__circle::before {
+  display: block;
+  inset: 4px;
+  z-index: 1;
+  border-radius: 50%;
+  background: var(--ha-pilot-core);
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / .16),
+    inset 0 -1px 3px rgb(0 20 59 / .25);
+  transform: none;
+}
+.fos-ha--lens-pilot .fos-action__motion { z-index: 2; }
+.fos-ha--lens-pilot:not(:disabled):hover .fos-ha__material {
+  background: linear-gradient(145deg,
+    rgb(220 243 253 / .67),
+    rgb(201 234 249 / .35) 34%,
+    rgb(141 194 224 / .24) 64%,
+    rgb(238 250 255 / .49));
+  box-shadow:
+    inset 0 1px 2px rgb(255 255 255 / .78),
+    inset 0 -1px 2px rgb(25 77 117 / .17),
+    0 4px 9px rgb(7 45 73 / .16),
+    0 1px 2px rgb(7 45 73 / .09);
+}
+.fos-ha--lens-pilot[data-pressed="true"] .fos-ha__material {
+  box-shadow:
+    inset 0 2px 3px rgb(7 45 73 / .21),
+    inset 0 -1px 1px rgb(255 255 255 / .60),
+    0 2px 4px rgb(7 45 73 / .13);
+}
+.ha-lens-lab .fos-ha--lens-pilot:focus-visible {
+  outline: 3px solid #1b5ea9;
+  outline-offset: 3px;
+}
+.ha-lens-lab__panel--dark .fos-ha--lens-pilot:focus-visible { outline-color: #d7f1ff; }
+@media (prefers-reduced-motion: reduce) {
+  .fos-ha--lens-pilot .fos-ha__material { transition: none; }
+}
+@media (forced-colors: active) {
+  .fos-ha.fos-ha--lens-pilot[data-action-palette="neutral"] .fos-ha__circle {
+    color: ButtonText;
+  }
+  .fos-ha.fos-ha--lens-pilot[data-action-palette="neutral"] .fos-ha__circle::before { display: none; }
+  .fos-ha--lens-pilot .fos-ha__material { display: none; }
+  .ha-lens-lab .fos-ha--lens-pilot:focus-visible { outline-color: Highlight; }
+  .ha-lens-lab__panel--dark .fos-ha--lens-pilot:focus-visible { outline-color: Highlight; }
+}
