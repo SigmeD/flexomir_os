@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { FOSAction } from './fos-controls'
 import './confirm-dialog.css'
@@ -26,6 +26,44 @@ export function ConfirmDialog({
   onDismiss?: () => void
 }) {
   const dialogRef = useRef<HTMLDivElement>(null)
+  const confirmTimer = useRef<number | null>(null)
+  const [confirmFeedback, setConfirmFeedback] = useState(false)
+
+  useEffect(() => {
+    if (open) return
+    if (confirmTimer.current !== null) window.clearTimeout(confirmTimer.current)
+    confirmTimer.current = null
+    setConfirmFeedback(false)
+  }, [open])
+
+  useEffect(() => () => {
+    if (confirmTimer.current !== null) window.clearTimeout(confirmTimer.current)
+  }, [])
+
+  function confirmWithFeedback() {
+    if (busy || confirmTimer.current !== null) return
+    setConfirmFeedback(true)
+    confirmTimer.current = window.setTimeout(() => {
+      confirmTimer.current = null
+      setConfirmFeedback(false)
+      void onConfirm()
+    }, 180)
+  }
+  function cancelPendingConfirmation() {
+    if (confirmTimer.current !== null) window.clearTimeout(confirmTimer.current)
+    confirmTimer.current = null
+    setConfirmFeedback(false)
+  }
+  function cancel() {
+    if (busy) return
+    cancelPendingConfirmation()
+    onCancel()
+  }
+  function dismiss() {
+    if (busy) return
+    cancelPendingConfirmation()
+    ;(onDismiss ?? onCancel)()
+  }
 
   useEffect(() => {
     if (!open) return
@@ -34,6 +72,7 @@ export function ConfirmDialog({
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape' && !busy) {
         event.preventDefault()
+        cancelPendingConfirmation()
         ;(onDismiss ?? onCancel)()
         return
       }
@@ -61,14 +100,14 @@ export function ConfirmDialog({
 
   if (!open) return null
   return createPortal(
-    <div className="fos-confirm-overlay" onMouseDown={event => { if (event.target === event.currentTarget && !busy) (onDismiss ?? onCancel)() }}>
+    <div className="fos-confirm-overlay" onMouseDown={event => { if (event.target === event.currentTarget) dismiss() }}>
       <div ref={dialogRef} className="fos-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="fos-confirm-title" aria-describedby={body ? 'fos-confirm-body' : undefined}>
-      <FOSAction hierarchy="tertiary" shape="icon" size="compact" className="fos-confirm-dialog__close" aria-label="Закрыть" onClick={onDismiss ?? onCancel} disabled={busy}><span aria-hidden="true">×</span></FOSAction>
+      <FOSAction hierarchy="tertiary" shape="icon" size="compact" className="fos-confirm-dialog__close" aria-label="Закрыть" onClick={dismiss} disabled={busy}><span aria-hidden="true">×</span></FOSAction>
         <h2 id="fos-confirm-title">{title}</h2>
         {body && <p id="fos-confirm-body">{body}</p>}
         <div className="fos-confirm-dialog__actions">
-          <FOSAction hierarchy="primary" disabled={busy} onClick={onConfirm}>{confirmLabel}</FOSAction>
-          <FOSAction hierarchy="secondary" disabled={busy} onClick={onCancel}>{cancelLabel}</FOSAction>
+          <FOSAction hierarchy="primary" disabled={busy} data-feedback={confirmFeedback ? 'true' : undefined} onClick={confirmWithFeedback}>{confirmLabel}</FOSAction>
+          <FOSAction hierarchy="secondary" disabled={busy} onClick={cancel}>{cancelLabel}</FOSAction>
         </div>
       </div>
     </div>,

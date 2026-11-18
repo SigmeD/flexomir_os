@@ -249,7 +249,9 @@ export function GlassPillTabs({
               onClick={() => {
                 if (!item.disabled && item.id !== value) onValueChange(item.id)
               }}
-            ><span className="fos-glass-pill-tabs__label">{item.label}</span></FosButtonRoot>
+            ><span className="fos-glass-pill-tabs__label" data-label={item.label}>
+              <span className="fos-glass-pill-tabs__label-text">{item.label}</span>
+            </span></FosButtonRoot>
           ))}
         </div>
       </div>

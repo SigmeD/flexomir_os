@@ -8,8 +8,8 @@
  * SidebarNav, shared material, and spring physics are unchanged.
  */
 .fos-glass-pill-tabs {
-  --fos-pill-text: var(--fos-v2-semantic-color-text-secondary, #697986);
-  --fos-pill-selected: var(--fos-v2-semantic-color-text-brand, #293c49);
+  --fos-pill-text: var(--fos-color-breadcrumb, #02357f);
+  --fos-pill-selected: var(--fos-color-breadcrumb, #02357f);
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -100,7 +100,7 @@
 .fos-glass-pill-tabs__button[aria-pressed="true"] {
   color: var(--fos-pill-selected);
 }
-.fos-glass-pill-tabs__button:hover:not(:disabled):not([aria-pressed="true"]) { color: #415b6d; }
+.fos-glass-pill-tabs__button:hover:not(:disabled):not([aria-pressed="true"]) { color: #01265c; }
 .fos-glass-pill-tabs__button:focus-visible {
   outline: 2px solid #547b92;
   outline-offset: -3px;
@@ -109,10 +109,21 @@
 .fos-glass-pill-tabs__label {
   --fos-pill-label-scale: 1;
   position: relative;
-  display: inline-block;
-  transform: scale(var(--fos-pill-label-scale));
-  transform-origin: center;
-  will-change: transform;
+  display: inline-grid;
+  place-items: center;
+}
+.fos-glass-pill-tabs__label::before {
+  content: attr(data-label);
+  visibility: hidden;
+}
+.fos-glass-pill-tabs__label-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(1em * var(--fos-pill-label-scale));
+  white-space: nowrap;
 }
 @media (max-width: 700px) {
   .fos-glass-pill-tabs__track { padding-left: 20px; padding-right: 20px; }
@@ -120,7 +131,7 @@
 @media (prefers-reduced-motion: reduce) {
   .fos-glass-pill-tabs__scroll { scroll-behavior: auto; }
   .fos-glass-pill-tabs__button { transition: none; }
-  .fos-glass-pill-tabs__label { transform: none; will-change: auto; }
+  .fos-glass-pill-tabs__label-text { font-size: inherit; }
   .fos-glass-pill-tabs__lens-frame { will-change: auto; }
 }
 @media (forced-colors: active) {

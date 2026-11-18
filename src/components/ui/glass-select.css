@@ -2,6 +2,7 @@
 :root {
   --gs-scheme: light;
   --gs-foreground: #15384c;
+  --gs-popup-text: var(--fos-v2-semantic-color-text-brand, #1f3861);
   --gs-muted: #42627a;
   --gs-trigger: rgba(239, 247, 251, 0.94);
   --gs-material-rgb: 249 251 252;
@@ -19,6 +20,7 @@
 :root:not(.light)[data-theme="dark"] {
   --gs-scheme: dark;
   --gs-foreground: #eef6fa;
+  --gs-popup-text: var(--gs-foreground);
   --gs-muted: #c0d3de;
   --gs-trigger: rgba(24, 42, 55, 0.94);
   --gs-material-rgb: 18 34 45;
@@ -35,6 +37,7 @@
   :root:not(.light):not(.dark):not([data-theme="light"]):not([data-theme="dark"]) {
     --gs-scheme: dark;
     --gs-foreground: #eef6fa;
+    --gs-popup-text: var(--gs-foreground);
     --gs-muted: #c0d3de;
     --gs-trigger: rgba(24, 42, 55, 0.94);
     --gs-material-rgb: 18 34 45;
@@ -88,7 +91,7 @@
 [data-glass-select-item] {
   /* Preserve the existing hit area when the shared item line changes 20→18. */
   min-height: 36px;
-  color: var(--gs-foreground);
+  color: var(--gs-popup-text);
   font-family: inherit;
 }
 

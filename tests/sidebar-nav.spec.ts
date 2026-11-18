@@ -164,14 +164,17 @@ function scaleFromTransform(transform: string) {
   return matrix ? Number(matrix[1].split(',')[0].trim()) : NaN
 }
 
+function labelScale(node: Element) {
+  return Number.parseFloat(getComputedStyle(node).fontSize) / Number.parseFloat(getComputedStyle(node.parentElement!).fontSize)
+}
+
 test('reference 2.2.5 C label magnification follows the selected lens', async ({ page }) => {
   const manager = page.getByTestId('sidebar-lab-manager')
   const orders = manager.getByTestId('sidebar-nav-orders')
   const clients = manager.getByTestId('sidebar-nav-clients')
   const support = manager.getByTestId('sidebar-nav-support')
   const getScale = async (button: typeof orders) => {
-    const value = await button.locator('.fos-sidebar-nav__label').evaluate(node => getComputedStyle(node).transform)
-    return scaleFromTransform(value)
+    return button.locator('.fos-sidebar-nav__label').evaluate(labelScale)
   }
 
   await page.mouse.move(1200, 600)
@@ -194,21 +197,21 @@ test('hover previews color and surface; focus adds outline; zoom follows click a
   const lens = manager.getByTestId('sidebar-selected-lens')
   const label = clients.locator('.fos-sidebar-nav__label')
   const icon = clients.locator('.fos-sidebar-nav__icon')
-  const labelScale = async () => scaleFromTransform(await label.evaluate(el => getComputedStyle(el).transform))
+  const getLabelScale = async () => label.evaluate(labelScale)
   const iconScale = async () => scaleFromTransform(await icon.evaluate(el => getComputedStyle(el).transform))
 
   await page.mouse.move(1200, 600)
   await expect(clients).toHaveCSS('color', 'rgb(115, 119, 129)')
   await clients.hover()
   await expect(clients).toHaveCSS('color', 'rgb(62, 101, 120)')
-  expect(await labelScale()).toBeCloseTo(1, 3)
+  expect(await getLabelScale()).toBeCloseTo(1, 3)
   expect(await iconScale()).toBeCloseTo(1, 3)
   await expect(orders).toHaveAttribute('aria-current', 'page')
   await expect(lens).toHaveAttribute('data-travel-target', '0')
 
   await clients.focus()
   await expect(clients).toBeFocused()
-  expect(await labelScale()).toBeCloseTo(1, 3)
+  expect(await getLabelScale()).toBeCloseTo(1, 3)
   expect(await iconScale()).toBeCloseTo(1, 3)
   await expect(orders).toHaveAttribute('aria-current', 'page')
 
@@ -216,7 +219,7 @@ test('hover previews color and surface; focus adds outline; zoom follows click a
   await page.mouse.move(1200, 600)
   await expect(lens).toHaveAttribute('data-travel-target', '48')
   await expect(lens).toHaveAttribute('data-motion-state', 'settled', { timeout: 6000 })
-  await expect.poll(labelScale).toBeGreaterThan(1.040)
+  await expect.poll(getLabelScale).toBeGreaterThan(1.040)
   await expect.poll(iconScale).toBeGreaterThan(1.020)
 })
 

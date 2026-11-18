@@ -162,7 +162,7 @@ export function GlassSelectContent({ className, children, onKeyDown, ...props }:
     if (restore) triggerRef.current?.focus({ preventScroll: true });
   } });
   const popupStyle: CSSProperties = {
-    '--fos-popup-color': 'var(--gs-foreground)',
+    '--fos-popup-color': 'var(--gs-popup-text)',
     '--fos-popup-hover-color': 'var(--gs-popup-hover)',
     '--fos-popup-fill': 'var(--gs-popup-fill)',
     '--fos-popup-max-height': `${rect.maxHeight}px`,

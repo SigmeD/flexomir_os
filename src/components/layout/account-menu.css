@@ -92,7 +92,7 @@
   align-items: center;
   padding: 0 8px;
   border-radius: 12px;
-  color: #253144;
+  color: var(--fos-popup-color);
   cursor: pointer;
   outline: none;
   background: transparent;
