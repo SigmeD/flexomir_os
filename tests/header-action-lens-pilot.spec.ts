@@ -55,6 +55,26 @@ test('candidate keeps native click, keyboard and disabled behavior', async ({ pa
   await expect(candidate).toHaveAttribute('data-pressed', 'false')
 })
 
+test('a short click shows press and release feedback, then restores the accepted core', async ({ page }) => {
+  const candidate = page.getByTestId('lens-candidate-light')
+  const core = candidate.locator('.fos-ha__circle')
+  const box = await core.boundingBox()
+  if (!box) throw new Error('Candidate circle is missing')
+
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
+  await page.mouse.down()
+  await expect(candidate).toHaveAttribute('data-pressed', 'true')
+  await expect.poll(() => core.evaluate(node => getComputedStyle(node, '::before').backgroundColor)).toBe('rgb(1, 38, 92)')
+  await page.mouse.up()
+  await expect(candidate).toHaveAttribute('data-feedback', 'true')
+  await expect.poll(() => core.evaluate(node => getComputedStyle(node, '::before').backgroundColor)).toBe('rgb(6, 66, 140)')
+  await expect(candidate).not.toHaveAttribute('data-feedback', 'true')
+  await expect.poll(() => core.evaluate(node => getComputedStyle(node, '::before').backgroundColor)).toBe('rgb(2, 53, 127)')
+
+  await candidate.click()
+  await expect(candidate).toHaveAttribute('data-feedback', 'true')
+})
+
 test('pilot has an accessible forced-colors fallback and reduced-motion state', async ({ page }) => {
   const candidate = page.getByTestId('lens-candidate-light')
   await page.emulateMedia({ reducedMotion: 'reduce', forcedColors: 'active' })
